@@ -1,5 +1,8 @@
 /* Team 5687 (C)5687-2022 */
-package org.frc5687.chargeup.subsystems;
+package org.frc5687.chargedup.subsystems;
+
+import org.frc5687.chargedup.Constants;
+import org.frc5687.chargedup.util.Helpers;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -17,8 +20,6 @@ import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import org.frc5687.chargeup.Constants;
-import org.frc5687.chargeup.util.Helpers;
 
 
 /**

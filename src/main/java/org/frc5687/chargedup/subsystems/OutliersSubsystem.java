@@ -1,20 +1,20 @@
 /* (C)2020-2021 */
-package org.frc5687.chargeup.commands;
+package org.frc5687.chargedup.subsystems;
 
-import org.frc5687.chargeup.util.ILoggingSource;
-import org.frc5687.chargeup.util.MetricTracker;
-import org.frc5687.chargeup.util.RioLogger;
+import org.frc5687.chargedup.util.ILoggingSource;
+import org.frc5687.chargedup.util.MetricTracker;
+import org.frc5687.chargedup.util.OutliersContainer;
+import org.frc5687.chargedup.util.RioLogger;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public abstract class OutliersCommand extends CommandBase implements ILoggingSource {
+
+public abstract class OutliersSubsystem extends SubsystemBase implements ILoggingSource {
     private MetricTracker _metricTracker;
 
-    public OutliersCommand() {}
-
-    public OutliersCommand(double timeout) {
-        super.withTimeout(timeout);
+    public OutliersSubsystem(OutliersContainer container) {
+        container.registerSubSystem(this);
     }
 
     @Override
@@ -58,33 +58,23 @@ public abstract class OutliersCommand extends CommandBase implements ILoggingSou
         }
     }
 
+    // Example of metrics collection. In a child class's constructor:
+    // getMetricTracker().registerReportableMetricName("foo");
+    // getMetricTracker().registerReportableMetricName("bar");
+    // getMetricTracker().registerReportableMetricName("baz");
+    //
+    // Later on in the child class...
+    // metric("foo", 123);
+    // metric("bar", "elvis");
+    // metric("baz", 42.42);
+    // metric("pants", 99);    <~ This metric won't get written to USB storage because it wasn't
+    // registered.
+
     protected void logMetrics(String... metrics) {
         _metricTracker = MetricTracker.createMetricTracker(getClass().getSimpleName(), metrics);
-        _metricTracker.pause();
     }
 
-    @Override
-    public void initialize() {
-        super.initialize();
-        if (_metricTracker != null) {
-            _metricTracker.resume();
-        }
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        super.end(interrupted);
-        if (_metricTracker != null) {
-            _metricTracker.pause();
-        }
-    }
-
-    @Override
-    public void execute() {
-        if (_metricTracker != null && _metricTracker.isPaused()) {
-            _metricTracker.resume();
-        }
-    }
+    public abstract void updateDashboard();
 
     protected void enableMetrics() {
         if (_metricTracker != null) {
@@ -97,6 +87,4 @@ public abstract class OutliersCommand extends CommandBase implements ILoggingSou
             _metricTracker.disable();
         }
     }
-
-    protected void innerExecute() {}
 }

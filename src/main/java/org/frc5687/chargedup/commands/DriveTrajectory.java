@@ -1,10 +1,11 @@
 /* Team 5687 (C)2021-2022 */
-package org.frc5687.chargeup.commands;
+package org.frc5687.chargedup.commands;
+
+import org.frc5687.chargedup.subsystems.DriveTrain;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
-import org.frc5687.chargeup.subsystems.DriveTrain;
 
 public class DriveTrajectory extends OutliersCommand {
 
