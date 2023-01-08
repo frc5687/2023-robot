@@ -1,11 +1,11 @@
 /* (C)2021 */
-package org.frc5687.chargeup.util;
+package org.frc5687.chargedup.util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.frc5687.chargeup.subsystems.OutliersSubsystem;
+import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 
 public abstract class OutliersContainer implements ILoggingSource {
     private List<OutliersSubsystem> _subsystems = new LinkedList<OutliersSubsystem>();

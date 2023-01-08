@@ -1,5 +1,5 @@
 /* Team 5687 (C)2020-2021 */
-package org.frc5687.chargeup;
+package org.frc5687.chargedup;
 
 public class RobotMap {
 

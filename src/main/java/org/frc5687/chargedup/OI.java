@@ -1,16 +1,17 @@
 /* Team 5687 (C)2020-2021 */
-package org.frc5687.chargeup;
+package org.frc5687.chargedup;
 
-import static org.frc5687.chargeup.Constants.DriveTrain.*;
-import static org.frc5687.chargeup.util.Helpers.*;
+import static org.frc5687.chargedup.Constants.DriveTrain.*;
+import static org.frc5687.chargedup.util.Helpers.*;
+
+import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.util.AxisButton;
+import org.frc5687.chargedup.util.Gamepad;
+import org.frc5687.chargedup.util.OutliersProxy;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import org.frc5687.chargeup.subsystems.DriveTrain;
-import org.frc5687.chargeup.util.AxisButton;
-import org.frc5687.chargeup.util.Gamepad;
-import org.frc5687.chargeup.util.OutliersProxy;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;

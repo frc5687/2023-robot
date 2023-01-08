@@ -1,12 +1,13 @@
 /* Team 5687 (C)2021-2022 */
-package org.frc5687.chargeup.commands;
+package org.frc5687.chargedup.commands;
 
-import static org.frc5687.chargeup.Constants.DriveTrain.MAX_ANG_VEL;
-import static org.frc5687.chargeup.Constants.DriveTrain.MAX_MPS;
+import static org.frc5687.chargedup.Constants.DriveTrain.MAX_ANG_VEL;
+import static org.frc5687.chargedup.Constants.DriveTrain.MAX_MPS;
+
+import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.subsystems.DriveTrain;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import org.frc5687.chargeup.OI;
-import org.frc5687.chargeup.subsystems.DriveTrain;
 
 public class Drive extends OutliersCommand {
 

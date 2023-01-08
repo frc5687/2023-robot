@@ -1,7 +1,7 @@
 /* (C)2021 */
-package org.frc5687.chargeup.util;
+package org.frc5687.chargedup.util;
 
-import org.frc5687.chargeup.Constants;
+import org.frc5687.chargedup.Constants;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

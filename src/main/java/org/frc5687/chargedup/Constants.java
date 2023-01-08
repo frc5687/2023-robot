@@ -1,5 +1,5 @@
 /* Team 5687 (C)2020-2022 */
-package org.frc5687.chargeup;
+package org.frc5687.chargedup;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
