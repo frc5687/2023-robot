@@ -1,10 +1,10 @@
 /* Team 5687 (C)2021-2022 */
-package org.frc5687.swerve.commands;
+package org.frc5687.chargeup.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
-import org.frc5687.swerve.subsystems.DriveTrain;
+import org.frc5687.chargeup.subsystems.DriveTrain;
 
 public class DriveTrajectory extends OutliersCommand {
 

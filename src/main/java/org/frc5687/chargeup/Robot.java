@@ -1,5 +1,5 @@
 /* Team 5687 (C)2020-2022 */
-package org.frc5687.swerve;
+package org.frc5687.chargeup;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import org.frc5687.swerve.util.*;
+import org.frc5687.chargeup.util.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to

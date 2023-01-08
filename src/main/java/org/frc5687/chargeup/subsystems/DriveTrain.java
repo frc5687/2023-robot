@@ -1,8 +1,8 @@
 /* Team 5687 (C)2020-2022 */
-package org.frc5687.swerve.subsystems;
+package org.frc5687.chargeup.subsystems;
 
-import static org.frc5687.swerve.Constants.DifferentialSwerveModule.*;
-import static org.frc5687.swerve.Constants.DriveTrain.*;
+import static org.frc5687.chargeup.Constants.DifferentialSwerveModule.*;
+import static org.frc5687.chargeup.Constants.DriveTrain.*;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -15,10 +15,10 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
-import org.frc5687.swerve.Constants;
-import org.frc5687.swerve.OI;
-import org.frc5687.swerve.RobotMap;
-import org.frc5687.swerve.util.OutliersContainer;
+import org.frc5687.chargeup.Constants;
+import org.frc5687.chargeup.OI;
+import org.frc5687.chargeup.RobotMap;
+import org.frc5687.chargeup.util.OutliersContainer;
 
 public class DriveTrain extends OutliersSubsystem {
 

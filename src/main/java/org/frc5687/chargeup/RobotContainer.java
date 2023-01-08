@@ -1,14 +1,14 @@
 /* Team 5687 (C)2021 */
-package org.frc5687.swerve;
+package org.frc5687.chargeup;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import org.frc5687.swerve.commands.Drive;
-import org.frc5687.swerve.commands.OutliersCommand;
-import org.frc5687.swerve.subsystems.DriveTrain;
-import org.frc5687.swerve.subsystems.OutliersSubsystem;
-import org.frc5687.swerve.util.OutliersContainer;
+import org.frc5687.chargeup.commands.Drive;
+import org.frc5687.chargeup.commands.OutliersCommand;
+import org.frc5687.chargeup.subsystems.DriveTrain;
+import org.frc5687.chargeup.subsystems.OutliersSubsystem;
+import org.frc5687.chargeup.util.OutliersContainer;
 
 public class RobotContainer extends OutliersContainer {
 
