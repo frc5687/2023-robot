@@ -4,6 +4,10 @@ package org.frc5687.chargedup.subsystems;
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.*;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
+import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.util.Units;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.RobotMap;
@@ -20,6 +24,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
+import org.frc5687.chargedup.util.VisionProcessor;
 
 public class DriveTrain extends OutliersSubsystem {
 
@@ -27,13 +32,15 @@ public class DriveTrain extends OutliersSubsystem {
     private static final int SOUTH_WEST = 1;
     private static final int SOUTH_EAST = 2;
     private static final int NORTH_EAST = 3;
-    private DiffSwerveModule _northEast;
-    private DiffSwerveModule _northWest;
-    private DiffSwerveModule _southEast;
-    private DiffSwerveModule _southWest;
+    private final DiffSwerveModule _northEast;
+    private final DiffSwerveModule _northWest;
+    private final DiffSwerveModule _southEast;
+    private final DiffSwerveModule _southWest;
 
-    private SwerveDriveKinematics _kinematics;
-    private SwerveDriveOdometry _odometry;
+    private final SwerveDriveKinematics _kinematics;
+    private final SwerveDriveOdometry _odometry;
+
+    private final SwerveDrivePoseEstimator _estimator;
 
     private double _PIDAngle;
 
@@ -43,10 +50,13 @@ public class DriveTrain extends OutliersSubsystem {
     private HolonomicDriveController _controller;
     private ProfiledPIDController _angleController;
 
-    public DriveTrain(OutliersContainer container, OI oi, AHRS imu) {
+    private VisionProcessor _visionProcessor;
+
+    public DriveTrain(OutliersContainer container, OI oi, AHRS imu, VisionProcessor processor) {
         super(container);
         _oi = oi;
         _imu = imu;
+        _visionProcessor = processor;
         _northWest =
                 new DiffSwerveModule(
                         Constants.DriveTrain.NORTH_WEST,
@@ -98,6 +108,20 @@ public class DriveTrain extends OutliersSubsystem {
                 },
                 new Pose2d(0, 0, getHeading())
         );
+        _estimator =
+                new SwerveDrivePoseEstimator(
+                        _kinematics,
+                        getHeading(),
+                        new SwerveModulePosition[] {
+                                _northWest.getModulePosition(),
+                                _southWest.getModulePosition(),
+                                _southEast.getModulePosition(),
+                                _northEast.getModulePosition()
+                        },
+                        new Pose2d(),
+                        //TODO: Tune for our system, possible that our vision will be better than odometry(state).
+                        VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)), // State standard deviations
+                        VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(10))); // Vision standard deviations
 
         _controller =
                 new HolonomicDriveController(
@@ -129,7 +153,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     @Override
     public void periodic() {
-        _odometry.update(
+        _estimator.update(
                 getHeading(),
                 new SwerveModulePosition[] {
                 _northWest.getModulePosition(),
@@ -137,6 +161,12 @@ public class DriveTrain extends OutliersSubsystem {
                 _southWest.getModulePosition(),
                 _southEast.getModulePosition() }
                 );
+        Pair<Pose2d, Double> result = _visionProcessor.getEstimatedGlobalPose(_estimator.getEstimatedPosition());
+        Pose2d cameraPose = result.getFirst();
+        double cameraPoseObservationTime = result.getSecond();
+        if (cameraPose != null) {
+            _estimator.addVisionMeasurement(cameraPose, cameraPoseObservationTime);
+        }
     }
 
     @Override
