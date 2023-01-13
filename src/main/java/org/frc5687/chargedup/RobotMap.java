@@ -12,14 +12,18 @@ public class RobotMap {
     public static class CAN {
 
         public static class TALONFX {
-            public static final int NORTH_EAST_OUTER = 1;
-            public static final int NORTH_EAST_INNER = 2;
-            public static final int SOUTH_EAST_INNER = 3;
-            public static final int SOUTH_EAST_OUTER = 4;
-            public static final int SOUTH_WEST_INNER = 5;
-            public static final int SOUTH_WEST_OUTER = 6;
-            public static final int NORTH_WEST_INNER = 8;
-            public static final int NORTH_WEST_OUTER = 7;
+            public static final int NORTH_WEST_OUTER = 1;
+            public static final int NORTH_WEST_INNER = 2;
+            public static final int NORTH_EAST_INNER = 3;
+            public static final int NORTH_EAST_OUTER = 4;
+            public static final int SOUTH_EAST_OUTER = 5;
+            public static final int SOUTH_EAST_INNER = 6;
+            public static final int SOUTH_WEST_INNER = 7;
+            public static final int SOUTH_WEST_OUTER = 8;
+        }
+
+        public static class PIDGEON {
+            public static final int PIDGEON = 1;
         }
     }
 
@@ -52,9 +56,9 @@ public class RobotMap {
      * for DIO only one device can connect to each port, so the numbers should be unique.
      */
     public static class DIO {
-        public static final int NORTH_EAST = 0;
-        public static final int SOUTH_EAST = 1;
-        public static final int SOUTH_WEST = 2;
-        public static final int NORTH_WEST = 3;
+        public static final int ENCODER_NW = 0;
+        public static final int ENCODER_NE = 1;
+        public static final int ENCODER_SE = 2;
+        public static final int ENCODER_SW = 3;
     }
 }

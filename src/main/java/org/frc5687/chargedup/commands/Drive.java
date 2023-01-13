@@ -1,13 +1,9 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.commands;
 
-import static org.frc5687.chargedup.Constants.DriveTrain.MAX_ANG_VEL;
-import static org.frc5687.chargedup.Constants.DriveTrain.MAX_MPS;
-
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
-
-import edu.wpi.first.math.filter.SlewRateLimiter;
 
 public class Drive extends OutliersCommand {
 
@@ -20,26 +16,33 @@ public class Drive extends OutliersCommand {
     public Drive(DriveTrain driveTrain, OI oi) {
         _driveTrain = driveTrain;
         _oi = oi;
-        _vxFilter = new SlewRateLimiter(3.0);
-        _vyFilter = new SlewRateLimiter(3.0);
+        _vxFilter = new SlewRateLimiter(4.0);
+        _vyFilter = new SlewRateLimiter(4.0);
         addRequirements(_driveTrain);
+        //        logMetrics("vx","vy");
+        //        enableMetrics();
     }
 
     @Override
     public void initialize() {
-        super.initialize();
         _driveTrain.startModules();
+        _driveTrain.setFieldRelative(true);
+        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
     @Override
     public void execute() {
-        super.execute();
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
-        double vx = _vxFilter.calculate(-_oi.getDriveY()) * MAX_MPS;
-        double vy = _vyFilter.calculate(_oi.getDriveX()) * MAX_MPS;
-        double rot = -_oi.getRotationX() * MAX_ANG_VEL;
+        double vx = _vxFilter.calculate(_oi.getDriveY());
+        double vy = _vyFilter.calculate(_oi.getDriveX());
+        double rot = _oi.getRotationX();
 
-        _driveTrain.drive(vx, vy, rot, true);
+        if (_oi.autoAim()) {
+            _driveTrain.vision(_driveTrain.getVisionHeading());
+            rot = 0.0;
+        }
+
+        _driveTrain.drive(vx, vy, rot);
     }
 
     @Override
