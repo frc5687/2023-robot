@@ -239,8 +239,6 @@ public class DriveTrain extends OutliersSubsystem {
         translation = translation.scale(MAX_MPS);
         omega *= MAX_ANG_VEL;
 
-        //        if (omega != 0 && _rotationInput == 0) {
-        //            _headingController.disable();
         if (omega == 0) {
             if (!_lockHeading) {
                 _headingController.temporaryDisable();
@@ -277,6 +275,11 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
 
+    // think of a good way to select center of rotation based on OI inputs.
+    public Translation2d getCenterOfRotation() {
+        return new Translation2d();
+    }
+
     public void updateSwerve(Vector2d translationVector, double rotationalInput) {
         SwerveModuleState[] swerveModuleStates =
                 _kinematics.toSwerveModuleStates(
@@ -289,7 +292,9 @@ public class DriveTrain extends OutliersSubsystem {
                                 : new ChassisSpeeds(
                                         translationVector.x(),
                                         translationVector.y(),
-                                        rotationalInput));
+                                        rotationalInput),
+                        getCenterOfRotation() // this changes the center of rotation for evasive maneuvers.
+                );
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
         setModuleStates(swerveModuleStates);
     }
