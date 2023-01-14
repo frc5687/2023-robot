@@ -9,11 +9,11 @@ import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 
 public class Constants {
-    public static final int TICKS_PER_UPDATE = 1;
+    public static final int TICKS_PER_UPDATE = 5;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
     public static final double UPDATE_PERIOD = 0.02;
-    public static final double CONTROL_PERIOD = 0.005;
-    public static final double DATA_PERIOD = 0.005;
+    public static final double CONTROL_PERIOD = 0.005; // 5 ms
+    public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-12;
     
     /**
