@@ -157,6 +157,7 @@ public class DriveTrain extends OutliersSubsystem {
     public void controlPeriodic(double timestamp) {
         modulePeriodic();
         double omegaCorrection = _headingController.getRotationCorrection(getHeading());
+        metric("Omega Correction", omegaCorrection);
         switch (_controlState) {
             case NEUTRAL:
                 break;
@@ -170,7 +171,7 @@ public class DriveTrain extends OutliersSubsystem {
                 updateSwerve(Vector2d.identity(), omegaCorrection);
                 break;
             case TRAJECTORY:
-                //                updateSwerve(_trajectoryGoal, _trajectoryHeading);
+//                updateSwerve(_trajectoryGoal, _trajectoryHeading);
                 break;
         }
     }
@@ -221,6 +222,7 @@ public class DriveTrain extends OutliersSubsystem {
         if (magnitude < TRANSLATION_DEADBAND) {
             translation = new Vector2d();
             magnitude = 0;
+            _headingController.setTargetHeading(getHeading());
         }
 
         Rotation2d direction = translation.direction();
@@ -253,6 +255,9 @@ public class DriveTrain extends OutliersSubsystem {
 
         _rotationInput = omega;
         _translationVector = translation;
+        metric("Drive omega", omega);
+        metric("translationX", translation.x());
+        metric("translationY", translation.y());
         if (magnitude > 0.1) {
             _prevControlVector = new Vector2d(vx, vy);
         } else if (translation.x() == 0.0 &&  translation.y() == 0.0 && omega != 0.0) {
@@ -420,10 +425,20 @@ public class DriveTrain extends OutliersSubsystem {
      *     <p>If Rotation2d <> gyroAngle, then robot heading will no longer equal IMU heading.
      */
     public void resetOdometry(Pose2d position) {
+        _modules.forEach(DiffSwerveModule::resetEncoders);
         Translation2d _translation = position.getTranslation();
         Rotation2d _rotation = getHeading();
         Pose2d _reset = new Pose2d(_translation, _rotation);
-//        _odometry.resetPosition(_reset, getHeading()); // TODO: we need to create the new version of this.
+        _odometry.resetPosition(
+                getHeading(),
+                new SwerveModulePosition[]{
+                        _northWest.getModulePosition(),
+                        _southWest.getModulePosition(),
+                        _southEast.getModulePosition(),
+                        _northEast.getModulePosition()
+                },
+                _reset
+                );
     }
 
     public void setFieldRelative(boolean relative) {
@@ -439,6 +454,8 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Swerve State", _controlState.name());
         metric("Heading State", getCurrentHeadingState().name());
         metric("Odometry Pose", getOdometryPose().toString());
+        metric("Target Heading", _headingController.getTargetHeading().getRadians());
+        metric("Current Heading", getHeading().getRadians());
     }
 
     public enum ControlState {

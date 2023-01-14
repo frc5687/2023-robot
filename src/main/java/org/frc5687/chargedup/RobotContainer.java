@@ -5,6 +5,8 @@ package org.frc5687.chargedup;
 import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.frc5687.chargedup.commands.Drive;
@@ -35,6 +37,7 @@ public class RobotContainer extends OutliersContainer {
 //        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
+        _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         startPeriodic();
     }

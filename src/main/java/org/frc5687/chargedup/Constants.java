@@ -82,12 +82,12 @@ public class Constants {
         public static final double ROTATION_DEADBAND = 0.1; // Avoid unintentional joystick movement
         public static final double TRANSLATION_POWER = 1.75; // Determines the curve of drive input
         public static final double ROTATION_POWER = 1.0; // Determines the curve of drive input
-        public static final long DISABLE_TIME = 200; // ms
+        public static final long DISABLE_TIME = 500; // ms
     
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 1.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 3.0; // Max speed of robot (m/s)
         public static final double MAX_AUTO_MPS = 3.0; // Max speed of robot (m/s)
         public static final double MAX_MPS_DURING_CLIMB =
                 MAX_MPS / 4; // Max speed of robot (m/s) during climb
@@ -98,7 +98,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double STABILIZATION_kP = 2.0;
+        public static final double STABILIZATION_kP = 2.7;
         public static final double STABILIZATION_kI = 0.0;
         public static final double STABILIZATION_kD = 0.0;
     

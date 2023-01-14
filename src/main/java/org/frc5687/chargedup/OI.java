@@ -3,8 +3,6 @@ package org.frc5687.chargedup;
 
 import edu.wpi.first.wpilibj.Joystick;
 import org.frc5687.lib.oi.Gamepad;
-import org.frc5687.lib.oi.Gamepad.Buttons;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.subsystems.*;
 
 import org.frc5687.chargedup.util.OutliersProxy;
