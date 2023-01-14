@@ -132,6 +132,12 @@ public class DriveTrain extends OutliersSubsystem {
                                             Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
 
             _headingController = new SwerveHeadingController(Constants.DriveTrain.kDt);
+            _angleController = new ProfiledPIDController(
+                Constants.DriveTrain.kP,
+                Constants.DriveTrain.kI,
+                Constants.DriveTrain.kD,   
+                new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
+            );
             _translationVector = new Vector2d();
             _prevControlVector = new Vector2d();
 

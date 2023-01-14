@@ -93,18 +93,18 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 3.0; // Max speed of robot (m/s)
-        public static final double MAX_AUTO_MPS = 3.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 2.0; // Max speed of robot (m/s)
+        public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
         public static final double MAX_MPS_DURING_CLIMB =
                 MAX_MPS / 4; // Max speed of robot (m/s) during climb
         public static final double MAX_ANG_VEL =
                 Math.PI * 1.5; // Max rotation rate of robot (rads/s)
-        public static final double MAX_MPSS = 0.5; // Max acceleration of robot (m/s^2)
+        public static final double MAX_MPSS = 1; // Max acceleration of robot (m/s^2)
     
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double STABILIZATION_kP = 2.7;
+        public static final double STABILIZATION_kP = 1;
         public static final double STABILIZATION_kI = 0.0;
         public static final double STABILIZATION_kD = 0.0;
     
@@ -119,7 +119,7 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 3.0;
     
-        public static final double kP = 11.5;
+        public static final double kP = 2;
         public static final double kI = 0.0;
         public static final double kD = 0.5;
     
@@ -188,53 +188,12 @@ public class Constants {
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
     }
-    
-    public static class Turret {
-        public static String CAN_BUS = "rio";
-        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
-        public static final OutliersTalon.ClosedLoopConfiguration MOTION_PROFILE_CONFIG =
-                new OutliersTalon.ClosedLoopConfiguration();
-    
-        static {
-            CONFIG.TIME_OUT = 100;
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
-            CONFIG.VELOCITY_MEASUREMENT_PERIOD = SensorVelocityMeasPeriod.Period_100Ms;
-            CONFIG.VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 64;
-            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 20;
-            CONFIG.MOTION_CONTROL_FRAME_PERIOD_MS = 20;
-    
-            MOTION_PROFILE_CONFIG.SLOT = 1;
-            MOTION_PROFILE_CONFIG.kP = 0.0;
-            MOTION_PROFILE_CONFIG.kI = 0.0;
-            MOTION_PROFILE_CONFIG.kD = 0.0;
-            MOTION_PROFILE_CONFIG.kF = 0.0;
-            MOTION_PROFILE_CONFIG.CRUISE_VELOCITY = 5000; // ticks
-            MOTION_PROFILE_CONFIG.ACCELERATION = 16000; // acceleration
-            MOTION_PROFILE_CONFIG.TOLERANCE = 1000; // ticks
-        }
-    
-        public static final double GEAR_RATIO = 240.0 / 22.0;
-    
-        public static final double MIN_ANGLE = Units.degreesToRadians(-190);
-        public static final double MAX_ANGLE = Units.degreesToRadians(131);
-    }
-
-    public static class Shooter {
-        public static final double SHOOTER_SHOOT_SPEED = 0.5;
-        public static final double SHOOTER_IDLE_SPEED = 0.2;
-        public static final boolean NORTH_MOTOR_INVERTED = false;
-        public static final boolean SOUTH_MOTOR_INVERTED = true;
-    }
 
     public static class Auto {
         public static class FieldPoses {
             public static final Pose2d POSE_1 = new Pose2d(0, 0, new Rotation2d());
-            public static final Pose2d POSE_2 = new Pose2d(0, 1, new Rotation2d(Math.PI / 2));
-            public static final Pose2d POSE_3 = new Pose2d(0, 2, new Rotation2d());
+            public static final Pose2d POSE_2 = new Pose2d(1, 1, new Rotation2d(Math.PI / 2));
+            public static final Pose2d POSE_3 = new Pose2d(2, 2, new Rotation2d());
 
         }
     
