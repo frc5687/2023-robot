@@ -1,11 +1,11 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.commands;
 
-import org.frc5687.chargedup.subsystems.DriveTrain;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
+import org.frc5687.lib.math.Vector2d;
+import org.frc5687.chargedup.subsystems.DriveTrain;
 
 public class DriveTrajectory extends OutliersCommand {
 
@@ -32,7 +32,7 @@ public class DriveTrajectory extends OutliersCommand {
         super.execute();
 
         Trajectory.State goal = _trajectory.sample(_timer.get());
-        _driveTrain.trajectoryFollower(goal, new Rotation2d(0.0));
+        _driveTrain.updateSwerve(goal, new Rotation2d(0.0));
     }
 
     @Override
@@ -43,6 +43,7 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
+        _driveTrain.updateSwerve(Vector2d.identity(), 0);
         _timer.reset();
     }
 }

@@ -101,4 +101,8 @@ public class Helpers {
         }
         return radians ? angle : Units.radiansToDegrees(angle);
     }
+
+    public static boolean epsilonEquals(double a, double b, double epsilon) {
+        return (a - epsilon <= b) && (a + epsilon >= b);
+    }
 }

@@ -1,7 +1,9 @@
-/* (C)2020-2021 */
+/* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup.util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.lib.logging.ILoggingSource;
+import org.frc5687.lib.logging.RioLogger;
 
 public abstract class OutliersProxy implements ILoggingSource {
     @Override
