@@ -27,7 +27,7 @@ public class Drive extends OutliersCommand {
     public void initialize() {
         _driveTrain.startModules();
         _driveTrain.setFieldRelative(true);
-        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
+//        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
     @Override

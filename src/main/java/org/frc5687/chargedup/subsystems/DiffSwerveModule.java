@@ -242,8 +242,8 @@ public class DiffSwerveModule {
     }
 
     public double getWheelDistance() {
-        return (getLeftFalconDistanceRadians() / GEAR_RATIO_WHEEL -
-                getRightFalconDistanceRadians() / GEAR_RATIO_WHEEL) / 2.0;
+        return ((getLeftFalconDistanceRadians() / GEAR_RATIO_WHEEL -
+                getRightFalconDistanceRadians() / GEAR_RATIO_WHEEL) / 2.0) * WHEEL_RADIUS;
     }
     public double getPredictedWheelVelocity() {
         return getPredictedWheelAngularVelocity() * WHEEL_RADIUS;
@@ -267,6 +267,11 @@ public class DiffSwerveModule {
     }
     public double getLeftFalconDistanceRadians() {
         return OutliersTalon.ticksToRadians(_systemIO.leftPositionTicks, 1.0);
+    }
+
+    public void resetEncoders() {
+        _leftFalcon.setSelectedSensorPosition(0);
+        _rightFalcon.setSelectedSensorPosition(0);
     }
 
     public double getLeftVoltage() {
