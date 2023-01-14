@@ -139,7 +139,7 @@ public class Constants {
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
     
             CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 5;
-            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 10;
+            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
         }
         // update rate of our modules 5ms.
         public static final double kDt = 0.005;
