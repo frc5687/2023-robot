@@ -8,6 +8,10 @@ import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.trajectory.TrajectoryParameterizer.TrajectoryGenerationException;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -29,6 +33,7 @@ public class RobotContainer extends OutliersContainer {
         _imu = new AHRS(SPI.Port.kMXP, (byte) 200);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
+        Trajectory S = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.S.waypoints, _driveTrain.getConfig());
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);

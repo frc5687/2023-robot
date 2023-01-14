@@ -1,6 +1,11 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup;
 
+import java.util.Arrays;
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -140,4 +145,25 @@ public class Constants {
         public static final double SENSOR_WHEEL_ANG_VELOCITY_NOISE = 0.1; // radians per sec
         public static final double CONTROL_EFFORT = VOLTAGE;
     }
+
+    public static class Auto {
+        public static class FieldPoses {
+            public static final Pose2d POSE_1 = new Pose2d(0, 0, new Rotation2d());
+            public static final Pose2d POSE_2 = new Pose2d(0, 1, new Rotation2d(Math.PI / 2));
+            public static final Pose2d POSE_3 = new Pose2d(0, 2, new Rotation2d());
+
+        }
+    
+
+        public static class TrajectoryPoints {
+            public static class S {
+                public static final List<Pose2d> waypoints =
+                        Arrays.asList(
+                                FieldPoses.POSE_1,
+                                FieldPoses.POSE_2,
+                                FieldPoses.POSE_3);
+            }
+        }
+    }
 }
+
