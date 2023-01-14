@@ -1,5 +1,5 @@
-/* (C)2020-2021 */
-package org.frc5687.chargedup.util;
+/* Team 5687 (C)2020-2022 */
+package org.frc5687.lib.oi;
 /**
  * Control type for the POV stick/DPAD, which is read as an angle by WPILib.
  *

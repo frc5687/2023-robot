@@ -1,15 +1,18 @@
-/* (C)2021 */
+/* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.util;
 
-import org.frc5687.chargedup.Constants;
-
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.lib.logging.ILoggingSource;
+import org.frc5687.lib.logging.RioLogger;
+import org.frc5687.chargedup.Constants;
 
 public abstract class OutliersRobot extends TimedRobot implements ILoggingSource {
 
     public OutliersRobot() {
         super(Constants.UPDATE_PERIOD);
+        Notifier.setHALThreadPriority(true, 40);
     }
 
     public void metric(String name, boolean value) {
