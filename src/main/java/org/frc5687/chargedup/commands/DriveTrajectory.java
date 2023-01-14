@@ -6,6 +6,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
 
 public class DriveTrajectory extends OutliersCommand {
 
@@ -23,6 +24,7 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
+        _driveTrain.setControlState(ControlState.TRAJECTORY);
         _timer.reset();
         _timer.start();
     }
@@ -43,6 +45,7 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
+        _driveTrain.setControlState(ControlState.MANUAL);
         _driveTrain.updateSwerve(Vector2d.identity(), 0);
         _timer.reset();
     }
