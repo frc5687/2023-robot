@@ -53,11 +53,13 @@ public class DriveTrain extends OutliersSubsystem {
     private OI _oi;
     private HolonomicDriveController _poseController;
     private SwerveHeadingController _headingController;
+    private ProfiledPIDController _angleController;
 
     // Trajectory / Pose Following
     private Trajectory.State _trajectoryGoal;
     private Rotation2d _trajectoryHeading;
     private Pose2d _goalPose;
+    private double _PIDAngle;
 
     public DriveTrain(OutliersContainer container, OI oi, AHRS imu) {
         super(container);
@@ -156,24 +158,24 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void controlPeriodic(double timestamp) {
         modulePeriodic();
-        double omegaCorrection = _headingController.getRotationCorrection(getHeading());
-        metric("Omega Correction", omegaCorrection);
-        switch (_controlState) {
-            case NEUTRAL:
-                break;
-            case MANUAL:
-                updateSwerve(_translationVector, _rotationInput + omegaCorrection);
-                break;
-            case POSITION:
-                updateSwerve(_goalPose);
-                break;
-            case ROTATION:
-                updateSwerve(Vector2d.identity(), omegaCorrection);
-                break;
-            case TRAJECTORY:
-//                updateSwerve(_trajectoryGoal, _trajectoryHeading);
-                break;
-        }
+//        double omegaCorrection = _headingController.getRotationCorrection(getHeading());
+//        metric("Omega Correction", omegaCorrection);
+//        switch (_controlState) {
+//            case NEUTRAL:
+//                break;
+//            case MANUAL:
+//                updateSwerve(_translationVector, _rotationInput + omegaCorrection);
+//                break;
+//            case POSITION:
+//                updateSwerve(_goalPose);
+//                break;
+//            case ROTATION:
+//                updateSwerve(Vector2d.identity(), omegaCorrection);
+//                break;
+//            case TRAJECTORY:
+////                updateSwerve(_trajectoryGoal, _trajectoryHeading);
+//                break;
+//        }
     }
 
     @Override
@@ -207,63 +209,37 @@ public class DriveTrain extends OutliersSubsystem {
      * @param omega angular velocity (rotating speed)
      */
     public void drive(double vx, double vy, double omega) {
-        if (_controlState == ControlState.NEUTRAL) {
-            setControlState(ControlState.MANUAL);
-        }
-        Vector2d translation = new Vector2d(vx, vy);
-        double magnitude = translation.magnitude();
+        if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
+            _northEast.setIdealState(new SwerveModuleState(0, new Rotation2d(_northEast.getModuleAngle())));
+            _northWest.setIdealState(new SwerveModuleState(0, new Rotation2d(_northWest.getModuleAngle())));
+            _southEast.setIdealState(new SwerveModuleState(0, new Rotation2d(_southEast.getModuleAngle())));
+            _southWest.setIdealState(new SwerveModuleState(0, new Rotation2d(_southWest.getModuleAngle())));
 
-        if (Math.abs(getDistance(translation.direction(), getNearestPole(translation.direction())))
-                < POLE_THRESHOLD) {
-            translation =
-                    rotationToVector(getNearestPole(translation.direction())).scale(magnitude);
-        }
-
-        if (magnitude < TRANSLATION_DEADBAND) {
-            translation = new Vector2d();
-            magnitude = 0;
-            _headingController.setTargetHeading(getHeading());
-        }
-
-        Rotation2d direction = translation.direction();
-        double scaledMagnitude = Math.pow(magnitude, TRANSLATION_POWER);
-        translation =
-                new Vector2d(
-                        direction.getCos() * scaledMagnitude, direction.getSin() * scaledMagnitude);
-
-        if (translation.magnitude() > 1.0) {
-            translation = translation.normalize();
-        }
-
-        omega = (Math.abs(omega) < ROTATION_DEADBAND) ? 0 : omega;
-        // scale rotation
-        omega = Math.pow(Math.abs(omega), ROTATION_POWER) * Math.signum(omega);
-
-        translation = translation.scale(MAX_MPS);
-        omega *= MAX_ANG_VEL;
-
-        if (omega == 0) {
-            if (!_lockHeading) {
-                _headingController.temporaryDisable();
-            }
-            _lockHeading = true;
+            _PIDAngle = getHeading().getRadians();
+            _angleController.reset(_PIDAngle);
+        } else if (Math.abs(omega) > 0) {
+            SwerveModuleState[] swerveModuleStates =
+                    _kinematics.toSwerveModuleStates(
+                           _fieldRelative
+                                    ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    vx, vy, omega, getHeading())
+                                    : new ChassisSpeeds(vx, vy, omega));
+            SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
+            setModuleStates(swerveModuleStates);
+            _PIDAngle = getHeading().getRadians();
+            _angleController.reset(_PIDAngle);
         } else {
-            _headingController.disable();
-            _lockHeading = false;
+            SwerveModuleState[] swerveModuleStates =
+                    _kinematics.toSwerveModuleStates(
+                            ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    vx,
+                                    vy,
+                                    _angleController.calculate(
+                                            getHeading().getRadians(), _PIDAngle),
+                                    new Rotation2d(_PIDAngle)));
+            SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
+            setModuleStates(swerveModuleStates);
         }
-        metric("target heading", _headingController.getTargetHeading().getRadians());
-
-        _rotationInput = omega;
-        _translationVector = translation;
-        metric("Drive omega", omega);
-        metric("translationX", translation.x());
-        metric("translationY", translation.y());
-        if (magnitude > 0.1) {
-            _prevControlVector = new Vector2d(vx, vy);
-        } else if (translation.x() == 0.0 &&  translation.y() == 0.0 && omega != 0.0) {
-            _prevControlVector = Vector2d.identity();
-        }
-        //        _isMoving = vx != 0 || vy != 0 || !(Math.abs(omega) < ROTATING_TOLERANCE);
     }
 
     public void determineWheelForEvasion() {
