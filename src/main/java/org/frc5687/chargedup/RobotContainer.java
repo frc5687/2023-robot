@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
-//    private Pigeon2 _imu;
-    private AHRS _imu;
+    private Pigeon2 _imu;
+//    private AHRS _imu;
     private Robot _robot;
     private DriveTrain _driveTrain;
 
@@ -40,8 +40,8 @@ public class RobotContainer extends OutliersContainer {
         _oi = new OI();
 
         // configure pigeon
-        _imu = new AHRS(SPI.Port.kMXP, (byte) 200); // 200hz
-//        _imu = new Pigeon2(RobotMap.CAN.PIDGEON.PIDGEON);
+//        _imu = new AHRS(SPI.Port.kMXP, (byte) 200); // 200hz
+        _imu = new Pigeon2(RobotMap.CAN.PIDGEON.PIDGEON);
 //        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
