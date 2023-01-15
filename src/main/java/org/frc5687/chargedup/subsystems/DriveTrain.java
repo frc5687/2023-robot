@@ -223,6 +223,10 @@ public class DriveTrain extends OutliersSubsystem {
      * @param omega angular velocity (rotating speed)
      */
     public void drive(double vx, double vy, double omega) {
+        vx = vx*MAX_MPS;
+        vy = vy*MAX_MPS;
+        omega = omega*MAX_ANG_VEL;
+
         if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
             _northEast.setIdealState(new SwerveModuleState(0, new Rotation2d(_northEast.getModuleAngle())));
             _northWest.setIdealState(new SwerveModuleState(0, new Rotation2d(_northWest.getModuleAngle())));
@@ -248,8 +252,8 @@ public class DriveTrain extends OutliersSubsystem {
                             ChassisSpeeds.fromFieldRelativeSpeeds(
                                     vx,
                                     vy,
-                                    _angleController.calculate(
-                                            getHeading().getRadians(), _PIDAngle),
+                                     _angleController.calculate(
+                                             getHeading().getRadians(), _PIDAngle),
                                     new Rotation2d(_PIDAngle)));
             SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
             setModuleStates(swerveModuleStates);
@@ -451,6 +455,11 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Target Heading", _headingController.getTargetHeading().getRadians());
         metric("Current Heading", getHeading().getRadians());
         metric("Rotation State", -getYaw());
+        metric("PID Power", _angleController.calculate(getHeading().getRadians(), _PIDAngle));
+        metric("NW Angle", _modules.get(0).getModuleAngle());
+        metric("SW Angle", _modules.get(1).getModuleAngle());
+        metric("SE Angle", _modules.get(2).getModuleAngle());
+        metric("NE Angle", _modules.get(3).getModuleAngle());
     }
 
     public enum ControlState {
