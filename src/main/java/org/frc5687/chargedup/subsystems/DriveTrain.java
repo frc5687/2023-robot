@@ -141,7 +141,8 @@ public class DriveTrain extends OutliersSubsystem {
                 Constants.DriveTrain.kD,   
                 new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
             );
-            _yawOffset = _imu.getYaw();
+            // This should set the Pigeon to 0.
+            _yawOffset = getYaw();
 
             _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 5);
 
@@ -311,7 +312,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public double getYaw() {
-        return _imu.getYaw() - _yawOffset;
+        return Helpers.boundHalfAngle(-_imu.getYaw() - _yawOffset, false);
     }
 
     // yaw is negative to follow wpi coordinate system.
@@ -449,6 +450,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Target Heading", _headingController.getTargetHeading().getRadians());
         metric("Current Heading", getHeading().getRadians());
+        metric("Rotation State", -getYaw());
     }
 
     public enum ControlState {

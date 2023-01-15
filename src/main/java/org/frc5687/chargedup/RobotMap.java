@@ -23,7 +23,7 @@ public class RobotMap {
         }
 
         public static class PIDGEON {
-            public static final int PIDGEON = 1;
+            public static final int PIDGEON = 0;
         }
     }
 
