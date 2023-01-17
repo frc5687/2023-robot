@@ -3,11 +3,7 @@
 package org.frc5687.chargedup;
 
 import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
-import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.OutliersCommand;
@@ -15,13 +11,8 @@ import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
 
-import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryParameterizer.TrajectoryGenerationException;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class RobotContainer extends OutliersContainer {
 
@@ -41,7 +32,7 @@ public class RobotContainer extends OutliersContainer {
 
         // configure pigeon
 //        _imu = new AHRS(SPI.Port.kMXP, (byte) 200); // 200hz
-        _imu = new Pigeon2(RobotMap.CAN.PIDGEON.PIDGEON);
+        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON);
 //        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
