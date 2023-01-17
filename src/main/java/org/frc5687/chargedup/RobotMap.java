@@ -22,8 +22,8 @@ public class RobotMap {
             public static final int SOUTH_WEST_OUTER = 8;
         }
 
-        public static class PIDGEON {
-            public static final int PIDGEON = 1;
+        public static class PIGEON {
+            public static final int PIGEON = 0;
         }
     }
 

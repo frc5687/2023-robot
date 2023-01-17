@@ -2,6 +2,7 @@
 package org.frc5687.chargedup.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -49,7 +50,7 @@ public class DriveTrain extends OutliersSubsystem {
     private Translation2d _clockwiseCenter;
     private Translation2d _counterClockwiseCenter;
 
-    private AHRS _imu;
+    private Pigeon2 _imu;
     private OI _oi;
     private HolonomicDriveController _poseController;
     private SwerveHeadingController _headingController;
@@ -61,7 +62,9 @@ public class DriveTrain extends OutliersSubsystem {
     private Pose2d _goalPose;
     private double _PIDAngle;
 
-    public DriveTrain(OutliersContainer container, OI oi, AHRS imu) {
+    private double _yawOffset;
+
+    public DriveTrain(OutliersContainer container, OI oi, Pigeon2 imu) {
         super(container);
         try {
             _imu = imu;
@@ -138,6 +141,11 @@ public class DriveTrain extends OutliersSubsystem {
                 Constants.DriveTrain.kD,   
                 new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
             );
+            // This should set the Pigeon to 0.
+            _yawOffset = getYaw();
+
+            _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 5);
+
             _translationVector = new Vector2d();
             _prevControlVector = new Vector2d();
 
@@ -215,6 +223,10 @@ public class DriveTrain extends OutliersSubsystem {
      * @param omega angular velocity (rotating speed)
      */
     public void drive(double vx, double vy, double omega) {
+        vx = vx*MAX_MPS;
+        vy = vy*MAX_MPS;
+        omega = omega*MAX_ANG_VEL;
+
         if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
             _northEast.setIdealState(new SwerveModuleState(0, new Rotation2d(_northEast.getModuleAngle())));
             _northWest.setIdealState(new SwerveModuleState(0, new Rotation2d(_northWest.getModuleAngle())));
@@ -240,8 +252,8 @@ public class DriveTrain extends OutliersSubsystem {
                             ChassisSpeeds.fromFieldRelativeSpeeds(
                                     vx,
                                     vy,
-                                    _angleController.calculate(
-                                            getHeading().getRadians(), _PIDAngle),
+                                     _angleController.calculate(
+                                             getHeading().getRadians(), _PIDAngle),
                                     new Rotation2d(_PIDAngle)));
             SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
             setModuleStates(swerveModuleStates);
@@ -304,7 +316,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public double getYaw() {
-        return _imu.getYaw();
+        return Helpers.boundHalfAngle(-_imu.getYaw() - _yawOffset, false);
     }
 
     // yaw is negative to follow wpi coordinate system.
@@ -312,10 +324,14 @@ public class DriveTrain extends OutliersSubsystem {
         return Rotation2d.fromDegrees(-getYaw());
     }
 
-    public void resetYaw() {
-//        _imu.setYaw(0.0);
-        _imu.reset();
+/*     public void resetYaw() {
+        _imu.setYaw(0.0);
+        _imu.resetYaw();
         _headingController.setStabilizationHeading(new Rotation2d(0.0));
+    }*/
+
+    public void zeroGyroscope() {
+        _yawOffset = _imu.getYaw();
     }
 
     public void snap(Rotation2d heading) {
@@ -438,6 +454,12 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Target Heading", _headingController.getTargetHeading().getRadians());
         metric("Current Heading", getHeading().getRadians());
+        metric("Rotation State", -getYaw());
+        metric("PID Power", _angleController.calculate(getHeading().getRadians(), _PIDAngle));
+        metric("NW Angle", _modules.get(0).getModuleAngle());
+        metric("SW Angle", _modules.get(1).getModuleAngle());
+        metric("SE Angle", _modules.get(2).getModuleAngle());
+        metric("NE Angle", _modules.get(3).getModuleAngle());
     }
 
     public enum ControlState {
