@@ -1,5 +1,6 @@
 package org.frc5687.lib.vision;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -68,5 +69,23 @@ public class VisionProcessor {
         } else {
             System.out.println("Publisher for topic " + topic + " does not exist.");
         }
+    }
+    /* encode the float array to a byte array for ZMQ */
+    private static byte[] encodeFloatArray(float[] floatArray) {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(floatArray.length * Float.BYTES);
+        for (float f : floatArray) {
+            byteBuffer.putFloat(f);
+        }
+        return byteBuffer.array();
+    }
+    /* Decode the incoming packet from ZMQ */
+    private static float[] decodeToFloatArray(byte[] byteArray) {
+        int numElements = byteArray.length / Float.BYTES;
+        float[] floatArray = new float[numElements];
+        ByteBuffer buffer = ByteBuffer.wrap(byteArray);
+        for (int i = 0; i < numElements; i++) {
+            floatArray[i] = buffer.getFloat();
+        }
+        return floatArray;
     }
 }
