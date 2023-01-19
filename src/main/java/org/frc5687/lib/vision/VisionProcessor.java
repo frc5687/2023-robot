@@ -51,7 +51,6 @@ public class VisionProcessor {
                 ZMQ.Socket subscriber = entry.getValue();
                 String topic = entry.getKey();
                 byte[] serializedData = subscriber.recv();
-//                Data data = deserializeDataUsingProtobuf(serializedData);
 //                processData(topic, data);
             }
         }
@@ -64,8 +63,7 @@ public class VisionProcessor {
     public synchronized void sendData(String topic) {
         ZMQ.Socket publisher = publishers.get(topic);
         if (publisher != null) {
-//            byte[] serializedData = serializeDataUsingProtobuf(data);
-            publisher.sendMore(topic.getBytes());
+//            publisher.sendMore(topic.getBytes());
 //            publisher.send(serializedData);
         } else {
             System.out.println("Publisher for topic " + topic + " does not exist.");
