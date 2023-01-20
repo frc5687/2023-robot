@@ -211,6 +211,8 @@ public class Constants {
     public static class EndEffector {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
+        public void setWristSpeed(double speed) {
+        }
     }
 
 }  

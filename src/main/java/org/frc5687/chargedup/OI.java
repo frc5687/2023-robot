@@ -65,4 +65,12 @@ public class OI extends OutliersProxy {
         metric("Raw x", xIn);
         metric("Raw y", yIn);
     }
+
+    public double getGripperSpeed() {
+        return 0;
+    }
+
+    public double getWristSpeed() {
+        return 0;
+    }
 }
