@@ -1,7 +1,7 @@
 package org.frc5687.chargedup.commands;
 
 import org.frc5687.chargedup.OI;
-import org.frc5687.chargedup.Constants.EndEffector;
+import org.frc5687.chargedup.subsystems.EndEffector;
 
 public class ManualDriveWrist extends OutliersCommand {
     private EndEffector _wrist;
