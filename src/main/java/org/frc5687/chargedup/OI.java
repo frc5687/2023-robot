@@ -56,6 +56,12 @@ public class OI extends OutliersProxy {
         return speed;
     }
 
+    public double getArmY() {
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
+    }
+
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         return gamepad.getRawAxis(axisNumber);
     }

@@ -189,6 +189,29 @@ public class Constants {
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
     }
 
+    public static class Arm {
+        public static final String CAN_BUS = "rio";
+        public static final double GEAR_RATIO = 125;
+        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        // this is the motor config for the arm motors
+
+        static {
+            CONFIG.TIME_OUT = 100;
+    
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+    
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+        
+            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+    
+            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
+            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
+        }
+    }
+
     public static class Auto {
         public static class FieldPoses {
             public static final Pose2d POSE_1 = new Pose2d(0, 0, new Rotation2d());

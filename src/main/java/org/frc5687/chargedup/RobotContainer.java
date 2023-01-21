@@ -5,7 +5,10 @@ package org.frc5687.chargedup;
 import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
+import org.frc5687.chargedup.commands.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
@@ -37,9 +40,12 @@ public class RobotContainer extends OutliersContainer {
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
         Trajectory S = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.S.waypoints, _driveTrain.getConfig());
+        
+        Arm _arm = new Arm(this);
 
         _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
+        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         _oi.initializeButtons(_driveTrain, S);
         startPeriodic();
     }
