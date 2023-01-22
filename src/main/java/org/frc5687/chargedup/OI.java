@@ -32,6 +32,10 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getXButton().getAsBoolean();
     }
 
+    public boolean raiseArm() {
+        return _driverGamepad.getYButton().getAsBoolean();
+    }
+
     public double getDriveY() {
         yIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         yIn = applyDeadband(yIn, TRANSLATION_DEADBAND);

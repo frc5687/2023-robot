@@ -193,6 +193,9 @@ public class Constants {
         public static final String CAN_BUS = "rio";
         public static final double GEAR_RATIO = 125;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+
+        public static final double raisedPosition = Units.degreesToRadians(90.0);
+        public static final double loweredPosition = Units.degreesToRadians(0.0);
         // this is the motor config for the arm motors
 
         static {

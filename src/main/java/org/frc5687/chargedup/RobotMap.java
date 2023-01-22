@@ -20,6 +20,7 @@ public class RobotMap {
             public static final int SOUTH_EAST_INNER = 6;
             public static final int SOUTH_WEST_INNER = 7;
             public static final int SOUTH_WEST_OUTER = 8;
+            public static final int ARM = 9;
         }
 
         public static class PIGEON {
