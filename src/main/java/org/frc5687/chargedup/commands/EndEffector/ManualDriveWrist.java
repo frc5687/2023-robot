@@ -1,6 +1,7 @@
-package org.frc5687.chargedup.commands;
+package org.frc5687.chargedup.commands.EndEffector;
 
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.EndEffector;
 
 public class ManualDriveWrist extends OutliersCommand {
@@ -10,6 +11,7 @@ public class ManualDriveWrist extends OutliersCommand {
     public ManualDriveWrist(EndEffector wrist, OI oi) {
       _wrist = wrist;  
       _oi = oi;
+      addRequirements(_wrist);
    }
      
 

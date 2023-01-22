@@ -211,6 +211,27 @@ public class Constants {
     public static class EndEffector {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
+
+        public static final double WRIST_kP = 0;
+        public static final double WRIST_kI = 0;
+        public static final double WRIST_kD = 0;
+
+        
+        public static final double WRIST_VEL = Units.degreesToRadians(5);
+        public static final double WRIST_ACCEL = Units.degreesToRadians(1);
+
+        public static final double WRIST_TOLERENCE = Units.degreesToRadians(1);
+
+        public static final double GRIPPER_kP = 0;
+        public static final double GRIPPER_kI = 0;
+        public static final double GRIPPER_kD = 0;
+
+        public static final double GRIPPER_VEL = Units.degreesToRadians(5);
+        public static final double GRIPPER_ACCEL = Units.degreesToRadians(1);
+
+        public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
+
+
     }
 
 }  

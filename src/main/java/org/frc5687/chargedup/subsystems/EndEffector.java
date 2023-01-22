@@ -7,7 +7,12 @@ import org.frc5687.chargedup.util.OutliersContainer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+
+import static org.frc5687.chargedup.Constants.EndEffector.*;
 
 public class EndEffector extends OutliersSubsystem {
    
@@ -17,6 +22,8 @@ public class EndEffector extends OutliersSubsystem {
     private final DutyCycleEncoder _wristEncoder;
     private final DutyCycleEncoder _gripperEncoder;
 
+    private final ProfiledPIDController _wristController;
+    private final ProfiledPIDController _gripperController;
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -28,6 +35,20 @@ public class EndEffector extends OutliersSubsystem {
         _wristEncoder.setDistancePerRotation(2.0 * Math.PI);
         _gripperEncoder = new DutyCycleEncoder(RobotMap.DIO.ENCODER_GRIPPER);
         _gripperEncoder.setDistancePerRotation(2.0 * Math.PI);
+
+        _wristController = new ProfiledPIDController(
+            WRIST_kP,
+            WRIST_kI,
+            WRIST_kD,
+            new TrapezoidProfile.Constraints(WRIST_VEL, WRIST_ACCEL)
+        );
+            
+        _gripperController = new ProfiledPIDController(
+            GRIPPER_kP,
+            GRIPPER_kI,
+            GRIPPER_kD,
+            new TrapezoidProfile.Constraints(GRIPPER_VEL, GRIPPER_ACCEL)
+        );
     }  
     @Override
     public void updateDashboard() {
@@ -41,11 +62,24 @@ public class EndEffector extends OutliersSubsystem {
         _gripper.set(ControlMode.PercentOutput, demand);
     }
 
-    public double getWristAngle(){
+    public double getWristAngleRadians(){
          return _wristEncoder.getDistance() % (2.0 * Math.PI) - Constants.EndEffector.WRIST_OFFSET;
     }
-    public double getGripperAngle(){
+    public double getGripperAngleRadians(){
         return _gripperEncoder.getDistance() % (2.0 * Math.PI) - Constants.EndEffector.GRIPPER_OFFSET;
     }
     
+    public void setWristSetpointDegrees(double degrees){
+        _wristController.setGoal(Units.degreesToRadians(degrees));
+    }
+
+    public void setGripperSetpointDegrees(double degrees){
+        _gripperController.setGoal(Units.degreesToRadians(degrees));
+    }
+    public double getWristControllerOutput(){
+      return  _wristController.calculate(getWristAngleRadians()); 
+    }
+    public double getGripperControllerOutput(){
+        return _gripperController.calculate(getGripperAngleRadians());
+    }
 }
