@@ -24,7 +24,8 @@ public class ManualDriveWrist extends OutliersCommand {
     @Override
     public void execute(){
         double speed = _oi.getWristSpeed();
-        _wrist.setWristSpeed(speed);
+        _wrist.setWristSpeed(speed / 2.0);
+        metric("wrist speed", speed / 2.0);
     }
     @Override
     public boolean isFinished() {

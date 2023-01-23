@@ -7,6 +7,7 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -212,7 +213,7 @@ public class Constants {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 0;
+        public static final double WRIST_kP = 1;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
 
@@ -221,6 +222,9 @@ public class Constants {
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(1);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(310.0);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(144.0);
+        public static final boolean WRIST_INVERTED = false;
 
         public static final double GRIPPER_kP = 0;
         public static final double GRIPPER_kI = 0;
@@ -230,6 +234,12 @@ public class Constants {
         public static final double GRIPPER_ACCEL = Units.degreesToRadians(1);
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
+        //fully closed angle
+        public static final double GRIPPER_MAX_ANGLE = Units.degreesToRadians(284.0);
+        // fully open angle
+        public static final double GRIPPER_MIN_ANGLE = Units.degreesToRadians(118.0);
+        public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
+        public static final boolean  GRIPPPER_INVERTED = false;
 
 
     }

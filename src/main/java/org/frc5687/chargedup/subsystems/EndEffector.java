@@ -30,6 +30,8 @@ public class EndEffector extends OutliersSubsystem {
 
         _wrist = new TalonSRX(RobotMap.CAN.TalonSRX.WRIST);
         _gripper = new TalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
+        _wrist.setInverted(Constants.EndEffector.WRIST_INVERTED);
+        _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
         
         _wristEncoder = new DutyCycleEncoder(RobotMap.DIO.ENCODER_WRIST);
         _wristEncoder.setDistancePerRotation(2.0 * Math.PI);
@@ -52,7 +54,8 @@ public class EndEffector extends OutliersSubsystem {
     }  
     @Override
     public void updateDashboard() {
-        
+        metric("wrist angle", Units.radiansToDegrees(getWristAngleRadians()));
+        metric("gripper angle", Units.radiansToDegrees(getGripperAngleRadians()));
     }
     public void setWristSpeed(double demand){
         _wrist.set(ControlMode.PercentOutput, demand);

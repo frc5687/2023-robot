@@ -7,7 +7,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
+import org.frc5687.chargedup.commands.EndEffector.ManualDriveWrist;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
 
@@ -20,8 +23,8 @@ public class RobotContainer extends OutliersContainer {
     private Pigeon2 _imu;
 //    private AHRS _imu;
     private Robot _robot;
-    private DriveTrain _driveTrain;
-
+    //private DriveTrain _driveTrain;
+    private EndEffector _endEffector;
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
         _robot = robot;
@@ -35,12 +38,13 @@ public class RobotContainer extends OutliersContainer {
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON);
 //        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
-        _driveTrain = new DriveTrain(this, _oi, _imu);
-        Trajectory S = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.S.waypoints, _driveTrain.getConfig());
-
-        _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
-        setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
-        _oi.initializeButtons(_driveTrain, S);
+        //_driveTrain = new DriveTrain(this, _oi, _imu);
+        //Trajectory S = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.S.waypoints, _driveTrain.getConfig());
+        _endEffector = new EndEffector(this);
+        //_driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
+        //setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
+        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+        _oi.initializeButtons(_endEffector);
         startPeriodic();
     }
 

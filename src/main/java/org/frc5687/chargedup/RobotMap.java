@@ -70,7 +70,7 @@ public class RobotMap {
         public static final int ENCODER_NE = 1;
         public static final int ENCODER_SE = 2;
         public static final int ENCODER_SW = 3;
-        public static final DutyCycle ENCODER_GRIPPER = null;
-        public static final DutyCycle ENCODER_WRIST = null;
+        public static final int ENCODER_GRIPPER = 4;
+        public static final int ENCODER_WRIST = 5;
     }
 }

@@ -12,6 +12,7 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -23,8 +24,8 @@ public class OI extends OutliersProxy {
         _driverGamepad = new Gamepad(0);
     }
 
-    public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory) {
-        _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
+    public void initializeButtons(EndEffector endEffector) {
+        _driverGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, 230.0));
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -67,10 +68,14 @@ public class OI extends OutliersProxy {
     }
 
     public double getGripperSpeed() {
-        return 0;
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
     }
 
     public double getWristSpeed() {
-        return 0;
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
     }
 }
