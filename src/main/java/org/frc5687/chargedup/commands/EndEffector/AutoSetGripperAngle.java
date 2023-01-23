@@ -21,12 +21,14 @@ public class AutoSetGripperAngle extends OutliersCommand{
         // TODO Auto-generated method stub
         super.initialize();
         _gripper.setGripperSetpointDegrees(_angleDegrees);
+        metric("Setpoint", Units.degreesToRadians(_angleDegrees));
     }
     @Override
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
         double output = _gripper.getGripperControllerOutput();
+        metric("output", output);
         _gripper.setGripperSpeed(output);
 
     }

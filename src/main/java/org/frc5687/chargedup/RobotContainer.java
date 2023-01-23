@@ -43,7 +43,8 @@ public class RobotContainer extends OutliersContainer {
         _endEffector = new EndEffector(this);
         //_driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
         //setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
-        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+        setDefaultCommand(_endEffector, new ManualDriveWrist
+        (_endEffector, _oi));
         _oi.initializeButtons(_endEffector);
         startPeriodic();
     }
