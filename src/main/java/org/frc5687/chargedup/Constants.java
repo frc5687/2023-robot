@@ -188,6 +188,11 @@ public class Constants {
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
     }
+    
+    public static class ExtendingArm {
+        
+
+    }
 
     public static class Auto {
         public static class FieldPoses {
