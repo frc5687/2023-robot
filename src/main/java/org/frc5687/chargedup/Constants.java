@@ -190,8 +190,9 @@ public class Constants {
     }
     
     public static class ExtendingArm {
-        
-
+        public static final String CAN_BUS = "rio";
+        public static final double GEAR_RATIO = 125;
+        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
     }
 
     public static class Auto {

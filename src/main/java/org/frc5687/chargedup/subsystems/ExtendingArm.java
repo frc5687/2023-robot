@@ -10,7 +10,6 @@ public class ExtendingArm extends OutliersSubsystem {
 
     public ExtendingArm(OutliersContainer container){
         super(container);
-
     } 
 
     public void updateDashboard() {}
