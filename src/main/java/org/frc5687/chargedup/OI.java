@@ -3,6 +3,8 @@ package org.frc5687.chargedup;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
 
@@ -12,6 +14,7 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
+import org.frc5687.chargedup.commands.ExtendArm;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -30,6 +33,10 @@ public class OI extends OutliersProxy {
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
         return _driverGamepad.getXButton().getAsBoolean();
+    }
+
+    public Trigger extendArm(ExtendingArm extendingArm) {
+        return _driverGamepad.getYButton().whileActiveOnce(new ExtendArm(extendingArm));
     }
 
     public double getDriveY() {
