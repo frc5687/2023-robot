@@ -26,17 +26,18 @@ public class OI extends OutliersProxy {
         _driverGamepad = new Gamepad(0);
     }
 
-    public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory) {
+    public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory, ExtendingArm extendingArm) {
         _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
+
+        _driverGamepad.getYButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
+        _driverGamepad.getXButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
+        _driverGamepad.getBButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
+
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
         return _driverGamepad.getXButton().getAsBoolean();
-    }
-
-    public Trigger extendArm(ExtendingArm extendingArm) {
-        return _driverGamepad.getYButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
     }
 
     public double getDriveY() {
