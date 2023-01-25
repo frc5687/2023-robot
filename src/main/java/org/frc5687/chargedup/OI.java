@@ -36,7 +36,7 @@ public class OI extends OutliersProxy {
     }
 
     public Trigger extendArm(ExtendingArm extendingArm) {
-        return _driverGamepad.getYButton().whileActiveOnce(new ExtendArm(extendingArm));
+        return _driverGamepad.getYButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
     }
 
     public double getDriveY() {

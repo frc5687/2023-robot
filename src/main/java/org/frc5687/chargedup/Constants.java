@@ -193,6 +193,10 @@ public class Constants {
         public static final String CAN_BUS = "rio";
         public static final double GEAR_RATIO = 125;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+
+        public static final double SHORT_ARM_DISTANCE = 360;
+        public static final double MEDIUM_ARM_DISTANCE = 720;
+        public static final double LONG_ARM_DISTANCE = 1080;
     }
 
     public static class Auto {
