@@ -14,12 +14,12 @@ public class RobotMap {
         public static class TALONFX {
             public static final int NORTH_WEST_OUTER = 1;
             public static final int NORTH_WEST_INNER = 2;
-            public static final int NORTH_EAST_INNER = 3;
-            public static final int NORTH_EAST_OUTER = 4;
+            public static final int NORTH_EAST_INNER = 8;
+            public static final int NORTH_EAST_OUTER = 7;
             public static final int SOUTH_EAST_OUTER = 5;
             public static final int SOUTH_EAST_INNER = 6;
-            public static final int SOUTH_WEST_INNER = 7;
-            public static final int SOUTH_WEST_OUTER = 8;
+            public static final int SOUTH_WEST_INNER = 4;
+            public static final int SOUTH_WEST_OUTER = 3;
         }
 
         public static class PIGEON {
