@@ -1,9 +1,10 @@
-package org.frc5687.chargedup.commands;
+package org.frc5687.chargedup.commands.Arm;
 
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 
-public class ManualDriveArm extends OutliersCommand{
+public class ManualDriveArm extends OutliersCommand {
 
     private Arm _arm;
     private OI _oi;
@@ -11,6 +12,7 @@ public class ManualDriveArm extends OutliersCommand{
     public ManualDriveArm(Arm arm, OI oi) {
         _arm = arm;
         _oi = oi;
+        addRequirements(_arm);
     }
 
     @Override

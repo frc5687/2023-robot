@@ -190,29 +190,46 @@ public class Constants {
     }
 
     public static class Arm {
+        public static final double kDt = 0.02;
         public static final String CAN_BUS = "rio";
         public static final double GEAR_RATIO = 125;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        static {
+            CONFIG.TIME_OUT = 100;
 
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+
+            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+
+            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
+            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
+        }
         public static final double raisedPosition = Units.degreesToRadians(90.0);
         public static final double loweredPosition = Units.degreesToRadians(0.0);
         // this is the motor config for the arm motors
 
-        static {
-            CONFIG.TIME_OUT = 100;
-    
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
-    
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
-        
-            CONFIG.STATOR_CURRENT_LIMIT = 60;
-            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-    
-            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
-            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
-        }
+        // Physical characteristic of the system
+        public static final double INERTIA_ARM = 0.5; // kg * m^2
+
+        // Kalman Filter parameters
+        public static final double MODEL_POSITION_NOISE = 0.015; // m
+        public static final double MODEL_VELOCITY_NOISE = 0.16; // m/s
+
+        public static final double SENSOR_POSITION_NOISE = 0.01; // m
+        // LQR parameters
+        public static final double Q_POSITION = Units.degreesToRadians(1.0);
+        public static final double Q_VELOCITY = Units.degreesToRadians(10.0);
+
+        public static final double CONTROL_EFFORT = 12.0;
+        // profile constraints
+        public static final double MAX_VELOCITY = Units.degreesToRadians(45);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
+
     }
 
     public static class Auto {
