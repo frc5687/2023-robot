@@ -23,11 +23,12 @@ public class ControllerDriveArm extends OutliersCommand {
     private TrapezoidProfile.State _lastProfiledReference;
 
     // We need a variable to place the goal of our arm
-
+    private TrapezoidProfile.State goal;
     // In the constructor we need the Arm subsystem and the angle we would like to go to.
-    public ControllerDriveArm(Arm arm) {
+    public ControllerDriveArm(Arm arm, double angle) {
         _arm = arm;
         // we should create the goal here which takes the angle and velocity.
+        goal = new TrapezoidProfile.State(angle, _arm.getArmVelocityRadPerSec());
         // what should the velocity be in the goal?
         addRequirements(_arm);
     }
@@ -42,10 +43,12 @@ public class ControllerDriveArm extends OutliersCommand {
     @Override
     public void execute() {
         // Step our TrapezoidalProfile forward 20ms and set it as our next reference
-
+        _lastProfiledReference = (new TrapezoidProfile(_arm.getConstraints(), goal, _lastProfiledReference)).calculate(0.020);
+        _arm.setNextReference(_lastProfiledReference);
         // we need to set the arm reference so that our periodic function will give us the correct voltage.
 
         // we need to send the voltage to the motor, we should call a function here.
+        _arm.setArmVoltage(_arm.getNextVoltage());
     }
 
     @Override

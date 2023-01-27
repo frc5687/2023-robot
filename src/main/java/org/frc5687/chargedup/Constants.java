@@ -209,8 +209,6 @@ public class Constants {
             CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
             CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
         }
-        public static final double raisedPosition = Units.degreesToRadians(90.0);
-        public static final double loweredPosition = Units.degreesToRadians(0.0);
         // this is the motor config for the arm motors
 
         // Physical characteristic of the system
