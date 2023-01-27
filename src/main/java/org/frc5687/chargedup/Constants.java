@@ -228,6 +228,7 @@ public class Constants {
         public static final double MAX_VELOCITY = Units.degreesToRadians(45);
         public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
 
+        public static final double ANGLE_TOLERANCE = 1;
     }
 
     public static class Auto {

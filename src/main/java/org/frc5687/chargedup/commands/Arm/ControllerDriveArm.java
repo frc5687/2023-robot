@@ -38,6 +38,8 @@ public class ControllerDriveArm extends OutliersCommand {
     @Override
     public void initialize() {
         // We need to set the previous profiled reference to match the current state of the arm using sensors we have.
+        _lastProfiledReference =
+        new TrapezoidProfile.State(_arm.getArmAngleRadians(), _arm.getArmVelocityRadPerSec());
     }
 
     @Override
@@ -54,7 +56,8 @@ public class ControllerDriveArm extends OutliersCommand {
     @Override
     public boolean isFinished() {
         // This command should finish when the arm has done what we want.
-        return super.isFinished();
+        return Math.abs(goal.position - _arm.getArmAngleRadians()) < Constants.Arm.ANGLE_TOLERANCE;
+        //super.isFinished();
     }
 
     @Override
