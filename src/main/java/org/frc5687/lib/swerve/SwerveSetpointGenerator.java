@@ -92,27 +92,46 @@ public class SwerveSetpointGenerator {
         return b;
     }
 
-    protected double findSteeringMaxS(
-            double x0, double y0,
-            double f0,
-            double x1, double y1,
-            double f1,
-            double max_deviation, int max_iterations) {
-        f1 = unwrapAngle(f0, f1);
-        double tolerance = 0.0001;
-        double diff = f1 = f0;
+    @FunctionalInterface
+    private interface Function2d {
+        public double f(double x, double y);
+    }
 
-        if (Math.abs(diff) <= max_deviation) {
+    protected double findRoot(
+            Function2d func,
+            double x_0,
+            double y_0,
+            double x_1,
+            double y_1,
+            double tolerance,
+            int maxIterations) {
+        Function<Double, Double> f = (s) -> func.f((x_1 - x_0) * s + x_0, (y_1 - y_0) * s + y_0);
+        return brentsMethodRootFinder(0.0, 1.0, tolerance, maxIterations, f);
+    }
+
+    protected double findSteeringMax(
+            double x_0,
+            double y_0,
+            double f_0,
+            double x_1,
+            double y_1,
+            double f_1,
+            double maxDeviation,
+            int maxIterations
+            ) {
+        f_1 = unwrapAngle(f_0, f_1);
+        double diff = f_1 - f_0;
+        if (Math.abs(diff) < maxDeviation) {
             return 1.0;
         }
 
-        double s = brentsMethodRootFinder(0, 1, tolerance, max_iterations, s -> {
-            double x = x0 + s * (x1 - x0);
-            double y = y0 + s * (y1 - y0);
-            double theta = unwrapAngle(f0, Math.atan2(y, x));
-            double maxThetaStep = 
-                }
-                )
+        double offset = f_0 + Math.signum(diff) * maxDeviation;
+        Function2d func = (x, y) -> {
+            return unwrapAngle(f_0, Math.atan2(y, x)) - offset;
+        };
+
+        return findRoot(func, x_0, y_0, x_1, y_1, EPSILON, maxIterations);
+    }
     }
 
 
