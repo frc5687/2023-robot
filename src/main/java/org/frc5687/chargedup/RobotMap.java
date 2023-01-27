@@ -25,6 +25,10 @@ public class RobotMap {
         public static class PIGEON {
             public static final int PIGEON = 0;
         }
+
+        public static class CANDLE {
+            public static final int PORT = 9;
+        }
     }
 
     /**

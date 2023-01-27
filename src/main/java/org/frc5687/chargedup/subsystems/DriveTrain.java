@@ -63,6 +63,8 @@ public class DriveTrain extends OutliersSubsystem {
     private double _PIDAngle;
 
     private double _yawOffset;
+    private double _pitchOffset;
+    private double _rollOffset;
 
     public DriveTrain(OutliersContainer container, OI oi, Pigeon2 imu) {
         super(container);
@@ -143,6 +145,8 @@ public class DriveTrain extends OutliersSubsystem {
             );
             // This should set the Pigeon to 0.
             _yawOffset = getYaw();
+            _pitchOffset = getPitch();
+            _rollOffset = getRoll();
 
             _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 5);
 
@@ -317,6 +321,18 @@ public class DriveTrain extends OutliersSubsystem {
 
     public double getYaw() {
         return Helpers.boundHalfAngle(-_imu.getYaw() - _yawOffset, false);
+    }
+
+    public double getPitch() {
+        return Helpers.boundHalfAngle(-_imu.getPitch() - _yawOffset, false);
+    }
+
+    public double getRoll() {
+        return Helpers.boundHalfAngle(-_imu.getRoll() - _yawOffset, false);
+    }
+
+    public boolean isLevel() {
+        return Math.abs(getPitch()) < LEVEL_TOLERANCE && Math.abs(getRoll()) < LEVEL_TOLERANCE;
     }
 
     // yaw is negative to follow wpi coordinate system.
