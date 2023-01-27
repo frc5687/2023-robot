@@ -5,11 +5,13 @@ package org.frc5687.chargedup;
 import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
+import org.frc5687.chargedup.subsystems.ExtendingArm;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -21,6 +23,7 @@ public class RobotContainer extends OutliersContainer {
 //    private AHRS _imu;
     private Robot _robot;
     private DriveTrain _driveTrain;
+    private ExtendingArm _exArm;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -40,7 +43,7 @@ public class RobotContainer extends OutliersContainer {
 
         _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
-        _oi.initializeButtons(_driveTrain, S);
+        _oi.initializeButtons(_driveTrain, S, _exArm);
         startPeriodic();
     }
 

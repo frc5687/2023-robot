@@ -8,14 +8,20 @@ import org.frc5687.lib.sensors.HallEffect;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class ExtendingArm extends OutliersSubsystem {
     private OutliersTalon _talon;
     private HallEffect _hall;
+
+    private final PIDController _extArmController;
 
     public ExtendingArm(OutliersContainer container){
         super(container);
         _talon = new OutliersTalon(0, Constants.ExtendingArm.CAN_BUS, "ExtendingArm");
         _talon.configure(Constants.ExtendingArm.CONFIG);
+
+        _extArmController = new PIDController(Constants.ExtendingArm.kP, Constants.ExtendingArm.kI, Constants.ExtendingArm.kD);
     } 
 
     public void setArmSpeed(double speed) {
