@@ -25,7 +25,9 @@ import static org.frc5687.chargedup.Constants.Arm.*;
 
 public class Arm extends OutliersSubsystem{
     private final OutliersTalon _talon;
-    private final HallEffect _hall;
+    private final HallEffect _upperHall;
+    private final HallEffect _lowerHall;
+    private final HallEffect _middleHall;
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
 
     private final TrapezoidProfile.Constraints _contraints;
@@ -34,7 +36,9 @@ public class Arm extends OutliersSubsystem{
         super(container);
         _talon = new OutliersTalon(0, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
-        _hall = new HallEffect(RobotMap.DIO.ARM_HALL);
+        _upperHall = new HallEffect(RobotMap.DIO.EXTREME_ARM_HALL_ONE);
+        _lowerHall = new HallEffect(RobotMap.DIO.EXTREME_ARM_HALL_TWO);
+        _middleHall = new HallEffect(RobotMap.DIO.MIDDLE_ARM_HALL);
         LinearSystem<N2, N1, N1> plant = LinearSystemId.createSingleJointedArmSystem(
                 DCMotor.getFalcon500(1),
                 INERTIA_ARM, // kg * m^2
@@ -71,6 +75,18 @@ public class Arm extends OutliersSubsystem{
     public void periodic() {
         super.periodic();
         // update our kalman filter.
+        if (_upperHall.get() && _controlLoop.getU(0) > 0) {
+            _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
+            _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
+            //reset encoder
+            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(UPPER_HALL_RAD, GEAR_RATIO));
+        } else if (_lowerHall.get() && _controlLoop.getU(0) > 0) {
+            _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
+            _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
+            //reset encoder
+            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(LOWER_HALL_RAD, GEAR_RATIO));
+               
+        }
         _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
         _controlLoop.predict(kDt);
     }
@@ -84,8 +100,16 @@ public class Arm extends OutliersSubsystem{
         setArmSpeed(voltage / CONTROL_EFFORT);
     }
 
-    public boolean getHall() {
-        return _hall.get();
+    public boolean getExtremeHallOne() {
+        return _upperHall.get();
+    }
+
+    public boolean getExtremeHallTwo() {
+        return _lowerHall.get();
+    }
+
+    public boolean getMiddleHall() {
+        return _middleHall.get();
     }
 
     public double getEncoderTicks() {

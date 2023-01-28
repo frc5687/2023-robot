@@ -214,6 +214,10 @@ public class Constants {
         // Physical characteristic of the system
         public static final double INERTIA_ARM = 0.5; // kg * m^2
 
+        // Halls
+        public static final double UPPER_HALL_RAD = Math.PI / 2; //fix later
+        public static final double LOWER_HALL_RAD = 0; //fix later
+
         // Kalman Filter parameters
         public static final double MODEL_POSITION_NOISE = 0.015; // m
         public static final double MODEL_VELOCITY_NOISE = 0.16; // m/s

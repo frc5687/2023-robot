@@ -62,6 +62,10 @@ public class RobotMap {
         public static final int ENCODER_SE = 2;
         public static final int ENCODER_SW = 3;
 
-        public static final int ARM_HALL = 6;
+        public static final int EXTREME_ARM_HALL_ONE = 6;
+        public static final int EXTREME_ARM_HALL_TWO = 7;
+        public static final int MIDDLE_ARM_HALL = 8;
+
+        
     }
 }
