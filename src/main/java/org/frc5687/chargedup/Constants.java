@@ -12,6 +12,7 @@ import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
+import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 
 public class Constants {
@@ -46,6 +47,12 @@ public class Constants {
         // Distance of swerve modules from center of robot
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
+        public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
+        static {
+            KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 2.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 2; // rad/s
+        }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
             NORTH_WEST_CONFIG.moduleName = "North West";

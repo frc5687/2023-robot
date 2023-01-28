@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -14,18 +13,19 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
-import org.frc5687.lib.controllers.SwerveHeadingController;
 import org.frc5687.lib.math.GeometryUtil;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
+import org.frc5687.lib.swerve.SwerveSetpoint;
+import org.frc5687.lib.swerve.SwerveSetpointGenerator;
+import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.frc5687.lib.math.GeometryUtil.*;
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
@@ -38,13 +38,8 @@ public class DriveTrain extends OutliersSubsystem {
     private SwerveDriveKinematics _kinematics;
     private SwerveDriveOdometry _odometry;
 
-    // teleop values
-    private Vector2d _translationVector;
-    private Vector2d _prevControlVector;
-    private double _rotationInput;
     private ControlState _controlState;
     private boolean _fieldRelative;
-    private boolean _lockHeading;
 
     private Translation2d _clockwiseCenter;
     private Translation2d _counterClockwiseCenter;
@@ -52,108 +47,123 @@ public class DriveTrain extends OutliersSubsystem {
     private AHRS _imu;
     private OI _oi;
     private HolonomicDriveController _poseController;
-    private SwerveHeadingController _headingController;
     private ProfiledPIDController _angleController;
 
-    // Trajectory / Pose Following
-    private Trajectory.State _trajectoryGoal;
-    private Rotation2d _trajectoryHeading;
-    private Pose2d _goalPose;
+    // Setpoint generator for swerve.
+    private SwerveSetpointGenerator _swerveSetpointGenerator;
+    private KinematicLimits _kinematicLimits = KINEMATIC_LIMITS;
+
     private double _PIDAngle;
+
+    private SystemIO _systemIO;
 
     public DriveTrain(OutliersContainer container, OI oi, AHRS imu) {
         super(container);
-        try {
-            _imu = imu;
-            _oi = oi;
-            _northWest = new DiffSwerveModule(
-                    NORTH_WEST_CONFIG,
-                    RobotMap.CAN.TALONFX.NORTH_WEST_OUTER,
-                    RobotMap.CAN.TALONFX.NORTH_WEST_INNER,
-                    RobotMap.DIO.ENCODER_NW
-            );
-            _southWest = new DiffSwerveModule(
-                    SOUTH_WEST_CONFIG,
-                    RobotMap.CAN.TALONFX.SOUTH_WEST_OUTER,
-                    RobotMap.CAN.TALONFX.SOUTH_WEST_INNER,
-                    RobotMap.DIO.ENCODER_SW
-            );
-            _southEast = new DiffSwerveModule(
-                    SOUTH_EAST_CONFIG,
-                    RobotMap.CAN.TALONFX.SOUTH_EAST_INNER,
-                    RobotMap.CAN.TALONFX.SOUTH_EAST_OUTER,
-                    RobotMap.DIO.ENCODER_SE
-            );
-            _northEast = new DiffSwerveModule(
-                    NORTH_EAST_CONFIG,
-                    RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
-                    RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
-                    RobotMap.DIO.ENCODER_NE
-            );
+        _imu = imu;
+        _oi = oi;
+        _systemIO = new SystemIO();
 
-            _modules = Arrays.asList(_northWest, _southWest, _southEast, _northEast);
+        _northWest = new DiffSwerveModule(
+                NORTH_WEST_CONFIG,
+                RobotMap.CAN.TALONFX.NORTH_WEST_OUTER,
+                RobotMap.CAN.TALONFX.NORTH_WEST_INNER,
+                RobotMap.DIO.ENCODER_NW
+        );
+        _southWest = new DiffSwerveModule(
+                SOUTH_WEST_CONFIG,
+                RobotMap.CAN.TALONFX.SOUTH_WEST_OUTER,
+                RobotMap.CAN.TALONFX.SOUTH_WEST_INNER,
+                RobotMap.DIO.ENCODER_SW
+        );
+        _southEast = new DiffSwerveModule(
+                SOUTH_EAST_CONFIG,
+                RobotMap.CAN.TALONFX.SOUTH_EAST_INNER,
+                RobotMap.CAN.TALONFX.SOUTH_EAST_OUTER,
+                RobotMap.DIO.ENCODER_SE
+        );
+        _northEast = new DiffSwerveModule(
+                NORTH_EAST_CONFIG,
+                RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
+                RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
+                RobotMap.DIO.ENCODER_NE
+        );
 
-            // NB: it matters which order these are defined
-            _kinematics =
-                    new SwerveDriveKinematics(
-                            _northWest.getModuleLocation(),
-                            _southWest.getModuleLocation(),
-                            _southEast.getModuleLocation(),
-                            _northEast.getModuleLocation()
-                    );
-            _odometry = new SwerveDriveOdometry(
-                    _kinematics,
-                    getHeading(),
-                    new SwerveModulePosition[]{
-                            _northWest.getModulePosition(),
-                            _southWest.getModulePosition(),
-                            _southEast.getModulePosition(),
-                            _northEast.getModulePosition()
-                    },
-                    new Pose2d(0, 0, getHeading())
-            );
+        _modules = Arrays.asList(_northWest, _southWest, _southEast, _northEast);
 
-            _poseController =
-                    new HolonomicDriveController(
-                            new PIDController(
-                                    Constants.DriveTrain.kP,
-                                    Constants.DriveTrain.kI,
-                                    Constants.DriveTrain.kD),
-                            new PIDController(
-                                    Constants.DriveTrain.kP,
-                                    Constants.DriveTrain.kI,
-                                    Constants.DriveTrain.kD),
-                            new ProfiledPIDController(
-                                    STABILIZATION_kP,
-                                    STABILIZATION_kI,
-                                    STABILIZATION_kD,
-                                    new TrapezoidProfile.Constraints(
-                                            Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
-                                            Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
+        // NB: it matters which order these are defined
+        _kinematics =
+                new SwerveDriveKinematics(
+                        _northWest.getModuleLocation(),
+                        _southWest.getModuleLocation(),
+                        _southEast.getModuleLocation(),
+                        _northEast.getModuleLocation()
+                );
+        _odometry = new SwerveDriveOdometry(
+                _kinematics,
+                getHeading(),
+                new SwerveModulePosition[]{
+                        _northWest.getModulePosition(),
+                        _southWest.getModulePosition(),
+                        _southEast.getModulePosition(),
+                        _northEast.getModulePosition()
+                },
+                new Pose2d(0, 0, getHeading())
+        );
 
-            _headingController = new SwerveHeadingController(Constants.DriveTrain.kDt);
-            _angleController = new ProfiledPIDController(
-                Constants.DriveTrain.kP,
-                Constants.DriveTrain.kI,
-                Constants.DriveTrain.kD,   
-                new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
-            );
-            _translationVector = new Vector2d();
-            _prevControlVector = new Vector2d();
+        _poseController =
+                new HolonomicDriveController(
+                        new PIDController(
+                                Constants.DriveTrain.kP,
+                                Constants.DriveTrain.kI,
+                                Constants.DriveTrain.kD),
+                        new PIDController(
+                                Constants.DriveTrain.kP,
+                                Constants.DriveTrain.kI,
+                                Constants.DriveTrain.kD),
+                        new ProfiledPIDController(
+                                STABILIZATION_kP,
+                                STABILIZATION_kI,
+                                STABILIZATION_kD,
+                                new TrapezoidProfile.Constraints(
+                                        Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
+                                        Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
 
-            _clockwiseCenter = new Translation2d();
-            _counterClockwiseCenter = new Translation2d();
+        _angleController = new ProfiledPIDController(
+            Constants.DriveTrain.kP,
+            Constants.DriveTrain.kI,
+            Constants.DriveTrain.kD,
+            new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
+        );
 
-            _rotationInput = 0;
-            _controlState = ControlState.NEUTRAL;
-            _fieldRelative = true;
-            _lockHeading = false;
-            _trajectoryGoal = new Trajectory.State();
-            _trajectoryHeading = new Rotation2d();
-            _goalPose = new Pose2d();
-        } catch (Exception e) {
-            error(e.getMessage());
-        }
+        _clockwiseCenter = new Translation2d();
+        _counterClockwiseCenter = new Translation2d();
+
+        _controlState = ControlState.NEUTRAL;
+        _fieldRelative = true;
+
+        _swerveSetpointGenerator = new SwerveSetpointGenerator(
+                _kinematics,
+                new Translation2d[] {
+                        _modules.get(0).getModuleLocation(),
+                        _modules.get(1).getModuleLocation(),
+                        _modules.get(2).getModuleLocation(),
+                        _modules.get(3).getModuleLocation()
+                }
+        );
+    }
+
+    public static class SystemIO {
+        ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+        SwerveModuleState[] measuredStated = new SwerveModuleState[] {
+                new SwerveModuleState(),
+                new SwerveModuleState(),
+                new SwerveModuleState(),
+                new SwerveModuleState()
+        };
+
+        Rotation2d heading = new Rotation2d(0.0);
+        // outputs
+        SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]);
     }
 
     // use for modules as controller is running at 200Hz.
@@ -164,24 +174,6 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void controlPeriodic(double timestamp) {
         modulePeriodic();
-//        double omegaCorrection = _headingController.getRotationCorrection(getHeading());
-//        metric("Omega Correction", omegaCorrection);
-//        switch (_controlState) {
-//            case NEUTRAL:
-//                break;
-//            case MANUAL:
-//                updateSwerve(_translationVector, _rotationInput + omegaCorrection);
-//                break;
-//            case POSITION:
-//                updateSwerve(_goalPose);
-//                break;
-//            case ROTATION:
-//                updateSwerve(Vector2d.identity(), omegaCorrection);
-//                break;
-//            case TRAJECTORY:
-////                updateSwerve(_trajectoryGoal, _trajectoryHeading);
-//                break;
-//        }
     }
 
     @Override
@@ -248,26 +240,13 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
 
-    public void determineWheelForEvasion() {
-        Translation2d currentLocation = _prevControlVector.toTranslation().rotateBy(GeometryUtil.inverse(getHeading()));
-        _clockwiseCenter = _modules.get(0).getModuleLocation();
-        _counterClockwiseCenter = _modules.get(_modules.size() - 1).getModuleLocation();
-
-        for (int i = 0; i < _modules.size() - 1; i++) {
-            Vector2d clockwise = GeometryUtil.translationToVector(_modules.get(i).getModuleLocation());
-            Vector2d counterClockwise = GeometryUtil.translationToVector(_modules.get(i + 1).getModuleLocation());
-            if (GeometryUtil.translationToVector(currentLocation).isWithinAngle(clockwise, counterClockwise)) {
-                _clockwiseCenter = clockwise.toTranslation();
-                _counterClockwiseCenter = counterClockwise.toTranslation();
-            }
-        }
+    private void updateDesiredStates() {
+        Pose2d robotPoseVel = new Pose2d()
     }
 
-    // think of a good way to select center of rotation based on OI inputs.
-    public Translation2d getCenterOfRotation() {
-        return new Translation2d();
-    }
+    public void setVelocity(ChassisSpeeds chassisSpeeds) {
 
+    }
     public void updateSwerve(Vector2d translationVector, double rotationalInput) {
         SwerveModuleState[] swerveModuleStates =
                 _kinematics.toSwerveModuleStates(
@@ -280,8 +259,7 @@ public class DriveTrain extends OutliersSubsystem {
                                 : new ChassisSpeeds(
                                         translationVector.x(),
                                         translationVector.y(),
-                                        rotationalInput),
-                        getCenterOfRotation() // this changes the center of rotation for evasive maneuvers.
+                                        rotationalInput)
                 );
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
         setModuleStates(swerveModuleStates);
@@ -313,47 +291,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void resetYaw() {
-//        _imu.setYaw(0.0);
         _imu.reset();
-        _headingController.setStabilizationHeading(new Rotation2d(0.0));
-    }
-
-    public void snap(Rotation2d heading) {
-        _headingController.setStabilizationHeading(heading);
-    }
-
-    public void stabilize(Rotation2d heading) {
-        _headingController.setStabilizationHeading(heading);
-    }
-
-    public void vision(Rotation2d visionHeading) {
-        _headingController.setVisionHeading(visionHeading);
-    }
-
-    public void disableHeadingController() {
-        _headingController.setState(SwerveHeadingController.HeadingState.OFF);
-    }
-
-    public void rotate(Rotation2d heading) {
-        if (_translationVector.equals(Vector2d.identity())) {
-            rotateInPlace(heading);
-        } else {
-            _headingController.setStabilizationHeading(heading);
-        }
-    }
-
-    public void rotateInPlace(Rotation2d heading) {
-        setControlState(ControlState.ROTATION);
-        _headingController.setSnapHeading(heading);
-    }
-
-    public Rotation2d getVisionHeading() {
-        // create per new robot.
-        return new Rotation2d();
-    }
-
-    public SwerveHeadingController.HeadingState getCurrentHeadingState() {
-        return _headingController.getHeadingState();
     }
 
     public TrajectoryConfig getConfig() {
@@ -363,17 +301,14 @@ public class DriveTrain extends OutliersSubsystem {
                 .addConstraint(getKinematicConstraint());
     }
 
-    public void setTrajectoryGoal(Trajectory.State goal, Rotation2d heading) {
-        _trajectoryGoal = goal;
-        _trajectoryHeading = heading;
-    }
-
-    public void setPoseGoal(Pose2d pose) {
-        _goalPose = pose;
-    }
-
     public SwerveDriveKinematicsConstraint getKinematicConstraint() {
         return new SwerveDriveKinematicsConstraint(_kinematics, Constants.DriveTrain.MAX_AUTO_MPS);
+    }
+
+    public void setKinematicLimits(KinematicLimits limits) {
+        if (limits != KINEMATIC_LIMITS) {
+            _kinematicLimits = limits;
+        }
     }
 
     public boolean isAtPose(Pose2d pose) {
@@ -434,9 +369,7 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void updateDashboard() {
         metric("Swerve State", _controlState.name());
-        metric("Heading State", getCurrentHeadingState().name());
         metric("Odometry Pose", getOdometryPose().toString());
-        metric("Target Heading", _headingController.getTargetHeading().getRadians());
         metric("Current Heading", getHeading().getRadians());
     }
 

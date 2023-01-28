@@ -28,13 +28,15 @@ public class SwerveSetpointGenerator {
     private final Translation2d[] _modulePositions;
     private final double EPSILON = 1e-15;
 
-    protected boolean epsilonEquals(double a, double b) {
-        return (a - EPSILON <= b) && (a + EPSILON >= b);
-    }
     public SwerveSetpointGenerator(final SwerveDriveKinematics kinematics, final Translation2d[] modulePositions) {
         _modulePositions = modulePositions;
         _kinematics = kinematics;
     }
+
+    protected boolean epsilonEquals(double a, double b) {
+        return (a - EPSILON <= b) && (a + EPSILON >= b);
+    }
+
     private boolean flipHeading(Rotation2d prevToGoal) {
         return Math.abs(prevToGoal.getRadians()) > Math.PI / 2.0;
     }
