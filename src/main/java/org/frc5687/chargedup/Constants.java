@@ -60,7 +60,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
     
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = 0.0;
+            NORTH_WEST_CONFIG.encoderOffset = -0.0305;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -87,7 +87,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
     
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = 0.0;
+            NORTH_EAST_CONFIG.encoderOffset = -0.205;
         }
         public static final double kDt = 0.005; // 5 ms
         public static final double TRANSLATION_DEADBAND =
@@ -100,7 +100,7 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 2.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 3.0; // Max speed of robot (m/s)
         public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
         public static final double MAX_MPS_DURING_CLIMB =
                 MAX_MPS / 4; // Max speed of robot (m/s) during climb
@@ -126,7 +126,7 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 3.0;
     
-        public static final double kP = 2;
+        public static final double kP = 5;
         public static final double kI = 0.0;
         public static final double kD = 0.5;
     
@@ -215,5 +215,41 @@ public class Constants {
             }
         }
     }
-}
+    public static class EndEffector {
+        public static final double WRIST_OFFSET = 0;
+        public static final double GRIPPER_OFFSET = 0;
+
+        public static final double WRIST_kP = 0.5;
+        public static final double WRIST_kI = 0;
+        public static final double WRIST_kD = 0;
+
+        
+        public static final double WRIST_VEL = Units.degreesToRadians(5);
+        public static final double WRIST_ACCEL = Units.degreesToRadians(1);
+
+        public static final double WRIST_TOLERENCE = Units.degreesToRadians(1);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(310.0);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(144.0);
+        public static final boolean WRIST_INVERTED = true;
+
+        public static final double GRIPPER_kP = 1.6;
+        public static final double GRIPPER_kI = 0;
+        public static final double GRIPPER_kD = 0;
+
+        public static final double GRIPPER_VEL = Units.degreesToRadians(5);
+        public static final double GRIPPER_ACCEL = Units.degreesToRadians(1);
+
+        public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
+        //fully closed angle
+        public static final double GRIPPER_MAX_ANGLE = Units.degreesToRadians(284.0);
+        // fully open angle
+        public static final double GRIPPER_MIN_ANGLE = Units.degreesToRadians(118.0);
+        public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
+        public static final boolean  GRIPPPER_INVERTED = false;
+
+
+    }
+
+}  
+
 
