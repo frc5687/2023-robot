@@ -35,8 +35,8 @@ public class Arm extends OutliersSubsystem{
         super(container);
         _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
-        _upperHall = new HallEffect(RobotMap.DIO.EXTREME_ARM_HALL_ONE);
-        _lowerHall = new HallEffect(RobotMap.DIO.EXTREME_ARM_HALL_TWO);
+        _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
+        _lowerHall = new HallEffect(RobotMap.DIO.BOTTOM_HALL_ARM);
         LinearSystem<N2, N1, N1> plant = LinearSystemId.createSingleJointedArmSystem(
                 DCMotor.getFalcon500(1),
                 INERTIA_ARM, // kg * m^2
@@ -73,18 +73,18 @@ public class Arm extends OutliersSubsystem{
     public void periodic() {
         super.periodic();
         // update our kalman filter.
-        if (_upperHall.get() && _controlLoop.getU(0) > 0) {
-            _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
-            _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
-            //reset encoder
-            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(UPPER_HALL_RAD, GEAR_RATIO));
-        } else if (_lowerHall.get() && _controlLoop.getU(0) > 0) {
-            _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
-            _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
-            //reset encoder
-            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(LOWER_HALL_RAD, GEAR_RATIO));
-               
-        }
+//        if (_upperHall.get() && _controlLoop.getU(0) > 0) {
+//            _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
+//            _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
+//            //reset encoder
+//            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(UPPER_HALL_RAD, GEAR_RATIO));
+//        } else if (_lowerHall.get() && _controlLoop.getU(0) > 0) {
+//            _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
+//            _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
+//            //reset encoder
+//            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(LOWER_HALL_RAD, GEAR_RATIO));
+//
+//        }
         _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
         _controlLoop.predict(kDt);
     }

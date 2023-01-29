@@ -2,6 +2,7 @@
 package org.frc5687.chargedup;
 
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
@@ -12,6 +13,8 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -23,7 +26,16 @@ public class OI extends OutliersProxy {
         _driverGamepad = new Gamepad(0);
     }
 
-    public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory) {
+    public void initializeButtons(EndEffector endEffector) {
+//        _driverGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, ( 144.0)));
+//        _driverGamepad.getBButton().whenPressed(new AutoSetWristAngle(endEffector, ( 230.0)));
+//        _driverGamepad.getYButton().whenPressed(new AutoSetWristAngle(endEffector, ( 310.0)));
+//
+//        _driverGamepad.getXButton().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_CUBE_ANGLE)));
+//        _driverGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MAX_ANGLE)));
+//        _driverGamepad.getLeftBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MIN_ANGLE)));
+
+
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -73,5 +85,17 @@ public class OI extends OutliersProxy {
     public void updateDashboard() {
         metric("Raw x", xIn);
         metric("Raw y", yIn);
+    }
+
+    public double getGripperSpeed() {
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
+    }
+
+    public double getWristSpeed() {
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
     }
 }

@@ -1,6 +1,8 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
+import edu.wpi.first.wpilibj.DutyCycle;
+
 public class RobotMap {
 
     /**
@@ -25,6 +27,14 @@ public class RobotMap {
 
         public static class PIGEON {
             public static final int PIGEON = 0;
+        }
+        
+        public static class TalonSRX {
+
+            public static final int GRIPPER = 9;
+            public static final int WRIST = 10;
+
+
         }
     }
 
@@ -62,10 +72,11 @@ public class RobotMap {
         public static final int ENCODER_SE = 2;
         public static final int ENCODER_SW = 3;
 
-        public static final int EXTREME_ARM_HALL_ONE = 6;
-        public static final int EXTREME_ARM_HALL_TWO = 7;
-        public static final int MIDDLE_ARM_HALL = 8;
+        public static final int ENCODER_GRIPPER = 4;
+        public static final int ENCODER_WRIST = 5;
 
-        
+        public static final int TOP_HALL_ARM = 6;
+        public static final int BOTTOM_HALL_ARM = 7;
+
     }
 }
