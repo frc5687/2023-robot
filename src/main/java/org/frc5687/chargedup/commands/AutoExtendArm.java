@@ -5,11 +5,11 @@ import org.frc5687.chargedup.subsystems.ExtendingArm;
 
 import edu.wpi.first.math.util.Units;
 
-public class ExtendArm extends OutliersCommand {
+public class AutoExtendArm extends OutliersCommand {
     private ExtendingArm _extArm;
     private double _extDistance;
 
-    public ExtendArm(ExtendingArm extArm, double extDistance){
+    public AutoExtendArm(ExtendingArm extArm, double extDistance){
         _extArm = extArm;
         _extDistance = extDistance;
         addRequirements(_extArm);

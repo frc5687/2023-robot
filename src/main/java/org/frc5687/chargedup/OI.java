@@ -14,7 +14,7 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
-import org.frc5687.chargedup.commands.ExtendArm;
+import org.frc5687.chargedup.commands.AutoExtendArm;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -29,9 +29,9 @@ public class OI extends OutliersProxy {
     public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory, ExtendingArm extendingArm) {
         _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
 
-        _driverGamepad.getYButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
-        _driverGamepad.getXButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
-        _driverGamepad.getBButton().whileActiveOnce(new ExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
+        _driverGamepad.getYButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
+        _driverGamepad.getXButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
+        _driverGamepad.getBButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
 
     }
 
@@ -60,6 +60,12 @@ public class OI extends OutliersProxy {
 
     public double getRotationX() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
+    }
+
+    public double getExtArmY(){
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
         return speed;
     }
