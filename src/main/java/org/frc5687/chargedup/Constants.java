@@ -259,5 +259,41 @@ public class Constants {
             }
         }
     }
-}
+    public static class EndEffector {
+        public static final double WRIST_OFFSET = 0;
+        public static final double GRIPPER_OFFSET = 0;
+
+        public static final double WRIST_kP = 0.5;
+        public static final double WRIST_kI = 0;
+        public static final double WRIST_kD = 0;
+
+        
+        public static final double WRIST_VEL = Units.degreesToRadians(5);
+        public static final double WRIST_ACCEL = Units.degreesToRadians(1);
+
+        public static final double WRIST_TOLERENCE = Units.degreesToRadians(1);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(310.0);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(144.0);
+        public static final boolean WRIST_INVERTED = true;
+
+        public static final double GRIPPER_kP = 1.6;
+        public static final double GRIPPER_kI = 0;
+        public static final double GRIPPER_kD = 0;
+
+        public static final double GRIPPER_VEL = Units.degreesToRadians(5);
+        public static final double GRIPPER_ACCEL = Units.degreesToRadians(1);
+
+        public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
+        //fully closed angle
+        public static final double GRIPPER_MAX_ANGLE = Units.degreesToRadians(284.0);
+        // fully open angle
+        public static final double GRIPPER_MIN_ANGLE = Units.degreesToRadians(118.0);
+        public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
+        public static final boolean  GRIPPPER_INVERTED = false;
+
+
+    }
+
+}  
+
 
