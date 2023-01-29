@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 /**
  * This is 254s SwerveSetpointGenerator but modified to use WPILibs Geometry classes and
- * Brents method for root finding.
+ * an extension to the regula falsi method using Illinios or ITP for root finding.
  */
 public class SwerveSetpointGenerator {
 
@@ -51,138 +51,80 @@ public class SwerveSetpointGenerator {
             return angle;
         }
     }
-    public double brentsMethodRootFinder(
-            double a,
-            double b,
-            double tolerance,
-            int maxIterations,
-            Function<Double, Double> f) {
-        double c = b;
-        double d = c;
-        double e = d;
-
-        double fa = f.apply(a);
-        double fb = f.apply(b);
-        double fc = fb;
-
-        for (int i = 0; i < maxIterations; i++) {
-            double prevStep = e;
-            double tol1 = tolerance * Math.abs(b) + EPSILON;
-            double xm = 0.5 * (c - b);
-            if (Math.abs(xm) <= tol1 || fb == 0) {
-                return b;
-            }
-
-            if (Math.abs(e) > tol1 && Math.abs(fa) > Math.abs(fb)) {
-                double s = fb / fa;
-                double p;
-                double q;
-                if (a == c) {
-                   p = 2 * xm * s;
-                   q = 1 - 2;
-                } else {
-                    q = fa / fc;
-                    double r = fb / fc;
-                    p = s * (2 * xm * q * (q - r) - (b - a) * (r - 1));
-                    q = (q - 1) * (r - 1) * (s - 1);
-                }
-
-                if (p > 0) {
-                    q = -q;
-                } else {
-                    p = -p;
-                }
-
-                s = e;
-                e = d;
-
-                if (2 * p < 3 * xm * q - Math.abs(tol1 * 1) && p < Math.abs(0.5 * s * q)) {
-                    d = p / q;
-                } else {
-                    d = xm;
-                    e = d;
-                }
-            } else {
-                d = xm;
-                e = d;
-            }
-
-            a = b;
-            fa = fb;
-
-            if (Math.abs(d) > tol1) {
-                b += d;
-            } else {
-                b += Math.copySign(tol1, xm);
-            }
-
-            fb = f.apply(b);
-            if ((fb > 0 && fc > 0) || (fb <= 0 && fc <= 0)) {
-                c = a;
-                fc = fa;
-                d = b - a;
-                e = d;
-            }
-        }
-        return b;
-    }
 
     @FunctionalInterface
     private interface Function2d {
         public double f(double x, double y);
     }
-
-    protected double findRoot(
-            Function2d func,
-            double x_0,
-            double y_0,
-            double x_1,
-            double y_1,
-            double tolerance,
-            int maxIterations) {
-        Function<Double, Double> f = (s) -> func.f((x_1 - x_0) * s + x_0, (y_1 - y_0) * s + y_0);
-        return brentsMethodRootFinder(0.0, 1.0, tolerance, maxIterations, f);
+    private double findRootIllinois(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, int iterations_left) {
+        if (iterations_left < 0 || epsilonEquals(f_0, f_1)) {
+            return 1.0;
+        }
+        var s_guess = Math.max(0.0, Math.min(1.0, -f_0 / (f_1 - f_0)));
+        var x_guess = (x_1 - x_0) * s_guess + x_0;
+        var y_guess = (y_1 - y_0) * s_guess + y_0;
+        var f_guess = func.f(x_guess, y_guess);
+        var slope_guess = (f_guess - f_0) / (s_guess - 0);
+        var slope_1 = (f_1 - f_0);
+        if (Math.signum(slope_guess) == Math.signum(slope_1)) {
+            // guess and upper bracket have same slope, so use upper bracket.
+            return s_guess + (1.0 - s_guess) * findRootIllinois(func, x_guess, y_guess, f_guess, x_1, y_1, f_1, iterations_left - 1);
+        } else {
+            // Use lower bracket.
+            return s_guess * findRootIllinois(func, x_0, y_0, f_0, x_guess, y_guess, f_guess, iterations_left - 1);
+        }
     }
 
-    protected double findSteeringMaxS(
-            double x_0,
-            double y_0,
-            double f_0,
-            double x_1,
-            double y_1,
-            double f_1,
-            double maxDeviation,
-            int maxIterations) {
+    private double findRootITP(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, double x_2, double y_2, double f_2, int iterations_left) {
+        if (iterations_left < 0 || epsilonEquals(f_1, f_1) || epsilonEquals(f_1, f_2) || epsilonEquals(f_0, f_2)) {
+            return 1.0;
+        }
+        double a = (f_1 - f_0) / (x_1 - x_0);
+        double b = (f_2 - f_1) / (x_2 - x_1);
+        double c = (b - a) / (x_2 - x_1);
+        double s = (a + b) / 2 - c * (x_1 - x_0) / 4;
+        double x_guess = -s / c;
+        double y_guess = (y_1 - y_0) * x_guess + (x_1 * y_0 - x_0 * y_1) / (x_1 - x_0);
+        double f_guess = func.f(x_guess, y_guess);
+        if (Math.signum(f_0) == Math.signum(f_guess)) {
+            return findRootITP(func, x_guess, y_guess, f_guess, x_1, y_1, f_1, x_2, y_2, f_2, iterations_left - 1);
+        } else {
+            return findRootITP(func, x_0, y_0, f_0, x_guess, y_guess, f_guess, x_1, y_1, f_1, iterations_left - 1);
+        }
+    }
+
+    private double findRoot(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, int iterations_left) {
+        // return findRootIllinois(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
+        return findRootITP(func, x_0, y_0, f_0, x_1, y_1, f_1, x_1, y_1, f_1, iterations_left);
+    }
+
+    protected double findSteeringMaxS(double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, double max_deviation, int max_iterations) {
         f_1 = unwrapAngle(f_0, f_1);
         double diff = f_1 - f_0;
-        if (Math.abs(diff) < maxDeviation) {
+        if (Math.abs(diff) <= max_deviation) {
+            // Can go all the way to s=1.
             return 1.0;
         }
-
-        double offset = f_0 + Math.signum(diff) * maxDeviation;
-        Function2d func = (x, y) -> unwrapAngle(f_0, Math.atan2(y, x)) - offset;
-
-        return findRoot(func, x_0, y_0, x_1, y_1, EPSILON, maxIterations);
+        double offset = f_0 + Math.signum(diff) * max_deviation;
+        Function2d func = (x,y) -> {
+            return unwrapAngle(f_0, Math.atan2(y, x)) - offset;
+        };
+        return findRoot(func, x_0, y_0, f_0 - offset, x_1, y_1, f_1 - offset, max_iterations);
     }
-    protected double findDriveMaxS(
-            double x_0,
-            double y_0,
-            double f_0,
-            double x_1,
-            double y_1,
-            double f_1,
-            double maxDeviation,
-            int maxIterations) {
-        double diff = Math.hypot(x_1 - x_0, y_1 - y_0) - f_0;
-        if (Math.abs(diff) < maxDeviation) {
+
+    protected double findDriveMaxS(double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, double max_vel_step, int max_iterations) {
+        double diff = f_1 - f_0;
+        if (Math.abs(diff) <= max_vel_step) {
+            // Can go all the way to s=1.
             return 1.0;
         }
-
-        double offset = f_0 + Math.signum(diff) * maxDeviation;
-        Function2d func = (x, y) -> Math.hypot(x, y) - offset;
-
-        return findRoot(func, x_0, y_0, x_1, y_1, EPSILON, maxIterations);
+        double offset = f_0 + Math.signum(diff) * max_vel_step;
+        Function2d func = (x,y) -> {
+            return Math.hypot(x, y) - offset;
+        };
+        return  findRoot(func, x_0, y_0, f_0 - offset, x_1, y_1, f_1 - offset, max_iterations);
     }
+
 
     /**
      * Generate a new setpoint.
@@ -195,6 +137,7 @@ public class SwerveSetpointGenerator {
      * @return A Setpoint object that satisfies all of the KinematicLimits while converging to desiredState quickly.
      */
     public SwerveSetpoint generateSetpoint(final KinematicLimits limits, final SwerveSetpoint prevSetpoint, ChassisSpeeds desiredState, double dt) {
+        // System.out.println("func called");
         final Translation2d[] modules = _modulePositions;
 
         SwerveModuleState[] desiredModuleState = _kinematics.toSwerveModuleStates(desiredState);
@@ -322,7 +265,10 @@ public class SwerveSetpointGenerator {
 
         // Enforce drive wheel acceleration limits.
         final double max_vel_step = dt * limits.maxDriveAcceleration;
+        // System.out.println(max_vel_step);
         for (int i = 0; i < modules.length; ++i) {
+            // System.out.println(min_s);
+
             if (min_s == 0.0) {
                 // No need to carry on.
                 break;
