@@ -38,7 +38,7 @@ public class Constants {
      * <p>Note: when robot is flipped over, this is clockwise.
      */
     public static class DriveTrain {
-        public static final String CAN_BUS = "Tomcat";
+        public static final String CAN_BUS = "DriveTrain";
     
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4191; // meters
@@ -53,7 +53,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
     
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.0305;
+            NORTH_WEST_CONFIG.encoderOffset = -0.0;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -80,7 +80,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
     
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.205;
+            NORTH_EAST_CONFIG.encoderOffset = 0.0;
         }
         public static final double kDt = 0.005; // 5 ms
         public static final double TRANSLATION_DEADBAND =
