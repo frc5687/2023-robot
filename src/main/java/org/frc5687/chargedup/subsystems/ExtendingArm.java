@@ -19,7 +19,7 @@ public class ExtendingArm extends OutliersSubsystem {
 
     public ExtendingArm(OutliersContainer container){
         super(container);
-        _talon = new OutliersTalon(0, Constants.ExtendingArm.CAN_BUS, "ExtendingArm");
+        _talon = new OutliersTalon(12, Constants.ExtendingArm.CAN_BUS, "ExtendingArm");
         _talon.configure(Constants.ExtendingArm.CONFIG);
         _talon.configureClosedLoop(Constants.ExtendingArm.CONTROLLER_CONFIG);
 
