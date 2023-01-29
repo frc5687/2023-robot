@@ -6,8 +6,8 @@ import org.frc5687.chargedup.subsystems.Arm;
 
 public class ManualDriveArm extends OutliersCommand {
 
-    private Arm _arm;
-    private OI _oi;
+    private final Arm _arm;
+    private final OI _oi;
 
     public ManualDriveArm(Arm arm, OI oi) {
         _arm = arm;
@@ -21,6 +21,8 @@ public class ManualDriveArm extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
+        // set the arm reference to be current arm angle and zero velocity.
+        _arm.setNextReference(_arm.getArmAngleRadians(), 0.0);
         _arm.setArmSpeed(_oi.getArmY());
     }
 

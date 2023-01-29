@@ -211,8 +211,12 @@ public class Constants {
         }
         // this is the motor config for the arm motors
 
+        public static final double ARM_LENGTH = Units.feetToMeters(4.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
+        public static final double INERTIA_ARM = (1.0 / 12.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
+
         // Physical characteristic of the system
-        public static final double INERTIA_ARM = 0.5; // kg * m^2
+//        public static final double INERTIA_ARM = 0.5; // kg * m^2
 
         // Halls
         public static final double UPPER_HALL_RAD = Math.PI / 2; //fix later
@@ -229,8 +233,8 @@ public class Constants {
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
-        public static final double MAX_VELOCITY = Units.degreesToRadians(45);
-        public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
+        public static final double MAX_VELOCITY = Units.degreesToRadians(5);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(10);
 
         public static final double ANGLE_TOLERANCE = 1;
     }

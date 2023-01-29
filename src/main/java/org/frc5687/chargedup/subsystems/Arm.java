@@ -27,18 +27,16 @@ public class Arm extends OutliersSubsystem{
     private final OutliersTalon _talon;
     private final HallEffect _upperHall;
     private final HallEffect _lowerHall;
-    private final HallEffect _middleHall;
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
 
     private final TrapezoidProfile.Constraints _contraints;
 
     public Arm(OutliersContainer container) {
         super(container);
-        _talon = new OutliersTalon(0, Constants.Arm.CAN_BUS, "arm");
+        _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
         _upperHall = new HallEffect(RobotMap.DIO.EXTREME_ARM_HALL_ONE);
         _lowerHall = new HallEffect(RobotMap.DIO.EXTREME_ARM_HALL_TWO);
-        _middleHall = new HallEffect(RobotMap.DIO.MIDDLE_ARM_HALL);
         LinearSystem<N2, N1, N1> plant = LinearSystemId.createSingleJointedArmSystem(
                 DCMotor.getFalcon500(1),
                 INERTIA_ARM, // kg * m^2
@@ -100,16 +98,12 @@ public class Arm extends OutliersSubsystem{
         setArmSpeed(voltage / CONTROL_EFFORT);
     }
 
-    public boolean getExtremeHallOne() {
+    public boolean getUpperHall() {
         return _upperHall.get();
     }
 
-    public boolean getExtremeHallTwo() {
+    public boolean getLowerHall() {
         return _lowerHall.get();
-    }
-
-    public boolean getMiddleHall() {
-        return _middleHall.get();
     }
 
     public double getEncoderTicks() {
@@ -143,6 +137,10 @@ public class Arm extends OutliersSubsystem{
         _controlLoop.setNextR(state.position, state.velocity);
     }
 
+    public void setNextReference(double radians, double radPerSec) {
+        _controlLoop.setNextR(radians, radPerSec);
+    }
+
     /**
      * Gets the next voltage to send to the falcon500.
      * @return voltage
@@ -151,5 +149,12 @@ public class Arm extends OutliersSubsystem{
         return _controlLoop.getU(0);
     }
 
-    public void updateDashboard() {}
+    public void updateDashboard() {
+        metric("Angle", getArmAngleRadians());
+        metric("Next Voltage", getNextVoltage());
+        metric("Estimated Angle", getPredictedArmAngleRadians());
+        metric("Reference", _controlLoop.getNextR().toString());
+        metric("Upper Hall triggered", getUpperHall());
+        metric("Lower Hall triggered", getUpperHall());
+    }
 }

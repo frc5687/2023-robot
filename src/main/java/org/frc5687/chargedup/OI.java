@@ -24,7 +24,6 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory) {
-        _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff

@@ -1,23 +1,12 @@
 package org.frc5687.chargedup.commands.Arm;
 
-import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.Constants;
 
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.LinearQuadraticRegulator;
-import edu.wpi.first.math.estimator.KalmanFilter;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N2;
-import edu.wpi.first.math.system.LinearSystem;
-import edu.wpi.first.math.system.LinearSystemLoop;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 
-public class ControllerDriveArm extends OutliersCommand {
+public class AutoSetArmSetpoint extends OutliersCommand {
 
     private Arm _arm;
     private TrapezoidProfile.State _lastProfiledReference;
@@ -25,7 +14,7 @@ public class ControllerDriveArm extends OutliersCommand {
     // We need a variable to place the goal of our arm
     private TrapezoidProfile.State goal;
     // In the constructor we need the Arm subsystem and the angle we would like to go to.
-    public ControllerDriveArm(Arm arm, double angle) {
+    public AutoSetArmSetpoint(Arm arm, double angle) {
         _arm = arm;
         // we should create the goal here which takes the angle and velocity.
         goal = new TrapezoidProfile.State(angle, _arm.getArmVelocityRadPerSec());
