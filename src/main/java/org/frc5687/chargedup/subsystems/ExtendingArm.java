@@ -21,6 +21,7 @@ public class ExtendingArm extends OutliersSubsystem {
         super(container);
         _talon = new OutliersTalon(0, Constants.ExtendingArm.CAN_BUS, "ExtendingArm");
         _talon.configure(Constants.ExtendingArm.CONFIG);
+        _talon.configureClosedLoop(Constants.ExtendingArm.CONTROLLER_CONFIG);
 
         _extArmController = new PIDController(Constants.ExtendingArm.kP, Constants.ExtendingArm.kI, Constants.ExtendingArm.kD);
     } 
@@ -41,6 +42,14 @@ public class ExtendingArm extends OutliersSubsystem {
 
     public void setArmSpeed(double speed) {
         _talon.set(ControlMode.PercentOutput, speed);
+    }
+
+    public void setExtArmLengthMeters(double distance){
+        _talon.set(ControlMode.MotionMagic, (distance * Constants.ExtendingArm.TICKS_TO_METERS));
+    }
+
+    public double getExtArmMeters(){
+        return getEncoderTicks() / Constants.ExtendingArm.TICKS_TO_METERS;
     }
 
     public void stopArm(){
@@ -71,5 +80,9 @@ public class ExtendingArm extends OutliersSubsystem {
         return _extArmController.calculate(getEncoderRotationRadians());
     }
 
-    public void updateDashboard() {}
+    public void updateDashboard() {
+        metric("Encoder Ticks", getEncoderTicks());
+        metric("Arm Extended Length", getExtArmMeters());
+        metric("Set Point", _talon.getLastSet());
+    }
 }

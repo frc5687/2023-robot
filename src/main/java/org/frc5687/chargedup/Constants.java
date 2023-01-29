@@ -193,6 +193,18 @@ public class Constants {
         public static final String CAN_BUS = "rio";
         public static final double GEAR_RATIO = 1;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        static {
+            CONFIG.TIME_OUT = 100;
+
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+
+            CONFIG.STATOR_CURRENT_LIMIT = 40;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+        }
 
         public static final double SHORT_ARM_DISTANCE = 360;
         public static final double MEDIUM_ARM_DISTANCE = 720;
@@ -208,7 +220,25 @@ public class Constants {
         public static final double kD = 0.0;
 
         public static final double EXT_ARM_TOLERANCE = 10;
+
+        public static final double TICKS_TO_METERS = 0;  
+
+        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG = new OutliersTalon.ClosedLoopConfiguration();
+        static {
+            CONTROLLER_CONFIG.SLOT = 0;
+
+            CONTROLLER_CONFIG.kP = 0;
+            CONTROLLER_CONFIG.kI = 0;
+            CONTROLLER_CONFIG.kD = 0;
+            CONTROLLER_CONFIG.kF = 0;
+
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 1000;
+            CONTROLLER_CONFIG.ACCELERATION = 500;
+
+
+        }
     }
+
 
     public static class Auto {
         public static class FieldPoses {
