@@ -94,8 +94,8 @@ public class SwerveSetpointGenerator {
     }
 
     private double findRoot(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, int iterations_left) {
-        // return findRootIllinois(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
-        return findRootITP(func, x_0, y_0, f_0, x_1, y_1, f_1, x_1, y_1, f_1, iterations_left);
+         return findRootIllinois(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
+//        return findRootITP(func, x_0, y_0, f_0, x_1, y_1, f_1, x_1, y_1, f_1, iterations_left);
     }
 
     protected double findSteeringMaxS(double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, double max_deviation, int max_iterations) {
@@ -106,9 +106,7 @@ public class SwerveSetpointGenerator {
             return 1.0;
         }
         double offset = f_0 + Math.signum(diff) * max_deviation;
-        Function2d func = (x,y) -> {
-            return unwrapAngle(f_0, Math.atan2(y, x)) - offset;
-        };
+        Function2d func = (x,y) -> unwrapAngle(f_0, Math.atan2(y, x)) - offset;
         return findRoot(func, x_0, y_0, f_0 - offset, x_1, y_1, f_1 - offset, max_iterations);
     }
 
@@ -119,9 +117,7 @@ public class SwerveSetpointGenerator {
             return 1.0;
         }
         double offset = f_0 + Math.signum(diff) * max_vel_step;
-        Function2d func = (x,y) -> {
-            return Math.hypot(x, y) - offset;
-        };
+        Function2d func = (x,y) -> Math.hypot(x, y) - offset;
         return  findRoot(func, x_0, y_0, f_0 - offset, x_1, y_1, f_1 - offset, max_iterations);
     }
 
