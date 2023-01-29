@@ -25,6 +25,20 @@ public class ExtendingArm extends OutliersSubsystem {
         _extArmController = new PIDController(Constants.ExtendingArm.kP, Constants.ExtendingArm.kI, Constants.ExtendingArm.kD);
     } 
 
+    @Override
+    public void periodic() {
+        super.periodic();
+        if (_topHall.get() && _talon.getLastSet() > 0){
+            _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
+            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.TOP_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
+        }
+
+        if (_bottomHall.get() && _talon.getLastSet() > 0){
+            _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
+            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.BOTTOM_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
+        }
+    }
+
     public void setArmSpeed(double speed) {
         _talon.set(ControlMode.PercentOutput, speed);
     }

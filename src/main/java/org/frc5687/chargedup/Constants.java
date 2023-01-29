@@ -200,6 +200,9 @@ public class Constants {
 
         public static final double ZERO_ARM_SPEED = 0;
 
+        public static final double TOP_HALL_RAD = 4;
+        public static final double BOTTOM_HALL_RAD = 0;
+
         public static final double kP = 2.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
