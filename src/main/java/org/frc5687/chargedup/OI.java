@@ -18,21 +18,24 @@ import org.frc5687.chargedup.commands.AutoExtendArm;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
+    protected Gamepad _operatorGamepad;
+    
 
     private double yIn = 0;
     private double xIn = 0;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
+        _operatorGamepad = new Gamepad(1);
     }
 
     public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory, ExtendingArm extendingArm) {
-        _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
+       /*  _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
 
         _driverGamepad.getYButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
         _driverGamepad.getXButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
         _driverGamepad.getBButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
-
+*/
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -65,7 +68,7 @@ public class OI extends OutliersProxy {
     }
 
     public double getExtArmY(){
-        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
         return speed;
     }
@@ -78,5 +81,18 @@ public class OI extends OutliersProxy {
     public void updateDashboard() {
         metric("Raw x", xIn);
         metric("Raw y", yIn);
+    }
+    public double getGripperSpeed() {
+        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        // speed = applyDeadband(speed, ROTATION_DEADBAND);
+        // return speed;
+        return 0;
+    }
+
+    public double getWristSpeed() {
+        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        // speed = applyDeadband(speed, ROTATION_DEADBAND);
+        // return speed;
+        return 0;
     }
 }

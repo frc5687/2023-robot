@@ -7,11 +7,12 @@ public class ManualExtendArm extends OutliersCommand{
     private ExtendingArm _extArm;
     private OI _oi;
 
-    ManualExtendArm(ExtendingArm extArm, OI oi){
+    public ManualExtendArm(ExtendingArm extArm, OI oi){
         _extArm = extArm;
         _oi = oi;
         addRequirements(_extArm);
     }
+    
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
@@ -21,7 +22,11 @@ public class ManualExtendArm extends OutliersCommand{
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        _extArm.setExtArmSetpointDistance(_extArm.getExtArmControllerOutput());
         _extArm.setArmSpeed(_oi.getExtArmY());
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }

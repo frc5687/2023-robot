@@ -4,6 +4,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.sensors.HallEffect;
+import org.frc5687.chargedup.RobotMap;
 
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -19,25 +20,27 @@ public class ExtendingArm extends OutliersSubsystem {
 
     public ExtendingArm(OutliersContainer container){
         super(container);
-        _talon = new OutliersTalon(12, Constants.ExtendingArm.CAN_BUS, "ExtendingArm");
+        _talon = new OutliersTalon(RobotMap.CAN.TALONFX.EXT_ARM, Constants.ExtendingArm.CAN_BUS, "ExtendingArm");
         _talon.configure(Constants.ExtendingArm.CONFIG);
         _talon.configureClosedLoop(Constants.ExtendingArm.CONTROLLER_CONFIG);
 
         _extArmController = new PIDController(Constants.ExtendingArm.kP, Constants.ExtendingArm.kI, Constants.ExtendingArm.kD);
+        _topHall = new HallEffect(RobotMap.DIO.TOP_EXT_HALL);
+        _bottomHall = new HallEffect(RobotMap.DIO.BOTTOM_EXT_HALL);
     } 
 
     @Override
     public void periodic() {
-        super.periodic();
-        if (_topHall.get() && _talon.getLastSet() > 0){
-            _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
-            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.TOP_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
-        }
+        // super.periodic();
+        // if (_topHall.get() && _talon.getLastSet() > 0){
+            // _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
+            // _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.TOP_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
+        // }
 
-        if (_bottomHall.get() && _talon.getLastSet() > 0){
-            _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
-            _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.BOTTOM_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
-        }
+        // if (_bottomHall.get() && _talon.getLastSet() > 0){
+            // _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
+            // _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.BOTTOM_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
+        // }
     }
 
     public void setArmSpeed(double speed) {
