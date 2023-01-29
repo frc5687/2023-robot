@@ -198,6 +198,8 @@ public class Constants {
         public static final double MEDIUM_ARM_DISTANCE = 720;
         public static final double LONG_ARM_DISTANCE = 1080;
 
+        public static final double ZERO_ARM_SPEED = 0;
+
         public static final double kP = 2.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;

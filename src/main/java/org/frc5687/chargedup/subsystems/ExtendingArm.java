@@ -12,7 +12,8 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class ExtendingArm extends OutliersSubsystem {
     private OutliersTalon _talon;
-    private HallEffect _hall;
+    private HallEffect _topHall;
+    private HallEffect _bottomHall;
 
     private final PIDController _extArmController;
 
@@ -28,8 +29,16 @@ public class ExtendingArm extends OutliersSubsystem {
         _talon.set(ControlMode.PercentOutput, speed);
     }
 
-    public boolean getHall() {
-        return _hall.get();
+    public void stopArm(){
+        setArmSpeed(Constants.ExtendingArm.ZERO_ARM_SPEED);
+    }
+
+    public boolean getTopHall() {
+        return _topHall.get();
+    }
+
+    public boolean getBottomHall() {
+        return _bottomHall.get();
     }
 
     public double getEncoderTicks() {
