@@ -36,5 +36,17 @@ public class ExtendingArm extends OutliersSubsystem {
         return _talon.getSelectedSensorPosition();
     }
 
+    public double getEncoderRotationRadians() {
+        return _talon.getSelectedSensorPosition() * ((2.0 * Math.PI)/ Constants.ExtendingArm.GEAR_RATIO);
+    }
+
+    public void setExtArmSetpointDistance(double distance){
+        _extArmController.setSetpoint(distance);
+    }
+
+    public double getExtArmControllerOutput(){
+        return _extArmController.calculate(getEncoderRotationRadians());
+    }
+
     public void updateDashboard() {}
 }
