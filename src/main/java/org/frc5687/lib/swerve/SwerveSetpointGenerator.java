@@ -145,13 +145,7 @@ public class SwerveSetpointGenerator {
 
         // Special case: desiredState is a complete stop. In this case, module angle is arbitrary, so just use the previous angle.
         boolean need_to_steer = true;
-        Twist2d desiredStateTwist2d = new Twist2d(desiredState.vxMetersPerSecond, desiredState.vyMetersPerSecond, desiredState.omegaRadiansPerSecond);
-        Twist2d prevSetpointTwist2d = new Twist2d(
-                prevSetpoint.chassisSpeeds.vxMetersPerSecond,
-                prevSetpoint.chassisSpeeds.vyMetersPerSecond,
-                prevSetpoint.chassisSpeeds.omegaRadiansPerSecond
-        );
-        if (desiredStateTwist2d.equals(new Twist2d(0, 0, 0))) {
+        if (GeometryUtil.toTwist2d(desiredState).equals(new Twist2d(0.0, 0.0, 0.0))) {
             need_to_steer = false;
             for (int i = 0; i < modules.length; ++i) {
                 desiredModuleState[i].angle = prevSetpoint.moduleStates[i].angle;
@@ -188,8 +182,8 @@ public class SwerveSetpointGenerator {
             }
         }
         if (all_modules_should_flip &&
-                !prevSetpointTwist2d.equals(new Twist2d(0.0, 0.0, 0.0)) &&
-                !desiredStateTwist2d.equals(new Twist2d(0.0, 0.0, 0.0))) {
+                !GeometryUtil.toTwist2d(prevSetpoint.chassisSpeeds).equals(new Twist2d(0.0, 0.0, 0.0)) &&
+                !GeometryUtil.toTwist2d(desiredState).equals(new Twist2d(0.0, 0.0, 0.0))) {
             // It will (likely) be faster to stop the robot, rotate the modules in place to the complement of the desired
             // angle, and accelerate again.
             return generateSetpoint(limits, prevSetpoint, new ChassisSpeeds(), dt);
