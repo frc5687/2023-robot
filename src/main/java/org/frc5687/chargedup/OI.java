@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import org.frc5687.lib.oi.Gamepad;
@@ -18,22 +17,25 @@ import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
+    protected Gamepad _operatorGamepad;
+
 
     private double yIn = 0;
     private double xIn = 0;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
+        _operatorGamepad = new Gamepad(1);
     }
 
     public void initializeButtons(EndEffector endEffector) {
-//        _driverGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, ( 144.0)));
-//        _driverGamepad.getBButton().whenPressed(new AutoSetWristAngle(endEffector, ( 230.0)));
-//        _driverGamepad.getYButton().whenPressed(new AutoSetWristAngle(endEffector, ( 310.0)));
+//        _operatorGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, ( 101.0)));
+//        _operatorGamepad.getBButton().whenPressed(new AutoSetWristAngle(endEffector, ( 17.0)));
+//        _operatorGamepad.getYButton().whenPressed(new AutoSetWristAngle(endEffector, ( -80.0)));
 //
-//        _driverGamepad.getXButton().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_CUBE_ANGLE)));
-//        _driverGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MAX_ANGLE)));
-//        _driverGamepad.getLeftBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MIN_ANGLE)));
+//        _operatorGamepad.getXButton().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_CUBE_ANGLE)));
+//        _operatorGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MAX_ANGLE)));
+//        _operatorGamepad.getLeftBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MIN_ANGLE)));
 
 
     }
@@ -72,7 +74,7 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
         return speed;
     }
