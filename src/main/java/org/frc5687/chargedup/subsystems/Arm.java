@@ -154,6 +154,6 @@ public class Arm extends OutliersSubsystem{
         metric("Estimated Angle", getPredictedArmAngleRadians());
         metric("Reference", _controlLoop.getNextR().toString());
         metric("Upper Hall triggered", getUpperHall());
-        metric("Lower Hall triggered", getUpperHall());
+        metric("Lower Hall triggered", getLowerHall());
     }
 }
