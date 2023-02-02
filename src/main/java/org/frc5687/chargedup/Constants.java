@@ -192,7 +192,7 @@ public class Constants {
     public static class Arm {
         public static final double kDt = 0.02;
         public static final String CAN_BUS = "rio";
-        public static final double GEAR_RATIO = 125;
+        public static final double GEAR_RATIO = 375;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
             CONFIG.TIME_OUT = 100;
@@ -213,7 +213,7 @@ public class Constants {
 
         public static final double ARM_LENGTH = Units.feetToMeters(4.0);
         public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
-        public static final double INERTIA_ARM = (1.0 / 12.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
+        public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
 
         // Physical characteristic of the system
 //        public static final double INERTIA_ARM = 0.5; // kg * m^2
@@ -223,10 +223,10 @@ public class Constants {
         public static final double LOWER_HALL_RAD = 0; //fix later
 
         // Kalman Filter parameters
-        public static final double MODEL_POSITION_NOISE = 0.015; // m
-        public static final double MODEL_VELOCITY_NOISE = 0.16; // m/s
+        public static final double MODEL_POSITION_NOISE = 0.015; // rad
+        public static final double MODEL_VELOCITY_NOISE = 0.04; // rad/s
 
-        public static final double SENSOR_POSITION_NOISE = 0.01; // m
+        public static final double SENSOR_POSITION_NOISE = 0.01; // rad
         // LQR parameters
         public static final double Q_POSITION = Units.degreesToRadians(1.0);
         public static final double Q_VELOCITY = Units.degreesToRadians(10.0);

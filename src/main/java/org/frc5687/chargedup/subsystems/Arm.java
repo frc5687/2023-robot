@@ -56,7 +56,6 @@ public class Arm extends OutliersSubsystem{
                 VecBuilder.fill(CONTROL_EFFORT),
                 kDt
         );
-
         _controlLoop = new LinearSystemLoop<>(
                 plant,
                 controller,
