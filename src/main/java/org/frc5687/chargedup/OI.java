@@ -14,7 +14,7 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
-import org.frc5687.chargedup.commands.AutoExtendElevator;
+import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
