@@ -188,6 +188,58 @@ public class Constants {
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
     }
+    
+    public static class ExtendingArm {
+        public static final String CAN_BUS = "rio";
+        public static final double GEAR_RATIO = 25;
+        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        static {
+            CONFIG.TIME_OUT = 100;
+
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+
+            CONFIG.STATOR_CURRENT_LIMIT = 40;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+        }
+
+        public static final double SHORT_ARM_DISTANCE = .2;
+        public static final double MEDIUM_ARM_DISTANCE = .4;
+        public static final double LONG_ARM_DISTANCE = .6;
+
+        public static final double ZERO_ARM_SPEED = 0;
+        public static final double ZERO_ENCODER = 0.0;
+
+        public static final double OUT_HALL_RAD = 35;
+        public static final double IN_HALL_RAD = 0;
+
+        public static final double kP = 2.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double EXT_ARM_TOLERANCE = .01;
+
+        public static final double TICKS_TO_METERS = 411281.3171;  
+
+        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG = new OutliersTalon.ClosedLoopConfiguration();
+        static {
+            CONTROLLER_CONFIG.SLOT = 0;
+
+            CONTROLLER_CONFIG.kP = 0.58;
+            CONTROLLER_CONFIG.kI = 0;
+            CONTROLLER_CONFIG.kD = 0.38;
+            CONTROLLER_CONFIG.kF = 0;
+
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 40000;
+            CONTROLLER_CONFIG.ACCELERATION = 25000;
+
+
+        }
+    }
+
 
     public static class Arm {
         public static final double kDt = 0.02;
