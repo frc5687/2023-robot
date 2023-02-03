@@ -17,18 +17,22 @@ public class AutoExtendArm extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        _extArm.setExtArmSetpointDistance(_extDistance);
+        //Setpoint in Radians
+        // error("Starting Extend Arm Command");
     }
     
     @Override
     public void execute() {
         super.execute();
-        double output = _extArm.getExtArmControllerOutput();
-        _extArm.setArmSpeed(output);
-    }
+        _extArm.setExtArmLengthMeters(_extDistance);
 
+    }
+    @Override
     public boolean isFinished(){
-        return Math.abs(Units.degreesToRadians(_extDistance) - _extArm.getEncoderRotationRadians()) < Constants.ExtendingArm.EXT_ARM_TOLERANCE;
+        // error("Finished Extending");
+        // error("Difference between setpoint and position: " + (_extDistance - _extArm.getExtArmMeters()));
+        // error("Value is: " + (Math.abs(_extDistance - _extArm.getExtArmMeters()) < Constants.ExtendingArm.EXT_ARM_TOLERANCE));
+        return Math.abs(_extDistance - _extArm.getExtArmMeters()) < Constants.ExtendingArm.EXT_ARM_TOLERANCE;
     }
 
     public void end(boolean interrupted){

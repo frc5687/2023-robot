@@ -191,7 +191,7 @@ public class Constants {
     
     public static class ExtendingArm {
         public static final String CAN_BUS = "rio";
-        public static final double GEAR_RATIO = 1;
+        public static final double GEAR_RATIO = 25;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
             CONFIG.TIME_OUT = 100;
@@ -206,34 +206,35 @@ public class Constants {
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
         }
 
-        public static final double SHORT_ARM_DISTANCE = 360;
-        public static final double MEDIUM_ARM_DISTANCE = 720;
-        public static final double LONG_ARM_DISTANCE = 1080;
+        public static final double SHORT_ARM_DISTANCE = .2;
+        public static final double MEDIUM_ARM_DISTANCE = .4;
+        public static final double LONG_ARM_DISTANCE = .6;
 
         public static final double ZERO_ARM_SPEED = 0;
+        public static final double ZERO_ENCODER = 0.0;
 
-        public static final double TOP_HALL_RAD = 4;
-        public static final double BOTTOM_HALL_RAD = 0;
+        public static final double OUT_HALL_RAD = 35;
+        public static final double IN_HALL_RAD = 0;
 
         public static final double kP = 2.0;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
 
-        public static final double EXT_ARM_TOLERANCE = 10;
+        public static final double EXT_ARM_TOLERANCE = .01;
 
-        public static final double TICKS_TO_METERS = 0;  
+        public static final double TICKS_TO_METERS = 411281.3171;  
 
         public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG = new OutliersTalon.ClosedLoopConfiguration();
         static {
             CONTROLLER_CONFIG.SLOT = 0;
 
-            CONTROLLER_CONFIG.kP = 0;
+            CONTROLLER_CONFIG.kP = 0.58;
             CONTROLLER_CONFIG.kI = 0;
-            CONTROLLER_CONFIG.kD = 0;
+            CONTROLLER_CONFIG.kD = 0.38;
             CONTROLLER_CONFIG.kF = 0;
 
-            CONTROLLER_CONFIG.CRUISE_VELOCITY = 1000;
-            CONTROLLER_CONFIG.ACCELERATION = 500;
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 40000;
+            CONTROLLER_CONFIG.ACCELERATION = 25000;
 
 
         }

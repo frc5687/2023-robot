@@ -54,7 +54,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         setDefaultCommand(_extendingArm, new ManualExtendArm(_extendingArm, _oi));
         setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
-        // _oi.initializeButtons(_endEffector);
+        _oi.initializeButtons(_extendingArm);
         startPeriodic();
     }
 

@@ -72,8 +72,7 @@ public class RobotMap {
         public static final int ENCODER_SW = 3;
         public static final int ENCODER_GRIPPER = 4;
         public static final int ENCODER_WRIST = 5;
-        public static final int TOP_EXT_HALL = 6;
-        public static final int BOTTOM_EXT_HALL = 7;
-
+        public static final int IN_EXT_HALL = 6;
+        public static final int OUT_EXT_HALL = 7;
     }
 }

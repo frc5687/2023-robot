@@ -13,10 +13,8 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class ExtendingArm extends OutliersSubsystem {
     private OutliersTalon _talon;
-    private HallEffect _topHall;
-    private HallEffect _bottomHall;
-
-    private final PIDController _extArmController;
+    private HallEffect _outHall;
+    private HallEffect _inHall;
 
     public ExtendingArm(OutliersContainer container){
         super(container);
@@ -24,23 +22,22 @@ public class ExtendingArm extends OutliersSubsystem {
         _talon.configure(Constants.ExtendingArm.CONFIG);
         _talon.configureClosedLoop(Constants.ExtendingArm.CONTROLLER_CONFIG);
 
-        _extArmController = new PIDController(Constants.ExtendingArm.kP, Constants.ExtendingArm.kI, Constants.ExtendingArm.kD);
-        _topHall = new HallEffect(RobotMap.DIO.TOP_EXT_HALL);
-        _bottomHall = new HallEffect(RobotMap.DIO.BOTTOM_EXT_HALL);
+        _outHall = new HallEffect(RobotMap.DIO.OUT_EXT_HALL);
+        _inHall = new HallEffect(RobotMap.DIO.IN_EXT_HALL);
     } 
 
     @Override
     public void periodic() {
-        // super.periodic();
-        // if (_topHall.get() && _talon.getLastSet() > 0){
-            // _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
-            // _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.TOP_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
-        // }
+         super.periodic();
+         if (_outHall.get()){
+            //  _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
+             _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.OUT_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
+         }
 
-        // if (_bottomHall.get() && _talon.getLastSet() > 0){
-            // _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
-            // _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.BOTTOM_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
-        // }
+         if (_inHall.get()){
+            //  _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
+             _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.IN_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
+         }
     }
 
     public void setArmSpeed(double speed) {
@@ -59,12 +56,16 @@ public class ExtendingArm extends OutliersSubsystem {
         setArmSpeed(Constants.ExtendingArm.ZERO_ARM_SPEED);
     }
 
-    public boolean getTopHall() {
-        return _topHall.get();
+    public boolean getOutHall() {
+        return _outHall.get();
     }
 
-    public boolean getBottomHall() {
-        return _bottomHall.get();
+    public boolean getInHall() {
+        return _inHall.get();
+    }
+
+    public void zeroEncoder(){
+        _talon.setSelectedSensorPosition(Constants.ExtendingArm.ZERO_ENCODER);
     }
 
     public double getEncoderTicks() {
@@ -72,20 +73,14 @@ public class ExtendingArm extends OutliersSubsystem {
     }
 
     public double getEncoderRotationRadians() {
-        return _talon.getSelectedSensorPosition() * ((2.0 * Math.PI)/ Constants.ExtendingArm.GEAR_RATIO);
+        return _talon.getSelectedSensorPosition() * ((2.0 * Math.PI)/ (2048 * Constants.ExtendingArm.GEAR_RATIO));
     }
-
-    public void setExtArmSetpointDistance(double distance){
-        _extArmController.setSetpoint(distance);
-    }
-
-    public double getExtArmControllerOutput(){
-        return _extArmController.calculate(getEncoderRotationRadians());
-    }
-
     public void updateDashboard() {
         metric("Encoder Ticks", getEncoderTicks());
+        metric("Encoder Radians", getEncoderRotationRadians());
         metric("Arm Extended Length", getExtArmMeters());
-        metric("Set Point", _talon.getLastSet());
+        metric("Out Hall", getOutHall());
+        metric("In Hall", getInHall());
+        metric("Motor Output", _talon.getMotorOutputPercent());
     }
 }

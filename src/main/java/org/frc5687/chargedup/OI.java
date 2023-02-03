@@ -29,13 +29,11 @@ public class OI extends OutliersProxy {
         _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(DriveTrain driveTrain, Trajectory trajectory, ExtendingArm extendingArm) {
-       /*  _driverGamepad.getAButton().whenPressed(new DriveTrajectory(driveTrain, trajectory));
-
-        _driverGamepad.getYButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
-        _driverGamepad.getXButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
-        _driverGamepad.getBButton().whileActiveOnce(new AutoExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
-*/
+    public void initializeButtons(ExtendingArm extendingArm) {
+        _operatorGamepad.getYButton().whenPressed(new AutoExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
+        _operatorGamepad.getXButton().whenPressed(new AutoExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
+        _operatorGamepad.getBButton().whenPressed(new AutoExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
+        //  _operatorGamepad.getYButton().whenPressed(extendingArm::zeroEncoder);
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
