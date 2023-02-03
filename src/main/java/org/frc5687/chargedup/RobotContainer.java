@@ -36,7 +36,6 @@ public class RobotContainer extends OutliersContainer {
         // configure pigeon
 //        _imu = new AHRS(SPI.Port.kMXP, (byte) 200); // 200hz
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON);
-//        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
         Trajectory S = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.S.waypoints, _driveTrain.getConfig());

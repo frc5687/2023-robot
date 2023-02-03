@@ -40,6 +40,7 @@ public class Constants {
      */
     public static class DriveTrain {
         public static final String CAN_BUS = "Tomcat";
+        public static final int NUM_MODULES = 4;
     
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4191; // meters

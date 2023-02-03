@@ -38,11 +38,6 @@ public class Drive extends OutliersCommand {
         double vy = _vyFilter.calculate(_oi.getDriveX());
         double rot = _oi.getRotationX();
 
-        if (_oi.autoAim()) {
-            _driveTrain.vision(_driveTrain.getVisionHeading());
-            rot = 0.0;
-        }
-
         _driveTrain.drive(vx, vy, rot);
     }
 
