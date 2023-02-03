@@ -13,6 +13,7 @@ import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
+import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 
@@ -38,7 +39,7 @@ public class OI extends OutliersProxy {
 //        _operatorGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MAX_ANGLE)));
 //        _operatorGamepad.getLeftBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MIN_ANGLE)));
 
-        _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3));
+        _operatorGamepad.getBButton().whenPressed(new DriveUntilHall(arm, false));
 
 
     }
@@ -79,7 +80,7 @@ public class OI extends OutliersProxy {
     public double getArmY() {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
-        return speed;
+        return speed/5; //for testing
     }
 
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {

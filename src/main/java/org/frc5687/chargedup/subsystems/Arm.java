@@ -84,6 +84,9 @@ public class Arm extends OutliersSubsystem{
     //        _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(LOWER_HALL_RAD, GEAR_RATIO));
 
     //    }
+        if (getUpperHall()) {
+            zeroEncoder();
+        }
         _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
         _controlLoop.predict(kDt);
     }
@@ -107,6 +110,14 @@ public class Arm extends OutliersSubsystem{
 
     public double getEncoderTicks() {
         return _talon.getSelectedSensorPosition();
+    }
+
+    public void zeroEncoder() {
+        _talon.setSelectedSensorPosition(0);
+    }
+
+    public void setEncoderRadians(double angle) {
+        _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(angle, Constants.Arm.GEAR_RATIO));
     }
 
     public double getEncoderTicksPer100ms() {

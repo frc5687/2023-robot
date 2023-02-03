@@ -23,7 +23,11 @@ public class ManualDriveArm extends OutliersCommand {
         super.execute();
         // set the arm reference to be current arm angle and zero velocity.
         _arm.setNextReference(_arm.getArmAngleRadians(), 0.0);
-        _arm.setArmSpeed(_oi.getArmY());
+        if (_arm.getLowerHall() && (_oi.getArmY() < 0)) {
+            _arm.setArmSpeed(0);
+        } else {
+            _arm.setArmSpeed(_oi.getArmY());
+        }
     }
 
     @Override
