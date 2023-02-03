@@ -1,17 +1,17 @@
 package org.frc5687.chargedup.commands;
 
 import org.frc5687.chargedup.OI;
-import org.frc5687.chargedup.subsystems.ExtendingArm;
+import org.frc5687.chargedup.subsystems.Elevator;
 
-public class ManualExtendArm extends OutliersCommand{
-    private ExtendingArm _extArm;
+public class ManualExtendElevator extends OutliersCommand{
+    private Elevator _elevator;
     private OI _oi;
 
 
-    public ManualExtendArm(ExtendingArm extArm, OI oi){
-        _extArm = extArm;
+    public ManualExtendElevator(Elevator elevator, OI oi){
+        _elevator = elevator;
         _oi = oi;
-        addRequirements(_extArm);
+        addRequirements(_elevator);
     }
     
     @Override
@@ -24,14 +24,14 @@ public class ManualExtendArm extends OutliersCommand{
         // TODO Auto-generated method stub
         super.execute();
         double speed = _oi.getExtArmY();
-        if(_extArm.getInHall() && speed < 0){
-            _extArm.setArmSpeed(0);
+        if(_elevator.getInHall() && speed < 0){
+            _elevator.setArmSpeed(0);
         }
-        else if (_extArm.getOutHall() && speed > 0){
-            _extArm.setArmSpeed(0);
+        else if (_elevator.getOutHall() && speed > 0){
+            _elevator.setArmSpeed(0);
         }
         else {
-            _extArm.setArmSpeed(speed);
+            _elevator.setArmSpeed(speed);
         }
 
     }

@@ -14,7 +14,7 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
-import org.frc5687.chargedup.commands.AutoExtendArm;
+import org.frc5687.chargedup.commands.AutoExtendElevator;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -29,10 +29,10 @@ public class OI extends OutliersProxy {
         _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(ExtendingArm extendingArm) {
-        _operatorGamepad.getYButton().whenPressed(new AutoExtendArm(extendingArm, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
-        _operatorGamepad.getXButton().whenPressed(new AutoExtendArm(extendingArm, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
-        _operatorGamepad.getBButton().whenPressed(new AutoExtendArm(extendingArm, Constants.ExtendingArm.LONG_ARM_DISTANCE));
+    public void initializeButtons(Elevator elevator) {
+        _operatorGamepad.getYButton().whenPressed(new AutoExtendElevator(elevator, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
+        _operatorGamepad.getXButton().whenPressed(new AutoExtendElevator(elevator, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
+        _operatorGamepad.getBButton().whenPressed(new AutoExtendElevator(elevator, Constants.ExtendingArm.LONG_ARM_DISTANCE));
         //  _operatorGamepad.getYButton().whenPressed(extendingArm::zeroEncoder);
     }
 

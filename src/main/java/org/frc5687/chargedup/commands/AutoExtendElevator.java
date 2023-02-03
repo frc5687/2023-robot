@@ -1,15 +1,15 @@
 package org.frc5687.chargedup.commands;
 
 import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.subsystems.ExtendingArm;
+import org.frc5687.chargedup.subsystems.Elevator;
 
 import edu.wpi.first.math.util.Units;
 
-public class AutoExtendArm extends OutliersCommand {
-    private ExtendingArm _extArm;
+public class AutoExtendElevator extends OutliersCommand {
+    private Elevator _extArm;
     private double _extDistance;
 
-    public AutoExtendArm(ExtendingArm extArm, double extDistance){
+    public AutoExtendElevator(Elevator extArm, double extDistance){
         _extArm = extArm;
         _extDistance = extDistance;
         addRequirements(_extArm);
