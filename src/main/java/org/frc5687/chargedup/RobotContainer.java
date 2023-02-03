@@ -1,16 +1,20 @@
 /* Team 5687 (C)2021 */
-/* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+// import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
+// import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveWrist;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
 
@@ -25,6 +29,8 @@ public class RobotContainer extends OutliersContainer {
     private Robot _robot;
     private DriveTrain _driveTrain;
     private EndEffector _endEffector;
+    private Elevator _elevator;
+
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
         _robot = robot;
@@ -39,13 +45,16 @@ public class RobotContainer extends OutliersContainer {
 //        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
-        Trajectory S = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.S.waypoints, _driveTrain.getConfig());
+        _elevator = new Elevator(this);
+        // _arm = new Arm(this);
         _endEffector = new EndEffector(this);
+
         _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
+
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
-        setDefaultCommand(_endEffector, new ManualDriveWrist
-        (_endEffector, _oi));
-        _oi.initializeButtons(_endEffector);
+        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+        _oi.initializeButtons(_elevator);
         startPeriodic();
     }
 
@@ -70,4 +79,3 @@ public class RobotContainer extends OutliersContainer {
         s.setDefaultCommand(subSystem, command);
     }
 }
-

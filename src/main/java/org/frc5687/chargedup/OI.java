@@ -2,8 +2,9 @@
 package org.frc5687.chargedup;
 
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
 
@@ -13,29 +14,26 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.DriveTrajectory;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
+import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
+    protected Gamepad _operatorGamepad;
+    
 
     private double yIn = 0;
     private double xIn = 0;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
+        _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(EndEffector endEffector) {
-        _driverGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, ( 144.0)));
-        _driverGamepad.getBButton().whenPressed(new AutoSetWristAngle(endEffector, ( 230.0)));
-        _driverGamepad.getYButton().whenPressed(new AutoSetWristAngle(endEffector, ( 310.0)));
-
-        _driverGamepad.getXButton().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_CUBE_ANGLE)));
-        _driverGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MAX_ANGLE)));
-        _driverGamepad.getLeftBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MIN_ANGLE)));
-
-
+    public void initializeButtons(Elevator elevator) {
+        _operatorGamepad.getYButton().whenPressed(new AutoExtendElevator(elevator, Constants.ExtendingArm.SHORT_ARM_DISTANCE));
+        _operatorGamepad.getXButton().whenPressed(new AutoExtendElevator(elevator, Constants.ExtendingArm.MEDIUM_ARM_DISTANCE));
+        _operatorGamepad.getBButton().whenPressed(new AutoExtendElevator(elevator, Constants.ExtendingArm.LONG_ARM_DISTANCE));
+        //  _operatorGamepad.getYButton().whenPressed(extendingArm::zeroEncoder);
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -67,6 +65,12 @@ public class OI extends OutliersProxy {
         return speed;
     }
 
+    public double getExtArmY(){
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed;
+    }
+
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         return gamepad.getRawAxis(axisNumber);
     }
@@ -76,16 +80,17 @@ public class OI extends OutliersProxy {
         metric("Raw x", xIn);
         metric("Raw y", yIn);
     }
-
     public double getGripperSpeed() {
-        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-        speed = applyDeadband(speed, ROTATION_DEADBAND);
-        return speed;
+        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        // speed = applyDeadband(speed, ROTATION_DEADBAND);
+        // return speed;
+        return 0;
     }
 
     public double getWristSpeed() {
-        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-        speed = applyDeadband(speed, ROTATION_DEADBAND);
-        return speed;
+        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
+        // speed = applyDeadband(speed, ROTATION_DEADBAND);
+        // return speed;
+        return 0;
     }
 }
