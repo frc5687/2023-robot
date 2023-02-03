@@ -1,6 +1,7 @@
-package org.frc5687.chargedup.commands;
+package org.frc5687.chargedup.commands.Elevator;
 
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Elevator;
 
 public class ManualExtendElevator extends OutliersCommand{

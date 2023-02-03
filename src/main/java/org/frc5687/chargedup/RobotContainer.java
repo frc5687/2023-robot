@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 // import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
-import org.frc5687.chargedup.commands.ManualExtendElevator;
 // import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveWrist;
 import org.frc5687.chargedup.subsystems.DriveTrain;
