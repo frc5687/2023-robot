@@ -5,9 +5,9 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-// import org.frc5687.chargedup.subsystems.Arm;
+import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
-// import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
+import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
@@ -25,10 +25,10 @@ public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
     private Pigeon2 _imu;
-//    private AHRS _imu;
     private Robot _robot;
     private DriveTrain _driveTrain;
     private EndEffector _endEffector;
+    private Arm _arm;
     private Elevator _elevator;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
@@ -40,13 +40,11 @@ public class RobotContainer extends OutliersContainer {
         _oi = new OI();
 
         // configure pigeon
-//        _imu = new AHRS(SPI.Port.kMXP, (byte) 200); // 200hz
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON);
-//        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 10, 10);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
         _elevator = new Elevator(this);
-        // _arm = new Arm(this);
+        _arm = new Arm(this);
         _endEffector = new EndEffector(this);
 
         _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
@@ -54,7 +52,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
-        _oi.initializeButtons(_elevator);
+        _oi.initializeButtons(_endEffector, _arm);
         startPeriodic();
     }
 
