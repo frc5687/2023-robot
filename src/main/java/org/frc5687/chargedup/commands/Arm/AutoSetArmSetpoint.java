@@ -17,7 +17,7 @@ public class AutoSetArmSetpoint extends OutliersCommand {
     public AutoSetArmSetpoint(Arm arm, double angle) {
         _arm = arm;
         // we should create the goal here which takes the angle and velocity.
-        goal = new TrapezoidProfile.State(angle, _arm.getArmVelocityRadPerSec());
+        goal = new TrapezoidProfile.State(angle, 0);
         // what should the velocity be in the goal?
         addRequirements(_arm);
     }

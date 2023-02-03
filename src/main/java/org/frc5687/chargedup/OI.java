@@ -31,7 +31,7 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(EndEffector endEffector, Arm arm) {
-        _operatorGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, ( 101.0)));
+        //_operatorGamepad.getAButton().whenPressed(new AutoSetWristAngle(endEffector, ( 101.0)));
 //        _operatorGamepad.getBButton().whenPressed(new AutoSetWristAngle(endEffector, ( 17.0)));
 //        _operatorGamepad.getYButton().whenPressed(new AutoSetWristAngle(endEffector, ( -80.0)));
 //
@@ -39,7 +39,10 @@ public class OI extends OutliersProxy {
 //        _operatorGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MAX_ANGLE)));
 //        _operatorGamepad.getLeftBumper().whenPressed(new AutoSetGripperAngle(endEffector, Units.radiansToDegrees(Constants.EndEffector.GRIPPER_MIN_ANGLE)));
 
-        _operatorGamepad.getBButton().whenPressed(new DriveUntilHall(arm, false));
+        _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 0.378));
+        _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, Math.PI/2));
+        _operatorGamepad.getXButton().whenPressed(new AutoSetArmSetpoint(arm, 3.53));
+        _operatorGamepad.getYButton().whenPressed(new AutoSetArmSetpoint(arm, 0.75*Math.PI));
 
 
     }

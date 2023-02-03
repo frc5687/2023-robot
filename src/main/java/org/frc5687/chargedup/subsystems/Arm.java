@@ -72,20 +72,15 @@ public class Arm extends OutliersSubsystem{
     public void periodic() {
         super.periodic();
         // update our kalman filter.
-    //    if (_upperHall.get() && _controlLoop.getU(0) > 0) {
-    //        _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
-    //        _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
-    //        //reset encoder
-    //        _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(UPPER_HALL_RAD, GEAR_RATIO));
-    //    } else if (_lowerHall.get() && _controlLoop.getU(0) < 0) {
-    //        _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
-    //        _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
-    //        //reset encoder
-    //        _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(LOWER_HALL_RAD, GEAR_RATIO));
+       if (_lowerHall.get() && _controlLoop.getU(0) < 0) {
+           _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
+           _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
+           //reset encoder
+           setEncoderRadians(LOWER_EXTREME);
 
-    //    }
+       }
         if (getUpperHall()) {
-            zeroEncoder();
+            setEncoderRadians(VERTICAL_ARM_ANGLE);;
         }
         _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
         _controlLoop.predict(kDt);
@@ -163,7 +158,7 @@ public class Arm extends OutliersSubsystem{
         metric("Angle", getArmAngleRadians());
         metric("Next Voltage", getNextVoltage());
         metric("Estimated Angle", getPredictedArmAngleRadians());
-        metric("Reference", _controlLoop.getNextR().toString());
+        metric("Reference", _controlLoop.getNextR().get(0, 0));
         metric("Upper Hall triggered", getUpperHall());
         metric("Lower Hall triggered", getLowerHall());
     }
