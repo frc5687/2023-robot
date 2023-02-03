@@ -241,6 +241,54 @@ public class Constants {
     }
 
 
+    public static class Arm {
+        public static final double kDt = 0.02;
+        public static final String CAN_BUS = "rio";
+        public static final double GEAR_RATIO = 375;
+        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        static {
+            CONFIG.TIME_OUT = 100;
+
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+
+            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+
+            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
+            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
+        }
+        // this is the motor config for the arm motors
+
+        public static final double ARM_LENGTH = Units.feetToMeters(4.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
+        public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
+
+        // Physical characteristic of the system
+//        public static final double INERTIA_ARM = 0.5; // kg * m^2
+
+        // Kalman Filter parameters
+        public static final double MODEL_POSITION_NOISE = 0.015; // rad
+        public static final double MODEL_VELOCITY_NOISE = 0.04; // rad/s
+
+        public static final double SENSOR_POSITION_NOISE = 0.01; // rad
+        // LQR parameters
+        public static final double Q_POSITION = Units.degreesToRadians(0.1);
+        public static final double Q_VELOCITY = Units.degreesToRadians(1);
+
+        public static final double CONTROL_EFFORT = 12.0;
+        // profile constraints
+        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
+
+        public static final double ANGLE_TOLERANCE = 0.01;
+        public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
+        public static final double LOWER_EXTREME = 0.378;
+    }
+
     public static class Auto {
         public static class FieldPoses {
             public static final Pose2d POSE_1 = new Pose2d(0, 0, new Rotation2d());
