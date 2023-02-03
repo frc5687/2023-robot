@@ -273,8 +273,9 @@ public class Constants {
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(1);
-        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(310.0);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(144.0);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(278.0);
+        public static final double WRIST_MID_ANGLE = Units.degreesToRadians(208.7);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
         public static final boolean WRIST_INVERTED = true;
 
         public static final double GRIPPER_kP = 1.6;
