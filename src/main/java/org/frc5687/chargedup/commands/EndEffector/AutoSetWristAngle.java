@@ -9,20 +9,19 @@ import edu.wpi.first.math.util.Units;
 public class AutoSetWristAngle extends OutliersCommand {
     
     private EndEffector _wrist;
-    private double _angleDegrees;
+    private double _angle;
 
-    public AutoSetWristAngle(EndEffector wrist, double angleDegrees){
+    public AutoSetWristAngle(EndEffector wrist, double angle){
         _wrist = wrist;
-        _angleDegrees = angleDegrees;
+        _angle = angle;
         addRequirements(_wrist);
     }
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        _wrist.setWristSetpointDegrees(_angleDegrees);
-        metric("setpoint", _angleDegrees);
-        metric("setpoint rad", Units.degreesToRadians(_angleDegrees));
+        _wrist.setWristSetpointRadians(_angle);
+        metric("setpoint", _angle);
 
     }
     @Override
@@ -36,7 +35,7 @@ public class AutoSetWristAngle extends OutliersCommand {
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return false ;//Math.abs( Units.degreesToRadians(_angleDegrees) -_wrist.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE;
+        return Math.abs(_angle -_wrist.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE;
     }
     @Override
     public void end(boolean interrupted) {

@@ -263,8 +263,8 @@ public class Constants {
         }
         // this is the motor config for the arm motors
 
-        public static final double ARM_LENGTH = Units.feetToMeters(4.0);
-        public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
+        public static final double ARM_LENGTH = Units.feetToMeters(5.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(11.0);
         public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
 
         // Physical characteristic of the system
@@ -326,22 +326,24 @@ public class Constants {
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
         public static final boolean WRIST_INVERTED = true;
 
-        public static final double GRIPPER_kP = 1.6;
-        public static final double GRIPPER_kI = 0;
+        public static final double GRIPPER_kP = 3.2;
+        public static final double GRIPPER_kI = 0.3;
         public static final double GRIPPER_kD = 0;
+
+        public static final double GRIPPER_I_ZONE = 1;
 
         public static final double GRIPPER_VEL = Units.degreesToRadians(5);
         public static final double GRIPPER_ACCEL = Units.degreesToRadians(1);
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         //fully closed angle
-        public static final double GRIPPER_MAX_ANGLE = Units.degreesToRadians(284.0);
+        public static final double GRIPPER_CLOSED_ANGLE = Units.degreesToRadians(270.0);
         // fully open angle
-        public static final double GRIPPER_MIN_ANGLE = Units.degreesToRadians(118.0);
+        public static final double GRIPPER_OPEN_ANGLE = Units.degreesToRadians(130.0);
         public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
 
-
+        public static final long GRIPPER_TIMEOUT = 1500;
     }
 
 }  

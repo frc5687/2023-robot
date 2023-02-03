@@ -14,6 +14,7 @@ import org.frc5687.chargedup.util.OutliersProxy;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
@@ -33,12 +34,18 @@ public class OI extends OutliersProxy {
         _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(EndEffector endEffector, Arm arm) {
-        _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 0.378));
-        _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, Math.PI/2));
-        _operatorGamepad.getXButton().whenPressed(new AutoSetArmSetpoint(arm, 3.53));
-        _operatorGamepad.getYButton().whenPressed(new AutoSetArmSetpoint(arm, 0.75*Math.PI));
+    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
+        _operatorGamepad.getAButton().whenPressed(new AutoSetSuperStructurePosition(
+            elevator, endEffector, arm, .4, Constants.EndEffector.WRIST_MID_ANGLE, Constants.EndEffector.GRIPPER_OPEN_ANGLE, Math.PI/2.0
+        ));
+        _operatorGamepad.getBButton().whenPressed(new AutoSetSuperStructurePosition(
+                elevator, endEffector, arm, .6, Constants.EndEffector.WRIST_MIN_ANGLE,
+                Constants.EndEffector.GRIPPER_CLOSED_ANGLE, 3.4));
+        _operatorGamepad.getXButton().whenPressed(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
+        _operatorGamepad.getYButton().whenPressed(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
+        _operatorGamepad.getRightBumper().whenPressed(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
+    }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
@@ -74,11 +81,10 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        return 0;
-        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-        // speed = applyDeadband(speed, ROTATION_DEADBAND);
-        // return speed/5; //for testing
-        
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed/5; //for testing
+    }
     public double getExtArmY(){
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
