@@ -38,7 +38,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, Math.PI/2));
         _operatorGamepad.getXButton().whenPressed(new AutoSetArmSetpoint(arm, 3.53));
         _operatorGamepad.getYButton().whenPressed(new AutoSetArmSetpoint(arm, 0.75*Math.PI));
-
+    }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
@@ -74,10 +74,10 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        return 0;
-        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-        // speed = applyDeadband(speed, ROTATION_DEADBAND);
-        // return speed/5; //for testing
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        return speed/5; //for testing
+    }
         
     public double getExtArmY(){
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
