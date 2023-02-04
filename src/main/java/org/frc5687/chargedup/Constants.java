@@ -12,7 +12,6 @@ import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
-import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 
 public class Constants {
@@ -39,8 +38,7 @@ public class Constants {
      * <p>Note: when robot is flipped over, this is clockwise.
      */
     public static class DriveTrain {
-        public static final String CAN_BUS = "Tomcat";
-        public static final int NUM_MODULES = 4;
+        public static final String CAN_BUS = "DriveTrain";
     
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4191; // meters
@@ -61,7 +59,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
     
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.0305;
+            NORTH_WEST_CONFIG.encoderOffset = -0.0;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -88,7 +86,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
     
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.205;
+            NORTH_EAST_CONFIG.encoderOffset = 0.0;
         }
         public static final double kDt = 0.005; // 5 ms
         public static final double TRANSLATION_DEADBAND =
@@ -195,6 +193,106 @@ public class Constants {
         public static final double MAX_MODULE_ACCELERATION =
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
+    }
+
+    public static class ExtendingArm {
+        public static final String CAN_BUS = "rio";
+        public static final double GEAR_RATIO = 25;
+        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        static {
+            CONFIG.TIME_OUT = 100;
+
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+
+            CONFIG.STATOR_CURRENT_LIMIT = 40;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+        }
+
+        public static final double SHORT_ARM_DISTANCE = .2;
+        public static final double MEDIUM_ARM_DISTANCE = .4;
+        public static final double LONG_ARM_DISTANCE = .6;
+
+        public static final double ZERO_ARM_SPEED = 0;
+        public static final double ZERO_ENCODER = 0.0;
+
+        public static final double OUT_HALL_RAD = 35;
+        public static final double IN_HALL_RAD = 0;
+
+        public static final double kP = 2.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final double EXT_ARM_TOLERANCE = .01;
+
+        public static final double TICKS_TO_METERS = 411281.3171;
+
+        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG = new OutliersTalon.ClosedLoopConfiguration();
+        static {
+            CONTROLLER_CONFIG.SLOT = 0;
+
+            CONTROLLER_CONFIG.kP = 0.58;
+            CONTROLLER_CONFIG.kI = 0;
+            CONTROLLER_CONFIG.kD = 0.38;
+            CONTROLLER_CONFIG.kF = 0;
+
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 40000;
+            CONTROLLER_CONFIG.ACCELERATION = 25000;
+
+
+        }
+    }
+
+
+    public static class Arm {
+        public static final double kDt = 0.02;
+        public static final String CAN_BUS = "rio";
+        public static final double GEAR_RATIO = 375;
+        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+        static {
+            CONFIG.TIME_OUT = 100;
+
+            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
+            CONFIG.INVERTED = false;
+
+            CONFIG.VOLTAGE_COMPENSATION = 12.0;
+            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+
+            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+
+            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
+            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
+        }
+        // this is the motor config for the arm motors
+
+        public static final double ARM_LENGTH = Units.feetToMeters(4.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
+        public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
+
+        // Physical characteristic of the system
+//        public static final double INERTIA_ARM = 0.5; // kg * m^2
+
+        // Kalman Filter parameters
+        public static final double MODEL_POSITION_NOISE = 0.015; // rad
+        public static final double MODEL_VELOCITY_NOISE = 0.04; // rad/s
+
+        public static final double SENSOR_POSITION_NOISE = 0.01; // rad
+        // LQR parameters
+        public static final double Q_POSITION = Units.degreesToRadians(0.1);
+        public static final double Q_VELOCITY = Units.degreesToRadians(1);
+
+        public static final double CONTROL_EFFORT = 12.0;
+        // profile constraints
+        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
+
+        public static final double ANGLE_TOLERANCE = 0.01;
+        public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
+        public static final double LOWER_EXTREME = 0.378;
     }
 
     public static class Auto {
