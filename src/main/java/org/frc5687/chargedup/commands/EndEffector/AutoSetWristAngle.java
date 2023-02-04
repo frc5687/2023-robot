@@ -42,6 +42,7 @@ public class AutoSetWristAngle extends OutliersCommand {
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
         super.end(interrupted);
+        _wrist.setWristSpeed(0);
         error("Wrist Ended");
     }
 }
