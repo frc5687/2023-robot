@@ -37,10 +37,11 @@ public class AutoSetSuperStructurePosition extends SequentialCommandGroup {
             new AutoSetGripperAngle(_endEffector, _gripperAngle),
             new ParallelCommandGroup(
                 new AutoSetArmSetpoint(_arm, _armAngle),
-                new SetEndEffectorPosition(_endEffector, _wristAngle, gripperAngle),
+                new AutoSetWristAngle(_endEffector, _wristAngle),
                 new AutoExtendElevator(_elevator, _elevatorPosition)
                 ),
-            new AutoSetArmSetpoint(_arm, _armAngle)
+            new AutoSetArmSetpoint(_arm, _armAngle),
+            new AutoSetWristAngle(_endEffector, _wristAngle)
         );
     }
     

@@ -14,7 +14,7 @@ public class IdleArm extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        _arm.setNextReference(_arm.getLastState());
+        _arm.setNextReference(_arm.getLastState().position, 0);
     }
 
     @Override
