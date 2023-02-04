@@ -100,10 +100,27 @@ public class SwerveSetpointGenerator {
             }
         }
     }
-
+    private double findRootRegula(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, int iterations_left) {
+        if (iterations_left < 0 || epsilonEquals(f_0, f_1)) {
+            return 1.0;
+        }
+        var s_guess = Math.max(0.0, Math.min(1.0, -f_0 / (f_1 - f_0)));
+        var x_guess = (x_1 - x_0) * s_guess + x_0;
+        var y_guess = (y_1 - y_0) * s_guess + y_0;
+        var f_guess = func.f(x_guess, y_guess);
+        if (Math.signum(f_0) == Math.signum(f_guess)) {
+            // 0 and guess on same side of root, so use upper bracket.
+            return s_guess + (1.0 - s_guess) * findRootRegula(func, x_guess, y_guess, f_guess, x_1, y_1, f_1, iterations_left - 1);
+        } else {
+            // Use lower bracket.
+            return s_guess * findRootRegula(func, x_0, y_0, f_0, x_guess, y_guess, f_guess, iterations_left - 1);
+        }
+    }
     private double findRoot(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, int iterations_left) {
 //         return findRootIllinois(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
         return findRootITP(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
+//        return findRootRegula(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
+
     }
 
     protected double findSteeringMaxS(double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, double max_deviation, int max_iterations) {
