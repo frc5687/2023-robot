@@ -93,7 +93,7 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 3.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 2.0; // Max speed of robot (m/s)
         public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
         public static final double MAX_MPS_DURING_CLIMB =
                 MAX_MPS / 4; // Max speed of robot (m/s) during climb
@@ -324,6 +324,9 @@ public class Constants {
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(278.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(208.7);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
+
+
+        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(243.7);
         public static final boolean WRIST_INVERTED = true;
 
         public static final double GRIPPER_kP = 3.2;
