@@ -9,19 +9,22 @@ import edu.wpi.first.math.util.Units;
 public class AutoSetGripperAngle extends OutliersCommand{
     
     private EndEffector _gripper;
-    private double _angleDegrees;
+    private double _angle;
 
-    public AutoSetGripperAngle(EndEffector gripper, double angleDegrees){
+    private long _timeout;
+
+    public AutoSetGripperAngle(EndEffector gripper, double angle){
         _gripper = gripper;
-        _angleDegrees = angleDegrees;
+        _angle = angle;
         addRequirements(_gripper);
     }
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        _gripper.setGripperSetpointDegrees(_angleDegrees);
-        metric("Setpoint", Units.degreesToRadians(_angleDegrees));
+        _timeout = System.currentTimeMillis() + Constants.EndEffector.GRIPPER_TIMEOUT;
+        _gripper.setGripperSetpointRadians(_angle);
+        metric("Setpoint", _angle);
     }
     @Override
     public void execute() {
@@ -35,7 +38,8 @@ public class AutoSetGripperAngle extends OutliersCommand{
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        return Math.abs(Units.degreesToRadians(_angleDegrees) - _gripper.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
+        error("Gripper has grippped");
+        return Math.abs(_angle - _gripper.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE || _timeout < System.currentTimeMillis();
     }
     @Override
     public void end(boolean interrupted) {
