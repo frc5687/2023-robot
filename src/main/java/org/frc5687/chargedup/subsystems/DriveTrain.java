@@ -44,10 +44,6 @@ public class DriveTrain extends OutliersSubsystem {
 
     private ControlState _controlState;
     private boolean _fieldRelative;
-
-    private Translation2d _clockwiseCenter;
-    private Translation2d _counterClockwiseCenter;
-
     private Pigeon2 _imu;
     private OI _oi;
     private HolonomicDriveController _poseController;
@@ -157,9 +153,6 @@ public class DriveTrain extends OutliersSubsystem {
             new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
         );
 
-        _clockwiseCenter = new Translation2d();
-        _counterClockwiseCenter = new Translation2d();
-
         _controlState = ControlState.NEUTRAL;
         _fieldRelative = true;
 
@@ -191,8 +184,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     // use for modules as controller is running at 200Hz.
     public void modulePeriodic() {
-        for (int module = 0; module < _modules.length; module++) {
-            _modules[module].periodic();
+        for (DiffSwerveModule diffSwerveModule : _modules) {
+            diffSwerveModule.periodic();
         }
     }
 
@@ -237,9 +230,7 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
     public void setSetpointFromMeasuredModules() {
-        for (int module = 0; module < _modules.length; module++) {
-            _systemIO.setpoint.moduleStates[module] = _systemIO.measuredStates[module];
-        }
+        System.arraycopy(_systemIO.measuredStates, 0, _systemIO.setpoint.moduleStates, 0, _modules.length);
         _systemIO.setpoint.chassisSpeeds = _kinematics.toChassisSpeeds(_systemIO.setpoint.moduleStates);
     }
 
@@ -279,8 +270,8 @@ public class DriveTrain extends OutliersSubsystem {
         omega = omega*MAX_ANG_VEL;
 
         if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
-            for (int module = 0; module < _modules.length; module++) {
-                _modules[module].setIdealState(new SwerveModuleState(0.0, new Rotation2d(_modules[module].getModuleAngle())));
+            for (DiffSwerveModule diffSwerveModule : _modules) {
+                diffSwerveModule.setIdealState(new SwerveModuleState(0.0, new Rotation2d(diffSwerveModule.getModuleAngle())));
             }
 
             _PIDAngle = getHeading().getRadians();
