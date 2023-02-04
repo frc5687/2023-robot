@@ -28,8 +28,8 @@ public class Arm extends OutliersSubsystem{
     private final HallEffect _upperHall;
     private final HallEffect _lowerHall;
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
-
     private final TrapezoidProfile.Constraints _contraints;
+    private TrapezoidProfile.State _lastArmState;
 
     public Arm(OutliersContainer container) {
         super(container);
@@ -65,6 +65,8 @@ public class Arm extends OutliersSubsystem{
         );
 
         _contraints = new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION);
+        // we are setting velocity to 0 in the case that the arm was moving when starting up.
+        _lastArmState = new TrapezoidProfile.State(getArmAngleRadians(), 0);
         _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), getArmVelocityRadPerSec()));
     }
 
@@ -140,10 +142,15 @@ public class Arm extends OutliersSubsystem{
 
     public void setNextReference(TrapezoidProfile.State state) {
         _controlLoop.setNextR(state.position, state.velocity);
+        _lastArmState = state;
     }
 
     public void setNextReference(double radians, double radPerSec) {
         _controlLoop.setNextR(radians, radPerSec);
+    }
+
+    public TrapezoidProfile.State getLastState() {
+        return _lastArmState;
     }
 
     /**
