@@ -26,6 +26,8 @@ public class EndEffector extends OutliersSubsystem {
     private final PIDController _wristController;
     private final PIDController _gripperController;
 
+    private boolean _isConeMode;
+
     public EndEffector(OutliersContainer container) {
         super(container);
 
@@ -99,4 +101,17 @@ public class EndEffector extends OutliersSubsystem {
     public double getGripperControllerOutput(){
         return _gripperController.calculate(getGripperAngleRadians());
     }
+
+    public void setConeMode(){
+        _isConeMode = true;
+    }
+
+    public void setCubeMode(){
+        _isConeMode = false;
+    }
+
+    public boolean getConeMode(){
+        return _isConeMode;
+    }
+
 }

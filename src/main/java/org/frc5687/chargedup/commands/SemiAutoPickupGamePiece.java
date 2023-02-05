@@ -14,8 +14,8 @@ public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
             Arm arm,
             EndEffector endEffector,
             Elevator elevator,
-            OI oi,
-    ) {
+            OI oi
+        ) {
         addCommands(
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, 0.0, Constants.EndEffector.WRIST_PICKUP_ANGLE,
@@ -24,7 +24,7 @@ public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
                 new WaitForManualGripper(oi),
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, 0.2, Constants.EndEffector.WRIST_MID_ANGLE,
-                        Constants.EndEffector.GRIPPER_CLOSED_ANGLE, Constants.Arm.VERTICAL_ARM_ANGLE
+                        endEffector.getConeMode() ? Constants.EndEffector.GRIPPER_CLOSED_ANGLE : Constants.EndEffector.GRIPPER_CUBE_ANGLE, Constants.Arm.VERTICAL_ARM_ANGLE
                 )
         );
     }

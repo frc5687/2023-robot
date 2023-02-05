@@ -4,6 +4,7 @@ package org.frc5687.chargedup;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import org.frc5687.chargedup.commands.SemiAutoPickupGamePiece;
@@ -45,6 +46,8 @@ public class OI extends OutliersProxy {
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
         _operatorGamepad.getXButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
         _operatorGamepad.getYButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
+        _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
 //        _operatorGamepad.getRightBumper().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
     }
