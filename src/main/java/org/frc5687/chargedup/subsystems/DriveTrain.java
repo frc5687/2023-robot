@@ -37,25 +37,25 @@ public class DriveTrain extends OutliersSubsystem {
     private static final int SOUTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
     private static final int NORTH_EAST_IDX = 3;
-    private DiffSwerveModule[] _modules;
+    private final DiffSwerveModule[] _modules;
 
-    private SwerveDriveKinematics _kinematics;
-    private SwerveDriveOdometry _odometry;
+    private final SwerveDriveKinematics _kinematics;
+    private final SwerveDriveOdometry _odometry;
 
     private ControlState _controlState;
     private boolean _fieldRelative;
-    private Pigeon2 _imu;
+    private final Pigeon2 _imu;
     private OI _oi;
-    private HolonomicDriveController _poseController;
+    private final HolonomicDriveController _poseController;
     private ProfiledPIDController _angleController;
 
     // Setpoint generator for swerve.
-    private SwerveSetpointGenerator _swerveSetpointGenerator;
+    private final SwerveSetpointGenerator _swerveSetpointGenerator;
     private KinematicLimits _kinematicLimits = KINEMATIC_LIMITS;
 
     private double _PIDAngle;
 
-    private SystemIO _systemIO;
+    private final SystemIO _systemIO;
 
     private double _yawOffset;
 
@@ -65,7 +65,7 @@ public class DriveTrain extends OutliersSubsystem {
         _oi = oi;
         _systemIO = new SystemIO();
 
-        _modules = new DiffSwerveModule[NUM_MODULES];
+        _modules = new DiffSwerveModule[4];
 
         _modules[NORTH_WEST_IDX] = new DiffSwerveModule(
                 NORTH_WEST_CONFIG,
@@ -139,8 +139,8 @@ public class DriveTrain extends OutliersSubsystem {
 
         // This should set the Pigeon to 0.
         _yawOffset = getYaw();
-
         readIMU();
+
         readModules();
         setSetpointFromMeasuredModules();
 

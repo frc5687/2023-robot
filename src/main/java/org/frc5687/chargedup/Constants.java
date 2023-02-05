@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.chargedup.subsystems.DiffSwerveModule;
+import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
 public class Constants {
     public static final int TICKS_PER_UPDATE = 5;
