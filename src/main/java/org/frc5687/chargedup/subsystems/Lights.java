@@ -1,6 +1,7 @@
 package org.frc5687.chargedup.subsystems;
 
 import org.frc5687.chargedup.Constants;
+import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -17,11 +18,15 @@ public class Lights extends OutliersSubsystem{
     private Animation _animate;
     private AnimationType _currentAnimation;
     private DriveTrain _driveTrain;
+    private EndEffector _endEffector;
+    private OI _oi;
     private int[] _color;
 
-    public Lights(OutliersContainer _container, DriveTrain driveTrain) {
+    public Lights(OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         super(_container);
         _driveTrain = driveTrain;
+        _endEffector = endEffector;
+        _oi = oi;
         _candle = new CANdle(RobotMap.CAN.CANDLE.PORT);
         _config = new CANdleConfiguration();
         //Set LED strip type
@@ -92,12 +97,23 @@ public class Lights extends OutliersSubsystem{
      */
     @Override
     public void periodic() {
-        if (_driveTrain.isLevel()) {
+
+        if (_oi.rainbow()) {
+            switchAnimation(AnimationType.RAINBOW);
+        } else if (_endEffector.getConeMode()) {
+            switchAnimation(AnimationType.STATIC);
+            setColor(Constants.CANdle.YELLOW);
+        } else {
             switchAnimation(AnimationType.STATIC);
             setColor(Constants.CANdle.PURPLE);
-        } else {
-            switchAnimation(AnimationType.FIRE);
         }
+    
+        // } else if (_driveTrain.isLevel()) {
+        //     switchAnimation(AnimationType.STATIC);
+        //     setColor(Constants.CANdle.PURPLE);
+        // } else {
+        //     switchAnimation(AnimationType.FIRE);
+        // }
 
         if (_animate == null) {
             _candle.setLEDs(_color[0], _color[1], _color[2]);

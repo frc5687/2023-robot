@@ -4,6 +4,7 @@ package org.frc5687.chargedup;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import org.frc5687.lib.oi.Gamepad;
@@ -38,6 +39,9 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, Math.PI/2));
         _operatorGamepad.getXButton().whenPressed(new AutoSetArmSetpoint(arm, 3.53));
         _operatorGamepad.getYButton().whenPressed(new AutoSetArmSetpoint(arm, 0.75*Math.PI));
+        _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
+  
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -47,6 +51,10 @@ public class OI extends OutliersProxy {
 
     public boolean raiseArm() {
         return _driverGamepad.getYButton().getAsBoolean();
+    }
+
+    public boolean rainbow() {
+        return _operatorGamepad.getLeftBumper().getAsBoolean();
     }
 
     public double getDriveY() {

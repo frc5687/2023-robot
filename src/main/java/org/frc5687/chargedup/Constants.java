@@ -346,8 +346,8 @@ public class Constants {
 
 
     public static class CANdle {
-        public static double BRIGHTNESS = 0.5;
-        public static int NUM_LED = 100;
+        public static double BRIGHTNESS = 1.0;
+        public static int NUM_LED = 120;
         public static double SPEED = 0.7;
 
         public static int[] YELLOW = {255, 255, 0};
