@@ -138,7 +138,7 @@ public class DriveTrain extends OutliersSubsystem {
         );
 
         // This should set the Pigeon to 0.
-        _yawOffset = getYaw();
+        _yawOffset = _imu.getYaw();
         readIMU();
 
         readModules();

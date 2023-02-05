@@ -43,11 +43,11 @@ public class Constants {
         public static final int NUM_MODULES = 4;
     
         // Size of the robot chassis in meters
-        public static final double WIDTH = 0.4191; // meters
-        public static final double LENGTH = 0.4191; // meters
+        public static final double WIDTH = 0.4445; // meters
+        public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
         public static final double SCALED_TRANSLATION_INPUT = 0.8;
-        public static final double SCALED_ROTATION_INPUT = 0.2;
+        public static final double SCALED_ROTATION_INPUT = 0.5;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
