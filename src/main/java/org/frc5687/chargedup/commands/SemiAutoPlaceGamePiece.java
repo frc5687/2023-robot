@@ -19,7 +19,7 @@ public class SemiAutoPlaceGamePiece extends SequentialCommandGroup {
         addCommands(
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, 0.5, Constants.EndEffector.WRIST_MIN_ANGLE,
-                        Constants.EndEffector.GRIPPER_CLOSED_ANGLE, Constants.Arm.PLACE_ARM_ANGLE
+                        endEffector.getConeMode() ? Constants.EndEffector.GRIPPER_CLOSED_ANGLE : Constants.EndEffector.GRIPPER_CUBE_ANGLE, Constants.Arm.PLACE_ARM_ANGLE
                 ),
                 new WaitForManualGripper(oi),
                 new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE),
