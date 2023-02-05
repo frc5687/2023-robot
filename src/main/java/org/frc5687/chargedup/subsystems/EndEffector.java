@@ -52,6 +52,7 @@ public class EndEffector extends OutliersSubsystem {
             GRIPPER_kD
             // new TrapezoidProfile.Constraints(GRIPPER_VEL, GRIPPER_ACCEL)
         );
+        _gripperController.setIntegratorRange(-GRIPPER_I_ZONE, GRIPPER_I_ZONE);
     }  
     @Override
     public void updateDashboard() {
@@ -71,18 +72,26 @@ public class EndEffector extends OutliersSubsystem {
     }
 
     public double getWristAngleRadians(){
-         return _wristEncoder.getDistance(); // % (2.0 * Math.PI) - Constants.EndEffector.WRIST_OFFSET;
+         return _wristEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.WRIST_OFFSET;
     }
     public double getGripperAngleRadians(){
-        return _gripperEncoder.getDistance() % (2.0 * Math.PI) - Constants.EndEffector.GRIPPER_OFFSET;
+        return _gripperEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.GRIPPER_OFFSET;
     }
     
     public void setWristSetpointDegrees(double degrees){
         _wristController.setSetpoint(Units.degreesToRadians(degrees));
     }
 
+    public void setWristSetpointRadians(double radians){
+        _wristController.setSetpoint(radians);
+    }
+
     public void setGripperSetpointDegrees(double degrees){
         _gripperController.setSetpoint(Units.degreesToRadians(degrees));
+    }
+
+    public void setGripperSetpointRadians(double radians) {
+        _gripperController.setSetpoint(radians);
     }
     public double getWristControllerOutput(){
       return  _wristController.calculate(getWristAngleRadians()); 

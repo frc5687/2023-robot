@@ -99,7 +99,7 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 3.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 2.0; // Max speed of robot (m/s)
         public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
         public static final double MAX_MPS_DURING_CLIMB =
                 MAX_MPS / 4; // Max speed of robot (m/s) during climb
@@ -269,8 +269,8 @@ public class Constants {
         }
         // this is the motor config for the arm motors
 
-        public static final double ARM_LENGTH = Units.feetToMeters(4.0);
-        public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
+        public static final double ARM_LENGTH = Units.feetToMeters(5.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(11.0);
         public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
 
         // Physical characteristic of the system
@@ -290,7 +290,7 @@ public class Constants {
         public static final double MAX_VELOCITY = Units.degreesToRadians(100);
         public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
 
-        public static final double ANGLE_TOLERANCE = 0.01;
+        public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
         public static final double LOWER_EXTREME = 0.378;
     }
@@ -318,7 +318,7 @@ public class Constants {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 0.5;
+        public static final double WRIST_kP = 2;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
 
@@ -326,27 +326,33 @@ public class Constants {
         public static final double WRIST_VEL = Units.degreesToRadians(5);
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
-        public static final double WRIST_TOLERENCE = Units.degreesToRadians(1);
-        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(310.0);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(144.0);
+        public static final double WRIST_TOLERENCE = Units.degreesToRadians(5.5);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(278.0);
+        public static final double WRIST_MID_ANGLE = Units.degreesToRadians(208.7);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
+
+
+        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(240);
         public static final boolean WRIST_INVERTED = true;
 
-        public static final double GRIPPER_kP = 1.6;
+        public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
+
+        public static final double GRIPPER_I_ZONE = 1;
 
         public static final double GRIPPER_VEL = Units.degreesToRadians(5);
         public static final double GRIPPER_ACCEL = Units.degreesToRadians(1);
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         //fully closed angle
-        public static final double GRIPPER_MAX_ANGLE = Units.degreesToRadians(284.0);
+        public static final double GRIPPER_CLOSED_ANGLE = Units.degreesToRadians(277.0);
         // fully open angle
-        public static final double GRIPPER_MIN_ANGLE = Units.degreesToRadians(118.0);
+        public static final double GRIPPER_OPEN_ANGLE = Units.degreesToRadians(130.0);
         public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
 
-
+        public static final long GRIPPER_TIMEOUT = 1500;
     }
 
 }  
