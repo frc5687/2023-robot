@@ -61,7 +61,7 @@ public class EndEffector extends OutliersSubsystem {
         metric("wrist angle deg", Units.radiansToDegrees(getWristAngleRadians()));
         metric("wrist angle rad", getWristAngleRadians());
         metric("gripper angle", Units.radiansToDegrees(getGripperAngleRadians()));
-
+        metric("percent output", _wrist.getMotorOutputPercent());
         // metric("wrist setpoint", _wristController.getGoal().position);
         metric("position error", _wristController.getPositionError());
     }

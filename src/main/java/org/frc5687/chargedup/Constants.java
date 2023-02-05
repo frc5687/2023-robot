@@ -273,7 +273,7 @@ public class Constants {
         // this is the motor config for the arm motors
 
         public static final double ARM_LENGTH = Units.feetToMeters(5.0);
-        public static final double ARM_WEIGHT = Units.lbsToKilograms(20.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(12.0);
         public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
 
         // Physical characteristic of the system
@@ -286,14 +286,14 @@ public class Constants {
         public static final double SENSOR_POSITION_NOISE = 0.01; // rad
         // LQR parameters
         public static final double Q_POSITION = Units.degreesToRadians(0.05);
-        public static final double Q_VELOCITY = Units.degreesToRadians(1);
+        public static final double Q_VELOCITY = Units.degreesToRadians(0.5);
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
         public static final double MAX_VELOCITY = Units.degreesToRadians(100);
         public static final double MAX_ACCELERATION = Units.degreesToRadians(90);
 
-        public static final double ANGLE_TOLERANCE = 0.05; // rads
+        public static final double ANGLE_TOLERANCE = 0.017; // rads
         public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
         public static final double PLACE_ARM_ANGLE = 3.125;
         public static final double LOWER_EXTREME = 0.378;
@@ -339,7 +339,7 @@ public class Constants {
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(240);
         public static final boolean WRIST_INVERTED = true;
 
-        public static final double GRIPPER_kP = 3.2;
+        public static final double GRIPPER_kP = 3.5;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
 
@@ -356,7 +356,7 @@ public class Constants {
         public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
 
-        public static final long GRIPPER_TIMEOUT = 700;
+        public static final long GRIPPER_TIMEOUT = 1000;
     }
 
 }  

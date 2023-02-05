@@ -8,6 +8,7 @@ import org.frc5687.chargedup.commands.Arm.HoldArm;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 import org.frc5687.chargedup.commands.Elevator.DriveUntilInHall;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+import org.frc5687.chargedup.commands.EndEffector.CloseConeGripper;
 import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
@@ -30,6 +31,7 @@ public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(new WaitForManualGripper(
                                         oi), new HoldArm(arm, 1.51))
                 ,
+                new CloseConeGripper(endEffector),
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, 0.1, Constants.EndEffector.WRIST_MID_ANGLE,
                         /*endEffector.getConeMode() ?*/ Constants.EndEffector.GRIPPER_CLOSED_ANGLE /*: Constants.EndEffector.GRIPPER_CUBE_ANGLE*/, Constants.Arm.VERTICAL_ARM_ANGLE
