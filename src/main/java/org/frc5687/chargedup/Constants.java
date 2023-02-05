@@ -246,6 +246,7 @@ public class Constants {
         public static final String CAN_BUS = "rio";
         public static final double GEAR_RATIO = 375;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+
         static {
             CONFIG.TIME_OUT = 100;
 
@@ -286,6 +287,7 @@ public class Constants {
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
+        public static final double PLACE_ARM_ANGLE = 3.2;
         public static final double LOWER_EXTREME = 0.378;
     }
 
@@ -346,7 +348,7 @@ public class Constants {
         public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
 
-        public static final long GRIPPER_TIMEOUT = 1500;
+        public static final long GRIPPER_TIMEOUT = 700;
     }
 
 }  
