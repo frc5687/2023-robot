@@ -12,8 +12,8 @@ import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
-import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
+import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 
 public class Constants {
     public static final int TICKS_PER_UPDATE = 5;
@@ -21,7 +21,7 @@ public class Constants {
     public static final double UPDATE_PERIOD = 0.02;
     public static final double CONTROL_PERIOD = 0.005; // 5 ms
     public static final double DATA_PERIOD = 0.02; // 20 ms
-    public static final double EPSILON = 1e-12;
+    public static final double EPSILON = 1e-9;
     
     /**
      * Coordinate System
@@ -40,17 +40,20 @@ public class Constants {
      */
     public static class DriveTrain {
         public static final String CAN_BUS = "DriveTrain";
+        public static final int NUM_MODULES = 4;
     
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4191; // meters
         public static final double LENGTH = 0.4191; // meters
         // Distance of swerve modules from center of robot
+        public static final double SCALED_TRANSLATION_INPUT = 0.8;
+        public static final double SCALED_ROTATION_INPUT = 0.2;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 2.0; // m/s^2
+            KINEMATIC_LIMITS.maxDriveAcceleration = 6.0; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 2; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
@@ -100,12 +103,10 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 2.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
         public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
-        public static final double MAX_MPS_DURING_CLIMB =
-                MAX_MPS / 4; // Max speed of robot (m/s) during climb
         public static final double MAX_ANG_VEL =
-                Math.PI * 1.5; // Max rotation rate of robot (rads/s)
+                Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final double MAX_MPSS = 1; // Max acceleration of robot (m/s^2)
     
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);

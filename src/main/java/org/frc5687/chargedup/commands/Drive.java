@@ -31,10 +31,11 @@ public class Drive extends OutliersCommand {
     @Override
     public void execute() {
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
-        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS;
-        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS;
-        double rot = _oi.getRotationX() * Constants.DriveTrain.MAX_ANG_VEL;
-
+        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+        double rot = _oi.getRotationX();
+        rot = Math.signum(rot) * rot * rot;
+        rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
         _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                 vx,
                 vy,
