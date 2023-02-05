@@ -52,9 +52,9 @@ public class Constants {
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
-            KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 6.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 2; // rad/s
+            KINEMATIC_LIMITS.maxDriveVelocity = 1.5; // m/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 2.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 6; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -72,7 +72,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
     
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = 0.0;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.2;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -273,7 +273,7 @@ public class Constants {
         // this is the motor config for the arm motors
 
         public static final double ARM_LENGTH = Units.feetToMeters(5.0);
-        public static final double ARM_WEIGHT = Units.lbsToKilograms(11.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(20.0);
         public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
 
         // Physical characteristic of the system
@@ -285,7 +285,7 @@ public class Constants {
 
         public static final double SENSOR_POSITION_NOISE = 0.01; // rad
         // LQR parameters
-        public static final double Q_POSITION = Units.degreesToRadians(0.1);
+        public static final double Q_POSITION = Units.degreesToRadians(0.05);
         public static final double Q_VELOCITY = Units.degreesToRadians(1);
 
         public static final double CONTROL_EFFORT = 12.0;
@@ -295,7 +295,7 @@ public class Constants {
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
-        public static final double PLACE_ARM_ANGLE = 3.2;
+        public static final double PLACE_ARM_ANGLE = 3.125;
         public static final double LOWER_EXTREME = 0.378;
     }
 

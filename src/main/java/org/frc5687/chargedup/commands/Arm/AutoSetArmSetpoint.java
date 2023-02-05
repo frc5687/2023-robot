@@ -29,7 +29,6 @@ public class AutoSetArmSetpoint extends OutliersCommand {
         // We need to set the previous profiled reference to match the current state of the arm using sensors we have.
         _lastProfiledReference =
         new TrapezoidProfile.State(_arm.getArmAngleRadians(), _arm.getArmVelocityRadPerSec());
-        error("Arm started");
     }
 
     @Override
@@ -52,7 +51,6 @@ public class AutoSetArmSetpoint extends OutliersCommand {
 
     @Override
     public void end(boolean interrupted) {
-        error("Finished Arm");
         _arm.setArmSpeed(0);
         super.end(interrupted);
     

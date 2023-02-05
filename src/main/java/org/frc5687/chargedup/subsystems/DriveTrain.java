@@ -206,6 +206,7 @@ public class DriveTrain extends OutliersSubsystem {
                 break;
         }
         updateDesiredStates();
+        metric("Setpoint", _systemIO.setpoint.chassisSpeeds.toString());
         setModuleStates(_systemIO.setpoint.moduleStates);
     }
 

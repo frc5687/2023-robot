@@ -38,7 +38,6 @@ public class AutoSetGripperAngle extends OutliersCommand{
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        error("Gripper has grippped");
         return Math.abs(_angle - _gripper.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE || _timeout < System.currentTimeMillis();
     }
     @Override

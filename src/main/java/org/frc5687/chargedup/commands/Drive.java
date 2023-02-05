@@ -1,6 +1,8 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.commands;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import org.frc5687.chargedup.Constants;
@@ -10,11 +12,15 @@ import org.frc5687.chargedup.subsystems.DriveTrain;
 public class Drive extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
+    private final PIDController _angleController;
+    private double heading;
     private final OI _oi;
 
     public Drive(DriveTrain driveTrain, OI oi) {
         _driveTrain = driveTrain;
         _oi = oi;
+        _angleController = new PIDController(3, 0, 0);
+        heading = _driveTrain.getHeading().getRadians();
         addRequirements(_driveTrain);
         //        logMetrics("vx","vy");
         //        enableMetrics();
@@ -36,6 +42,11 @@ public class Drive extends OutliersCommand {
         double rot = _oi.getRotationX();
         rot = Math.signum(rot) * rot * rot;
         rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
+        if (Math.abs(rot) < 0.05) {
+            rot = _angleController.calculate(_driveTrain.getHeading().getRadians(), heading);
+        } else {
+            heading = _driveTrain.getHeading().getRadians();
+        }
         _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                 vx,
                 vy,
