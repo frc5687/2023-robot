@@ -112,20 +112,16 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double STABILIZATION_kP = 1;
-        public static final double STABILIZATION_kI = 0.0;
-        public static final double STABILIZATION_kD = 0.0;
+        public static final double MAINTAIN_kP = 1;
+        public static final double MAINTAIN_kI = 0.0;
+        public static final double MAINTAIN_kD = 0.0;
     
         public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
         public static final double SNAP_kD = 0.0;
     
-        public static final double VISION_kP = 4.0;
-        public static final double VISION_kI = 0.0;
-        public static final double VISION_kD = 0.0;
-    
-        public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL;
-        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 3.0;
+        public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL * 2.0;
+        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 6.0;
     
         public static final double kP = 5;
         public static final double kI = 0.0;
