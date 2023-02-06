@@ -11,23 +11,23 @@ public class SetEndEffectorPosition extends OutliersCommand{
     private EndEffector _endEffector;
     
     
-    private double _wristAngleDegrees;
-    private double _gripperAngleDegrees;
+    private double _wristAngle;
+    private double _gripperAngle;
 
     public SetEndEffectorPosition(EndEffector endEffector,
-     double wristAngleDegrees, double gripperAngleDegrees ) {
+     double wristAngle, double gripperAngle ) {
        _endEffector = endEffector;
 
-        _wristAngleDegrees = wristAngleDegrees;
-        _gripperAngleDegrees = gripperAngleDegrees;
+        _wristAngle = wristAngle;
+        _gripperAngle = gripperAngle;
         addRequirements(_endEffector);
      }
      @Override
      public void initialize() {
          // TODO Auto-generated method stub
          super.initialize();
-         _endEffector.setWristSetpointDegrees(_wristAngleDegrees);
-         _endEffector.setGripperSetpointDegrees(_gripperAngleDegrees);
+         _endEffector.setWristSetpointRadians(_wristAngle);
+         _endEffector.setGripperSetpointRadians(_gripperAngle);
      }
      @Override
      public void execute() {
@@ -42,8 +42,8 @@ public class SetEndEffectorPosition extends OutliersCommand{
      public boolean isFinished() {
          // TODO Auto-generated method stub
          return
-          Math.abs(Units.degreesToRadians(_wristAngleDegrees)- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE 
-          &&  Math.abs(Units.degreesToRadians(_gripperAngleDegrees) - _endEffector.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
+          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE 
+          &&  Math.abs(_gripperAngle - _endEffector.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
         }
      @Override
      public void end(boolean interrupted) {

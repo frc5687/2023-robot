@@ -106,7 +106,7 @@ public class Lights extends OutliersSubsystem{
         } else {
             switchAnimation(AnimationType.STATIC);
             setColor(Constants.CANdle.PURPLE);
-        }
+        } 
     
         // } else if (_driveTrain.isLevel()) {
         //     switchAnimation(AnimationType.STATIC);
