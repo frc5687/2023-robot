@@ -4,6 +4,7 @@ package org.frc5687.chargedup;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import org.frc5687.lib.oi.Gamepad;
@@ -21,6 +22,8 @@ import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
+
+import java.util.concurrent.ConcurrentMap;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -52,12 +55,23 @@ public class OI extends OutliersProxy {
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
-    public boolean autoAim() {
-        return _driverGamepad.getXButton().getAsBoolean();
+    public boolean setHeadingNorth() {
+        return _driverGamepad.getYButton().getAsBoolean();
     }
 
-    public boolean raiseArm() {
-        return _driverGamepad.getYButton().getAsBoolean();
+    public boolean setHeadingEast() {
+        return _driverGamepad.getBButton().getAsBoolean();
+    }
+
+    public boolean setHeadingSouth() {
+        return _driverGamepad.getAButton().getAsBoolean();
+    }
+
+    public boolean setHeadingWest() {
+        return _driverGamepad.getXButton().getAsBoolean();
+    }
+    public boolean zeroIMU() {
+        return _driverGamepad.getStartButton().getAsBoolean();
     }
 
     public double getDriveY() {

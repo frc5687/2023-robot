@@ -24,9 +24,6 @@ import org.frc5687.lib.swerve.SwerveSetpoint;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
@@ -124,9 +121,9 @@ public class DriveTrain extends OutliersSubsystem {
                                 Constants.DriveTrain.kI,
                                 Constants.DriveTrain.kD),
                         new ProfiledPIDController(
-                                STABILIZATION_kP,
-                                STABILIZATION_kI,
-                                STABILIZATION_kD,
+                                MAINTAIN_kP,
+                                MAINTAIN_kI,
+                                MAINTAIN_kP,
                                 new TrapezoidProfile.Constraints(
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
