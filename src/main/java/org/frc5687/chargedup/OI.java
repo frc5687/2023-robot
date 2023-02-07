@@ -37,11 +37,11 @@ public class OI extends OutliersProxy {
         _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
+    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator, Lights lights) {
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickupGamePiece(
-            arm, endEffector, elevator, this));
+            arm, endEffector, elevator, this, lights));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceGamePiece(
-                arm, endEffector, elevator, this));
+                arm, endEffector, elevator, this, lights));
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
         _operatorGamepad.getXButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));

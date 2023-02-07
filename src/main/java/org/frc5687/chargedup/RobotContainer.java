@@ -12,6 +12,7 @@ import org.frc5687.chargedup.commands.Arm.IdleArm;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
+import org.frc5687.chargedup.commands.EndEffector.DriveLights;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveWrist;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -59,7 +60,8 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        _oi.initializeButtons(_endEffector, _arm, _elevator);
+        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights));
+        _oi.initializeButtons(_endEffector, _arm, _elevator, _lights);
         startPeriodic();
     }
 
