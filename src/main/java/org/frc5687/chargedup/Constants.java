@@ -40,8 +40,7 @@ public class Constants {
      */
     public static class DriveTrain {
         public static final String CAN_BUS = "DriveTrain";
-        public static final int NUM_MODULES = 4;
-    
+
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
@@ -53,8 +52,8 @@ public class Constants {
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 6.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 2; // rad/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 8.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 12; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -112,26 +111,23 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double STABILIZATION_kP = 1;
-        public static final double STABILIZATION_kI = 0.0;
-        public static final double STABILIZATION_kD = 0.0;
+        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kI = 0.0;
+        public static final double MAINTAIN_kD = 0.0;
     
-        public static final double SNAP_kP = 4.0;
+        public static final double SNAP_kP = 5.0;
         public static final double SNAP_kI = 0.0;
-        public static final double SNAP_kD = 0.0;
+        public static final double SNAP_kD = 0.5;
     
-        public static final double VISION_kP = 4.0;
-        public static final double VISION_kI = 0.0;
-        public static final double VISION_kD = 0.0;
-    
-        public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL;
-        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 3.0;
+        public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL * 2.0;
+        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 4.0;
     
         public static final double kP = 5;
         public static final double kI = 0.0;
         public static final double kD = 0.5;
     
         public static final double POSITION_TOLERANCE = 0.01;
+        public static final double HEADING_TOLERANCE = 0.15; //rad
     }
     
     public static class DifferentialSwerveModule {
