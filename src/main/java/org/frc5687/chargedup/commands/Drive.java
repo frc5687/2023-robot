@@ -7,10 +7,12 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.lib.control.HeadingController;
+import org.frc5687.lib.vision.VisionProcessor;
 
 public class Drive extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
+//    private final VisionProcessor _processor;
     private final HeadingController _headingController;
     private final OI _oi;
 
@@ -42,6 +44,10 @@ public class Drive extends OutliersCommand {
         metric("Heading Controller State", _headingController.getHeadingControllerState().toString());
         metric("Heading Controller Goal", _headingController.getGoal());
         metric("Heading Controller atGoal", _headingController.isAtGoal(_driveTrain.getHeading().getRadians()));
+//        metric("objects", _processor.getTrackedObjects().size());
+//        if (_processor.getTrackedObjects().size() > 0) {
+//            metric("Detected Object", _processor.getTrackedObjects().get(0).toString());
+//        }
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
             _headingController.setGoal(_driveTrain.getHeading().getRadians());

@@ -52,7 +52,7 @@ public class Constants {
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 8.0; // m/s^2
+            KINEMATIC_LIMITS.maxDriveAcceleration = 6.0; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 12; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();

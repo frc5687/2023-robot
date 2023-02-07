@@ -65,6 +65,11 @@ public class TrackedObjectInfo {
         return 7;
     }
 
+    public String toString() {
+        return "Game Element: " + getElement().name() + ", x: " + getX() + ", y: " + getY() + ", z: " + getZ();
+    }
+
+
     public enum GameElement {
         CONE(0),
         CUBE(1);
