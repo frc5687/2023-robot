@@ -62,12 +62,12 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         _oi.initializeButtons(_endEffector, _arm, _elevator);
-        startPeriodic();
+
         _visionProcessor.start();
+        startPeriodic();
     }
 
     public void periodic() {
-        metric("Number of objects", _visionProcessor.getTrackedObjects().size());
     }
 
     public void disabledPeriodic() {}
