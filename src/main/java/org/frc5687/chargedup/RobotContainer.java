@@ -13,12 +13,13 @@ import org.frc5687.chargedup.util.OutliersContainer;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
+    private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
-//    private AHRS _imu;
     private Robot _robot;
     private DriveTrain _driveTrain;
 
@@ -29,6 +30,10 @@ public class RobotContainer extends OutliersContainer {
 
     public void init() {
         _oi = new OI();
+        // create the vision processor
+        _visionProcessor = new VisionProcessor();
+        // subscribe to a vision topic for the correct data
+        _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
 
         // configure pigeon
 //        _imu = new AHRS(SPI.Port.kMXP, (byte) 200); // 200hz
@@ -42,9 +47,12 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         _oi.initializeButtons(_driveTrain, S);
         startPeriodic();
+        _visionProcessor.start();
     }
 
-    public void periodic() {}
+    public void periodic() {
+        metric("Number of objects", _visionProcessor.getTrackedObjects().size());
+    }
 
     public void disabledPeriodic() {}
 

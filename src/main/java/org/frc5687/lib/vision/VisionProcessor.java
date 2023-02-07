@@ -1,6 +1,7 @@
 package org.frc5687.lib.vision;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -16,24 +17,27 @@ public class VisionProcessor {
     private final Map<String, ZMQ.Socket> publishers;
     private volatile boolean running = true;
 
+    private ArrayList<TrackedObjectInfo> _trackedTargets;
+
     public VisionProcessor() {
         context = ZMQ.context(1);
         subscribers = new HashMap<>();
         publishers = new HashMap<>();
         executor = Executors.newSingleThreadExecutor();
+        _trackedTargets = new ArrayList<TrackedObjectInfo>();
     }
 
-    public synchronized void createSubscriber(String topic) {
+    public synchronized void createSubscriber(String topic, String addr) {
         ZMQ.Socket subscriber = context.socket(SocketType.SUB);
-        subscriber.bind("tcp://*:5555");
+        subscriber.connect(addr);
         subscriber.subscribe(topic.getBytes());
         subscribers.put(topic, subscriber);
     }
 
     public synchronized void createPublisher(String topic) {
-        ZMQ.Socket publisher = context.socket(SocketType.PUB);
-        publisher.bind("tcp://*:5556");
-        publishers.put(topic, publisher);
+//        ZMQ.Socket publisher = context.socket(SocketType.PUB);
+//        publisher.bind("tcp://*:5556");
+//        publishers.put(topic, publisher);
     }
 
     public void start() {
@@ -52,13 +56,28 @@ public class VisionProcessor {
                 ZMQ.Socket subscriber = entry.getValue();
                 String topic = entry.getKey();
                 byte[] serializedData = subscriber.recv();
-//                processData(topic, data);
+                processData(topic, serializedData);
             }
         }
     }
 
-    private void processData(String topic) {
-        // Your code to process the data goes here
+    private synchronized void processData(String topic, byte[] data) {
+        if (topic.equals("vision")) {
+            float[] vision_data = decodeToFloatArray(data);
+            _trackedTargets.add(new TrackedObjectInfo(
+                    TrackedObjectInfo.GameElement.valueOf((int)vision_data[0]),
+                    vision_data[1],
+                    vision_data[2],
+                    vision_data[3],
+                    vision_data[4],
+                    vision_data[5],
+                    vision_data[6]
+            ));
+        }
+    }
+
+    public synchronized ArrayList<TrackedObjectInfo> getTrackedObjects() {
+        return _trackedTargets;
     }
 
     public synchronized void sendData(String topic) {
@@ -83,7 +102,8 @@ public class VisionProcessor {
         int numElements = byteArray.length / Float.BYTES;
         float[] floatArray = new float[numElements];
         ByteBuffer buffer = ByteBuffer.wrap(byteArray);
-        for (int i = 0; i < numElements; i++) {
+        floatArray[0] = buffer.getInt();
+        for (int i = 1; i < numElements; i++) {
             floatArray[i] = buffer.getFloat();
         }
         return floatArray;

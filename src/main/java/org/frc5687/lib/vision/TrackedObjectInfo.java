@@ -55,10 +55,8 @@ public class TrackedObjectInfo {
     }
 
     public enum GameElement {
-        UNKNOWN(0),
-        GOAL(1),
-        RED_BALL(2),
-        BLUE_BALL(3);
+        CONE(0),
+        CUBE(1);
 
         private final int _value;
         private static final Map<Object, Object> map = new HashMap<>();
