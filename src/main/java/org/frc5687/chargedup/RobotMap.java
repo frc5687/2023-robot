@@ -1,6 +1,8 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
+import edu.wpi.first.wpilibj.DutyCycle;
+
 public class RobotMap {
 
     /**
@@ -14,16 +16,24 @@ public class RobotMap {
         public static class TALONFX {
             public static final int NORTH_WEST_OUTER = 1;
             public static final int NORTH_WEST_INNER = 2;
-            public static final int NORTH_EAST_INNER = 3;
-            public static final int NORTH_EAST_OUTER = 4;
-            public static final int SOUTH_EAST_OUTER = 5;
-            public static final int SOUTH_EAST_INNER = 6;
-            public static final int SOUTH_WEST_INNER = 7;
-            public static final int SOUTH_WEST_OUTER = 8;
+            public static final int NORTH_EAST_INNER = 8;
+            public static final int NORTH_EAST_OUTER = 7;
+            public static final int SOUTH_EAST_OUTER = 6;
+            public static final int SOUTH_EAST_INNER = 5;
+            public static final int SOUTH_WEST_INNER = 4;
+            public static final int SOUTH_WEST_OUTER = 3;
+            public static final int ARM = 9;
+            public static final int EXT_ARM = 12;
         }
 
         public static class PIGEON {
             public static final int PIGEON = 0;
+        }
+        
+        public static class TalonSRX {
+            public static final int GRIPPER = 11;
+            public static final int WRIST = 10;
+
         }
     }
 
@@ -60,5 +70,13 @@ public class RobotMap {
         public static final int ENCODER_NE = 1;
         public static final int ENCODER_SE = 2;
         public static final int ENCODER_SW = 3;
+
+        public static final int ENCODER_GRIPPER = 4;
+        public static final int ENCODER_WRIST = 5;
+        public static final int TOP_HALL_ARM = 9; //north is 9
+        public static final int BOTTOM_HALL_ARM = 8; // south is 8
+
+        public static final int IN_EXT_HALL = 6;
+        public static final int OUT_EXT_HALL = 7;
     }
 }
