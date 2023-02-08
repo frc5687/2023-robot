@@ -35,12 +35,7 @@ public class AutoSetRollerSpeed extends OutliersCommand{
         _gripper.setGripperSpeed(_speed);
 
     }
-    @Override
-    public boolean isFinished() {
-        // TODO Auto-generated method stub
-        error("Gripper has grippped");
-        return Math.abs(_angle - _gripper.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE || _timeout < System.currentTimeMillis();
-    }
+    
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub

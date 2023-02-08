@@ -37,17 +37,17 @@ public class OI extends OutliersProxy {
     public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
         _operatorGamepad.getAButton().onTrue(new AutoSetSuperStructurePosition(
             elevator, endEffector, arm, 0.0, Constants.EndEffector.WRIST_PICKUP_ANGLE, 
-            Constants.EndEffector.GRIPPER_OPEN_ANGLE, 1.51
+            Constants.EndEffector.GRIPPER_OUT_SPEED, 1.51
         ));
         _operatorGamepad.getBButton().onTrue(new AutoSetSuperStructurePosition(
             elevator, endEffector, arm, .4, Constants.EndEffector.WRIST_MIN_ANGLE,
-            Constants.EndEffector.GRIPPER_CLOSED_ANGLE, 3.4
+            Constants.EndEffector.GRIPPER_IN_SPEED, 3.4
         ));
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
-        _operatorGamepad.getXButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
-        _operatorGamepad.getYButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
-        _operatorGamepad.getRightBumper().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
+        _operatorGamepad.getXButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OUT_SPEED));
+        _operatorGamepad.getYButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_IN_SPEED));
+       // _operatorGamepad.getRightBumper().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
     }
 

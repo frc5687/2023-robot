@@ -42,8 +42,8 @@ public class SetEndEffectorPosition extends OutliersCommand{
      public boolean isFinished() {
          // TODO Auto-generated method stub
          return
-          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE 
-          &&  Math.abs(_gripperAngle - _endEffector.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
+          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE;
+          //&&  Math.abs(_gripperSpeed - _endEffector.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
         }
      @Override
      public void end(boolean interrupted) {
