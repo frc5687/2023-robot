@@ -4,12 +4,12 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 
-public class ManualDriveGripper extends OutliersCommand {
+public class ManualDriveRoller extends OutliersCommand {
     
     private EndEffector _gripper;
     private OI _oi;
 
-    public ManualDriveGripper(EndEffector gripper, OI oi) {
+    public ManualDriveRoller(EndEffector gripper, OI oi) {
       _gripper = gripper;  
       _oi = oi;
       addRequirements(_gripper);

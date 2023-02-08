@@ -2,7 +2,7 @@ package org.frc5687.chargedup.commands;
 
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 import org.frc5687.chargedup.commands.EndEffector.SetEndEffectorPosition;
 import org.frc5687.chargedup.subsystems.Arm;
@@ -34,7 +34,7 @@ public class AutoSetSuperStructurePosition extends SequentialCommandGroup {
         _armAngle = armAngle;
 
         addCommands(
-            new AutoSetGripperAngle(_endEffector, _gripperAngle),
+            new AutoSetRollerSpeed(_endEffector, _gripperAngle),
             new ParallelCommandGroup(
                 new AutoSetArmSetpoint(_arm, _armAngle),
                 new AutoSetWristAngle(_endEffector, _wristAngle),

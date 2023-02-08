@@ -58,7 +58,7 @@ public class EndEffector extends OutliersSubsystem {
     public void updateDashboard() {
         metric("wrist angle deg", Units.radiansToDegrees(getWristAngleRadians()));
         metric("wrist angle rad", getWristAngleRadians());
-        metric("gripper angle", Units.radiansToDegrees(getGripperAngleRadians()));
+        /*metric("gripper angle", Units.radiansToDegrees(getGripperAngleRadians()));*/
 
         // metric("wrist setpoint", _wristController.getGoal().position);
         metric("position error", _wristController.getPositionError());
@@ -74,9 +74,9 @@ public class EndEffector extends OutliersSubsystem {
     public double getWristAngleRadians(){
          return _wristEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.WRIST_OFFSET;
     }
-    public double getGripperAngleRadians(){
+    /*public double getGripperAngleRadians(){
         return _gripperEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.GRIPPER_OFFSET;
-    }
+    }*/
     
     public void setWristSetpointDegrees(double degrees){
         _wristController.setSetpoint(Units.degreesToRadians(degrees));
@@ -86,17 +86,17 @@ public class EndEffector extends OutliersSubsystem {
         _wristController.setSetpoint(radians);
     }
 
-    public void setGripperSetpointDegrees(double degrees){
+    /*public void setGripperSetpointDegrees(double degrees){
         _gripperController.setSetpoint(Units.degreesToRadians(degrees));
-    }
+    }*/
 
-    public void setGripperSetpointRadians(double radians) {
+    /*public void setGripperSetpointRadians(double radians) {
         _gripperController.setSetpoint(radians);
-    }
+    }*/
     public double getWristControllerOutput(){
       return  _wristController.calculate(getWristAngleRadians()); 
     }
-    public double getGripperControllerOutput(){
+    /*public double getGripperControllerOutput(){
         return _gripperController.calculate(getGripperAngleRadians());
-    }
+    }*/
 }

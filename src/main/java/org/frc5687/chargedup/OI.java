@@ -18,7 +18,7 @@ import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 
@@ -45,9 +45,9 @@ public class OI extends OutliersProxy {
         ));
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
-        _operatorGamepad.getXButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
-        _operatorGamepad.getYButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
-        _operatorGamepad.getRightBumper().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
+        _operatorGamepad.getXButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
+        _operatorGamepad.getYButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
+        _operatorGamepad.getRightBumper().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
     }
 

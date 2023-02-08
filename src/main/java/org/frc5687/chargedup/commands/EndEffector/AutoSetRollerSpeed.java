@@ -6,16 +6,16 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 
 import edu.wpi.first.math.util.Units;
 
-public class AutoSetGripperAngle extends OutliersCommand{
+public class AutoSetRollerSpeed extends OutliersCommand{
     
     private EndEffector _gripper;
-    private double _angle;
+    private double _speed;
 
     private long _timeout;
 
-    public AutoSetGripperAngle(EndEffector gripper, double angle){
+    public AutoSetRollerSpeed(EndEffector gripper, double speed){
         _gripper = gripper;
-        _angle = angle;
+        _speed = speed;
         addRequirements(_gripper);
     }
     @Override
@@ -23,16 +23,16 @@ public class AutoSetGripperAngle extends OutliersCommand{
         // TODO Auto-generated method stub
         super.initialize();
         _timeout = System.currentTimeMillis() + Constants.EndEffector.GRIPPER_TIMEOUT;
-        _gripper.setGripperSetpointRadians(_angle);
-        metric("Setpoint", _angle);
+       /*  _gripper.setGripperSetpointRadians(_angle);
+        metric("Setpoint", _angle);*/
     }
     @Override
     public void execute() {
         // TODO Auto-generated method stub
         super.execute();
-        double output = _gripper.getGripperControllerOutput();
-        metric("output", output);
-        _gripper.setGripperSpeed(output);
+       /*  double output = _gripper.getGripperControllerOutput();
+        metric("output", output);*/
+        _gripper.setGripperSpeed(_speed);
 
     }
     @Override

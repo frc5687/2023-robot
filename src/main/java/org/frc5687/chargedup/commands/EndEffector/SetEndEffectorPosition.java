@@ -12,14 +12,14 @@ public class SetEndEffectorPosition extends OutliersCommand{
     
     
     private double _wristAngle;
-    private double _gripperAngle;
+    private double _gripperSpeed;
 
     public SetEndEffectorPosition(EndEffector endEffector,
-     double wristAngle, double gripperAngle ) {
+     double wristAngle, double gripperSpeed ) {
        _endEffector = endEffector;
 
         _wristAngle = wristAngle;
-        _gripperAngle = gripperAngle;
+        _gripperSpeed = gripperSpeed;
         addRequirements(_endEffector);
      }
      @Override
@@ -27,16 +27,16 @@ public class SetEndEffectorPosition extends OutliersCommand{
          // TODO Auto-generated method stub
          super.initialize();
          _endEffector.setWristSetpointRadians(_wristAngle);
-         _endEffector.setGripperSetpointRadians(_gripperAngle);
+       //  _endEffector.setGripperSpeed(_gripperSpeed);
      }
      @Override
      public void execute() {
          // TODO Auto-generated method stub
          super.execute();
          double wristOutput = _endEffector.getWristControllerOutput();
-         double gripperOutput = _endEffector.getGripperControllerOutput();
+         //double gripperOutput = _endEffector.getGripperControllerOutput();
          _endEffector.setWristSpeed(wristOutput);
-         _endEffector.setGripperSpeed(gripperOutput);
+         _endEffector.setGripperSpeed(_gripperSpeed);
      }
      @Override
      public boolean isFinished() {
