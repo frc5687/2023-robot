@@ -35,18 +35,20 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
-        _operatorGamepad.getAButton().onTrue(new AutoSetSuperStructurePosition(
+        _operatorGamepad.getAButton().onTrue(new AutoSetRollerSpeed(endEffector, .25));
+        _operatorGamepad.getBButton().onTrue(new AutoSetRollerSpeed(endEffector, -.25));
+       /*  _operatorGamepad.getAButton().onTrue(new AutoSetSuperStructurePosition(
             elevator, endEffector, arm, 0.0, Constants.EndEffector.WRIST_PICKUP_ANGLE, 
             Constants.EndEffector.GRIPPER_OUT_SPEED, 1.51
         ));
         _operatorGamepad.getBButton().onTrue(new AutoSetSuperStructurePosition(
             elevator, endEffector, arm, .4, Constants.EndEffector.WRIST_MIN_ANGLE,
             Constants.EndEffector.GRIPPER_IN_SPEED, 3.4
-        ));
+        ));*/
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
-        _operatorGamepad.getXButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OUT_SPEED));
-        _operatorGamepad.getYButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_IN_SPEED));
+        // _operatorGamepad.getXButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OUT_SPEED));
+        // _operatorGamepad.getYButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_IN_SPEED));
        // _operatorGamepad.getRightBumper().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
     }
@@ -85,9 +87,10 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        speed = applyDeadband(speed, ROTATION_DEADBAND);
-        return speed/5; //for testing
+        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        // speed = applyDeadband(speed, ROTATION_DEADBAND);
+        // return speed/5; //for testing
+        return 0;
     }
     public double getExtArmY(){
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
@@ -104,11 +107,10 @@ public class OI extends OutliersProxy {
         metric("Raw x", xIn);
         metric("Raw y", yIn);
     }
-    public double getGripperSpeed() {
-        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-        // speed = applyDeadband(speed, ROTATION_DEADBAND);
-        // return speed;
-        return 0;
+    public double getRollerSpeed() {
+         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+         speed = applyDeadband(speed, ROTATION_DEADBAND);
+         return speed;
     }
 
     public double getWristSpeed() {

@@ -22,9 +22,9 @@ public class ManualDriveRoller extends OutliersCommand {
 
     @Override
     public void execute(){
-        double speed = _oi.getGripperSpeed();
-        metric("Gripper Speed", speed / 2.0);
-        _gripper.setGripperSpeed(speed / 2.0);
+        double speed = _oi.getRollerSpeed();
+        metric("Gripper Speed", speed);
+        _gripper.setGripperSpeed(speed);
     }
     @Override
     public boolean isFinished() {
