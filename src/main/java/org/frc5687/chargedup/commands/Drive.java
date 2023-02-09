@@ -53,6 +53,7 @@ public class Drive extends OutliersCommand {
         rot = Math.signum(rot) * rot * rot;
         rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
 
+        // 0.01 is the tolerance to start heading controller.
         if (Math.abs(rot) < 0.01) {
             if (_oi.setHeadingNorth()) {
                 _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.SNAP);

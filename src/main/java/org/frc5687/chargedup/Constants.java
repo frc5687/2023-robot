@@ -45,15 +45,18 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8;
+        public static final double SCALED_TRANSLATION_INPUT = 0.6; // this makes the max speed from the joysticks some % of MAX_MPS.
         public static final double SCALED_ROTATION_INPUT = 0.5;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
+
+        public static final double MAX_MPS = 5.0; // Max speed of robot (m/s)
+        public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
-            KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 8.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 12; // rad/s
+            KINEMATIC_LIMITS.maxDriveVelocity = 5.0; // m/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 25.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 6; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -102,10 +105,8 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
+
         public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
-        public static final double MAX_ANG_VEL =
-                Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final double MAX_MPSS = 1; // Max acceleration of robot (m/s^2)
     
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
@@ -115,11 +116,11 @@ public class Constants {
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.0;
     
-        public static final double SNAP_kP = 5.0;
+        public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
         public static final double SNAP_kD = 0.5;
     
-        public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL * 2.0;
+        public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 2.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 4.0;
     
         public static final double kP = 5;
@@ -239,8 +240,6 @@ public class Constants {
 
             CONTROLLER_CONFIG.CRUISE_VELOCITY = 40000;
             CONTROLLER_CONFIG.ACCELERATION = 25000;
-
-
         }
     }
 
