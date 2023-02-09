@@ -8,15 +8,15 @@ import edu.wpi.first.math.util.Units;
 
 public class AutoSetRollerSpeed extends OutliersCommand{
     
-    private EndEffector _gripper;
+    private EndEffector _roller;
     private double _speed;
 
     private long _timeout;
 
-    public AutoSetRollerSpeed(EndEffector gripper, double speed){
-        _gripper = gripper;
+    public AutoSetRollerSpeed(EndEffector roller, double speed){
+        _roller = roller;
         _speed = speed;
-        addRequirements(_gripper);
+        addRequirements(_roller);
     }
     @Override
     public void initialize() {
@@ -32,7 +32,7 @@ public class AutoSetRollerSpeed extends OutliersCommand{
         super.execute();
        /*  double output = _gripper.getGripperControllerOutput();
         metric("output", output);*/
-        _gripper.setGripperSpeed(_speed);
+        _roller.setRollerSpeed(_speed);
 
     }
     

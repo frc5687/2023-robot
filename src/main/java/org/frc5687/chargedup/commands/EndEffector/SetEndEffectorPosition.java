@@ -36,7 +36,7 @@ public class SetEndEffectorPosition extends OutliersCommand{
          double wristOutput = _endEffector.getWristControllerOutput();
          //double gripperOutput = _endEffector.getGripperControllerOutput();
          _endEffector.setWristSpeed(wristOutput);
-         _endEffector.setGripperSpeed(_gripperSpeed);
+         _endEffector.setRollerSpeed(_gripperSpeed);
      }
      @Override
      public boolean isFinished() {

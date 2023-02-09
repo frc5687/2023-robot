@@ -67,7 +67,7 @@ public class EndEffector extends OutliersSubsystem {
         _wrist.set(ControlMode.PercentOutput, demand);
     }
     
-    public void setGripperSpeed(double demand){
+    public void setRollerSpeed(double demand){
         _gripper.set(ControlMode.PercentOutput, demand);
     }
 
