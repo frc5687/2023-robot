@@ -12,7 +12,7 @@ import org.frc5687.chargedup.commands.Arm.IdleArm;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
-import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
+// import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveWrist;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;

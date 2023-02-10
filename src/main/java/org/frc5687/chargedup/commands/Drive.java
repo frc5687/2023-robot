@@ -7,6 +7,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.lib.control.HeadingController;
+import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.math.Vector2d;
 
 public class Drive extends OutliersCommand {
@@ -14,6 +15,8 @@ public class Drive extends OutliersCommand {
     private final DriveTrain _driveTrain;
     private final HeadingController _headingController;
     private final OI _oi;
+
+    private int segmentationArray[] = new int[((int)360/5)]; 
 
     public Drive(DriveTrain driveTrain, OI oi) {
         _driveTrain = driveTrain;
@@ -24,6 +27,11 @@ public class Drive extends OutliersCommand {
                 )
         );
         _oi = oi;
+
+        for (int i = 0; i < segmentationArray.length; i++){
+            double angle = 360/segmentationArray.length;
+            segmentationArray[i] = (int)angle * i;
+        }
         addRequirements(_driveTrain);
         //        logMetrics("vx","vy");
         //        enableMetrics();
@@ -48,8 +56,10 @@ public class Drive extends OutliersCommand {
             _headingController.setGoal(_driveTrain.getHeading().getRadians());
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
-        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+        Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveX(), _oi.getDriveY(), segmentationArray);
+        //  driveX and driveY are swapped due to coordinate system that WPILib uses
+        double vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+        double vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
         double rot = _oi.getRotationX();
         rot = Math.signum(rot) * rot * rot;
         rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;

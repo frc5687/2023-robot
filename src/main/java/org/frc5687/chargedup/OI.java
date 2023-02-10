@@ -19,7 +19,7 @@ import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+// import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 
@@ -29,8 +29,6 @@ public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
     protected Gamepad _operatorGamepad;
 
-    private double yIn = 0;
-    private double xIn = 0;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
@@ -48,9 +46,9 @@ public class OI extends OutliersProxy {
         ));
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
-        _operatorGamepad.getXButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
-        _operatorGamepad.getYButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
-        _operatorGamepad.getRightBumper().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
+        // _operatorGamepad.getXButton().onTrue(new AutoSetRoller(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
+        // _operatorGamepad.getYButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
+        // _operatorGamepad.getRightBumper().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
     }
 
@@ -75,23 +73,15 @@ public class OI extends OutliersProxy {
     }
 
     public double getDriveY() {
-        yIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        yIn = applyDeadband(yIn, TRANSLATION_DEADBAND);
-
-        // double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
-        // yOut = (yOut + (yIn * 2)) / 3.0;
-        // return yOut?;
-        return yIn;
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        speed = applyDeadband(speed, TRANSLATION_DEADBAND);
+        return speed; 
     }
 
     public double getDriveX() {
-        xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
-        xIn = applyDeadband(xIn, TRANSLATION_DEADBAND);
-
-        // double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
-        // xOut = (xOut + (xIn * 2)) / 3.0;
-        // return xOut;
-        return xIn;
+        double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
+        speed = applyDeadband(speed, TRANSLATION_DEADBAND);
+        return speed;
     }
 
     public double getRotationX() {
@@ -117,8 +107,8 @@ public class OI extends OutliersProxy {
 
     @Override
     public void updateDashboard() {
-        metric("Raw x", xIn);
-        metric("Raw y", yIn);
+        // metric("Raw x", xIn);
+        // metric("Raw y", yIn);
     }
     public double getGripperSpeed() {
         // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
