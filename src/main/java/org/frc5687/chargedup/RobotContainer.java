@@ -56,6 +56,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         _oi.initializeButtons(_endEffector, _arm, _elevator);
+        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
         startPeriodic();
     }
 
@@ -78,6 +79,12 @@ public class RobotContainer extends OutliersContainer {
         }
         CommandScheduler s = CommandScheduler.getInstance();
         s.setDefaultCommand(subSystem, command);
+    }
+
+    public void controllerPeriodic() {
+        if (_driveTrain != null) {
+            _driveTrain.modulePeriodic();
+        } 
     }
 }
 

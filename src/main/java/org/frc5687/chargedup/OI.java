@@ -78,18 +78,20 @@ public class OI extends OutliersProxy {
         yIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         yIn = applyDeadband(yIn, TRANSLATION_DEADBAND);
 
-        double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
-        yOut = (yOut + (yIn * 2)) / 3.0;
-        return yOut;
+        // double yOut = yIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
+        // yOut = (yOut + (yIn * 2)) / 3.0;
+        // return yOut?;
+        return yIn;
     }
 
     public double getDriveX() {
         xIn = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
         xIn = applyDeadband(xIn, TRANSLATION_DEADBAND);
 
-        double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
-        xOut = (xOut + (xIn * 2)) / 3.0;
-        return xOut;
+        // double xOut = xIn / (Math.sqrt(yIn * yIn + (xIn * xIn)) + Constants.EPSILON);
+        // xOut = (xOut + (xIn * 2)) / 3.0;
+        // return xOut;
+        return xIn;
     }
 
     public double getRotationX() {

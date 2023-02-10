@@ -7,6 +7,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.lib.control.HeadingController;
+import org.frc5687.lib.math.Vector2d;
 
 public class Drive extends OutliersCommand {
 
@@ -76,15 +77,18 @@ public class Drive extends OutliersCommand {
             }
         } else {
             _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.OFF);
+            _headingController.reset();
             _headingController.setGoal(_driveTrain.getHeading().getRadians());
         }
-        double controllerPower = _headingController.calculate(_driveTrain.getHeading().getRadians());
+        double controllerPower = 0;//_headingController.calculate(_driveTrain.getHeading().getRadians());
+        metric("Rot+Controller", (rot + controllerPower));
         _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                 vx,
                 vy,
                 rot + controllerPower,
                 _driveTrain.getHeading()
         ));
+        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
     }
 
     @Override

@@ -170,7 +170,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     @Override
     public void controlPeriodic(double timestamp) {
-        modulePeriodic();
+        // modulePeriodic();
         // read sensors and modules so that they are cached for this loop
         readIMU();
         readModules();
@@ -185,7 +185,7 @@ public class DriveTrain extends OutliersSubsystem {
                 break;
         }
         updateDesiredStates();
-        setModuleStates(_systemIO.setpoint.moduleStates);
+        // setModuleStates(_systemIO.setpoint.moduleStates);
     }
 
     @Override
@@ -253,9 +253,12 @@ public class DriveTrain extends OutliersSubsystem {
         _systemIO.setpoint = _swerveSetpointGenerator.generateSetpoint(
                 _kinematicLimits,
                 _systemIO.setpoint,
+                // _systemIO.desiredChassisSpeeds,
                 updatedChassisSpeeds,
                 Constants.CONTROL_PERIOD
         );
+        metric("Setpoint Swerve", _systemIO.setpoint.chassisSpeeds.toString());
+
     }
 
     public void setVelocity(ChassisSpeeds chassisSpeeds) {

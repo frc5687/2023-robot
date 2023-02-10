@@ -117,10 +117,9 @@ public class SwerveSetpointGenerator {
         }
     }
     private double findRoot(Function2d func, double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, int iterations_left) {
-//         return findRootIllinois(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
-//        return findRootITP(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
+        // return findRootIllinois(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
+    //    return findRootITP(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
         return findRootRegula(func, x_0, y_0, f_0, x_1, y_1, f_1, iterations_left);
-
     }
 
     protected double findSteeringMaxS(double x_0, double y_0, double f_0, double x_1, double y_1, double f_1, double max_deviation, int max_iterations) {

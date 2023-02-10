@@ -18,8 +18,8 @@ import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 public class Constants {
     public static final int TICKS_PER_UPDATE = 5;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
-    public static final double UPDATE_PERIOD = 0.02;
-    public static final double CONTROL_PERIOD = 0.005; // 5 ms
+    public static final double UPDATE_PERIOD = 0.02; // 20 ms
+    public static final double CONTROL_PERIOD = 0.01; // 10 ms
     public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-9;
     
@@ -55,8 +55,8 @@ public class Constants {
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 25.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 6; // rad/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 50.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 12; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -74,7 +74,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
     
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = 0.0;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.2;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -120,8 +120,8 @@ public class Constants {
         public static final double SNAP_kI = 0.0;
         public static final double SNAP_kD = 0.5;
     
-        public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 2.0;
-        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 4.0;
+        public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
+        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
     
         public static final double kP = 5;
         public static final double kI = 0.0;
@@ -169,9 +169,9 @@ public class Constants {
         public static final double INERTIA_STEER = 0.004;
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 1.1; // radians per sec
-        public static final double Q_AZIMUTH = 0.08; // radians
-        public static final double Q_WHEEL_ANG_VELOCITY = 1; // radians per sec
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 0.3; // radians per sec
+        public static final double Q_AZIMUTH = 0.03; // radians
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.8; // radians per sec
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = .1; // radians
@@ -245,7 +245,7 @@ public class Constants {
 
 
     public static class Arm {
-        public static final double kDt = 0.02;
+        public static final double kDt = UPDATE_PERIOD;
         public static final String CAN_BUS = "rio";
         public static final double GEAR_RATIO = 375;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();

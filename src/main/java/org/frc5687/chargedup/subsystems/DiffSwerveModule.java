@@ -365,7 +365,14 @@ public class DiffSwerveModule {
      * @param state azimuth angle in radians and velocity of wheel in meters per sec.
      */
     public void setIdealState(SwerveModuleState state) {
-        setModuleState(SwerveModuleState.optimize(state, new Rotation2d(getModuleAngle())));
+        var delta = state.angle.minus(new Rotation2d(getModuleAngle()));
+        if (Math.abs(delta.getDegrees()) > 95.0) {
+            setModuleState(new SwerveModuleState(
+            -state.speedMetersPerSecond,
+            state.angle.rotateBy(Rotation2d.fromDegrees(180.0))));
+        } else {
+            setModuleState(new SwerveModuleState(state.speedMetersPerSecond, state.angle));
+        }
     }
 
     public enum ControlState {
