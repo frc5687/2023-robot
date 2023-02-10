@@ -37,13 +37,33 @@ public class VisionProcessor {
         _trackedTargets = new ArrayList<>();
     }
 
-    public synchronized void createSubscriber(String topic, String addr) {
-        ZMQ.Socket subscriber = context.socket(SocketType.SUB);
-        subscriber.connect(addr);
-        subscriber.subscribe(topic.getBytes());
-        subscribers.put(topic, subscriber);
+    public void createSubscriber(String topic, String addr) {
+        Thread t = new Thread(() -> {
+            ZMQ.Socket subscriber = null;
+            while (subscriber == null) {
+                try {
+                    subscriber = context.socket(SocketType.SUB);
+                    subscriber.connect(addr);
+                    subscriber.subscribe(topic.getBytes());
+                    subscribers.put(topic, subscriber);
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Error connecting to publisher, retrying in 1 seconds");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
     public synchronized void createPublisher(String topic) {
 //        ZMQ.Socket publisher = context.socket(SocketType.PUB);
 //        publisher.bind("tcp://*:5556");
