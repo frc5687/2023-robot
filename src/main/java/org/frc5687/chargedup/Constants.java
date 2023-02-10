@@ -187,7 +187,7 @@ public class Constants {
         public static final double MAX_MODULE_SPEED_MPS =
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * WHEEL_RADIUS;
         public static final double MAX_ANGULAR_VELOCITY = FALCON_FREE_SPEED / GEAR_RATIO_STEER;
-        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 20;
+        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 10;
     
         public static final double MAX_MODULE_ACCELERATION =
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;

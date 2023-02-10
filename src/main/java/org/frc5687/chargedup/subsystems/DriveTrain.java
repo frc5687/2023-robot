@@ -185,7 +185,7 @@ public class DriveTrain extends OutliersSubsystem {
                 break;
         }
         updateDesiredStates();
-        // setModuleStates(_systemIO.setpoint.moduleStates);
+         setModuleStates(_systemIO.setpoint.moduleStates);
     }
 
     @Override

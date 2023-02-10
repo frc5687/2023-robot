@@ -18,8 +18,10 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.LinearSystems;
 import org.frc5687.chargedup.util.Helpers;
@@ -47,6 +49,11 @@ public class DiffSwerveModule {
     private ControlState _controlState;
 
     private final SystemIO _systemIO;
+
+    private TrapezoidProfile.State _angleSetpoint = new TrapezoidProfile.State();
+    private TrapezoidProfile.State _wheelVelocityReference = new TrapezoidProfile.State();
+    private final TrapezoidProfile.Constraints _profiledSteerConstraints;
+    private final TrapezoidProfile.Constraints _profiledWheelConstraints;
 
     public DiffSwerveModule(
             ModuleConfiguration config, int leftMotorID, int rightMotorID, int encoderPort) {
@@ -115,8 +122,15 @@ public class DiffSwerveModule {
         // boolean for if we want the modules to be running as we set voltage in the periodic loop.
         _systemIO = new SystemIO();
         _controlState = ControlState.OFF;
-    }
 
+        _profiledSteerConstraints = new TrapezoidProfile.Constraints(
+                Constants.DifferentialSwerveModule.MAX_ANGULAR_VELOCITY,
+                Constants.DifferentialSwerveModule.MAX_ANGULAR_ACCELERATION);
+        _profiledWheelConstraints = new TrapezoidProfile.Constraints(
+                Constants.DifferentialSwerveModule.MAX_MODULE_ACCELERATION,
+                Constants.DifferentialSwerveModule.MAX_MODULE_JERK);
+    }
+//
     public ControlState getControlState() {
         return _controlState;
     }
@@ -160,6 +174,46 @@ public class DiffSwerveModule {
         }
     }
     /**
+     * Calculated the profiled reference with angle wrapping.
+     * @return Vector (r-x) vector with profiled values.
+     */
+    private Matrix<N3, N1> profiledReference(Matrix<N3, N1> reference, Matrix<N3, N1> xHat) {
+        double errorBound = (Math.PI - (-Math.PI)) / 2.0;
+        double angleMinimumGoalDistance = MathUtil.inputModulus(
+                reference.get(0,0) - getModuleAngle(),
+                -errorBound,
+                errorBound
+        );
+        double angleMinimumSetpointDistance = MathUtil.inputModulus(
+                _angleSetpoint.position - getModuleAngle(),
+                -errorBound,
+                errorBound
+        );
+        reference.set(0, 0, angleMinimumGoalDistance + getModuleAngle());
+        _angleSetpoint.position = angleMinimumSetpointDistance + getModuleAngle();
+
+        var steerProfile = new TrapezoidProfile(
+                _profiledSteerConstraints,
+                new TrapezoidProfile.State(
+                        reference.get(0,0),
+                        reference.get(1, 0)),
+                _angleSetpoint);
+        _angleSetpoint = steerProfile.calculate(Constants.DifferentialSwerveModule.kDt);
+//        var wheelProfile = new TrapezoidProfile(
+//                _profiledWheelConstraints,
+//                new TrapezoidProfile.State(_reference.get(2,0),0),
+//                _wheelVelocityReference
+//        );
+//        _wheelVelocityReference = wheelProfile.calculate(Constants.DifferentialSwerveModule.kDt);
+
+        Matrix<N3, N1> error = reference.minus(xHat);
+        return VecBuilder.fill(
+                _angleSetpoint.position - getModuleAngle(),
+                _angleSetpoint.velocity - getAzimuthAngularVelocity(),
+                error.get(2,0));
+//                _wheelVelocityReference.position - getWheelAngularVelocity());
+    }
+    /**
      * wraps angle so that absolute encoder can be continuous. (i.e) No issues when switching
      * between -PI and PI as they are the same point but different values.
      *
@@ -183,10 +237,13 @@ public class DiffSwerveModule {
                         _moduleControlLoop
                                 .getController()
                                 .getK()
-                                .times( // profiledReference())
-                                        wrapAngle(
-                                                _moduleControlLoop.getNextR(),
-                                                _moduleControlLoop.getXHat()))
+                                .times(profiledReference(
+                                        _moduleControlLoop.getNextR(),
+                                        _moduleControlLoop.getXHat()
+                                        ))
+//                                        wrapAngle(
+//                                                _moduleControlLoop.getNextR(),
+//                                                _moduleControlLoop.getXHat()))
                                 .plus(
                                         _moduleControlLoop
                                                 .getFeedforward()

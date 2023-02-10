@@ -88,7 +88,7 @@ public class Drive extends OutliersCommand {
                 rot + controllerPower,
                 _driveTrain.getHeading()
         ));
-        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
+//        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
     }
 
     @Override
