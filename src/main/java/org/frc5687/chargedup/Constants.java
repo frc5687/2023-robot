@@ -323,7 +323,6 @@ public class Constants {
         public static final double WRIST_kP = 2;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
-
         
         public static final double WRIST_VEL = Units.degreesToRadians(5);
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
@@ -340,6 +339,8 @@ public class Constants {
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
+        
+        public static final double GRIPPER_STALL_CURRENT = 10;
 
         public static final double GRIPPER_I_ZONE = 1;
 

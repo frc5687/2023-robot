@@ -71,6 +71,10 @@ public class EndEffector extends OutliersSubsystem {
         _gripper.set(ControlMode.PercentOutput, demand);
     }
 
+    public boolean isRollerStalled(){ 
+        return _gripper.getStatorCurrent() > Constants.EndEffector.GRIPPER_STALL_CURRENT;
+    }
+
     public double getWristAngleRadians(){
          return _wristEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.WRIST_OFFSET;
     }

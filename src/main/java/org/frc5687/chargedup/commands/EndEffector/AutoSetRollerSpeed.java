@@ -35,7 +35,12 @@ public class AutoSetRollerSpeed extends OutliersCommand{
         _roller.setRollerSpeed(_speed);
 
     }
-    
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+       return _roller.isRollerStalled();
+    }
+
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
