@@ -64,6 +64,9 @@ public class Constants {
     
             NORTH_WEST_CONFIG.encoderInverted = false;
             NORTH_WEST_CONFIG.encoderOffset = -0.0;
+
+            NORTH_WEST_CONFIG.inertiaSteer = 0.004;
+            NORTH_WEST_CONFIG.inertiaWheel = 0.005;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -73,6 +76,10 @@ public class Constants {
     
             SOUTH_WEST_CONFIG.encoderInverted = false;
             SOUTH_WEST_CONFIG.encoderOffset = 0.0;
+
+            SOUTH_WEST_CONFIG.inertiaSteer = 0.004;
+            SOUTH_WEST_CONFIG.inertiaWheel = 0.005;
+
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -82,6 +89,9 @@ public class Constants {
     
             SOUTH_EAST_CONFIG.encoderInverted = false;
             SOUTH_EAST_CONFIG.encoderOffset = 0.0;
+
+            SOUTH_EAST_CONFIG.inertiaSteer = 0.004;
+            SOUTH_EAST_CONFIG.inertiaWheel = 0.005;
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -91,6 +101,9 @@ public class Constants {
     
             NORTH_EAST_CONFIG.encoderInverted = false;
             NORTH_EAST_CONFIG.encoderOffset = 0.0;
+
+            NORTH_EAST_CONFIG.inertiaSteer = 0.004;
+            NORTH_EAST_CONFIG.inertiaWheel = 0.005;
         }
         public static final double kDt = 0.005; // 5 ms
         public static final double TRANSLATION_DEADBAND =

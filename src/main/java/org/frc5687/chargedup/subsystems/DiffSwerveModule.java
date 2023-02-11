@@ -41,6 +41,9 @@ public class DiffSwerveModule {
     private Matrix<N3, N1> _reference; // same thing as a set point.
     private Matrix<N2, N1> _u;
 
+    private double _inertiaSteer;
+    private double _inertiaWheel;
+
     private final double _encoderOffset;
     private final boolean _encoderInverted;
 
@@ -57,6 +60,8 @@ public class DiffSwerveModule {
         _encoderOffset = config.encoderOffset;
         _encoderInverted = config.encoderInverted;
 
+        _inertiaSteer = config.inertiaSteer;
+        _inertiaWheel = config.inertiaWheel;
         _reference = Matrix.mat(Nat.N3(), Nat.N1()).fill(0, 0, 0);
         _positionVector = config.position;
         // setup both falcon motors.
@@ -403,5 +408,8 @@ public class DiffSwerveModule {
         public boolean encoderInverted = true;
 
         public String canBus = "rio";
+
+        public double inertiaSteer = 0.0;
+        public double inertiaWheel = 0.0;
     }
 }
