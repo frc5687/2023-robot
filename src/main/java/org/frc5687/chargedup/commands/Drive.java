@@ -56,7 +56,7 @@ public class Drive extends OutliersCommand {
             _headingController.setGoal(_driveTrain.getHeading().getRadians());
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
-        Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveX(), _oi.getDriveY(), segmentationArray);
+        Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveY(), _oi.getDriveX(), segmentationArray);
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
         double vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
         double vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
@@ -98,7 +98,7 @@ public class Drive extends OutliersCommand {
                 rot + controllerPower,
                 _driveTrain.getHeading()
         ));
-//        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
+        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
     }
 
     @Override
