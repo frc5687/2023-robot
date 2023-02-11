@@ -45,7 +45,7 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.6; // this makes the max speed from the joysticks some % of MAX_MPS.
+        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
         public static final double SCALED_ROTATION_INPUT = 0.5;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
@@ -55,8 +55,8 @@ public class Constants {
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 50.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 12; // rad/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 10.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 5; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -171,7 +171,7 @@ public class Constants {
         // angle more aggressively than the wheel angular velocity.
         public static final double Q_AZIMUTH_ANG_VELOCITY = 0.2; // radians per sec
         public static final double Q_AZIMUTH = 0.02; // radians
-        public static final double Q_WHEEL_ANG_VELOCITY = 0.8; // radians per sec
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.2; // radians per sec
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = .1; // radians
@@ -187,11 +187,11 @@ public class Constants {
         public static final double MAX_MODULE_SPEED_MPS =
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * WHEEL_RADIUS;
         public static final double MAX_ANGULAR_VELOCITY = FALCON_FREE_SPEED / GEAR_RATIO_STEER;
-        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 10;
+        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 5;
 
         public static final double MAX_MODULE_ACCELERATION =
-                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;
-        public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
+                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 10;
+        public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 2;
     }
 
     public static class ExtendingArm {

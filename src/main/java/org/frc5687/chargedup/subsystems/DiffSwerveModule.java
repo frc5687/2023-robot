@@ -21,6 +21,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.LinearSystems;
@@ -55,8 +56,11 @@ public class DiffSwerveModule {
     private final TrapezoidProfile.Constraints _profiledSteerConstraints;
     private final TrapezoidProfile.Constraints _profiledWheelConstraints;
 
+    private final String _name;
+
     public DiffSwerveModule(
             ModuleConfiguration config, int leftMotorID, int rightMotorID, int encoderPort) {
+        _name = config.moduleName;
         // setup azimuth bore encoder.
         _boreEncoder = new DutyCycleEncoder(encoderPort);
         _boreEncoder.setDistancePerRotation(2.0 * Math.PI);
@@ -199,12 +203,12 @@ public class DiffSwerveModule {
                         reference.get(1, 0)),
                 _angleSetpoint);
         _angleSetpoint = steerProfile.calculate(Constants.DifferentialSwerveModule.kDt);
-//        var wheelProfile = new TrapezoidProfile(
-//                _profiledWheelConstraints,
-//                new TrapezoidProfile.State(_reference.get(2,0),0),
-//                _wheelVelocityReference
-//        );
-//        _wheelVelocityReference = wheelProfile.calculate(Constants.DifferentialSwerveModule.kDt);
+        var wheelProfile = new TrapezoidProfile(
+                _profiledWheelConstraints,
+                new TrapezoidProfile.State(_reference.get(2,0),0),
+                _wheelVelocityReference
+        );
+        _wheelVelocityReference = wheelProfile.calculate(Constants.DifferentialSwerveModule.kDt);
 
         Matrix<N3, N1> error = reference.minus(xHat);
         return VecBuilder.fill(
@@ -241,7 +245,7 @@ public class DiffSwerveModule {
                                         _moduleControlLoop.getNextR(),
                                         _moduleControlLoop.getXHat()
                                         ))
-//                                        wrapAngle(
+//                                .times(wrapAngle(
 //                                                _moduleControlLoop.getNextR(),
 //                                                _moduleControlLoop.getXHat()))
                                 .plus(
@@ -430,6 +434,18 @@ public class DiffSwerveModule {
         } else {
             setModuleState(new SwerveModuleState(state.speedMetersPerSecond, state.angle));
         }
+    }
+
+    public void updateDashboard() {
+        SmartDashboard.putNumber(_name + "/leftVoltage", _leftFalcon.getMotorOutputVoltage());
+        SmartDashboard.putNumber(_name + "/rightVoltage", _rightFalcon.getMotorOutputVoltage());
+        SmartDashboard.putNumber(_name + "/leftNextVoltage", getLeftNextVoltage());
+        SmartDashboard.putNumber(_name + "/rightNextVoltage", getRightNextVoltage());
+        SmartDashboard.putNumber(_name + "/leftSupplyCurrent", _leftFalcon.getSupplyCurrent());
+        SmartDashboard.putNumber(_name + "/rightSupplyCurrent", _rightFalcon.getSupplyCurrent());
+        SmartDashboard.putNumber(_name + "/leftStatorCurrent", _leftFalcon.getStatorCurrent());
+        SmartDashboard.putNumber(_name + "/rightStatorCurrent", _rightFalcon.getStatorCurrent());
+        SmartDashboard.putString(_name + "/refernce", _reference.toString());
     }
 
     public enum ControlState {

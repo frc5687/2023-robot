@@ -42,6 +42,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final Pigeon2 _imu;
     private final OI _oi;
     private final HolonomicDriveController _poseController;
+    private ProfiledPIDController _angleController;
 
     // Setpoint generator for swerve.
     private final SwerveSetpointGenerator _swerveSetpointGenerator;
@@ -49,12 +50,14 @@ public class DriveTrain extends OutliersSubsystem {
 
     private final SystemIO _systemIO;
     private double _yawOffset;
+    private double _PIDAngle;
 
     public DriveTrain(OutliersContainer container, OI oi, Pigeon2 imu) {
         super(container);
         _imu = imu;
         _oi = oi;
         _systemIO = new SystemIO();
+        _PIDAngle = getHeading().getRadians();
 
         _modules = new DiffSwerveModule[4];
 
@@ -123,6 +126,12 @@ public class DriveTrain extends OutliersSubsystem {
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL))
                 );
 
+        _angleController = new ProfiledPIDController(
+                Constants.DriveTrain.kP,
+                Constants.DriveTrain.kI,
+                Constants.DriveTrain.kD,
+                new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
+        );
         // This should set the Pigeon to 0.
         _yawOffset = _imu.getYaw();
         readIMU();
@@ -146,7 +155,6 @@ public class DriveTrain extends OutliersSubsystem {
         );
 
     }
-
     public static class SystemIO {
         ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
         SwerveModuleState[] measuredStates = new SwerveModuleState[] {
@@ -167,14 +175,44 @@ public class DriveTrain extends OutliersSubsystem {
             diffSwerveModule.periodic();
         }
     }
+    public void drive(double vx, double vy, double omega) {
+        if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
+            for (DiffSwerveModule diffSwerveModule : _modules) {
+                diffSwerveModule.setIdealState(new SwerveModuleState(0.0, new Rotation2d(diffSwerveModule.getModuleAngle())));
+            }
 
+            _PIDAngle = getHeading().getRadians();
+            _angleController.reset(_PIDAngle);
+        } else if (Math.abs(omega) > 0) {
+            SwerveModuleState[] swerveModuleStates =
+                    _kinematics.toSwerveModuleStates(
+                            _fieldRelative
+                                    ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    vx, vy, omega, getHeading())
+                                    : new ChassisSpeeds(vx, vy, omega));
+            SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
+            setModuleStates(swerveModuleStates);
+            _PIDAngle = getHeading().getRadians();
+            _angleController.reset(_PIDAngle);
+        } else {
+            SwerveModuleState[] swerveModuleStates =
+                    _kinematics.toSwerveModuleStates(
+                            ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    vx,
+                                    vy,
+                                    _angleController.calculate(
+                                            getHeading().getRadians(), _PIDAngle),
+                                    new Rotation2d(_PIDAngle)));
+            SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
+            setModuleStates(swerveModuleStates);
+        }
+    }
     @Override
     public void controlPeriodic(double timestamp) {
         // modulePeriodic();
         // read sensors and modules so that they are cached for this loop
         readIMU();
         readModules();
-
 //        switch (_controlState) {
 //            case TRAJECTORY:
 //                break;
@@ -184,8 +222,8 @@ public class DriveTrain extends OutliersSubsystem {
 //            default:
 //                break;
 //        }
-//        updateDesiredStates();
-//         setModuleStates(_systemIO.setpoint.moduleStates);
+        updateDesiredStates();
+        setModuleStates(_systemIO.setpoint.moduleStates);
     }
 
     @Override
@@ -375,16 +413,22 @@ public class DriveTrain extends OutliersSubsystem {
         return _fieldRelative;
     }
 
+    public void moduleMetrics() {
+        for (var module : _modules) {
+            module.updateDashboard();
+        }
+    }
     @Override
     public void updateDashboard() {
         metric("Swerve State", _controlState.name());
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Current Heading", getHeading().getRadians());
         metric("Rotation State", getYaw());
-        metric("NW Angle", _modules[NORTH_WEST_IDX].getModuleAngle());
-        metric("SW Angle", _modules[SOUTH_WEST_IDX].getModuleAngle());
-        metric("SE Angle", _modules[SOUTH_EAST_IDX].getModuleAngle());
-        metric("NE Angle", _modules[NORTH_EAST_IDX].getModuleAngle());
+        moduleMetrics();
+//        metric("NW Angle", _modules[NORTH_WEST_IDX].getModuleAngle());
+//        metric("SW Angle", _modules[SOUTH_WEST_IDX].getModuleAngle());
+//        metric("SE Angle", _modules[SOUTH_EAST_IDX].getModuleAngle());
+//        metric("NE Angle", _modules[NORTH_EAST_IDX].getModuleAngle());
     }
 
     public enum ControlState {
