@@ -76,6 +76,7 @@ public class EndEffector extends OutliersSubsystem {
             _gripper.set(ControlMode.PercentOutput, demand);
         } else {
             _gripper.set(ControlMode.PercentOutput, 0);
+        }
     }
 
     public boolean isRollerStalled(){ 
