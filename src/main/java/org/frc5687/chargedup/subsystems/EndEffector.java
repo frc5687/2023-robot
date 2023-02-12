@@ -3,6 +3,7 @@ package org.frc5687.chargedup.subsystems;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
+import org.frc5687.lib.drivers.OutliersTalon;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
