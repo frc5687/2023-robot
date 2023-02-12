@@ -18,9 +18,11 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.LinearSystems;
@@ -49,6 +51,11 @@ public class DiffSwerveModuleCurrent {
     private final SystemIO _systemIO;
     private final String _name;
 
+    private TrapezoidProfile.State _angleSetpoint = new TrapezoidProfile.State();
+    private TrapezoidProfile.State _angleGoal = new TrapezoidProfile.State();
+    private TrapezoidProfile.State _wheelVelocityReference = new TrapezoidProfile.State();
+    private final TrapezoidProfile.Constraints _profiledSteerConstraints;
+    private final TrapezoidProfile.Constraints _profiledWheelConstraints;
     public DiffSwerveModuleCurrent(
             DiffSwerveModule.ModuleConfiguration config, int leftMotorID, int rightMotorID, int encoderPort) {
         // setup azimuth bore encoder.
@@ -120,6 +127,12 @@ public class DiffSwerveModuleCurrent {
         // boolean for if we want the modules to be running as we set voltage in the periodic loop.
         _systemIO = new SystemIO();
         _controlState = ControlState.OFF;
+        _profiledSteerConstraints = new TrapezoidProfile.Constraints(
+                Constants.DifferentialSwerveModule.MAX_ANGULAR_VELOCITY,
+                Constants.DifferentialSwerveModule.MAX_ANGULAR_ACCELERATION);
+        _profiledWheelConstraints = new TrapezoidProfile.Constraints(
+                Constants.DifferentialSwerveModule.MAX_MODULE_ACCELERATION,
+                Constants.DifferentialSwerveModule.MAX_MODULE_JERK);
     }
 
     public ControlState getControlState() {
@@ -150,7 +163,8 @@ public class DiffSwerveModuleCurrent {
                 break;
             case STATE_CONTROL:
                 // sets the next reference / setpoint.
-                _moduleControlLoop.setNextR(_reference);
+                Matrix<N3, N1> ref = VecBuilder.fill(Math.PI, 0.0, 20);
+                _moduleControlLoop.setNextR(ref);
                 // updates the kalman filter with new data points.
                 _moduleControlLoop.correct(
                         VecBuilder.fill(
@@ -161,8 +175,47 @@ public class DiffSwerveModuleCurrent {
 
                 setLeftFalconCurrent(getLeftNextCurrent());
                 setRightFalconCurrent(getRightNextCurrent());
+//                setLeftFalconCurrent(10);
                 break;
         }
+    }
+    private Matrix<N3, N1> profiledReference(Matrix<N3, N1> reference, Matrix<N3, N1> xHat) {
+        double errorBound = (Math.PI - (-Math.PI)) / 2.0;
+        _angleGoal = new TrapezoidProfile.State(reference.get(0, 0), 0);
+        double angleMinimumGoalDistance = MathUtil.inputModulus(
+                _angleGoal.position - getModuleAngle(),
+                -errorBound,
+                errorBound
+        );
+        double angleMinimumSetpointDistance = MathUtil.inputModulus(
+                _angleSetpoint.position - getModuleAngle(),
+                -errorBound,
+                errorBound
+        );
+        _angleGoal.position = angleMinimumGoalDistance + getModuleAngle();
+        _angleSetpoint.position = angleMinimumSetpointDistance + getModuleAngle();
+//        _angleSetpoint.position = getModuleAngle();
+//        _angleSetpoint.velocity= getModuleAngle();
+
+        var steerProfile = new TrapezoidProfile(
+                _profiledSteerConstraints,
+                _angleGoal,
+                _angleSetpoint);
+
+        _angleSetpoint = steerProfile.calculate(Constants.DifferentialSwerveModule.kDt);
+        var wheelProfile = new TrapezoidProfile(
+                _profiledWheelConstraints,
+                new TrapezoidProfile.State(reference.get(2,0),0),
+                _wheelVelocityReference
+        );
+        _wheelVelocityReference = wheelProfile.calculate(Constants.DifferentialSwerveModule.kDt);
+
+        return VecBuilder.fill(
+                _angleSetpoint.position - getModuleAngle(),
+                _angleSetpoint.velocity - getAzimuthAngularVelocity(),
+//                error.get(2,0));
+//                0.0);
+                _wheelVelocityReference.position - getWheelAngularVelocity());
     }
     /**
      * wraps angle so that absolute encoder can be continuous. (i.e) No issues when switching
@@ -188,14 +241,18 @@ public class DiffSwerveModuleCurrent {
                         _moduleControlLoop
                                 .getController()
                                 .getK()
-                                .times( // profiledReference())
+                                .times(
+//                                        profiledReference(
+//                                                _moduleControlLoop.getNextR(),
+//                                                _moduleControlLoop.getXHat()
+//                                        )));
                                         wrapAngle(
                                                 _moduleControlLoop.getNextR(),
-                                                _moduleControlLoop.getXHat()))
-                                .plus(
-                                        _moduleControlLoop
-                                                .getFeedforward()
-                                                .calculate(_moduleControlLoop.getNextR())));
+                                                _moduleControlLoop.getXHat())));
+//                                .plus(
+//                                        _moduleControlLoop
+//                                                .getFeedforward()
+//                                                .calculate(_moduleControlLoop.getNextR())));
         _moduleControlLoop.getObserver().predict(_u, kDt);
     }
 

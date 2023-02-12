@@ -171,9 +171,10 @@ public class DriveTrain extends OutliersSubsystem {
 
     // use for modules as controller is running at 200Hz.
     public void modulePeriodic() {
-        for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
-            diffSwerveModule.periodic();
-        }
+//        for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
+//            diffSwerveModule.periodic();
+//        }
+        _modules[0].periodic();
     }
     public void drive(double vx, double vy, double omega) {
         if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
