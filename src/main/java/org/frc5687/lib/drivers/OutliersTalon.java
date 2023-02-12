@@ -1,12 +1,26 @@
 /* Team 5687 (C)2022 */
 package org.frc5687.lib.drivers;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.ParamEnum;
-import com.ctre.phoenix.motorcontrol.*;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
+
+import com.ctre.phoenixpro.configs.CurrentLimitsConfigs;
+import com.ctre.phoenixpro.configs.FeedbackConfigs;
+import com.ctre.phoenixpro.configs.MotionMagicConfigs;
+import com.ctre.phoenixpro.configs.MotorOutputConfigs;
+import com.ctre.phoenixpro.configs.ParentConfiguration;
+import com.ctre.phoenixpro.configs.Slot0Configs;
+import com.ctre.phoenixpro.configs.TalonFXConfiguration;
+import com.ctre.phoenixpro.configs.TalonFXConfigurator;
+import com.ctre.phoenixpro.configs.TorqueCurrentConfigs;
+import com.ctre.phoenixpro.configs.VoltageConfigs;
+import com.ctre.phoenixpro.controls.DutyCycleOut;
+import com.ctre.phoenixpro.controls.MotionMagicVoltage;
+import com.ctre.phoenixpro.controls.TorqueCurrentFOC;
+import com.ctre.phoenixpro.controls.VoltageOut;
+import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenixpro.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenixpro.signals.InvertedValue;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
@@ -16,178 +30,103 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public class OutliersTalon extends TalonFX {
     private final String _name;
-    protected double _lastSet = Double.NaN;
-    protected TalonFXControlMode _lastControlMode = null;
+    private final TalonFXConfigurator _configurator;
+    private TalonFXConfiguration _configuration = new TalonFXConfiguration();
+
+    private Slot0Configs _slot0Configs = new Slot0Configs();
+    private MotorOutputConfigs _motorConfigs = new MotorOutputConfigs();
+    private TorqueCurrentConfigs _torqueCurrentConfigs = new TorqueCurrentConfigs();
+    private VoltageConfigs _voltageConfigs = new VoltageConfigs();
+    private MotionMagicConfigs _motionMagicConfigs = new MotionMagicConfigs();
+    private CurrentLimitsConfigs _currentLimitsConfigs = new CurrentLimitsConfigs();
+    private FeedbackConfigs _feedbackConfigs = new FeedbackConfigs();
+
+
+    private DutyCycleOut _percentOutput = new DutyCycleOut(0.0);
+    private TorqueCurrentFOC _torqueCurrentFOC = new TorqueCurrentFOC(0.0);
+    private VoltageOut _voltageOut = new VoltageOut(0.0);
+    private MotionMagicVoltage _motionMagicVoltage = new MotionMagicVoltage(0.0);
+
 
     public OutliersTalon(int port, String canBus, String name) {
         super(port, canBus);
-        this.configFactoryDefault();
-        this.set(ControlMode.PercentOutput, 0.0);
+        _configurator = this.getConfigurator();
+        _configurator.apply(_configuration);
+        setPercentOutput(0.0);
         _name = name;
     }
-
-    public double getLastSet() {
-        return _lastSet;
+    public void setPercentOutput(double output){
+        this.setControl(_percentOutput.withOutput(output));
     }
-
-    @Override
-    public void set(TalonFXControlMode mode, double value) {
-        if (value != _lastSet || mode != _lastControlMode) {
-            _lastSet = value;
-            _lastControlMode = mode;
-            super.set(mode, value);
-        }
+    public void setVoltage( double voltage){
+        this.setControl(_voltageOut.withOutput(voltage));
     }
-
+    public void setMotionMagic(double position){
+        this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
+    }
     public void configure(Configuration config) {
-        this.changeMotionControlFramePeriod(config.MOTION_CONTROL_FRAME_PERIOD_MS);
-        this.clearMotionProfileHasUnderrun(config.TIME_OUT);
-        this.clearMotionProfileTrajectories();
+        _motorConfigs.Inverted = config.INVERTED;
+        _motorConfigs.NeutralMode = config.NEUTRAL_MODE;
 
-        this.clearStickyFaults(config.TIME_OUT);
+        _currentLimitsConfigs.StatorCurrentLimit = config.MAX_STATOR_CURRENT;
+        _currentLimitsConfigs.SupplyCurrentLimit = config.MAX_SUPPLY_CURRENT;
+        _currentLimitsConfigs.StatorCurrentLimitEnable = config.ENABLE_STATOR_CURRENT_LIMIT;
+        _currentLimitsConfigs.SupplyCurrentLimitEnable = config.ENABLE_SUPPLY_CURRENT_LIMIT;
+       
+        _torqueCurrentConfigs.PeakForwardTorqueCurrent = config.MAX_CURRENT;
+        _torqueCurrentConfigs.PeakReverseTorqueCurrent = -config.MAX_CURRENT;
+        _torqueCurrentConfigs.TorqueNeutralDeadband = config.CURRENT_DEADBAND;
+        
+        _voltageConfigs.PeakForwardVoltage = config.MAX_VOLTAGE;
+        _voltageConfigs.PeakReverseVoltage = -config.MAX_VOLTAGE;
+        _voltageConfigs.SupplyVoltageTimeConstant = config.VOLTAGE_TIME_CONSTANT;
+ 
+        _feedbackConfigs.FeedbackSensorSource = config.FEEDBACK_SENSOR;
+        _feedbackConfigs.SensorToMechanismRatio = config.SENSOR_TO_MECHANISM_RATIO;
 
-        this.configForwardLimitSwitchSource(
-                LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, config.TIME_OUT);
-        this.configReverseLimitSwitchSource(
-                LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled, config.TIME_OUT);
-        this.overrideLimitSwitchesEnable(config.ENABLE_LIMIT_SWITCH);
+        _configurator.apply(_motorConfigs, config.TIME_OUT);
+        _configurator.apply(_torqueCurrentConfigs, config.TIME_OUT);
+        _configurator.apply(_currentLimitsConfigs, config.TIME_OUT);
+        _configurator.apply(_feedbackConfigs, config.TIME_OUT);
+        
 
-        // Turn off re-zeroing by default.
-        this.configSetParameter(ParamEnum.eClearPositionOnLimitF, 0, 0, 0, config.TIME_OUT);
-        this.configSetParameter(ParamEnum.eClearPositionOnLimitR, 0, 0, 0, config.TIME_OUT);
-
-        this.configNominalOutputForward(0, config.TIME_OUT);
-        this.configNominalOutputReverse(0, config.TIME_OUT);
-        this.configNeutralDeadband(config.NEUTRAL_DEADBAND, config.TIME_OUT);
-
-        this.configMotorCommutation(MotorCommutation.Trapezoidal);
-
-        this.configPeakOutputForward(1.0, config.TIME_OUT);
-        this.configPeakOutputReverse(-1.0, config.TIME_OUT);
-
-        this.setNeutralMode(config.NEUTRAL_MODE);
-
-        this.configForwardSoftLimitThreshold(config.FORWARD_SOFT_LIMIT, config.TIME_OUT);
-        this.configForwardSoftLimitEnable(config.ENABLE_SOFT_LIMIT, config.TIME_OUT);
-
-        this.configReverseSoftLimitThreshold(config.REVERSE_SOFT_LIMIT, config.TIME_OUT);
-        this.configReverseSoftLimitEnable(config.ENABLE_SOFT_LIMIT, config.TIME_OUT);
-        this.overrideSoftLimitsEnable(config.ENABLE_SOFT_LIMIT);
-
-        this.setInverted(config.INVERTED);
-        this.setSensorPhase(config.SENSOR_PHASE);
-
-        this.selectProfileSlot(0, 0);
-
-        this.configVelocityMeasurementPeriod(config.VELOCITY_MEASUREMENT_PERIOD, config.TIME_OUT);
-        this.configVelocityMeasurementWindow(
-                config.VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW, config.TIME_OUT);
-
-        this.configOpenloopRamp(config.OPEN_LOOP_RAMP_RATE, config.TIME_OUT);
-        this.configClosedloopRamp(config.CLOSED_LOOP_RAMP_RATE, config.TIME_OUT);
-
-        this.configVoltageCompSaturation(config.VOLTAGE_COMPENSATION, config.TIME_OUT);
-        this.configVoltageMeasurementFilter(
-                config.VOLTAGE_MEASUREMENT_ROLLING_AVERAGE_WINDOW, config.TIME_OUT);
-        this.enableVoltageCompensation(config.ENABLE_VOLTAGE_COMPENSATION);
-
-        this.configSupplyCurrentLimit(
-                new SupplyCurrentLimitConfiguration(
-                        config.ENABLE_SUPPLY_CURRENT_LIMIT,
-                        config.SUPPLY_CURRENT_LIMIT,
-                        config.SUPPLY_THRESHOLD_CURRENT,
-                        config.SUPPLY_THRESHOLD_TIME),
-                config.TIME_OUT);
-        this.configStatorCurrentLimit(
-                new StatorCurrentLimitConfiguration(
-                        config.ENABLE_STATOR_CURRENT_LIMIT,
-                        config.STATOR_CURRENT_LIMIT,
-                        config.STATOR_THRESHOLD_CURRENT,
-                        config.STATOR_THRESHOLD_TIME),
-                config.TIME_OUT);
-
-        this.configSelectedFeedbackSensor(
-                TalonFXFeedbackDevice.IntegratedSensor, 0, config.TIME_OUT);
-        this.configIntegratedSensorInitializationStrategy(
-                config.SENSOR_INITIALIZATION_STRATEGY, config.TIME_OUT);
-        this.configIntegratedSensorOffset(config.SENSOR_OFFSET_DEGREES, config.TIME_OUT);
-
-        this.setStatusFramePeriod(
-                StatusFrameEnhanced.Status_1_General,
-                config.GENERAL_STATUS_FRAME_RATE_MS,
-                config.TIME_OUT);
-        this.setStatusFramePeriod(
-                StatusFrameEnhanced.Status_2_Feedback0,
-                config.FEEDBACK_STATUS_FRAME_RATE_MS,
-                config.TIME_OUT);
-        this.setStatusFramePeriod(
-                StatusFrameEnhanced.Status_3_Quadrature,
-                config.QUAD_ENCODER_STATUS_FRAME_RATE_MS,
-                config.TIME_OUT);
-        this.setStatusFramePeriod(
-                StatusFrameEnhanced.Status_4_AinTempVbat,
-                config.ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS,
-                config.TIME_OUT);
-        this.setStatusFramePeriod(
-                StatusFrameEnhanced.Status_8_PulseWidth,
-                config.PULSE_WIDTH_STATUS_FRAME_RATE_MS,
-                config.TIME_OUT);
-
-        this.setControlFramePeriod(ControlFrame.Control_3_General, config.CONTROL_FRAME_PERIOD_MS);
     }
 
     public void configureClosedLoop(ClosedLoopConfiguration config) {
-        checkError(
-                this.config_kP(config.SLOT, config.kP, config.TIME_OUT),
-                "Failed to configure kP on " + _name);
-        checkError(
-                this.config_kI(config.SLOT, config.kI, config.TIME_OUT),
-                "Failed to configure kI on " + _name);
-        checkError(
-                this.config_kD(config.SLOT, config.kD, config.TIME_OUT),
-                "Failed to configure kD on " + _name);
-        checkError(
-                this.config_kF(config.SLOT, config.kF, config.TIME_OUT),
-                "Failed to configure kF on " + _name);
-        checkError(
-                this.configMaxIntegralAccumulator(
-                        config.SLOT, config.MAX_INTEGRAL_ACCUMULATOR, config.TIME_OUT),
-                "Failed to configure max integral accumulator on " + _name);
-        checkError(
-                this.config_IntegralZone(config.SLOT, config.I_ZONE, config.TIME_OUT),
-                "Failed to configure integral zone on " + _name);
-        checkError(
-                this.configAllowableClosedloopError(config.SLOT, config.TOLERANCE, config.TIME_OUT),
-                "Failed to configure closed loop error on " + _name);
-        checkError(
-                this.configClosedloopRamp(config.RAMP_RATE, config.TIME_OUT),
-                "Failed to configure ramp rate on " + _name);
-        checkError(
-                this.configMotionCruiseVelocity(config.CRUISE_VELOCITY, config.TIME_OUT),
-                "Failed to configure cruise velocity on " + _name);
-        checkError(
-                this.configMotionAcceleration(config.ACCELERATION, config.TIME_OUT),
-                "Failed to configure acceleration on " + _name);
+        _slot0Configs.kV = config.kF;
+        _slot0Configs.kP = config.kP;
+        _slot0Configs.kI = config.kI;
+        _slot0Configs.kD = config.kD;
 
-        this.selectProfileSlot(config.SLOT, 0);
+        _motionMagicConfigs.MotionMagicCruiseVelocity = config.CRUISE_VELOCITY;
+        _motionMagicConfigs.MotionMagicAcceleration = config.ACCELERATION;
+        _motionMagicConfigs.MotionMagicJerk = config.JERK;
+
+        _configurator.apply(_slot0Configs, config.TIME_OUT);
+        _configurator.apply(_motionMagicConfigs);
+
     }
 
-    protected void checkError(ErrorCode error, String message) {
-        if (error != ErrorCode.OK) {
-            DriverStation.reportError(message + error, false);
-        }
-    }
 
     public static double ticksToRadians(double ticks, double gearRatio) {
         return ticks * ((2.0 * Math.PI) / (gearRatio * 2048.0));
     }
-
+    public static double radiansToRotations(double radians, double gearRatio) {
+        return radians / ((2.0 * Math.PI) / gearRatio);
+    }
     public static double radiansToTicks(double degrees, double gearRatio) {
         return degrees / ((2.0 * Math.PI) / (gearRatio * 2048.0));
+    }
+    public static double rotationsToRadians(double rotations, double gearRatio) {
+        return rotations * ((2.0 * Math.PI) / gearRatio);
     }
 
     public static double ticksPer100msToRPM(double velocityCounts, double gearRatio) {
         double RPM = velocityCounts * (600.0 / 2048.0);
+        return RPM / gearRatio;
+    }
+    public static double rotationsPerSecToRPM(double velocity, double gearRatio) {
+        double RPM = velocity * (60.0);
         return RPM / gearRatio;
     }
 
@@ -197,7 +136,7 @@ public class OutliersTalon extends TalonFX {
     }
 
     public static class ClosedLoopConfiguration {
-        public int TIME_OUT = 100;
+        public double TIME_OUT = 0.1;
         public int SLOT = 0;
 
         public double kP = 0.0;
@@ -210,54 +149,33 @@ public class OutliersTalon extends TalonFX {
 
         public double RAMP_RATE = 0.0;
 
-        public int CRUISE_VELOCITY = 0; // ticks per 100ms
-        public int ACCELERATION = 0; // ticks per 100ms
+        public int CRUISE_VELOCITY = 0; // RPS 
+        public int ACCELERATION = 0; // RPS / Second
+        public int JERK = 0; // RPS / Second / Second
     }
 
     public static class Configuration {
-        public int TIME_OUT = 100; // ms
-        public NeutralMode NEUTRAL_MODE = NeutralMode.Coast;
-        // factory default
-        public double NEUTRAL_DEADBAND = 0.04;
+        public double TIME_OUT = 0.1; // seconds
+        // motor configs
+        public NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
+        public InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
+        
+        // current/torque config
+        public double MAX_CURRENT = 60.0;
+        public double CURRENT_DEADBAND = 0.0;
 
-        public SensorInitializationStrategy SENSOR_INITIALIZATION_STRATEGY =
-                SensorInitializationStrategy.BootToZero;
-        public double SENSOR_OFFSET_DEGREES = 0;
+        // voltage config
+        public double MAX_VOLTAGE = 12.0; 
+        public double VOLTAGE_TIME_CONSTANT = 0.0;
 
-        public double VOLTAGE_COMPENSATION = 0.0;
-        public int VOLTAGE_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 32;
-        public boolean ENABLE_VOLTAGE_COMPENSATION = false;
-
-        public boolean ENABLE_SUPPLY_CURRENT_LIMIT = false;
-        public double SUPPLY_CURRENT_LIMIT = 20;
-        public double SUPPLY_THRESHOLD_CURRENT = 60;
-        public double SUPPLY_THRESHOLD_TIME = 0.2;
+        // current limits
+        public double MAX_STATOR_CURRENT = 60.0;
+        public double MAX_SUPPLY_CURRENT = 60.0;
         public boolean ENABLE_STATOR_CURRENT_LIMIT = false;
-        public double STATOR_CURRENT_LIMIT = 20;
-        public double STATOR_THRESHOLD_CURRENT = 60;
-        public double STATOR_THRESHOLD_TIME = 0.2;
+        public boolean ENABLE_SUPPLY_CURRENT_LIMIT = false;
 
-        public boolean ENABLE_SOFT_LIMIT = false;
-        public boolean ENABLE_LIMIT_SWITCH = false;
-        public int FORWARD_SOFT_LIMIT = 0;
-        public int REVERSE_SOFT_LIMIT = 0;
-
-        public boolean INVERTED = false;
-        public boolean SENSOR_PHASE = false;
-
-        public int CONTROL_FRAME_PERIOD_MS = 10;
-        public int MOTION_CONTROL_FRAME_PERIOD_MS = 1000;
-        public int GENERAL_STATUS_FRAME_RATE_MS = 10;
-        public int FEEDBACK_STATUS_FRAME_RATE_MS = 1000;
-        public int QUAD_ENCODER_STATUS_FRAME_RATE_MS = 1000;
-        public int ANALOG_TEMP_VBAT_STATUS_FRAME_RATE_MS = 1000;
-        public int PULSE_WIDTH_STATUS_FRAME_RATE_MS = 1000;
-
-        public SensorVelocityMeasPeriod VELOCITY_MEASUREMENT_PERIOD =
-                SensorVelocityMeasPeriod.Period_100Ms;
-        public int VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 64;
-
-        public double OPEN_LOOP_RAMP_RATE = 0.0;
-        public double CLOSED_LOOP_RAMP_RATE = 0.0;
+        // feedback
+        public FeedbackSensorSourceValue FEEDBACK_SENSOR = FeedbackSensorSourceValue.RotorSensor;
+        public double SENSOR_TO_MECHANISM_RATIO = 1.0;
     }
 }

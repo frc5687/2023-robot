@@ -7,12 +7,14 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
+
+import com.ctre.phoenixpro.signals.InvertedValue;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
+
 import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 
 public class Constants {
@@ -138,22 +140,15 @@ public class Constants {
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         // this is the motor config for the diff swerve motors
         static {
-            CONFIG.TIME_OUT = 100;
+            CONFIG.TIME_OUT = 0.1;
     
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
+            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
     
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+            CONFIG.MAX_VOLTAGE = 12.0;
     
-            CONFIG.VELOCITY_MEASUREMENT_PERIOD = SensorVelocityMeasPeriod.Period_1Ms;
-            CONFIG.VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 32;
-    
-            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.MAX_STATOR_CURRENT = 60;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-    
-            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 5;
-            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
         }
         // update rate of our modules 5ms.
         public static final double kDt = 0.005;
@@ -202,15 +197,14 @@ public class Constants {
         public static final double GEAR_RATIO = 25;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
-            CONFIG.TIME_OUT = 100;
-
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
-
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
-
-            CONFIG.STATOR_CURRENT_LIMIT = 40;
+            CONFIG.TIME_OUT = 0.1;
+    
+            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+    
+            CONFIG.MAX_VOLTAGE = 12.0;
+    
+            CONFIG.MAX_STATOR_CURRENT = 40;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
         }
 
@@ -255,19 +249,15 @@ public class Constants {
         public static final double GEAR_RATIO = 375;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
-            CONFIG.TIME_OUT = 100;
-
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
-
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
-
-            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.TIME_OUT = 0.1;
+    
+            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+    
+            CONFIG.MAX_VOLTAGE = 12.0;
+    
+            CONFIG.MAX_STATOR_CURRENT = 60;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-
-            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
-            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
         }
         // this is the motor config for the arm motors
 
