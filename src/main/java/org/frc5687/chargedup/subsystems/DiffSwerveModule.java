@@ -93,8 +93,8 @@ public class DiffSwerveModule {
         LinearSystem<N3, N2, N3> swerveModuleModel =
                 LinearSystems.createDifferentialSwerveModule(
                         DCMotor.getFalcon500(2),
-                        INERTIA_STEER,
-                        INERTIA_WHEEL,
+                        config.inertiaSteer,
+                        config.inertiaWheel,
                         GEAR_RATIO_STEER,
                         GEAR_RATIO_WHEEL);
 
