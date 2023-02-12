@@ -149,6 +149,8 @@ public class Constants {
     
             CONFIG.MAX_STATOR_CURRENT = 60;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+
+            CONFIG.USE_FOC = true;
         }
         // update rate of our modules 5ms.
         public static final double kDt = 0.005;
@@ -193,7 +195,7 @@ public class Constants {
     }
 
     public static class ExtendingArm {
-        public static final String CAN_BUS = "rio";
+        public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 25;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
@@ -245,7 +247,7 @@ public class Constants {
 
     public static class Arm {
         public static final double kDt = 0.02;
-        public static final String CAN_BUS = "rio";
+        public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 375;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {

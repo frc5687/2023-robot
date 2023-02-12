@@ -47,7 +47,6 @@ public class OutliersTalon extends TalonFX {
     private VoltageOut _voltageOut = new VoltageOut(0.0);
     private MotionMagicVoltage _motionMagicVoltage = new MotionMagicVoltage(0.0);
 
-
     public OutliersTalon(int port, String canBus, String name) {
         super(port, canBus);
         _configurator = this.getConfigurator();
@@ -84,6 +83,10 @@ public class OutliersTalon extends TalonFX {
         _feedbackConfigs.FeedbackSensorSource = config.FEEDBACK_SENSOR;
         _feedbackConfigs.SensorToMechanismRatio = config.SENSOR_TO_MECHANISM_RATIO;
 
+        _voltageOut.EnableFOC = config.USE_FOC;
+        _motionMagicVoltage.EnableFOC = config.USE_FOC;
+        _percentOutput.EnableFOC = config.USE_FOC;
+
         _configurator.apply(_motorConfigs, config.TIME_OUT);
         _configurator.apply(_torqueCurrentConfigs, config.TIME_OUT);
         _configurator.apply(_currentLimitsConfigs, config.TIME_OUT);
@@ -107,7 +110,7 @@ public class OutliersTalon extends TalonFX {
 
     }
 
-
+    
     public static double ticksToRadians(double ticks, double gearRatio) {
         return ticks * ((2.0 * Math.PI) / (gearRatio * 2048.0));
     }
@@ -159,6 +162,7 @@ public class OutliersTalon extends TalonFX {
         // motor configs
         public NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
         public InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
+        public boolean USE_FOC = false;
         
         // current/torque config
         public double MAX_CURRENT = 60.0;
