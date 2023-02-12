@@ -14,8 +14,6 @@ import org.frc5687.lib.math.Vector2d;
 public class Drive extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
-    private final SlewRateLimiter _vxLimiter;
-    private final SlewRateLimiter _vyLimiter;
     private final HeadingController _headingController;
     private final OI _oi;
 
@@ -23,8 +21,6 @@ public class Drive extends OutliersCommand {
 
     public Drive(DriveTrain driveTrain, OI oi) {
         _driveTrain = driveTrain;
-        _vxLimiter = new SlewRateLimiter(3.0);
-        _vyLimiter = new SlewRateLimiter(3.0);
         _headingController = new HeadingController(
                 new TrapezoidProfile.Constraints(
                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
@@ -63,11 +59,9 @@ public class Drive extends OutliersCommand {
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveY(), _oi.getDriveX(), segmentationArray);
 
-        double slewVx = _vxLimiter.calculate(vec.x());
-        double slewVy = _vyLimiter.calculate(vec.y());
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
-        double vx = slewVx * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-        double vy = slewVy * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+        double vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+        double vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
         double rot = _oi.getRotationX();
         rot = Math.signum(rot) * rot * rot;
         rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
@@ -103,7 +97,7 @@ public class Drive extends OutliersCommand {
         _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                 vx,
                 vy,
-                rot, //+ controllerPower,
+                rot + controllerPower,
                 _driveTrain.getHeading()
         ));
 //        _driveTrain.drive(vx, vy, rot);

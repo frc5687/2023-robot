@@ -2,7 +2,6 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup;
 
-import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -19,6 +18,9 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
+
+import com.ctre.phoenixpro.configs.Pigeon2Configuration;
+import com.ctre.phoenixpro.hardware.Pigeon2;
 
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -42,7 +44,9 @@ public class RobotContainer extends OutliersContainer {
         _oi = new OI();
 
         // configure pigeon
-        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON);
+        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore" );
+        var pigeonConfig = new Pigeon2Configuration();
+        _imu.getConfigurator().apply(pigeonConfig);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
         _elevator = new Elevator(this);

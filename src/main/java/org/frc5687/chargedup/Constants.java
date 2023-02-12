@@ -7,12 +7,14 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
+
+import com.ctre.phoenixpro.signals.InvertedValue;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
+
 import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 
 public class Constants {
@@ -39,13 +41,14 @@ public class Constants {
      * <p>Note: when robot is flipped over, this is clockwise.
      */
     public static class DriveTrain {
-        public static final String CAN_BUS = "DriveTrain";
-
+        public static final String CAN_BUS = "CANivore";
+        public static final int NUM_MODULES = 4;
+    
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
+        public static final double SCALED_TRANSLATION_INPUT = 0.4; // this makes the max speed from the joysticks some % of MAX_MPS.
         public static final double SCALED_ROTATION_INPUT = 0.5;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
@@ -54,7 +57,7 @@ public class Constants {
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
-            KINEMATIC_LIMITS.maxDriveVelocity = 5.0; // m/s
+            KINEMATIC_LIMITS.maxDriveVelocity = 5.5; // m/s
             KINEMATIC_LIMITS.maxDriveAcceleration = 10.0; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 5; // rad/s
         }
@@ -135,22 +138,17 @@ public class Constants {
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         // this is the motor config for the diff swerve motors
         static {
-            CONFIG.TIME_OUT = 100;
+            CONFIG.TIME_OUT = 0.1;
     
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
+            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
     
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
+            CONFIG.MAX_VOLTAGE = 12.0;
     
-            CONFIG.VELOCITY_MEASUREMENT_PERIOD = SensorVelocityMeasPeriod.Period_1Ms;
-            CONFIG.VELOCITY_MEASUREMENT_ROLLING_AVERAGE_WINDOW = 32;
-    
-            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.MAX_STATOR_CURRENT = 60;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-    
-            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 5;
-            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
+
+            CONFIG.USE_FOC = true;
         }
         // update rate of our modules 5ms.
         public static final double kDt = 0.005;
@@ -195,19 +193,18 @@ public class Constants {
     }
 
     public static class ExtendingArm {
-        public static final String CAN_BUS = "rio";
+        public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 25;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
-            CONFIG.TIME_OUT = 100;
-
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
-
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
-
-            CONFIG.STATOR_CURRENT_LIMIT = 40;
+            CONFIG.TIME_OUT = 0.1;
+    
+            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+    
+            CONFIG.MAX_VOLTAGE = 12.0;
+    
+            CONFIG.MAX_STATOR_CURRENT = 40;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
         }
 
@@ -238,31 +235,27 @@ public class Constants {
             CONTROLLER_CONFIG.kD = 0.38;
             CONTROLLER_CONFIG.kF = 0;
 
-            CONTROLLER_CONFIG.CRUISE_VELOCITY = 40000;
-            CONTROLLER_CONFIG.ACCELERATION = 25000;
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 5;
+            CONTROLLER_CONFIG.ACCELERATION = 10;
         }
     }
 
 
     public static class Arm {
-        public static final double kDt = UPDATE_PERIOD;
-        public static final String CAN_BUS = "rio";
+        public static final double kDt = 0.02;
+        public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 375;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         static {
-            CONFIG.TIME_OUT = 100;
-
-            CONFIG.NEUTRAL_MODE = NeutralMode.Brake;
-            CONFIG.INVERTED = false;
-
-            CONFIG.VOLTAGE_COMPENSATION = 12.0;
-            CONFIG.ENABLE_VOLTAGE_COMPENSATION = true;
-
-            CONFIG.STATOR_CURRENT_LIMIT = 60;
+            CONFIG.TIME_OUT = 0.1;
+    
+            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+    
+            CONFIG.MAX_VOLTAGE = 12.0;
+    
+            CONFIG.MAX_STATOR_CURRENT = 60;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-
-            CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 10;
-            CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
         }
         // this is the motor config for the arm motors
 
