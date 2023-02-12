@@ -1,8 +1,8 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
+import com.ctre.phoenixpro.BaseStatusSignalValue;
+import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -133,13 +133,12 @@ public class DriveTrain extends OutliersSubsystem {
                 new TrapezoidProfile.Constraints(Constants.DriveTrain.PROFILE_CONSTRAINT_VEL, Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)
         );
         // This should set the Pigeon to 0.
-        _yawOffset = _imu.getYaw();
+        _imu.getYaw().setUpdateFrequency(200);
+        _yawOffset = _imu.getYaw().getValue();
         readIMU();
 
         readModules();
         setSetpointFromMeasuredModules();
-
-        _imu.setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_6_SensorFusion, 5);
 
         _controlState = ControlState.NEUTRAL;
         _fieldRelative = true;
@@ -153,7 +152,6 @@ public class DriveTrain extends OutliersSubsystem {
                         _modules[NORTH_EAST_IDX].getModuleLocation()
                 }
         );
-
     }
     public static class SystemIO {
         ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -171,10 +169,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     // use for modules as controller is running at 200Hz.
     public void modulePeriodic() {
-//        for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
-//            diffSwerveModule.periodic();
-//        }
-        _modules[0].periodic();
+        for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
+            diffSwerveModule.periodic();
+        }
     }
     public void drive(double vx, double vy, double omega) {
         if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
@@ -338,12 +335,12 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _imu.getYaw();
+        _yawOffset = _imu.getYaw().getValue();
         readIMU();
     }
 
     public void readIMU() {
-        _systemIO.heading = Rotation2d.fromDegrees(_imu.getYaw() - _yawOffset);
+        _systemIO.heading = Rotation2d.fromDegrees(_imu.getYaw().getValue() - _yawOffset);
     }
 
     public TrajectoryConfig getConfig() {

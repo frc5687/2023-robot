@@ -19,8 +19,6 @@ import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.sensors.HallEffect;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import static org.frc5687.chargedup.Constants.Arm.*;
 
 public class Arm extends OutliersSubsystem{
@@ -89,12 +87,12 @@ public class Arm extends OutliersSubsystem{
     }
 
     public void setArmSpeed(double speed) {
-        _talon.set(ControlMode.PercentOutput, speed);
+        _talon.setPercentOutput(speed);
     }
 
     public void setArmVoltage(double voltage) {
         // this normalized the 12 volts output between [-1, 1] ie. 6 volts / 12 volts = 50% speed.
-        setArmSpeed(voltage / CONTROL_EFFORT);
+        _talon.setVoltage(voltage);
     }
 
     public boolean getUpperHall() {
@@ -105,31 +103,31 @@ public class Arm extends OutliersSubsystem{
         return _lowerHall.get();
     }
 
-    public double getEncoderTicks() {
-        return _talon.getSelectedSensorPosition();
+    public double getEncoderRotation() {
+        return _talon.getPosition().getValue();
     }
 
     public void zeroEncoder() {
-        _talon.setSelectedSensorPosition(0);
+        _talon.setRotorPosition(0.0);
     }
 
     public void setEncoderRadians(double angle) {
-        _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(angle, Constants.Arm.GEAR_RATIO));
+        _talon.setRotorPosition(OutliersTalon.radiansToRotations(angle, Constants.Arm.GEAR_RATIO));
     }
 
-    public double getEncoderTicksPer100ms() {
-        return _talon.getSelectedSensorVelocity();
+    public double getEncoderRotationsPerSec() {
+        return _talon.getVelocity().getValue();
     }
 
     public double getArmAngleRadians() {
-        return OutliersTalon.ticksToRadians(getEncoderTicks(), Constants.Arm.GEAR_RATIO);
+        return OutliersTalon.rotationsToRadians(getEncoderRotation(), Constants.Arm.GEAR_RATIO);
     }
     public double getPredictedArmAngleRadians() {
         return _controlLoop.getXHat(0);
     }
     public double getArmVelocityRadPerSec() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                OutliersTalon.ticksPer100msToRPM(getEncoderTicksPer100ms(), GEAR_RATIO)
+                OutliersTalon.rotationsPerSecToRPM(getEncoderRotationsPerSec(), GEAR_RATIO)
         );
     }
     public double getPredictedArmVelocityRadPerSec() {

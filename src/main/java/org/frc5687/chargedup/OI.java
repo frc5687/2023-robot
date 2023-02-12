@@ -56,7 +56,6 @@ public class OI extends OutliersProxy {
     public boolean setHeadingNorth() {
         return _driverGamepad.getYButton().getAsBoolean();
     }
-
     public boolean setHeadingEast() {
         return _driverGamepad.getBButton().getAsBoolean();
     }
