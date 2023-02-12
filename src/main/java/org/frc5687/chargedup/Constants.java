@@ -151,15 +151,25 @@ public class Constants {
     
             CONFIG.FEEDBACK_STATUS_FRAME_RATE_MS = 5;
             CONFIG.GENERAL_STATUS_FRAME_RATE_MS = 20;
+            CONFIG.CONTROL_FRAME_PERIOD_MS = 5;
+        }
+
+        public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
+
+        static {
+            CLOSED_LOOP_CONFIGURATION.kP = 0.0;
+            CLOSED_LOOP_CONFIGURATION.kI = 0.0;
+            CLOSED_LOOP_CONFIGURATION.kD = 0.0;
+            CLOSED_LOOP_CONFIGURATION.kF = 1.0;
+            CLOSED_LOOP_CONFIGURATION.SLOT = 0;
         }
         // update rate of our modules 5ms.
         public static final double kDt = 0.005;
-    
         public static final double FALCON_FREE_SPEED =
                 Units.rotationsPerMinuteToRadiansPerSecond(6380);
         public static final double GEAR_RATIO_WHEEL = 6.46875 / 1.2;
         public static final double GEAR_RATIO_STEER = 9.2 / 1.2;
-        public static final double FALCON_RATE = 600.0;
+        public static final double COEFF_FRICTION = 0.0;
         public static final double WHEEL_RADIUS = 0.04615; // Meters with compression.
         public static final double TICKS_TO_ROTATIONS = 2048.0;
         public static final double VOLTAGE = 12.0;

@@ -34,7 +34,7 @@ public class DriveTrain extends OutliersSubsystem {
     private static final int SOUTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
     private static final int NORTH_EAST_IDX = 3;
-    private final DiffSwerveModule[] _modules;
+    private final DiffSwerveModuleCurrent[] _modules;
     private final SwerveDriveKinematics _kinematics;
     private final SwerveDriveOdometry _odometry;
     private ControlState _controlState;
@@ -59,27 +59,27 @@ public class DriveTrain extends OutliersSubsystem {
         _systemIO = new SystemIO();
         _PIDAngle = getHeading().getRadians();
 
-        _modules = new DiffSwerveModule[4];
+        _modules = new DiffSwerveModuleCurrent[4];
 
-        _modules[NORTH_WEST_IDX] = new DiffSwerveModule(
+        _modules[NORTH_WEST_IDX] = new DiffSwerveModuleCurrent(
                 NORTH_WEST_CONFIG,
                 RobotMap.CAN.TALONFX.NORTH_WEST_OUTER,
                 RobotMap.CAN.TALONFX.NORTH_WEST_INNER,
                 RobotMap.DIO.ENCODER_NW
         );
-        _modules[SOUTH_WEST_IDX] = new DiffSwerveModule(
+        _modules[SOUTH_WEST_IDX] = new DiffSwerveModuleCurrent(
                 SOUTH_WEST_CONFIG,
                 RobotMap.CAN.TALONFX.SOUTH_WEST_OUTER,
                 RobotMap.CAN.TALONFX.SOUTH_WEST_INNER,
                 RobotMap.DIO.ENCODER_SW
         );
-        _modules[SOUTH_EAST_IDX] = new DiffSwerveModule(
+        _modules[SOUTH_EAST_IDX] = new DiffSwerveModuleCurrent(
                 SOUTH_EAST_CONFIG,
                 RobotMap.CAN.TALONFX.SOUTH_EAST_INNER,
                 RobotMap.CAN.TALONFX.SOUTH_EAST_OUTER,
                 RobotMap.DIO.ENCODER_SE
         );
-        _modules[NORTH_EAST_IDX] = new DiffSwerveModule(
+        _modules[NORTH_EAST_IDX] = new DiffSwerveModuleCurrent(
                 NORTH_EAST_CONFIG,
                 RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
                 RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
@@ -171,13 +171,13 @@ public class DriveTrain extends OutliersSubsystem {
 
     // use for modules as controller is running at 200Hz.
     public void modulePeriodic() {
-        for (DiffSwerveModule diffSwerveModule : _modules) {
+        for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
             diffSwerveModule.periodic();
         }
     }
     public void drive(double vx, double vy, double omega) {
         if (Math.abs(vx) < TRANSLATION_DEADBAND && Math.abs(vy) < TRANSLATION_DEADBAND && Math.abs(omega) < ROTATION_DEADBAND) {
-            for (DiffSwerveModule diffSwerveModule : _modules) {
+            for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
                 diffSwerveModule.setIdealState(new SwerveModuleState(0.0, new Rotation2d(diffSwerveModule.getModuleAngle())));
             }
 
@@ -232,7 +232,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void startModules() {
-        for (DiffSwerveModule diffSwerveModule : _modules) {
+        for (DiffSwerveModuleCurrent diffSwerveModule : _modules) {
             diffSwerveModule.start();
         }
     }
