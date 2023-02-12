@@ -45,17 +45,17 @@ public class RobotContainer extends OutliersContainer {
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON);
 
         _driveTrain = new DriveTrain(this, _oi, _imu);
-        _elevator = new Elevator(this);
-        _arm = new Arm(this);
-        _endEffector = new EndEffector(this);
+//        _elevator = new Elevator(this);
+//        _arm = new Arm(this);
+//        _endEffector = new EndEffector(this);
 
         _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
-        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
-        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
-        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        _oi.initializeButtons(_endEffector, _arm, _elevator);
+//        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+//        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+//        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+//        _oi.initializeButtons(_endEffector, _arm, _elevator);
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
         startPeriodic();
     }

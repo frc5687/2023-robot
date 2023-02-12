@@ -2,11 +2,10 @@
 package org.frc5687.chargedup.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.*;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -52,6 +51,7 @@ public class DiffSwerveModule {
     private final SystemIO _systemIO;
 
     private TrapezoidProfile.State _angleSetpoint = new TrapezoidProfile.State();
+    private TrapezoidProfile.State _angleGoal = new TrapezoidProfile.State();
     private TrapezoidProfile.State _wheelVelocityReference = new TrapezoidProfile.State();
     private final TrapezoidProfile.Constraints _profiledSteerConstraints;
     private final TrapezoidProfile.Constraints _profiledWheelConstraints;
@@ -181,10 +181,12 @@ public class DiffSwerveModule {
      * Calculated the profiled reference with angle wrapping.
      * @return Vector (r-x) vector with profiled values.
      */
+
     private Matrix<N3, N1> profiledReference(Matrix<N3, N1> reference, Matrix<N3, N1> xHat) {
         double errorBound = (Math.PI - (-Math.PI)) / 2.0;
+        _angleGoal = new TrapezoidProfile.State(reference.get(0, 0), 0);
         double angleMinimumGoalDistance = MathUtil.inputModulus(
-                reference.get(0,0) - getModuleAngle(),
+                _angleGoal.position - getModuleAngle(),
                 -errorBound,
                 errorBound
         );
@@ -193,29 +195,30 @@ public class DiffSwerveModule {
                 -errorBound,
                 errorBound
         );
-        reference.set(0, 0, angleMinimumGoalDistance + getModuleAngle());
+         _angleGoal.position = angleMinimumGoalDistance + getModuleAngle();
         _angleSetpoint.position = angleMinimumSetpointDistance + getModuleAngle();
+//        _angleSetpoint.position = getModuleAngle();
+//        _angleSetpoint.velocity= getModuleAngle();
 
         var steerProfile = new TrapezoidProfile(
                 _profiledSteerConstraints,
-                new TrapezoidProfile.State(
-                        reference.get(0,0),
-                        reference.get(1, 0)),
+                _angleGoal,
                 _angleSetpoint);
+
         _angleSetpoint = steerProfile.calculate(Constants.DifferentialSwerveModule.kDt);
         var wheelProfile = new TrapezoidProfile(
                 _profiledWheelConstraints,
-                new TrapezoidProfile.State(_reference.get(2,0),0),
+                new TrapezoidProfile.State(reference.get(2,0),0),
                 _wheelVelocityReference
         );
         _wheelVelocityReference = wheelProfile.calculate(Constants.DifferentialSwerveModule.kDt);
 
-        Matrix<N3, N1> error = reference.minus(xHat);
         return VecBuilder.fill(
                 _angleSetpoint.position - getModuleAngle(),
                 _angleSetpoint.velocity - getAzimuthAngularVelocity(),
-                error.get(2,0));
-//                _wheelVelocityReference.position - getWheelAngularVelocity());
+//                error.get(2,0));
+//                0.0);
+                _wheelVelocityReference.position - getWheelAngularVelocity());
     }
     /**
      * wraps angle so that absolute encoder can be continuous. (i.e) No issues when switching
@@ -241,17 +244,17 @@ public class DiffSwerveModule {
                         _moduleControlLoop
                                 .getController()
                                 .getK()
-                                .times(profiledReference(
-                                        _moduleControlLoop.getNextR(),
-                                        _moduleControlLoop.getXHat()
-                                        ))
-//                                .times(wrapAngle(
-//                                                _moduleControlLoop.getNextR(),
-//                                                _moduleControlLoop.getXHat()))
-                                .plus(
-                                        _moduleControlLoop
-                                                .getFeedforward()
-                                                .calculate(_moduleControlLoop.getNextR())));
+//                                .times(profiledReference(
+//                                        _moduleControlLoop.getNextR(),
+//                                        _moduleControlLoop.getXHat()
+//                                        )));
+                                .times(wrapAngle(
+                                                _moduleControlLoop.getNextR(),
+                                                _moduleControlLoop.getXHat())));
+//                                .plus(
+//                                        _moduleControlLoop
+//                                                .getFeedforward()
+//                                                .calculate(_moduleControlLoop.getNextR())));
         _moduleControlLoop.getObserver().predict(_u, kDt);
     }
 
@@ -286,7 +289,6 @@ public class DiffSwerveModule {
                         - _encoderOffset,
                 true);
     }
-
     public double getModuleAngle() {
         return _systemIO.moduleAngle;
     }
@@ -427,7 +429,7 @@ public class DiffSwerveModule {
      */
     public void setIdealState(SwerveModuleState state) {
         var delta = state.angle.minus(new Rotation2d(getModuleAngle()));
-        if (Math.abs(delta.getDegrees()) > 95.0) {
+        if (Math.abs(delta.getDegrees()) > 90.0) {
             setModuleState(new SwerveModuleState(
             -state.speedMetersPerSecond,
             state.angle.rotateBy(Rotation2d.fromDegrees(180.0))));
@@ -445,6 +447,17 @@ public class DiffSwerveModule {
         SmartDashboard.putNumber(_name + "/rightSupplyCurrent", _rightFalcon.getSupplyCurrent());
         SmartDashboard.putNumber(_name + "/leftStatorCurrent", _leftFalcon.getStatorCurrent());
         SmartDashboard.putNumber(_name + "/rightStatorCurrent", _rightFalcon.getStatorCurrent());
+        SmartDashboard.putNumber(_name + "/referenceAngle", getReferenceModuleAngle());
+        SmartDashboard.putNumber(_name + "/angularVelRef", _angleSetpoint.velocity);
+        SmartDashboard.putNumber(_name + "/angleRefPos", _angleSetpoint.position);
+        SmartDashboard.putNumber(_name + "/angleGoalPos", _angleGoal.position);
+        SmartDashboard.putNumber(_name + "/velocityGoal", (_wheelVelocityReference.position * WHEEL_RADIUS));
+        SmartDashboard.putNumber(_name + "/velocityWheel", getWheelVelocity());
+
+        SmartDashboard.putString(_name + "/KMatrix", _moduleControlLoop.getController().getK().toString());
+
+        SmartDashboard.putNumber(_name + "/moduleAngle", getModuleAngle());
+        SmartDashboard.putNumber(_name + "/estimatedModuleAngle", getPredictedAzimuthAngle());
         SmartDashboard.putString(_name + "/refernce", _reference.toString());
     }
 
