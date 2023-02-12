@@ -332,7 +332,7 @@ public class Constants {
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
         
-        public static final double GRIPPER_STALL_CURRENT = 10;
+        public static final double GRIPPER_STALL_CURRENT = 30; //was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 

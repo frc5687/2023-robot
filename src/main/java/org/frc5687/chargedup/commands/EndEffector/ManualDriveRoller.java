@@ -1,8 +1,10 @@
 package org.frc5687.chargedup.commands.EndEffector;
 
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.Constants;;
 
 public class ManualDriveRoller extends OutliersCommand {
     
@@ -23,11 +25,11 @@ public class ManualDriveRoller extends OutliersCommand {
     @Override
     public void execute(){
         if (_oi.getIntakeIn()){
-            _gripper.setRollerSpeed(1);
+            _gripper.setRollerSpeed(0.25);
         } else if (_oi.getIntakeOut()){
             _gripper.setRollerSpeed(-1);
         } else {
-            _gripper.setRollerSpeed(0);
+            _gripper.setRollerSpeed(-0.25); //this should function as an idle
         }
         // metric("Gripper Speed", speed);
     }

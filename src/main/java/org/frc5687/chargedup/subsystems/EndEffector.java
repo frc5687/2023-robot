@@ -63,17 +63,23 @@ public class EndEffector extends OutliersSubsystem {
 
         // metric("wrist setpoint", _wristController.getGoal().position);
         metric("position error", _wristController.getPositionError());
+        metric("Is Roller Stalled", isRollerStalled());
+        metric("Roller Voltage", _gripper.getMotorOutputVoltage());
+        metric("Roller Current", _gripper.getStatorCurrent());
     }
     public void setWristSpeed(double demand){
         _wrist.set(ControlMode.PercentOutput, demand);
     }
     
     public void setRollerSpeed(double demand){
-        _gripper.set(ControlMode.PercentOutput, demand);
+        if (!isRollerStalled()) {
+            _gripper.set(ControlMode.PercentOutput, demand);
+        } else {
+            _gripper.set(ControlMode.PercentOutput, 0);
     }
 
     public boolean isRollerStalled(){ 
-        return _gripper.getStatorCurrent() > Constants.EndEffector.GRIPPER_STALL_CURRENT;
+        return Math.abs(_gripper.getStatorCurrent()) > Constants.EndEffector.GRIPPER_STALL_CURRENT;
     }
 
     public double getWristAngleRadians(){
