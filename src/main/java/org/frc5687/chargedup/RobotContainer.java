@@ -11,7 +11,7 @@ import org.frc5687.chargedup.commands.Arm.IdleArm;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
-import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
+// import org.frc5687.chargedup.commands.EndEffector.ManualDriveGripper;
 import org.frc5687.chargedup.commands.EndEffector.ManualDriveWrist;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
@@ -60,6 +60,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         _oi.initializeButtons(_endEffector, _arm, _elevator);
+        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
         startPeriodic();
     }
 
@@ -82,6 +83,12 @@ public class RobotContainer extends OutliersContainer {
         }
         CommandScheduler s = CommandScheduler.getInstance();
         s.setDefaultCommand(subSystem, command);
+    }
+
+    public void controllerPeriodic() {
+        if (_driveTrain != null) {
+            _driveTrain.modulePeriodic();
+        } 
     }
 }
 

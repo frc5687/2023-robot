@@ -124,9 +124,9 @@ public class DriveTrain extends OutliersSubsystem {
                                 Constants.DriveTrain.kI,
                                 Constants.DriveTrain.kD),
                         new ProfiledPIDController(
-                                STABILIZATION_kP,
-                                STABILIZATION_kI,
-                                STABILIZATION_kD,
+                                MAINTAIN_kP,
+                                MAINTAIN_kI,
+                                MAINTAIN_kD,
                                 new TrapezoidProfile.Constraints(
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));

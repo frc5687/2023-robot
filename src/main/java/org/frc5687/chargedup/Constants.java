@@ -20,8 +20,8 @@ import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 public class Constants {
     public static final int TICKS_PER_UPDATE = 5;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
-    public static final double UPDATE_PERIOD = 0.02;
-    public static final double CONTROL_PERIOD = 0.005; // 5 ms
+    public static final double UPDATE_PERIOD = 0.02; // 20 ms
+    public static final double CONTROL_PERIOD = 0.01; // 10 ms
     public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-9;
     
@@ -48,15 +48,18 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8;
+        public static final double SCALED_TRANSLATION_INPUT = 0.4; // this makes the max speed from the joysticks some % of MAX_MPS.
         public static final double SCALED_ROTATION_INPUT = 0.5;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
+
+        public static final double MAX_MPS = 5.0; // Max speed of robot (m/s)
+        public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
-            KINEMATIC_LIMITS.maxDriveVelocity = 4.0; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 6.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 2; // rad/s
+            KINEMATIC_LIMITS.maxDriveVelocity = 5.5; // m/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 10.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 5; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -74,7 +77,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
     
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = 0.0;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.2;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -105,35 +108,30 @@ public class Constants {
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
     
         // Maximum rates of motion
-        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
+
         public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
-        public static final double MAX_ANG_VEL =
-                Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final double MAX_MPSS = 1; // Max acceleration of robot (m/s^2)
     
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double STABILIZATION_kP = 1;
-        public static final double STABILIZATION_kI = 0.0;
-        public static final double STABILIZATION_kD = 0.0;
+        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kI = 0.0;
+        public static final double MAINTAIN_kD = 0.0;
     
         public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
-        public static final double SNAP_kD = 0.0;
+        public static final double SNAP_kD = 0.5;
     
-        public static final double VISION_kP = 4.0;
-        public static final double VISION_kI = 0.0;
-        public static final double VISION_kD = 0.0;
-    
-        public static final double PROFILE_CONSTRAINT_VEL = MAX_ANG_VEL;
-        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 3.0;
+        public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
+        public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
     
         public static final double kP = 5;
         public static final double kI = 0.0;
         public static final double kD = 0.5;
     
         public static final double POSITION_TOLERANCE = 0.01;
+        public static final double HEADING_TOLERANCE = 0.15; //rad
     }
     
     public static class DifferentialSwerveModule {
@@ -169,9 +167,9 @@ public class Constants {
         public static final double INERTIA_STEER = 0.004;
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 1.1; // radians per sec
-        public static final double Q_AZIMUTH = 0.08; // radians
-        public static final double Q_WHEEL_ANG_VELOCITY = 1; // radians per sec
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 0.2; // radians per sec
+        public static final double Q_AZIMUTH = 0.02; // radians
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.2; // radians per sec
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = .1; // radians
@@ -187,11 +185,11 @@ public class Constants {
         public static final double MAX_MODULE_SPEED_MPS =
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * WHEEL_RADIUS;
         public static final double MAX_ANGULAR_VELOCITY = FALCON_FREE_SPEED / GEAR_RATIO_STEER;
-        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 20;
-    
+        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 5;
+
         public static final double MAX_MODULE_ACCELERATION =
-                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 20;
-        public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 10;
+                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 10;
+        public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 2;
     }
 
     public static class ExtendingArm {
@@ -237,10 +235,8 @@ public class Constants {
             CONTROLLER_CONFIG.kD = 0.38;
             CONTROLLER_CONFIG.kF = 0;
 
-            CONTROLLER_CONFIG.CRUISE_VELOCITY = 40000;
-            CONTROLLER_CONFIG.ACCELERATION = 25000;
-
-
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 5;
+            CONTROLLER_CONFIG.ACCELERATION = 10;
         }
     }
 
