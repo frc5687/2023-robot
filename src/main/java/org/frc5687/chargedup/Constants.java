@@ -317,7 +317,6 @@ public class Constants {
         public static final double WRIST_kP = 2;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
-
         
         public static final double WRIST_VEL = Units.degreesToRadians(5);
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
@@ -334,6 +333,8 @@ public class Constants {
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
+        
+        public static final double GRIPPER_STALL_CURRENT = 30; //was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 
@@ -342,10 +343,10 @@ public class Constants {
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         //fully closed angle
-        public static final double GRIPPER_CLOSED_ANGLE = Units.degreesToRadians(277.0);
+        public static final double GRIPPER_IN_SPEED = Units.degreesToRadians(277.0);
         // fully open angle
-        public static final double GRIPPER_OPEN_ANGLE = Units.degreesToRadians(130.0);
-        public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
+        public static final double GRIPPER_OUT_SPEED = Units.degreesToRadians(130.0);
+        //public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
 
         public static final long GRIPPER_TIMEOUT = 1500;

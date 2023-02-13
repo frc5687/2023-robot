@@ -19,7 +19,11 @@ import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
+<<<<<<< HEAD
 // import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+=======
+import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
+>>>>>>> origin/Intake/#37-NewIntake
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 
@@ -44,17 +48,27 @@ public class OI extends OutliersProxy {
 //            elevator, endEffector, arm, .4, Constants.EndEffector.WRIST_MIN_ANGLE,
 //            Constants.EndEffector.GRIPPER_CLOSED_ANGLE, 3.4
 //        ));
-        _operatorGamepad.getBButton().onTrue(
-                new AutoExtendElevator(elevator, .55)
-        );
-        _operatorGamepad.getAButton().onTrue(
-                new AutoExtendElevator(elevator, .2)
-        );
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
         // _operatorGamepad.getXButton().onTrue(new AutoSetRoller(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
         // _operatorGamepad.getYButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CLOSED_ANGLE));
         // _operatorGamepad.getRightBumper().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
+        // _operatorGamepad.getAButton().onTrue(new AutoSetRollerSpeed(endEffector, 1));
+        // _operatorGamepad.getBButton().onTrue(new AutoSetRollerSpeed(endEffector, -1));
+       /*  _operatorGamepad.getAButton().onTrue(new AutoSetSuperStructurePosition(
+            elevator, endEffector, arm, 0.0, Constants.EndEffector.WRIST_PICKUP_ANGLE, 
+            Constants.EndEffector.GRIPPER_OUT_SPEED, 1.51
+        ));
+        _operatorGamepad.getBButton().onTrue(new AutoSetSuperStructurePosition(
+            elevator, endEffector, arm, .4, Constants.EndEffector.WRIST_MIN_ANGLE,
+            Constants.EndEffector.GRIPPER_IN_SPEED, 3.4
+        ));*/
+        // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
+        // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
+        // _operatorGamepad.getXButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OUT_SPEED));
+        // _operatorGamepad.getYButton().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_IN_SPEED));
+       // _operatorGamepad.getRightBumper().onTrue(new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
+>>>>>>> origin/Intake/#37-NewIntake
 
     }
 
@@ -100,6 +114,7 @@ public class OI extends OutliersProxy {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
         return speed/5; //for testing
+        // return 0;
     }
     public double getExtArmY(){
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
@@ -116,11 +131,19 @@ public class OI extends OutliersProxy {
         // metric("Raw x", xIn);
         // metric("Raw y", yIn);
     }
-    public double getGripperSpeed() {
-        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-        // speed = applyDeadband(speed, ROTATION_DEADBAND);
-        // return speed;
+    public double getRollerSpeed() {
+        //  double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.A.getNumber());
+        //  speed = applyDeadband(speed, ROTATION_DEADBAND);
+        //  return speed;
         return 0;
+    }
+
+    public boolean getIntakeIn(){
+        return _operatorGamepad.getAButton().getAsBoolean();
+    }
+
+    public boolean getIntakeOut(){
+        return _operatorGamepad.getBButton().getAsBoolean();
     }
 
     public double getWristSpeed() {

@@ -1,10 +1,10 @@
 package org.frc5687.chargedup.commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
-// import org.frc5687.chargedup.commands.EndEffector.AutoSetGripperAngle;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
-import org.frc5687.chargedup.commands.EndEffector.SetEndEffectorPosition;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
@@ -35,7 +35,8 @@ public class AutoSetSuperStructurePosition extends SequentialCommandGroup {
 
         addCommands(
             // new AutoSetGripperAngle(_endEffector, _gripperAngle),
-            new ParallelCommandGroup(
+            new ParallelDeadlineGroup(
+                new AutoSetRollerSpeed(_endEffector, _gripperAngle),
                 new AutoSetArmSetpoint(_arm, _armAngle),
                 new AutoSetWristAngle(_endEffector, _wristAngle),
                 new AutoExtendElevator(_elevator, _elevatorPosition)
