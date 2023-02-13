@@ -44,7 +44,7 @@ public class RobotContainer extends OutliersContainer {
         _oi = new OI();
 
         // configure pigeon
-        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore" );
+        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
 
@@ -53,7 +53,6 @@ public class RobotContainer extends OutliersContainer {
         _arm = new Arm(this);
         _endEffector = new EndEffector(this);
 
-        _driveTrain.resetOdometry(new Pose2d(0, 0, _driveTrain.getHeading()));
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));

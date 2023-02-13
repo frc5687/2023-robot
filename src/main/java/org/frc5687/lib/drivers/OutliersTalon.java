@@ -63,6 +63,13 @@ public class OutliersTalon extends TalonFX {
     public void setMotionMagic(double position){
         this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
     }
+    public void setTorqueCurrentFOCRate(double hz) {
+        _torqueCurrentFOC.withUpdateFreqHz(hz);
+    }
+    public void setTorqueCurrentFOC(double current) {
+        this.setControl(_torqueCurrentFOC.withOutput(current));
+    }
+
     public void configure(Configuration config) {
         _motorConfigs.Inverted = config.INVERTED;
         _motorConfigs.NeutralMode = config.NEUTRAL_MODE;
@@ -91,8 +98,6 @@ public class OutliersTalon extends TalonFX {
         _configurator.apply(_torqueCurrentConfigs, config.TIME_OUT);
         _configurator.apply(_currentLimitsConfigs, config.TIME_OUT);
         _configurator.apply(_feedbackConfigs, config.TIME_OUT);
-        
-
     }
 
     public void configureClosedLoop(ClosedLoopConfiguration config) {
