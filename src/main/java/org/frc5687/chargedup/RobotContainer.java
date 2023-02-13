@@ -5,6 +5,7 @@ package org.frc5687.chargedup;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
@@ -57,7 +58,8 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        setDefaultCommand(_endEffector, new ManualDriveRoller(_endEffector, _oi));
+        setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
+//        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
         _oi.initializeButtons(_endEffector, _arm, _elevator);
 

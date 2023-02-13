@@ -289,6 +289,7 @@ public class Constants {
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
         public static final double LOWER_EXTREME = 0.378;
+        public static final double PLACE_ARM_ANGLE = 3.2; // testing
     }
 
     public static class Auto {
@@ -322,19 +323,19 @@ public class Constants {
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(5.5);
-        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(278.0);
-        public static final double WRIST_MID_ANGLE = Units.degreesToRadians(208.7);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(221.0);
+        public static final double WRIST_MID_ANGLE = Units.degreesToRadians(150);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
 
 
-        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(240);
+        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(200);
         public static final boolean WRIST_INVERTED = true;
 
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
         
-        public static final double GRIPPER_STALL_CURRENT = 30; //was 10
+        public static final double GRIPPER_STALL_CURRENT = 15; //was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 
@@ -343,13 +344,13 @@ public class Constants {
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         //fully closed angle
-        public static final double GRIPPER_IN_SPEED = Units.degreesToRadians(277.0);
+        public static final double GRIPPER_IN_SPEED = -0.5;
         // fully open angle
-        public static final double GRIPPER_OUT_SPEED = Units.degreesToRadians(130.0);
+        public static final double GRIPPER_OUT_SPEED = 0.5;
         //public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
 
-        public static final long GRIPPER_TIMEOUT = 1500;
+        public static final long GRIPPER_TIMEOUT = 1000;
     }
 
 }  

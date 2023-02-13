@@ -30,7 +30,11 @@ public class ManualDriveArm extends OutliersCommand {
         //     _arm.setArmVoltage(_arm.getNextVoltage());
         } else {
             _arm.setNextReference(_arm.getArmAngleRadians(), 0);
-            _arm.setArmSpeed(_oi.getArmY());
+            if (Math.abs(_oi.getArmY()) > 0 ){
+                _arm.setArmSpeed(_oi.getArmY());
+            } else {
+//                _arm.setArmSpeed(_arm.armFeedForward());
+            }
         }
     }
 

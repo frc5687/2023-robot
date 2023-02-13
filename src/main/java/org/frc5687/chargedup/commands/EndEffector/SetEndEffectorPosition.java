@@ -10,12 +10,12 @@ public class SetEndEffectorPosition extends OutliersCommand{
     
     private EndEffector _endEffector;
     
-    
     private double _wristAngle;
     private double _gripperSpeed;
 
+
     public SetEndEffectorPosition(EndEffector endEffector,
-     double wristAngle, double gripperSpeed ) {
+     double wristAngle, double gripperSpeed) {
        _endEffector = endEffector;
 
         _wristAngle = wristAngle;
@@ -42,12 +42,13 @@ public class SetEndEffectorPosition extends OutliersCommand{
      public boolean isFinished() {
          // TODO Auto-generated method stub
          return
-          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE;
+          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE && _endEffector.isRollerStalled();
           //&&  Math.abs(_gripperSpeed - _endEffector.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
         }
      @Override
      public void end(boolean interrupted) {
          // TODO Auto-generated method stub
          super.end(interrupted);
+         _endEffector.setWristSpeed(0.0);
      }
 }

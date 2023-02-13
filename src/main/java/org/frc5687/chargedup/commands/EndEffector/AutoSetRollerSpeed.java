@@ -12,10 +12,12 @@ public class AutoSetRollerSpeed extends OutliersCommand{
     private double _speed;
 
     private long _timeout;
+    private boolean _withTimeout;
 
-    public AutoSetRollerSpeed(EndEffector roller, double speed){
+    public AutoSetRollerSpeed(EndEffector roller, double speed, boolean withTimeout){
         _roller = roller;
         _speed = speed;
+        _withTimeout = withTimeout;
         addRequirements(_roller);
     }
     @Override
@@ -35,6 +37,9 @@ public class AutoSetRollerSpeed extends OutliersCommand{
     }
     @Override
     public boolean isFinished() {
+        if (_withTimeout) {
+            return _timeout < System.currentTimeMillis();
+        }
        return _roller.isRollerStalled();
     }
 
