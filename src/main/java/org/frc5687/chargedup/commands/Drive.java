@@ -97,7 +97,7 @@ public class Drive extends OutliersCommand {
         _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
                 vx,
                 vy,
-                rot,// + controllerPower,
+                rot + controllerPower,
                 _driveTrain.getHeading()
         ));
 //        _driveTrain.drive(vx, vy, rot);

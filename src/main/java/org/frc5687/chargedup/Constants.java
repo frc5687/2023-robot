@@ -41,7 +41,7 @@ public class Constants {
      * <p>Note: when robot is flipped over, this is clockwise.
      */
     public static class DriveTrain {
-        public static final String CAN_BUS = "DriveTrainPractice";
+        public static final String CAN_BUS = "CANivore";
         public static final int NUM_MODULES = 4;
     
         // Size of the robot chassis in meters
@@ -97,7 +97,6 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderInverted = false;
             NORTH_EAST_CONFIG.encoderOffset = -0.205;
         }
-        public static final double kDt = 0.005; // 5 ms
         public static final double TRANSLATION_DEADBAND =
                 0.1; // Avoid unintentional joystick movement
         public static final double ROTATION_DEADBAND = 0.1; // Avoid unintentional joystick movement
@@ -152,25 +151,31 @@ public class Constants {
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
 
-        // update rate of our modules 5ms.
+//         update rate of our modules 5ms.
         public static final double kDt = 0.005;
+//        public static final double kDt = 0.01;
         public static final double FALCON_FREE_SPEED =
                 Units.rotationsPerMinuteToRadiansPerSecond(6380);
         public static final double GEAR_RATIO_WHEEL = 6.46875 / 1.2;
         public static final double GEAR_RATIO_STEER = 9.2 / 1.2;
-        public static final double COEFF_FRICTION = 0.002;
+
+        public static final double FRICTION_STEER = 0.02;
+        public static final double FRICTION_WHEEL = 0.01;
         public static final double WHEEL_RADIUS = 0.04615; // Meters with compression.
         public static final double TICKS_TO_ROTATIONS = 2048.0;
         public static final double VOLTAGE = 12.0;
     
         // Create Parameters for DiffSwerve State Space
-        public static final double INERTIA_WHEEL = 0.002;
-        public static final double INERTIA_STEER = 0.001;
+        public static final double INERTIA_STEER = 0.005;
+        public static final double INERTIA_WHEEL = 0.003;
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 0.01; // radians per sec
-        public static final double Q_AZIMUTH = 0.001; // radians
-        public static final double Q_WHEEL_ANG_VELOCITY = 0.01; // radians per sec
+
+        public static final double Q_AZIMUTH = 0.08; // radians
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 1.0; // radians per sec
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.3; // radians per sec
+
+        public static final double CONTROL_EFFORT = 2.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = 0.1; // radians
@@ -181,14 +186,13 @@ public class Constants {
         public static final double SENSOR_AZIMUTH_ANGLE_NOISE = 0.01; // radians
         public static final double SENSOR_AZIMUTH_ANG_VELOCITY_NOISE = 0.1; // radians per sec
         public static final double SENSOR_WHEEL_ANG_VELOCITY_NOISE = 0.1; // radians per sec
-        public static final double CONTROL_EFFORT = 30.0;
         public static final double MAX_MODULE_SPEED_MPS =
                 (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * WHEEL_RADIUS;
         public static final double MAX_ANGULAR_VELOCITY = FALCON_FREE_SPEED / GEAR_RATIO_STEER;
-        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 2;
+        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 5;
 
         public static final double MAX_MODULE_ACCELERATION =
-                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 2;
+                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 4;
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 2;
     }
 
