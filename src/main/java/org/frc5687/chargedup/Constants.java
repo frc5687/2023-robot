@@ -58,8 +58,8 @@ public class Constants {
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.5; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 10.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 5; // rad/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 20.0; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 8; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -114,11 +114,11 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kP = 5.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.0;
     
-        public static final double SNAP_kP = 4.0;
+        public static final double SNAP_kP = 5.0;
         public static final double SNAP_kI = 0.0;
         public static final double SNAP_kD = 0.5;
     
@@ -171,11 +171,11 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.08; // radians
+        public static final double Q_AZIMUTH = 0.05; // radians
         public static final double Q_AZIMUTH_ANG_VELOCITY = 1.0; // radians per sec
-        public static final double Q_WHEEL_ANG_VELOCITY = 0.3; // radians per sec
+        public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 
-        public static final double CONTROL_EFFORT = 2.0;
+        public static final double CONTROL_EFFORT = 4.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = 0.1; // radians
