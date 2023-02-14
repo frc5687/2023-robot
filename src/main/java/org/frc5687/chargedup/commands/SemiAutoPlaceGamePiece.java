@@ -23,7 +23,9 @@ public class SemiAutoPlaceGamePiece extends SequentialCommandGroup {
                         elevator, endEffector, arm, 0.55, Constants.EndEffector.WRIST_MIN_ANGLE,
                         /*endEffector.getConeMode() ? */ 0.0 /* : Constants.EndEffector.GRIPPER_CUBE_ANGLE*/, Constants.Arm.PLACE_ARM_ANGLE
                 ),
-                new WaitForManualGripper(endEffector, oi),
+                new ParallelDeadlineGroup(
+                        new WaitForManualGripper(endEffector, oi),
+                        new HoldArm(arm, Constants.Arm.PLACE_ARM_ANGLE)),
 
                 new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OUT_SPEED, true),
                 new AutoSetSuperStructurePosition(

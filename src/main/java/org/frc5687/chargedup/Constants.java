@@ -115,7 +115,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double MAINTAIN_kP = 5.0;
+        public static final double MAINTAIN_kP = 10.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.0;
     
@@ -269,8 +269,8 @@ public class Constants {
         }
         // this is the motor config for the arm motors
 
-        public static final double ARM_LENGTH = Units.feetToMeters(5.0);
-        public static final double ARM_WEIGHT = Units.lbsToKilograms(11.0);
+        public static final double ARM_LENGTH = Units.feetToMeters(4.0);
+        public static final double ARM_WEIGHT = Units.lbsToKilograms(10.0);
         public static final double INERTIA_ARM = (1.0 / 3.0) * ARM_WEIGHT * (ARM_LENGTH * ARM_LENGTH);
 
         // Physical characteristic of the system
@@ -287,13 +287,13 @@ public class Constants {
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
-        public static final double MAX_VELOCITY = Units.degreesToRadians(110);
-        public static final double MAX_ACCELERATION = Units.degreesToRadians(200);
+        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
         public static final double LOWER_EXTREME = 0.378;
-        public static final double PLACE_ARM_ANGLE = 3.2; // testing
+        public static final double PLACE_ARM_ANGLE = 3.25; // testing
     }
 
     public static class Auto {
@@ -332,14 +332,14 @@ public class Constants {
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
 
 
-        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(200);
+        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(210);
         public static final boolean WRIST_INVERTED = true;
 
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
         
-        public static final double GRIPPER_STALL_CURRENT = 15; //was 10
+        public static final double GRIPPER_STALL_CURRENT = 17; //was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 

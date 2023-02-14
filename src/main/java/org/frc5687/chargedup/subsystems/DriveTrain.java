@@ -275,23 +275,23 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void updateDesiredStates() {
-        Pose2d robotPoseVel = new Pose2d(
-                _systemIO.desiredChassisSpeeds.vxMetersPerSecond * Constants.CONTROL_PERIOD,
-                _systemIO.desiredChassisSpeeds.vyMetersPerSecond * Constants.CONTROL_PERIOD,
-                Rotation2d.fromRadians(_systemIO.desiredChassisSpeeds.omegaRadiansPerSecond * Constants.CONTROL_PERIOD)
-        );
-
-        Twist2d twistVel = new Pose2d().log(robotPoseVel);
-        ChassisSpeeds updatedChassisSpeeds = new ChassisSpeeds(
-                twistVel.dx / Constants.CONTROL_PERIOD,
-                twistVel.dy / Constants.CONTROL_PERIOD,
-                twistVel.dtheta / Constants.CONTROL_PERIOD
-        );
+//        Pose2d robotPoseVel = new Pose2d(
+//                _systemIO.desiredChassisSpeeds.vxMetersPerSecond * Constants.CONTROL_PERIOD,
+//                _systemIO.desiredChassisSpeeds.vyMetersPerSecond * Constants.CONTROL_PERIOD,
+//                Rotation2d.fromRadians(_systemIO.desiredChassisSpeeds.omegaRadiansPerSecond * Constants.CONTROL_PERIOD)
+//        );
+//
+//        Twist2d twistVel = new Pose2d().log(robotPoseVel);
+//        ChassisSpeeds updatedChassisSpeeds = new ChassisSpeeds(
+//                twistVel.dx / Constants.CONTROL_PERIOD,
+//                twistVel.dy / Constants.CONTROL_PERIOD,
+//                twistVel.dtheta / Constants.CONTROL_PERIOD
+//        );
         _systemIO.setpoint = _swerveSetpointGenerator.generateSetpoint(
                 _kinematicLimits,
                 _systemIO.setpoint,
-                // _systemIO.desiredChassisSpeeds,
-                updatedChassisSpeeds,
+                 _systemIO.desiredChassisSpeeds,
+//                updatedChassisSpeeds,
                 Constants.CONTROL_PERIOD
         );
         metric("Setpoint Swerve", _systemIO.setpoint.chassisSpeeds.toString());

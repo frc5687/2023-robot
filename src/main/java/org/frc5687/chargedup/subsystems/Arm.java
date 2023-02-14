@@ -159,7 +159,7 @@ public class Arm extends OutliersSubsystem{
      * @return voltage
      */
     public double getNextVoltage() {
-        return _controlLoop.getU(0) + armFeedForward();
+        return _controlLoop.getU(0); //+ armFeedForward() / 2;
     }
 
     public void updateDashboard() {
