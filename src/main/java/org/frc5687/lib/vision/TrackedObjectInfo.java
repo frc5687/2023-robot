@@ -58,9 +58,11 @@ public class TrackedObjectInfo {
         // 8 for uint8_t
         return 8 + (Float.SIZE * 6);
     }
+
     public static int sizeBytes() {
         return 1 + (Float.BYTES * 6);
     }
+
     public static int numberOfElements() {
         return 7;
     }
@@ -69,6 +71,9 @@ public class TrackedObjectInfo {
         return "Game Element: " + getElement().name() + ", x: " + getX() + ", y: " + getY() + ", z: " + getZ();
     }
 
+    public double getDistance() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
 
     public enum GameElement {
         CONE(0),

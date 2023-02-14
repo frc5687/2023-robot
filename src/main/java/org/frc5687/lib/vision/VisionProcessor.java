@@ -10,15 +10,20 @@ import java.util.concurrent.Executors;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.util.SubsystemManager;
 import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
+import org.zeromq.ZMQException;
 
 public class VisionProcessor {
     private final ZMQ.Context context;
-    private final Map<String, ZMQ.Socket> subscribers;
-    private final Map<String, ZMQ.Socket> publishers;
-    private volatile boolean running = true;
+    private final Map<String, ZMQ.Socket> subscribers = new HashMap<>();
+    private final Map<String, ZMQ.Socket> publishers = new HashMap<>();
+    private volatile boolean running = false;
+
+
+    private ArrayList<TrackedObjectInfo> _trackedTargets;
 
     private final Notifier _receiveNotifier =
             new Notifier(
@@ -28,12 +33,8 @@ public class VisionProcessor {
                         }
                     });
 
-    private ArrayList<TrackedObjectInfo> _trackedTargets;
-
     public VisionProcessor() {
         context = ZMQ.context(1);
-        subscribers = new HashMap<>();
-        publishers = new HashMap<>();
         _trackedTargets = new ArrayList<>();
     }
 
@@ -45,7 +46,9 @@ public class VisionProcessor {
                     subscriber = context.socket(SocketType.SUB);
                     subscriber.connect(addr);
                     subscriber.subscribe(topic.getBytes());
+                    subscriber.setReceiveTimeOut(0);
                     subscribers.put(topic, subscriber);
+                    System.out.println("Subscriber added");
                     break;
                 } catch (Exception e) {
                     System.out.println("Error connecting to publisher, retrying in 1 seconds");
@@ -84,6 +87,9 @@ public class VisionProcessor {
         for (Map.Entry<String, ZMQ.Socket> entry : subscribers.entrySet()) {
             ZMQ.Socket subscriber = entry.getValue();
             String topic = subscriber.recvStr();
+            if (topic == null) {
+                continue;
+            }
             byte[] serializedData = subscriber.recv();
             processData(topic, serializedData);
         }
@@ -127,9 +133,9 @@ public class VisionProcessor {
             int id = buffer.get();
             list.add(new TrackedObjectInfo(
                     TrackedObjectInfo.GameElement.valueOf(id),
-                    buffer.getFloat(),
-                    buffer.getFloat(),
-                    buffer.getFloat(),
+                    buffer.getFloat() - Constants.Vision.Z_CAM_X_OFFSET,
+                    buffer.getFloat() - Constants.Vision.Z_CAM_Y_OFFSET,
+                    buffer.getFloat() - Constants.Vision.Z_CAM_Z_OFFSET,
                     buffer.getFloat(),
                     buffer.getFloat(),
                     buffer.getFloat()

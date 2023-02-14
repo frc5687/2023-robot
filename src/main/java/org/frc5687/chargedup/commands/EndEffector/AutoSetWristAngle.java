@@ -22,8 +22,6 @@ public class AutoSetWristAngle extends OutliersCommand {
         super.initialize();
         _wrist.setWristSetpointRadians(_angle);
         metric("setpoint", _angle);
-        error("Started Wrist");
-
     }
     @Override
     public void execute() {
@@ -43,6 +41,5 @@ public class AutoSetWristAngle extends OutliersCommand {
         // TODO Auto-generated method stub
         super.end(interrupted);
         _wrist.setWristSpeed(0);
-        error("Wrist Ended");
     }
 }

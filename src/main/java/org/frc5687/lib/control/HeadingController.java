@@ -1,5 +1,6 @@
 package org.frc5687.lib.control;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import org.frc5687.chargedup.Constants;
@@ -11,6 +12,8 @@ public class HeadingController {
     }
 
     private final ProfiledPIDController _PIDController;
+    // private final PIDController _PIDController;
+
     private double _setpoint = 0.0;
 
     private final TrapezoidProfile.Constraints _constraints;
@@ -24,6 +27,11 @@ public class HeadingController {
                 Constants.DriveTrain.MAINTAIN_kD,
                 _constraints
         );
+        // _PIDController = new PIDController(
+        //         Constants.DriveTrain.MAINTAIN_kP,
+        //         Constants.DriveTrain.MAINTAIN_kI,
+        //         Constants.DriveTrain.MAINTAIN_kD
+        // );
         _PIDController.enableContinuousInput(-Math.PI, Math.PI);
         _PIDController.setTolerance(Constants.DriveTrain.HEADING_TOLERANCE);
 
@@ -51,8 +59,13 @@ public class HeadingController {
     public boolean isAtGoal(double currentAngle) {
         return Math.abs(currentAngle - _setpoint) < Constants.DriveTrain.HEADING_TOLERANCE;
     }
+
+    public void reset() {
+        _PIDController.reset(_PIDController.getSetpoint()); 
+    }
     public double calculate(double currentAngle) {
         _PIDController.setGoal(_setpoint);
+        // _PIDController.setSetpoint(_setpoint);
 
         switch (_headingControllerState) {
             case OFF:
