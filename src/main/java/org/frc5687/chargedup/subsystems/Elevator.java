@@ -30,15 +30,11 @@ public class Elevator extends OutliersSubsystem {
     public void periodic() {
          super.periodic();
          if (_outHall.get()){
-            //  _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
-             //_talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.OUT_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
-            _talon.setRotorPosition(Constants.ExtendingArm.OUT_HALL_RAD / (Math.PI * 2));
+             _talon.setRotorPosition(Constants.ExtendingArm.OUT_HALL_ENCODER_ROTATIONS);
          }
 
          if (_inHall.get()){
-            //  _talon.set(ControlMode.PercentOutput, Constants.ExtendingArm.ZERO_ARM_SPEED);
-            //  _talon.setSelectedSensorPosition(OutliersTalon.radiansToTicks(Constants.ExtendingArm.IN_HALL_RAD, Constants.ExtendingArm.GEAR_RATIO));
-            _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD / (Math.PI * 2));
+            _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD);
         }
     }
 
@@ -48,11 +44,11 @@ public class Elevator extends OutliersSubsystem {
 
     public void setExtArmLengthMeters(double distance){
         //_talon.set(ControlMode.MotionMagic, (distance * Constants.ExtendingArm.TICKS_TO_METERS));
-        _talon.setMotionMagic(distance);
+        _talon.setMotionMagic(distance * Constants.ExtendingArm.ROTATIONS_TO_METERS);
     }
 
     public double getExtArmMeters(){
-        return getEncoderPosition() / Constants.ExtendingArm.TICKS_TO_METERS;
+        return getEncoderPositionRotations() / Constants.ExtendingArm.ROTATIONS_TO_METERS;
     }
 
     public void stopArm(){
@@ -71,17 +67,22 @@ public class Elevator extends OutliersSubsystem {
         _talon.setRotorPosition(Constants.ExtendingArm.ZERO_ENCODER);
     }
 
-    public double getEncoderPosition() {
+    public double getEncoderPositionRotations() {
         return _talon.getPosition().getValue();
     }
 
     public double getEncoderRotationRadians() {
-        return getEncoderPosition() * ((2.0 * Math.PI)/ (Constants.ExtendingArm.GEAR_RATIO));
+        return OutliersTalon.rotationsToRadians(getEncoderPositionRotations(), 1.0);
+    }
+
+    public double getElevatorRotationsRadians() {
+        return OutliersTalon.rotationsToRadians(getEncoderPositionRotations(), Constants.ExtendingArm.GEAR_RATIO);
     }
     public void updateDashboard() {
-        metric("Encoder Position", getEncoderPosition());
+        metric("Encoder Position", getEncoderPositionRotations());
         metric("Encoder Radians", getEncoderRotationRadians());
-        metric("Arm Extended Length", getExtArmMeters());
+        metric("Elevator Radians", getEncoderRotationRadians());
+        metric("Elevator Length", getExtArmMeters());
         metric("Out Hall", getOutHall());
         metric("In Hall", getInHall());
         metric("Motor Output", _talon.get());

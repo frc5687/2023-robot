@@ -119,12 +119,15 @@ public class OutliersTalon extends TalonFX {
     public static double ticksToRadians(double ticks, double gearRatio) {
         return ticks * ((2.0 * Math.PI) / (gearRatio * 2048.0));
     }
+
     public static double radiansToRotations(double radians, double gearRatio) {
         return radians / ((2.0 * Math.PI) / gearRatio);
     }
+
     public static double radiansToTicks(double degrees, double gearRatio) {
         return degrees / ((2.0 * Math.PI) / (gearRatio * 2048.0));
     }
+
     public static double rotationsToRadians(double rotations, double gearRatio) {
         return rotations * ((2.0 * Math.PI) / gearRatio);
     }
