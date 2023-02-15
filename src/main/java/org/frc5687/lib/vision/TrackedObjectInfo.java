@@ -50,10 +50,20 @@ public class TrackedObjectInfo {
         return vy;
     }
 
+    public double getDistance() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+    public double getAzimuthAngle() {
+        return Math.atan2(y, x);
+    }
+    public double getAltitudeAngle() {
+        return Math.asin(z / getDistance());
+    }
+
     public float getVZ() {
         return vz;
     }
-    
+
     public static int size() {
         // 8 for uint8_t
         return 8 + (Float.SIZE * 6);
@@ -71,9 +81,7 @@ public class TrackedObjectInfo {
         return "Game Element: " + getElement().name() + ", x: " + getX() + ", y: " + getY() + ", z: " + getZ();
     }
 
-    public double getDistance() {
-        return Math.sqrt(x * x + y * y + z * z);
-    }
+
 
     public enum GameElement {
         CONE(0),
