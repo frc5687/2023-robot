@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import org.frc5687.chargedup.commands.SemiAutoPickupGamePiece;
 import org.frc5687.chargedup.commands.SemiAutoPlaceGamePiece;
+import org.frc5687.chargedup.commands.SemiAutoPlaceMiddleGamePiece;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
 
@@ -40,8 +41,10 @@ public class OI extends OutliersProxy {
     public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickupGamePiece(
             arm, endEffector, elevator, this));
-        _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceGamePiece(
-                arm, endEffector, elevator, this));
+        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceGamePiece(
+            arm, endEffector, elevator, this));
+        _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddleGamePiece(
+            arm, endEffector, elevator, this));
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(
