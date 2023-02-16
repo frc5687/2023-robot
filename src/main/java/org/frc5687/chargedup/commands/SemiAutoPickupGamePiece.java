@@ -22,10 +22,10 @@ public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
                 // new DriveUntilInHall(elevator),
                // new AutoExtendElevator(elevator, 0.01),
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, 0.37, Constants.EndEffector.WRIST_PICKUP_ANGLE,
-                        Constants.EndEffector.GRIPPER_IN_SPEED, 1.65
+                        elevator, endEffector, arm, 0.39, Constants.EndEffector.WRIST_PICKUP_ANGLE,
+                        Constants.EndEffector.GRIPPER_IN_SPEED, 1.72
                 ),
-                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, 1.65)),
+                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, 1.72)),
 
 //                new CloseConeGripper(endEffector),
                 new AutoSetSuperStructurePosition(
