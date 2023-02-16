@@ -125,6 +125,10 @@ public class OI extends OutliersProxy {
         return _operatorGamepad.getBButton().getAsBoolean();
     }
 
+    public boolean getSlowMode(){
+        return _driverGamepad.getLeftBumper().getAsBoolean();
+    }
+
     public double getWristSpeed() {
 //        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
 //        speed = applyDeadband(speed, ROTATION_DEADBAND);
