@@ -211,8 +211,8 @@ public class DriveTrain extends OutliersSubsystem {
             setModuleStates(swerveModuleStates);
         }
     }
-    @Override
-    public void controlPeriodic(double timestamp) {
+//    @Override
+    public void periodic() {
         // modulePeriodic();
         // read sensors and modules so that they are cached for this loop
         readIMU();
@@ -339,6 +339,8 @@ public class DriveTrain extends OutliersSubsystem {
     // yaw is negative to follow wpi coordinate system.
     public Rotation2d getHeading() {
         return _systemIO.heading;
+//        _imu.getRotation2d()
+//        return _imu.getRotation2d().plus(Rotation2d.fromDegrees(90));
     }
 
     public void zeroGyroscope() {

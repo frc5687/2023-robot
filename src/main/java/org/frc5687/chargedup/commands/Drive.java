@@ -65,7 +65,8 @@ public class Drive extends OutliersCommand {
     public void execute() {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
-//            _headingController.setGoal(_driveTrain.getHeading().getRadians());
+            _headingController.setState(SwerveHeadingController.HeadingState.OFF);
+            _headingController.getRotationCorrection(_driveTrain.getHeading());
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveY(), _oi.getDriveX(), segmentationArray);
@@ -73,9 +74,44 @@ public class Drive extends OutliersCommand {
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
         double vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
         double vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+//        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+//        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
         double rot = _oi.getRotationX();
         rot = Math.signum(rot) * rot * rot;
         rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
+
+        // 0.01 is the tolerance to start heading controller.
+//        if (Math.abs(rot) < 0.01) {
+//            if (_oi.setHeadingNorth()) {
+//                _headingController.setSnapHeading(new Rotation2d(0.0));
+//            } else if (_oi.setHeadingEast()) {
+//                _headingController.setSnapHeading(new Rotation2d(-Math.PI / 2.0));
+//            } else if (_oi.setHeadingSouth()) {
+//                _headingController.setSnapHeading(new Rotation2d(Math.PI));
+//            } else if (_oi.setHeadingWest()) {
+//                _headingController.setSnapHeading(new Rotation2d(Math.PI / 2.0));
+//            } else if (_headingController.getHeadingState() == SwerveHeadingController.HeadingState.SNAP) {
+//                _headingController.setState(SwerveHeadingController.HeadingState.MAINTAIN);
+//                _headingController.setMaintainHeading(_driveTrain.getHeading());
+////                _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.MAINTAIN);
+////                _headingController.setGoal(_headingController.getGoal());
+//            } else if (_headingController.getHeadingControllerState() == HeadingController.HeadingControllerState.OFF) {
+//                _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.MAINTAIN);
+//            }
+//        } else {
+//            _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.OFF);
+//            _headingController.reset();
+//            _headingController.setGoal(_driveTrain.getHeading().getRadians());
+//        }
+//        if (_oi.setHeadingNorth()) {
+//            _headingController.setSnapHeading(new Rotation2d(0));
+//            _headingController.setState(SwerveHeadingController.HeadingState.SNAP);
+//            _lockHeading = true;
+////            _headingController.setSnapHeading(new Rotation2d(0));
+//        } else if (){
+//            _lockHeading = false;
+//        }
+
         if (rot == 0) {
             if (!_lockHeading) {
                 _headingController.temporaryDisable();
@@ -99,7 +135,7 @@ public class Drive extends OutliersCommand {
             _headingController.setSnapHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                            vx * coneDist / 4.0,
+                            vx * coneDist / 3.0,
                             power,
                             _headingController.getRotationCorrection(_driveTrain.getHeading()),
                             _driveTrain.getHeading()
@@ -113,8 +149,12 @@ public class Drive extends OutliersCommand {
                     _driveTrain.getHeading()
             ));
         }
-//        _driveTrain.drive(vx, vy, rot);
-//        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
+//        _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
+//                vx,
+//                vy,
+//                rot +controllerPower,
+//                _driveTrain.getHeading()
+//        ));
     }
 
     @Override

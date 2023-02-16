@@ -3,6 +3,8 @@
 package org.frc5687.chargedup;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
@@ -61,7 +63,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
+//        setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
         _oi.initializeButtons(_endEffector, _arm, _elevator);
@@ -72,7 +74,6 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public void periodic() {
-        metric("Number of Objects", _visionProcessor.getTrackedObjects().size());
     }
 
     public void disabledPeriodic() {}

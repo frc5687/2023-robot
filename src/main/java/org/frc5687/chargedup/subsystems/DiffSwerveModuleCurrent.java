@@ -116,9 +116,9 @@ public class DiffSwerveModuleCurrent {
                         VecBuilder.fill(CONTROL_EFFORT, CONTROL_EFFORT),
                         kDt);
 
-        moduleController.latencyCompensate(swerveModuleModel, 0.005, 0.005);
         // Creates a LinearSystemLoop that contains the Model, Controller, Observer, Max Volts,
         // Update Rate.
+        moduleController.latencyCompensate(swerveModuleModel, 0.005, 0.001);
         Matrix<N2, N1> u_limit = VecBuilder.fill(CONFIG.MAX_CURRENT,CONFIG.MAX_CURRENT);
         _moduleControlLoop =
                 new LinearSystemLoop<>(
@@ -181,8 +181,9 @@ public class DiffSwerveModuleCurrent {
                 break;
             case STATE_CONTROL:
                 // sets the next reference / setpoint.
-//                Matrix<N3, N1> ref = VecBuilder.fill(Math.PI, 0.0, 20);
+//                Matrix<N3, N1> ref = VecBuilder.fill(0, 0.0, 2.0 / WHEEL_RADIUS);
                 _moduleControlLoop.setNextR(_reference);
+//                _moduleControlLoop.setNextR(ref);
                 // updates the kalman filter with new data points.
                 _moduleControlLoop.correct(
                         VecBuilder.fill(
@@ -465,14 +466,19 @@ public class DiffSwerveModuleCurrent {
     public void updateDashboard() {
 //        SmartDashboard.putNumber(_name + "/leftVoltage", _leftFalcon.getMotorOutputVoltage());
 //        SmartDashboard.putNumber(_name + "/rightVoltage", _rightFalcon.getMotorOutputVoltage());
-//        SmartDashboard.putNumber(_name + "/leftNextCurrent", getLeftNextCurrent());
-//        SmartDashboard.putNumber(_name + "/rightNextCurrent", getRightNextCurrent());
+        SmartDashboard.putNumber(_name + "/leftNextCurrent", getLeftNextCurrent());
+        SmartDashboard.putNumber(_name + "/rightNextCurrent", getRightNextCurrent());
 //        SmartDashboard.putNumber(_name + "/leftSupplyCurrent", _leftFalcon.getSupplyCurrent());
 //        SmartDashboard.putNumber(_name + "/rightSupplyCurrent", _rightFalcon.getSupplyCurrent());
-//        SmartDashboard.putNumber(_name + "/leftStatorCurrent", getLeftCurrent());
-//        SmartDashboard.putNumber(_name + "/rightStatorCurrent", getRightCurrent());
-        SmartDashboard.putNumber(_name + "/referenceAngle", getReferenceModuleAngle());
+        SmartDashboard.putNumber(_name + "/leftStatorCurrent", getLeftCurrent());
+        SmartDashboard.putNumber(_name + "/rightStatorCurrent", getRightCurrent());
+        SmartDashboard.putNumber(_name + "/referenceAngleGoal", getReferenceModuleAngle());
+        SmartDashboard.putNumber(_name + "/referenceAngleSetpoint", _angleSetpoint.position);
         SmartDashboard.putNumber(_name + "/moduleAngle", getModuleAngle());
+
+        SmartDashboard.putNumber(_name + "/moduleAngVel", getAzimuthAngularVelocity());
+        SmartDashboard.putNumber(_name + "/refAngVelSetpoint", _angleSetpoint.velocity);
+
         SmartDashboard.putNumber(_name + "/velocityWheel", getWheelVelocity());
         SmartDashboard.putNumber(_name + "/referenceWheelVelocity", getReferenceWheelVelocity());
 //

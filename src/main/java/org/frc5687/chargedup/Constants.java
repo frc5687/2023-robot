@@ -49,8 +49,8 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
-        public static final double SCALED_ROTATION_INPUT = 1.0;
+        public static final double SCALED_TRANSLATION_INPUT = 0.6; // this makes the max speed from the joysticks some % of MAX_MPS.
+        public static final double SCALED_ROTATION_INPUT = 0.4;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
@@ -58,9 +58,9 @@ public class Constants {
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
-            KINEMATIC_LIMITS.maxDriveVelocity = 5.5; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 20.0; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 8; // rad/s
+            KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -69,7 +69,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
     
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.0305;
+            NORTH_WEST_CONFIG.encoderOffset = -0.085;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -78,7 +78,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
     
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = -0.0;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.16;
         }
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -87,7 +87,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
     
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = 0.0;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.08;
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
         static {
@@ -96,7 +96,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
     
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.205;
+            NORTH_EAST_CONFIG.encoderOffset = -0.079;
         }
         public static final double TRANSLATION_DEADBAND =
                 0.1; // Avoid unintentional joystick movement
@@ -115,9 +115,9 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double MAINTAIN_kP = 10.0;
+        public static final double MAINTAIN_kP = 3.0;
         public static final double MAINTAIN_kI = 0.0;
-        public static final double MAINTAIN_kD = 0.0;
+        public static final double MAINTAIN_kD = 0.1;
     
         public static final double SNAP_kP = 5.0;
         public static final double SNAP_kI = 0.0;
@@ -145,9 +145,10 @@ public class Constants {
     
             CONFIG.MAX_VOLTAGE = 12.0;
     
-            CONFIG.MAX_STATOR_CURRENT = 40;
+            CONFIG.MAX_STATOR_CURRENT = 60;
+            CONFIG.MAX_CURRENT = 60;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-            CONFIG.USE_FOC = true;
+//            CONFIG.USE_FOC = true;
         }
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
@@ -156,12 +157,12 @@ public class Constants {
         public static final double kDt = 0.005;
 //        public static final double kDt = 0.01;
         public static final double FALCON_FREE_SPEED =
-                Units.rotationsPerMinuteToRadiansPerSecond(6380);
+                Units.rotationsPerMinuteToRadiansPerSecond(6080);// was 6380 foc is different speed
         public static final double GEAR_RATIO_WHEEL = 6.46875 / 1.2;
         public static final double GEAR_RATIO_STEER = 9.2 / 1.2;
 
-        public static final double FRICTION_STEER = 0.02;
-        public static final double FRICTION_WHEEL = 0.01;
+        public static final double FRICTION_STEER = 0.00;
+        public static final double FRICTION_WHEEL = 0.00;
         public static final double WHEEL_RADIUS = 0.04615; // Meters with compression.
         public static final double TICKS_TO_ROTATIONS = 2048.0;
         public static final double VOLTAGE = 12.0;
@@ -172,11 +173,11 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.05; // radians
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 1.0; // radians per sec
+        public static final double Q_AZIMUTH = 0.04; // radians
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
         public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 
-        public static final double CONTROL_EFFORT = 4.0;
+        public static final double CONTROL_EFFORT = 5.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = 0.1; // radians
@@ -327,12 +328,12 @@ public class Constants {
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(5.5);
-        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(221.0);
-        public static final double WRIST_MID_ANGLE = Units.degreesToRadians(150);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(36.5);
+        public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
+        public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
 
 
-        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(210);
+        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
         public static final double GRIPPER_kP = 3.2;
