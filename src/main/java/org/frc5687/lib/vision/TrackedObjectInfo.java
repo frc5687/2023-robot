@@ -7,16 +7,16 @@ import java.util.Map;
 public class TrackedObjectInfo {
 
     private final GameElement element;
-    private final double x;
-    private final double y;
-    private final double z;
+    private final float x;
+    private final float y;
+    private final float z;
 
-    private final double vx;
-    private final double vy;
-    private final double vz;
+    private final float vx;
+    private final float vy;
+    private final float vz;
 
     public TrackedObjectInfo(
-            GameElement element, double x, double y, double z, double vx, double vy, double vz) {
+            GameElement element, float x, float y, float z, float vx, float vy, float vz) {
         this.element = element;
         this.x = x;
         this.y = y;
@@ -30,35 +30,62 @@ public class TrackedObjectInfo {
         return element;
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public double getZ() {
+    public float getZ() {
         return z;
     }
 
-    public double getVX() {
+    public float getVX() {
         return vx;
     }
 
-    public double getVY() {
+    public float getVY() {
         return vy;
     }
 
-    public double getVZ() {
+    public double getDistance() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+    public double getAzimuthAngle() {
+        return Math.atan2(y, x);
+    }
+    public double getAltitudeAngle() {
+        return Math.asin(z / getDistance());
+    }
+
+    public float getVZ() {
         return vz;
     }
 
+    public static int size() {
+        // 8 for uint8_t
+        return 8 + (Float.SIZE * 6);
+    }
+
+    public static int sizeBytes() {
+        return 1 + (Float.BYTES * 6);
+    }
+
+    public static int numberOfElements() {
+        return 7;
+    }
+
+    public String toString() {
+        return "Game Element: " + getElement().name() + ", x: " + getX() + ", y: " + getY() + ", z: " + getZ();
+    }
+
+
+
     public enum GameElement {
-        UNKNOWN(0),
-        GOAL(1),
-        RED_BALL(2),
-        BLUE_BALL(3);
+        CONE(0),
+        CUBE(1);
 
         private final int _value;
         private static final Map<Object, Object> map = new HashMap<>();

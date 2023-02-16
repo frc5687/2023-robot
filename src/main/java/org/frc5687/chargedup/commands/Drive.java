@@ -13,12 +13,14 @@ import org.frc5687.lib.control.HeadingController;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.math.Vector2d;
+import org.frc5687.lib.vision.TrackedObjectInfo;
 
 public class Drive extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
 //    private final HeadingController _headingController;
     private final SwerveHeadingController _headingController;
+    private final PIDController _yCordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
     private int segmentationArray[] = new int[((int)360/5)];
@@ -27,6 +29,11 @@ public class Drive extends OutliersCommand {
         _lockHeading = false;
         _driveTrain = driveTrain;
         _headingController = new SwerveHeadingController(Constants.UPDATE_PERIOD);
+        _yCordinateElementController = new PIDController(
+                2.0,
+                0.0,
+                0.2
+        );
 //        _headingController = new HeadingController(
 //                new TrapezoidProfile.Constraints(
 //                        Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
@@ -123,27 +130,39 @@ public class Drive extends OutliersCommand {
             _lockHeading = false;
         }
         double controllerPower = _headingController.getRotationCorrection(_driveTrain.getHeading());
-        metric("Rot", (rot));
-        metric("Heading",_driveTrain.getHeading().getRadians());
-        metric("vx", vx);
-        metric("vy", vy);
-//        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+        TrackedObjectInfo closestCone = _driveTrain.getClosestCone();
+        double power = 0.0;
+        double coneDist = 1.0;
+        if (closestCone != null) {
+            metric("Closest cone", closestCone.toString());
+            power = -_yCordinateElementController.calculate(closestCone.getY());
+            coneDist = closestCone.getDistance();
+        }
+        metric("Rot+Controller", (rot + controllerPower));
+        if (_oi.autoAim()) {
+            _headingController.setSnapHeading(new Rotation2d(0));
+            _driveTrain.setVelocity(
+                    ChassisSpeeds.fromFieldRelativeSpeeds(
+                            vx * coneDist / 3.0,
+                            power,
+                            _headingController.getRotationCorrection(_driveTrain.getHeading()),
+                            _driveTrain.getHeading()
+                    )
+            );
+        } else {
+            _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
+                    vx,
+                    vy,
+                    rot + controllerPower,
+                    _driveTrain.getHeading()
+            ));
+        }
+//        _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
 //                vx,
 //                vy,
-//                rot,
+//                rot +controllerPower,
 //                _driveTrain.getHeading()
-//        );
-        _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-                vx,
-                vy,
-                rot +controllerPower,
-                _driveTrain.getHeading()
-        ));
-//        _driveTrain.drive(vx, vy, rot);
-//        metric("ChassisSpeeds", speeds.toString());
-//        _driveTrain.updateSwerve(new Vector2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond);
-//        _driveTrain.updateSwerve(new Vector2d(vx, vy), rot);
-//        _driveTrain.updateSwerve(new Vector2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond);
+//        ));
     }
 
     @Override

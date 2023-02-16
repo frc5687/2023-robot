@@ -23,6 +23,10 @@ import org.frc5687.chargedup.util.*;
 import org.frc5687.lib.swerve.SwerveSetpoint;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
+import org.frc5687.lib.vision.TrackedObjectInfo;
+import org.frc5687.lib.vision.VisionProcessor;
+
+import java.util.List;
 
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
@@ -51,9 +55,11 @@ public class DriveTrain extends OutliersSubsystem {
     private final SystemIO _systemIO;
     private double _yawOffset;
     private double _PIDAngle;
+    private final VisionProcessor _visionProcessor;
 
-    public DriveTrain(OutliersContainer container, OI oi, Pigeon2 imu) {
+    public DriveTrain(OutliersContainer container, VisionProcessor processor, OI oi, Pigeon2 imu) {
         super(container);
+        _visionProcessor = processor;
         _imu = imu;
         _oi = oi;
         _systemIO = new SystemIO();
@@ -412,6 +418,40 @@ public class DriveTrain extends OutliersSubsystem {
 
     public boolean isFieldRelative() {
         return _fieldRelative;
+    }
+
+    public TrackedObjectInfo getClosestCone() {
+        TrackedObjectInfo closest = null;
+        double minDistance = Double.MAX_VALUE;
+        if (_visionProcessor.getTrackedObjects().size() > 0) {
+            for (TrackedObjectInfo info : _visionProcessor.getTrackedObjects()) {
+                if (info.getElement() == TrackedObjectInfo.GameElement.CONE) {
+                    double distance = info.getDistance();
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closest = info;
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    public TrackedObjectInfo getClosestCube() {
+        TrackedObjectInfo closest = null;
+        double minDistance = Double.MAX_VALUE;
+        if (_visionProcessor.getTrackedObjects().size() > 0) {
+            for (TrackedObjectInfo info : _visionProcessor.getTrackedObjects()) {
+                if (info.getElement() == TrackedObjectInfo.GameElement.CUBE) {
+                    double distance = info.getDistance();
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closest = info;
+                    }
+                }
+            }
+        }
+        return closest;
     }
 
     public void moduleMetrics() {

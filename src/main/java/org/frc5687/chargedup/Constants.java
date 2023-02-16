@@ -360,6 +360,12 @@ public class Constants {
         public static final long GRIPPER_TIMEOUT = 1000;
     }
 
+    public static class Vision {
+        public static final float Z_CAM_Z_OFFSET = 0.78111f;
+        public static final float Z_CAM_Y_OFFSET = 0.17653f;
+        public static final float Z_CAM_X_OFFSET = 0.17439f;
+    }
+
 }  
 
 
