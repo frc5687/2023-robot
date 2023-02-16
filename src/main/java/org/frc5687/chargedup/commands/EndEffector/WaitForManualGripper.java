@@ -7,9 +7,11 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 public class WaitForManualGripper extends OutliersCommand {
 
     private final OI _oi;
+    private final EndEffector _endEffector;
 
-    public WaitForManualGripper(OI oi) {
+    public WaitForManualGripper(EndEffector endEffector, OI oi) {
         _oi = oi;
+        _endEffector = endEffector;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class WaitForManualGripper extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return _oi.manualGrip();
+        return _oi.manualGrip() || _endEffector.isRollerStalled();
     }
 
     @Override
