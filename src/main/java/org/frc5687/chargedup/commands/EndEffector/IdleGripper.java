@@ -17,7 +17,7 @@ public class IdleGripper extends OutliersCommand{
         if (_endEffector.getConeMode()) {
             _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
         } else {
-            _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
+            _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED);
         }
     }
 
