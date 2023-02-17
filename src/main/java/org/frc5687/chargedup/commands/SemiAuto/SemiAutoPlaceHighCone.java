@@ -1,34 +1,35 @@
-package org.frc5687.chargedup.commands;
+package org.frc5687.chargedup.commands.SemiAuto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
-import org.frc5687.chargedup.commands.EndEffector.CloseConeGripper;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 
-public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
-    public SemiAutoPickupGamePiece(
+public class SemiAutoPlaceHighCone extends SequentialCommandGroup {
+    public SemiAutoPlaceHighCone(
             Arm arm,
             EndEffector endEffector,
             Elevator elevator,
             OI oi
-        ) {
-        Setpoint setpoint = endEffector.getConeMode() ? middleConePlaceSetpoint : middleCubePlaceSetpoint;
+    ) {
+        Setpoint setpoint = highConePlaceSetpoint;
         addCommands(
-                // new DriveUntilInHall(elevator),
-               // new AutoExtendElevator(elevator, 0.01),
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, setpoint
                 ),
-                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, setpoint.armAngle)),
+                new ParallelDeadlineGroup(
+                        new WaitForManualGripper(endEffector, oi),
+                        new HoldArm(arm, setpoint.armAngle)),
 
-//                new CloseConeGripper(endEffector),
+                new AutoSetRollerSpeed(endEffector, setpoint.gripperSpeed, true),
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, idleSetpoint
                 )
