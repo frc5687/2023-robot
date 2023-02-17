@@ -1,5 +1,6 @@
 package org.frc5687.chargedup.commands.EndEffector;
 
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.commands.OutliersCommand;
 
@@ -13,7 +14,11 @@ public class IdleGripper extends OutliersCommand{
     @Override
     public void execute() {
         super.execute();
-        _endEffector.setRollerSpeed(-0.25); // -0.25 while sucking in a cone should not normally exceed 10 amps on the intake
+        if (_endEffector.getConeMode()) {
+            _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
+        } else {
+            _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
+        }
     }
 
     @Override

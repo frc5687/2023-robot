@@ -1,36 +1,37 @@
-package org.frc5687.chargedup.commands;
+package org.frc5687.chargedup.commands.SemiAuto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 
-public class SemiAutoPlaceGamePiece extends SequentialCommandGroup {
-    public SemiAutoPlaceGamePiece(
+public class SemiAutoPlaceMiddleCube extends SequentialCommandGroup {
+    public SemiAutoPlaceMiddleCube(
             Arm arm,
             EndEffector endEffector,
             Elevator elevator,
             OI oi
     ) {
+        Setpoint setpoint = middleCubePlaceSetpoint;
         addCommands(
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, 0.55, Constants.EndEffector.WRIST_MIN_ANGLE,
-                        /*endEffector.getConeMode() ? */ 0.0 /* : Constants.EndEffector.GRIPPER_CUBE_ANGLE*/, Constants.Arm.PLACE_ARM_ANGLE
+                        elevator, endEffector, arm, setpoint
                 ),
                 new ParallelDeadlineGroup(
                         new WaitForManualGripper(endEffector, oi),
-                        new HoldArm(arm, Constants.Arm.PLACE_ARM_ANGLE)),
+                        new HoldArm(arm, setpoint.armAngle)),
 
-                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_OUT_SPEED, true),
+                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true),
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, 0.1, Constants.EndEffector.WRIST_MID_ANGLE,
-                        0.0, Constants.Arm.VERTICAL_ARM_ANGLE
+                        elevator, endEffector, arm, idleCubeSetpoint
                 )
         );
     }

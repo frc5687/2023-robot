@@ -27,6 +27,8 @@ public class EndEffector extends OutliersSubsystem {
     private final PIDController _wristController;
     private final PIDController _gripperController;
 
+    private boolean _isConeMode = true;
+
     public EndEffector(OutliersContainer container) {
         super(container);
 
@@ -52,6 +54,7 @@ public class EndEffector extends OutliersSubsystem {
             GRIPPER_kI,
             GRIPPER_kD
             // new TrapezoidProfile.Constraints(GRIPPER_VEL, GRIPPER_ACCEL)
+
         );
         _gripperController.setIntegratorRange(-GRIPPER_I_ZONE, GRIPPER_I_ZONE);
     }  
@@ -66,6 +69,8 @@ public class EndEffector extends OutliersSubsystem {
         metric("Is Roller Stalled", isRollerStalled());
         metric("Roller Voltage", _gripper.getMotorOutputVoltage());
         metric("Roller Current", _gripper.getStatorCurrent());
+        metric("Is In Cone Mode", _isConeMode);
+        metric("Is In Cube Mode", !_isConeMode);
     }
     public void setWristSpeed(double demand){
         _wrist.set(ControlMode.PercentOutput, demand);
@@ -111,4 +116,16 @@ public class EndEffector extends OutliersSubsystem {
     /*public double getGripperControllerOutput(){
         return _gripperController.calculate(getGripperAngleRadians());
     }*/
+
+    public boolean getConeMode(){
+        return _isConeMode;
+    }
+
+    public void setConeMode(){
+        _isConeMode = true;
+    }
+
+    public void setCubeMode(){
+        _isConeMode = false;
+    }
 }

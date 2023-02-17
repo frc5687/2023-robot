@@ -4,12 +4,10 @@ package org.frc5687.chargedup;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import org.frc5687.chargedup.commands.SemiAutoPickupGamePiece;
-import org.frc5687.chargedup.commands.SemiAutoPlaceGamePiece;
-import org.frc5687.chargedup.commands.SemiAutoPlaceMiddleGamePiece;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
 
@@ -24,6 +22,15 @@ import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickupCone;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickupCube;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHighCone;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHighCube;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddleCone;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddleCube;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 
 import java.util.concurrent.ConcurrentMap;
@@ -39,12 +46,11 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
-        _operatorGamepad.getAButton().onTrue(new SemiAutoPickupGamePiece(
-            arm, endEffector, elevator, this));
-        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceGamePiece(
-            arm, endEffector, elevator, this));
-        _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddleGamePiece(
-            arm, endEffector, elevator, this));
+        _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+        _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this)); 
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(

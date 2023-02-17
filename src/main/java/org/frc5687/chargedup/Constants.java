@@ -334,7 +334,6 @@ public class Constants {
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
 
-
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
@@ -356,7 +355,10 @@ public class Constants {
         public static final double GRIPPER_OUT_SPEED = 1.0;
         //public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean  GRIPPPER_INVERTED = false;
-
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.25;
+        public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
+        public static final double PLACE_CUBE_ROLLER_SPEED = -0.5;
+        public static final double PLACE_CONE_ROLLER_SPEED = 1.0;
         public static final long GRIPPER_TIMEOUT = 1000;
     }
 
