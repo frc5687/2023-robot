@@ -1,12 +1,11 @@
-/* (C)2021 */
-package org.frc5687.chargedup.util;
+/* Team 5687 (C)2021-2022 */
+package org.frc5687.lib.oi;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.button.Button;
 
 /** Created by Ben Bernard on 3/2/2017. */
-public class AxisButton extends Button {
+public class AxisButton{
     private final GenericHID m_joystick;
     private final int m_axisNumber;
     private double _threshold;

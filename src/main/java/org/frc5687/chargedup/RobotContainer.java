@@ -1,28 +1,41 @@
 /* Team 5687 (C)2021 */
+/* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
+import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
+import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
 
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import org.frc5687.chargedup.util.VisionProcessor;
+import com.ctre.phoenixpro.configs.Pigeon2Configuration;
+import com.ctre.phoenixpro.hardware.Pigeon2;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
-    private AHRS _imu;
-    private Robot _robot;
     private VisionProcessor _visionProcessor;
+    private Pigeon2 _imu;
+    private Robot _robot;
     private DriveTrain _driveTrain;
+    private EndEffector _endEffector;
+    private Arm _arm;
+    private Elevator _elevator;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -31,21 +44,37 @@ public class RobotContainer extends OutliersContainer {
 
     public void init() {
         _oi = new OI();
-        _imu = new AHRS(SPI.Port.kMXP, (byte) 200);
-        try {
-            _visionProcessor = new VisionProcessor("camera", new AprilTagFieldLayout("deploy/2023-chargedup.json"));
-        } catch(IOException e) {
-            error("AprilTag map not found");
-        }
+        // create the vision processor
+        _visionProcessor = new VisionProcessor();
+        // subscribe to a vision topic for the correct data
+        _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
 
-        _driveTrain = new DriveTrain(this, _oi, _imu, _visionProcessor);
+        // configure pigeon
+        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
+        var pigeonConfig = new Pigeon2Configuration();
+        _imu.getConfigurator().apply(pigeonConfig);
+
+        _driveTrain = new DriveTrain(this, _visionProcessor, _oi, _imu);
+        _elevator = new Elevator(this);
+        _arm = new Arm(this);
+        _endEffector = new EndEffector(this);
+
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
+        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+       setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
+//        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+
+        _oi.initializeButtons(_endEffector, _arm, _elevator);
+
+        _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
-        _imu.reset();
+        startPeriodic();
     }
 
-    public void periodic() {}
+    public void periodic() {
+    }
 
     public void disabledPeriodic() {}
 
@@ -66,14 +95,10 @@ public class RobotContainer extends OutliersContainer {
         s.setDefaultCommand(subSystem, command);
     }
 
-    @Override
-    public void updateDashboard() {
-        _driveTrain.updateDashboard();
-    }
-
     public void controllerPeriodic() {
         if (_driveTrain != null) {
-            _driveTrain.controllerPeriodic();
-        }
+            _driveTrain.modulePeriodic();
+        } 
     }
 }
+

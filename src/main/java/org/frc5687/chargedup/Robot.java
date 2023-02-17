@@ -1,15 +1,20 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.frc5687.lib.logging.ILoggingSource;
+import org.frc5687.lib.logging.MetricTracker;
+import org.frc5687.lib.logging.RioLogger;
+import org.frc5687.chargedup.util.*;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
-import org.frc5687.chargedup.util.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -110,11 +115,13 @@ public class Robot extends OutliersRobot implements ILoggingSource {
 
     private void ourPeriodic() {
 
+//        _robotContainer.periodic();
         // Example of starting a new row of metrics for all instrumented objects.
         // MetricTracker.newMetricRowAll();
         MetricTracker.newMetricRowAll();
         //        _robotContainer.periodic();
         CommandScheduler.getInstance().run();
+        _robotContainer.periodic();
         update();
         updateDashboard();
     }
@@ -199,4 +206,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     }
 
     private void update() {}
-}
+
+   
+    }
+

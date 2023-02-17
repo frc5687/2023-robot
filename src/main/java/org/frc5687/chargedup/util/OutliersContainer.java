@@ -1,15 +1,18 @@
-/* (C)2021 */
+/* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.lib.logging.ILoggingSource;
+import org.frc5687.lib.logging.RioLogger;
+import org.frc5687.chargedup.subsystems.OutliersSubsystem;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import org.frc5687.chargedup.subsystems.OutliersSubsystem;
-
 public abstract class OutliersContainer implements ILoggingSource {
-    private List<OutliersSubsystem> _subsystems = new LinkedList<OutliersSubsystem>();
-    private IdentityMode _identityMode;
+    private final List<OutliersSubsystem> _subsystems = new LinkedList<>();
+    private final SubsystemManager _manager = new SubsystemManager();
+    private final IdentityMode _identityMode;
 
     public OutliersContainer(IdentityMode identityMode) {
         _identityMode = identityMode;
@@ -18,7 +21,6 @@ public abstract class OutliersContainer implements ILoggingSource {
     public void metric(String name, boolean value) {
         SmartDashboard.putBoolean(getClass().getSimpleName() + "/" + name, value);
     }
-
     public void metric(String name, String value) {
         SmartDashboard.putString(getClass().getSimpleName() + "/" + name, value);
     }
@@ -51,9 +53,10 @@ public abstract class OutliersContainer implements ILoggingSource {
      * Registers a subsystem for periodic actions.
      * @param subsystem
      */
-    public void registerSubSystem(OutliersSubsystem subsystem) {
+    public void registerSubsystem(OutliersSubsystem subsystem) {
         if (!_subsystems.contains(subsystem)) {
             _subsystems.add(subsystem);
+            _manager.addSubsystem(subsystem);
         }
     }
 
@@ -61,27 +64,26 @@ public abstract class OutliersContainer implements ILoggingSource {
      * Unregisters a subsystem for periodic actions.
      * @param subsystem
      */
-    public void unregisterSubSystem(OutliersSubsystem subsystem) {
-        if (_subsystems.contains(subsystem)) {
-            _subsystems.remove(subsystem);
-        }
+    public void unregisterSubsystem(OutliersSubsystem subsystem) {
+        _subsystems.remove(subsystem);
+        _manager.removeSubsystem(subsystem);
+    }
+
+    public void startPeriodic() {
+        _manager.startPeriodic();
     }
 
     public void updateDashboard() {
-        _subsystems.forEach((ss) -> ss.updateDashboard());
+        _manager.updateDashboard();
     }
 
     public void disabledPeriodic() {}
-    ;
 
     public void disabledInit() {}
-    ;
 
     public void teleopInit() {}
-    ;
 
     public void autonomousInit() {}
-    ;
 
     public enum IdentityMode {
         competition(0),
