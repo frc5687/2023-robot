@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup.subsystems;
 
-import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -9,7 +8,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -25,8 +23,6 @@ import org.frc5687.lib.swerve.SwerveSetpointGenerator;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
-
-import java.util.List;
 
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
@@ -452,6 +448,14 @@ public class DriveTrain extends OutliersSubsystem {
             }
         }
         return closest;
+    }
+    public boolean isConeDetected(){
+        TrackedObjectInfo obj = getClosestCone();
+        return obj != null;
+    }
+    public boolean isCubeDetected(){
+        TrackedObjectInfo obj = getClosestCube();
+        return obj != null;
     }
 
     public void moduleMetrics() {

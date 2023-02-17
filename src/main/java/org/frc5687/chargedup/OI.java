@@ -1,40 +1,19 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
-
 import org.frc5687.chargedup.util.OutliersProxy;
-
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
 
-import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
-import org.frc5687.chargedup.commands.DriveTrajectory;
-import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
-import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
-import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickupCone;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickupCube;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHighCone;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHighCube;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddleCone;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddleCube;
-import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
-
-import java.util.concurrent.ConcurrentMap;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;

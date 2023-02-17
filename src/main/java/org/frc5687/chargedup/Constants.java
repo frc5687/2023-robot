@@ -133,11 +133,8 @@ public class Constants {
         public static final double kD = 0.5;
     
         public static final double POSITION_TOLERANCE = 0.01;
-<<<<<<< HEAD
         public static final double LEVEL_TOLERANCE = 0.5;
-=======
         public static final double HEADING_TOLERANCE = 0.15; //rad
->>>>>>> origin/main
     }
     
     public static class DifferentialSwerveModule {
@@ -376,7 +373,7 @@ public class Constants {
     public static class CANdle {
         public static double BRIGHTNESS = 1.0;
         public static int NUM_LED = 120;
-        public static double SPEED = 0.7;
+        public static double SPEED = 0.3;
 
         public static int[] YELLOW = {255,65, 0};
         public static int[] RED = {255, 0, 0};

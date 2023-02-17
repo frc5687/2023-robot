@@ -2,14 +2,11 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
-import org.frc5687.lib.control.HeadingController;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.math.Vector2d;

@@ -20,7 +20,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.LinearSystems;

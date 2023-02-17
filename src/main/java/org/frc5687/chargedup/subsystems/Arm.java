@@ -12,7 +12,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import org.ejml.dense.row.mult.VectorVectorMult_CDRM;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
