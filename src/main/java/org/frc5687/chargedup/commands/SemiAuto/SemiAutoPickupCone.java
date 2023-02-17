@@ -31,7 +31,7 @@ public class SemiAutoPickupCone extends SequentialCommandGroup {
 
 //                new CloseConeGripper(endEffector),
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, idleSetpoint
+                        elevator, endEffector, arm, idleConeSetpoint
                 )
         );
     }

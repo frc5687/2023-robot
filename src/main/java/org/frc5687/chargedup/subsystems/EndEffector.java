@@ -70,6 +70,7 @@ public class EndEffector extends OutliersSubsystem {
         metric("Roller Voltage", _gripper.getMotorOutputVoltage());
         metric("Roller Current", _gripper.getStatorCurrent());
         metric("Is In Cone Mode", _isConeMode);
+        metric("Is In Cube Mode", !_isConeMode);
     }
     public void setWristSpeed(double demand){
         _wrist.set(ControlMode.PercentOutput, demand);

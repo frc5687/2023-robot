@@ -29,9 +29,9 @@ public class SemiAutoPlaceHighCube extends SequentialCommandGroup {
                         new WaitForManualGripper(endEffector, oi),
                         new HoldArm(arm, setpoint.armAngle)),
 
-                new AutoSetRollerSpeed(endEffector, setpoint.gripperSpeed, true),
+                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true),
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, idleSetpoint
+                        elevator, endEffector, arm, idleCubeSetpoint
                 )
         );
     }
