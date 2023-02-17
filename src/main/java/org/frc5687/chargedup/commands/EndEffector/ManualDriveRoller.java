@@ -1,15 +1,17 @@
 package org.frc5687.chargedup.commands.EndEffector;
 
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.Constants;;
 
-public class ManualDriveGripper extends OutliersCommand {
+public class ManualDriveRoller extends OutliersCommand {
     
     private EndEffector _gripper;
     private OI _oi;
 
-    public ManualDriveGripper(EndEffector gripper, OI oi) {
+    public ManualDriveRoller(EndEffector gripper, OI oi) {
       _gripper = gripper;  
       _oi = oi;
       addRequirements(_gripper);
@@ -22,9 +24,14 @@ public class ManualDriveGripper extends OutliersCommand {
 
     @Override
     public void execute(){
-        double speed = _oi.getGripperSpeed();
-        metric("Gripper Speed", speed / 2.0);
-        _gripper.setGripperSpeed(speed / 2.0);
+        if (_oi.getIntakeIn()){
+            _gripper.setRollerSpeed(0.25);
+        } else if (_oi.getIntakeOut()){
+            _gripper.setRollerSpeed(-1);
+        } else {
+            _gripper.setRollerSpeed(-0.25); //this should function as an idle
+        }
+        // metric("Gripper Speed", speed);
     }
     @Override
     public boolean isFinished() {

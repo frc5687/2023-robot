@@ -3,6 +3,7 @@ package org.frc5687.chargedup.subsystems;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
+import org.frc5687.lib.drivers.OutliersTalon;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -25,16 +26,8 @@ public class EndEffector extends OutliersSubsystem {
 
     private final PIDController _wristController;
     private final PIDController _gripperController;
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-    private boolean isInConeMode = true;
-=======
-    private boolean _isConeMode;
->>>>>>> origin/SemiAuto/#33-routines
-=======
-    private boolean _isConeMode;
->>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
+    private boolean _isConeMode = true;
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -61,6 +54,7 @@ public class EndEffector extends OutliersSubsystem {
             GRIPPER_kI,
             GRIPPER_kD
             // new TrapezoidProfile.Constraints(GRIPPER_VEL, GRIPPER_ACCEL)
+
         );
         _gripperController.setIntegratorRange(-GRIPPER_I_ZONE, GRIPPER_I_ZONE);
     }  
@@ -68,26 +62,39 @@ public class EndEffector extends OutliersSubsystem {
     public void updateDashboard() {
         metric("wrist angle deg", Units.radiansToDegrees(getWristAngleRadians()));
         metric("wrist angle rad", getWristAngleRadians());
-        metric("gripper angle", Units.radiansToDegrees(getGripperAngleRadians()));
+        /*metric("gripper angle", Units.radiansToDegrees(getGripperAngleRadians()));*/
 
         // metric("wrist setpoint", _wristController.getGoal().position);
         metric("position error", _wristController.getPositionError());
+        metric("Is Roller Stalled", isRollerStalled());
+        metric("Roller Voltage", _gripper.getMotorOutputVoltage());
+        metric("Roller Current", _gripper.getStatorCurrent());
+        metric("Is In Cone Mode", _isConeMode);
+        metric("Is In Cube Mode", !_isConeMode);
     }
     public void setWristSpeed(double demand){
         _wrist.set(ControlMode.PercentOutput, demand);
     }
     
-    public void setGripperSpeed(double demand){
-        _gripper.set(ControlMode.PercentOutput, demand);
+    public void setRollerSpeed(double demand){
+        if (!isRollerStalled()) {
+            _gripper.set(ControlMode.PercentOutput, demand);
+        } else {
+            _gripper.set(ControlMode.PercentOutput, 0);
+        }
+    }
+
+    public boolean isRollerStalled(){ 
+        return Math.abs(_gripper.getStatorCurrent()) > Constants.EndEffector.GRIPPER_STALL_CURRENT;
     }
 
     public double getWristAngleRadians(){
-         return _wristEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.WRIST_OFFSET;
+         return _wristEncoder.getDistance() % (2.0 * Math.PI);
     }
-    public double getGripperAngleRadians(){
+    /*public double getGripperAngleRadians(){
         return _gripperEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.GRIPPER_OFFSET;
-    }
-    
+    }*/
+
     public void setWristSetpointDegrees(double degrees){
         _wristController.setSetpoint(Units.degreesToRadians(degrees));
     }
@@ -96,36 +103,24 @@ public class EndEffector extends OutliersSubsystem {
         _wristController.setSetpoint(radians);
     }
 
-    public void setGripperSetpointDegrees(double degrees){
+    /*public void setGripperSetpointDegrees(double degrees){
         _gripperController.setSetpoint(Units.degreesToRadians(degrees));
-    }
+    }*/
 
-    public void setGripperSetpointRadians(double radians) {
+    /*public void setGripperSetpointRadians(double radians) {
         _gripperController.setSetpoint(radians);
-    }
+    }*/
     public double getWristControllerOutput(){
       return  _wristController.calculate(getWristAngleRadians()); 
     }
-    public double getGripperControllerOutput(){
+    /*public double getGripperControllerOutput(){
         return _gripperController.calculate(getGripperAngleRadians());
+    }*/
+
+    public boolean getConeMode(){
+        return _isConeMode;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public boolean getConeMode() {
-        return isInConeMode;
-    }
-
-    public void setConeMode() {
-        isInConeMode = true;
-    }
-
-    public void setCubeMode() {
-        isInConeMode = false;
-    }
-=======
-=======
->>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
     public void setConeMode(){
         _isConeMode = true;
     }
@@ -133,13 +128,4 @@ public class EndEffector extends OutliersSubsystem {
     public void setCubeMode(){
         _isConeMode = false;
     }
-
-    public boolean getConeMode(){
-        return _isConeMode;
-    }
-
-<<<<<<< HEAD
->>>>>>> origin/SemiAuto/#33-routines
-=======
->>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
 }
