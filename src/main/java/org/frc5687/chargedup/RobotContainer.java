@@ -60,7 +60,7 @@ public class RobotContainer extends OutliersContainer {
         _endEffector = new EndEffector(this);
 
 
-        setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
+        setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
 //        setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
