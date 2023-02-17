@@ -22,7 +22,7 @@ public class HoldArm extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-        _arm.setArmVoltage(_arm.getNextVoltage());
+        _arm.setArmVoltage(_arm.getNextVoltage() + _arm.armFeedForward());
     }
 
     @Override

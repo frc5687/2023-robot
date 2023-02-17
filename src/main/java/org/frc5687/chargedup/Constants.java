@@ -55,9 +55,9 @@ public class Constants {
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
         public static final double MAX_MPS = 5.0; // Max speed of robot (m/s)
-        public static final double SLOW_MPS = 2.5; // Slow speed of robot (m/s)
+        public static final double SLOW_MPS = MAX_MPS / 2; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
-        public static final double SLOW_ANG_VEL = Math.PI * 1.0; // Max rotation rate of robot (rads/s)
+        public static final double SLOW_ANG_VEL = Math.PI * MAX_ANG_VEL / 2; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s

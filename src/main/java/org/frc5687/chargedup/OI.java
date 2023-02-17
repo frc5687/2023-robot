@@ -22,6 +22,7 @@ import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickupCone;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickupCube;
@@ -49,8 +50,10 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
-        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this)); 
+        _operatorGamepad.getXButton().onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this)); 
+        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+        
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(
