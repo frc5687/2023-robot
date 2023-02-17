@@ -3,9 +3,14 @@ package org.frc5687.lib.math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import org.frc5687.chargedup.Constants;
 
 public class GeometryUtil {
 
+    public static Twist2d IDENTITY = new Twist2d(0.0, 0.0, 0.0);
+    public static Rotation2d PI = new Rotation2d(Math.PI);
     public static Rotation2d getNearestPole(Rotation2d rot) {
         double pole_sin;
         double pole_cos;
@@ -21,6 +26,18 @@ public class GeometryUtil {
 
     public static Rotation2d inverse(Rotation2d rot) {
         return new Rotation2d(rot.getCos(), -rot.getSin());
+    }
+
+    public static Rotation2d flip(Rotation2d rot) {
+        return new Rotation2d(-rot.getCos(), -rot.getSin());
+    }
+
+    public static Twist2d toTwist2d(ChassisSpeeds chassisSpeeds) {
+        return new Twist2d(
+                chassisSpeeds.vxMetersPerSecond,
+                chassisSpeeds.vyMetersPerSecond,
+                chassisSpeeds.omegaRadiansPerSecond
+        );
     }
 
     public static double getDistance(Rotation2d rot, Rotation2d other) {
