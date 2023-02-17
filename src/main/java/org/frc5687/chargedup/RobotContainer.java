@@ -54,7 +54,7 @@ public class RobotContainer extends OutliersContainer {
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
 
-        _driveTrain = new DriveTrain(this, _visionProcessor, _oi, _imu);
+        _driveTrain = new DriveTrain(this, _visionProcessor, _imu);
         _elevator = new Elevator(this);
         _arm = new Arm(this);
         _endEffector = new EndEffector(this);
