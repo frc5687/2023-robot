@@ -366,7 +366,7 @@ public class Constants {
         public static int NUM_LED = 120;
         public static double SPEED = 0.7;
 
-        public static int[] YELLOW = {255, 255, 0};
+        public static int[] YELLOW = {255,65, 0};
         public static int[] RED = {255, 0, 0};
         public static int[] GREEN = {0, 255, 0};
         public static int[] BLUE = {0, 0, 255};

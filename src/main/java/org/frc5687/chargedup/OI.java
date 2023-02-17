@@ -38,6 +38,7 @@ public class OI extends OutliersProxy {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void initializeButtons(EndEffector endEffector, Arm arm) {
         _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 0.378));
         _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, Math.PI/2));
@@ -48,10 +49,13 @@ public class OI extends OutliersProxy {
   
 =======
     public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
+=======
+    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator, Lights lights) {
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickupGamePiece(
-            arm, endEffector, elevator, this));
+            arm, endEffector, elevator, this, lights));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceGamePiece(
-                arm, endEffector, elevator, this));
+                arm, endEffector, elevator, this, lights));
         // _operatorGamepad.getAButton().whenPressed(new AutoSetArmSetpoint(arm, 1.51));
         // _operatorGamepad.getBButton().whenPressed(new AutoSetArmSetpoint(arm, 3.4));
         _operatorGamepad.getXButton().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_OPEN_ANGLE));
@@ -60,7 +64,10 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
 //        _operatorGamepad.getRightBumper().onTrue(new AutoSetGripperAngle(endEffector, Constants.EndEffector.GRIPPER_CUBE_ANGLE));
 
+<<<<<<< HEAD
 >>>>>>> origin/SemiAuto/#33-routines
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -102,17 +109,23 @@ public class OI extends OutliersProxy {
 
     public double getArmY() {
 <<<<<<< HEAD
+<<<<<<< HEAD
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
         return speed/5; //for testing
     }
         
 =======
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);
         return speed/5; //for testing
     }
+<<<<<<< HEAD
 >>>>>>> origin/SemiAuto/#33-routines
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
     public double getExtArmY(){
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, ROTATION_DEADBAND);

@@ -94,6 +94,7 @@ public class DriveTrain extends OutliersSubsystem {
                 RobotMap.DIO.ENCODER_NE
         );
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
             _headingController = new SwerveHeadingController(Constants.DriveTrain.kDt);
@@ -108,6 +109,8 @@ public class DriveTrain extends OutliersSubsystem {
             _pitchOffset = getPitch();
             _rollOffset = getRoll();
 =======
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
         // NB: it matters which order these are defined
         _kinematics =
                 new SwerveDriveKinematics(
@@ -127,8 +130,11 @@ public class DriveTrain extends OutliersSubsystem {
                 },
                 new Pose2d(0, 0, getHeading())
         );
+<<<<<<< HEAD
 >>>>>>> origin/SemiAuto/#33-routines
 
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
         _poseController =
                 new HolonomicDriveController(
                         new PIDController(

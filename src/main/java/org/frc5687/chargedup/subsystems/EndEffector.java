@@ -25,12 +25,16 @@ public class EndEffector extends OutliersSubsystem {
 
     private final PIDController _wristController;
     private final PIDController _gripperController;
+<<<<<<< HEAD
 
 <<<<<<< HEAD
     private boolean isInConeMode = true;
 =======
     private boolean _isConeMode;
 >>>>>>> origin/SemiAuto/#33-routines
+=======
+    private boolean _isConeMode;
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -107,6 +111,7 @@ public class EndEffector extends OutliersSubsystem {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public boolean getConeMode() {
         return isInConeMode;
     }
@@ -119,6 +124,8 @@ public class EndEffector extends OutliersSubsystem {
         isInConeMode = false;
     }
 =======
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
     public void setConeMode(){
         _isConeMode = true;
     }
@@ -131,5 +138,8 @@ public class EndEffector extends OutliersSubsystem {
         return _isConeMode;
     }
 
+<<<<<<< HEAD
 >>>>>>> origin/SemiAuto/#33-routines
+=======
+>>>>>>> 4b7942b2bb667225090b6a9ad215c57654a8dd7f
 }
