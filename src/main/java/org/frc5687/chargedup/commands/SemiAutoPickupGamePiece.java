@@ -10,6 +10,7 @@ import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 
 public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
     public SemiAutoPickupGamePiece(
@@ -18,19 +19,18 @@ public class SemiAutoPickupGamePiece extends SequentialCommandGroup {
             Elevator elevator,
             OI oi
         ) {
+        Setpoint setpoint = endEffector.getConeMode() ? middleConePlaceSetpoint : middleCubePlaceSetpoint;
         addCommands(
                 // new DriveUntilInHall(elevator),
                // new AutoExtendElevator(elevator, 0.01),
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, 0.39, Constants.EndEffector.WRIST_PICKUP_ANGLE,
-                        Constants.EndEffector.GRIPPER_IN_SPEED, 1.72
+                        elevator, endEffector, arm, setpoint
                 ),
-                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, 1.72)),
+                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, setpoint.armAngle)),
 
 //                new CloseConeGripper(endEffector),
                 new AutoSetSuperStructurePosition(
-                        elevator, endEffector, arm, 0.1, Constants.EndEffector.WRIST_MID_ANGLE,
-                        /*endEffector.getConeMode() ?*/ -0.5 /*: Constants.EndEffector.GRIPPER_CUBE_ANGLE*/, Constants.Arm.VERTICAL_ARM_ANGLE
+                        elevator, endEffector, arm, idleSetpoint
                 )
         );
     }
