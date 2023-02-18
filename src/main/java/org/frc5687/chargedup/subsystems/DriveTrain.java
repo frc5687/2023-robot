@@ -308,7 +308,7 @@ public class DriveTrain extends OutliersSubsystem {
     public void setVelocity(ChassisSpeeds chassisSpeeds) {
         _systemIO.desiredChassisSpeeds = chassisSpeeds;
     }
-    public void updateSwerve(Vector2d translationVector, double rotationalInput) {
+    public void updateSwerve(Vector2d translationVector, double rotationalInput, Translation2d cor) {
         SwerveModuleState[] swerveModuleStates =
                 _kinematics.toSwerveModuleStates(
                         _fieldRelative
@@ -320,7 +320,7 @@ public class DriveTrain extends OutliersSubsystem {
                                 : new ChassisSpeeds(
                                         translationVector.x(),
                                         translationVector.y(),
-                                        rotationalInput)
+                                        rotationalInput), cor
                 );
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
         setModuleStates(swerveModuleStates);

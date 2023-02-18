@@ -89,6 +89,10 @@ public class Drive extends OutliersCommand {
         }
         
 
+        if (_oi.evadeRight90Degrees()){
+            
+        }
+
         // 0.01 is the tolerance to start heading controller.
 //        if (Math.abs(rot) < 0.01) {
 //            if (_oi.setHeadingNorth()) {

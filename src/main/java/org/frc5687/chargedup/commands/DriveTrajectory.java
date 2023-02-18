@@ -2,6 +2,7 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
 import org.frc5687.lib.math.Vector2d;
@@ -46,7 +47,7 @@ public class DriveTrajectory extends OutliersCommand {
     public void end(boolean interrupted) {
         super.end(interrupted);
         _driveTrain.setControlState(ControlState.MANUAL);
-        _driveTrain.updateSwerve(Vector2d.identity(), 0);
+        _driveTrain.updateSwerve(Vector2d.identity(), 0, new Translation2d());
         _timer.reset();
     }
 }

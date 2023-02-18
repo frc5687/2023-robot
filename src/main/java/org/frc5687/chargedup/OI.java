@@ -68,6 +68,15 @@ public class OI extends OutliersProxy {
     public boolean manualGrip() {
         return _operatorGamepad.getRightBumper().getAsBoolean();
     }
+
+    public boolean evadeRight90Degrees(){
+        return _driverGamepad.getAButton().getAsBoolean();
+    }
+
+    public boolean evadeLeft90Degrees(){
+        return _driverGamepad.getBButton().getAsBoolean();
+    }
+
     public boolean setHeadingNorth() {
         return _driverGamepad.getYButton().getAsBoolean();
     }
