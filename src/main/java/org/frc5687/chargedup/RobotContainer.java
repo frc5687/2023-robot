@@ -15,6 +15,7 @@ import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
+import org.frc5687.chargedup.subsystems.LightsExample;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -30,11 +31,12 @@ public class RobotContainer extends OutliersContainer {
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
     private Robot _robot;
-    private DriveTrain _driveTrain;
-    private EndEffector _endEffector;
-    private Arm _arm;
-    private Elevator _elevator;
-    private Lights _lights;
+    // private DriveTrain _driveTrain;
+    // private EndEffector _endEffector;
+    // private Arm _arm;
+    // private Elevator _elevator;
+    // private Lights _lights;
+    private LightsExample _lights;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -44,35 +46,36 @@ public class RobotContainer extends OutliersContainer {
     public void init() {
         _oi = new OI();
         // create the vision processor
-        _visionProcessor = new VisionProcessor();
+        // _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
-        _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
+        // _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
 
         // configure pigeon
-        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
-        var pigeonConfig = new Pigeon2Configuration();
-        _imu.getConfigurator().apply(pigeonConfig);
+        // _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
+        // var pigeonConfig = new Pigeon2Configuration();
+        // _imu.getConfigurator().apply(pigeonConfig);
 
-        _driveTrain = new DriveTrain(this, _visionProcessor, _oi, _imu);
-        _elevator = new Elevator(this);
-        _arm = new Arm(this);
-        _endEffector = new EndEffector(this);
+        // _driveTrain = new DriveTrain(this, _visionProcessor, _oi, _imu);
+        // _elevator = new Elevator(this);
+        // _arm = new Arm(this);
+        // _endEffector = new EndEffector(this);
 
-        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
+        // _lights = new Lights(this, /* _driveTrain, _endEffector,*/ _oi);
+        _lights = new LightsExample(_oi._driverGamepad);
 
 
-        setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
-        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
-        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
-        
-       setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
+        // setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
+        // setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+        // setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+        // setDefaultCommand(_lights, new DriveLights(/*_endEffector,*/ _lights, /*_driveTrain,*/ _oi));
+
+    //    setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-        _oi.initializeButtons(_endEffector, _arm, _elevator);
-        _visionProcessor.start();
-        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
-        startPeriodic();
+        // _oi.initializeButtons(_endEffector, _arm, _elevator);
+        // _visionProcessor.start();
+        // _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
+        // startPeriodic();
     }
 
     public void periodic() {
@@ -98,9 +101,9 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public void controllerPeriodic() {
-        if (_driveTrain != null) {
-            _driveTrain.modulePeriodic();
-        } 
+        // if (_driveTrain != null) {
+            // _driveTrain.modulePeriodic();
+        // } 
     }
 }
 

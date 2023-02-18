@@ -13,6 +13,8 @@ import edu.wpi.first.math.util.Units;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
+import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
+import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 
@@ -373,7 +375,9 @@ public class Constants {
     public static class CANdle {
         public static double BRIGHTNESS = 1.0;
         public static int NUM_LED = 120;
-        public static double SPEED = 0.3;
+        public static double SPEED = 0.1;
+        public static TwinklePercent TWINKLEPERCENT = TwinklePercent.Percent42;
+        public static TwinkleOffPercent TWINKLEOFFPERCENT = TwinkleOffPercent.Percent42;
 
         public static int[] YELLOW = {255,65, 0};
         public static int[] RED = {255, 0, 0};

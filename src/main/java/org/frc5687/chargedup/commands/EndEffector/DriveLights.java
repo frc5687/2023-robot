@@ -10,45 +10,46 @@ import org.frc5687.chargedup.OI;
 
 public class DriveLights extends OutliersCommand {
    
-   private final Lights _lights;
-   private final EndEffector _endEffector;
-   private final DriveTrain _driveTrain;
-   private final OI _oi;
+   private Lights _lights;
+   private EndEffector _endEffector;
+   private DriveTrain _driveTrain;
+   private OI _oi;
 
-    public DriveLights(EndEffector endEffector, Lights lights, DriveTrain driveTrain, OI oi){
-    _endEffector = endEffector;
+    public DriveLights(/*EndEffector endEffector, */ Lights lights,/*  DriveTrain driveTrain, */ OI oi){
+    // _endEffector = endEffector;
     _lights = lights;
-    _driveTrain = driveTrain;
+    // _driveTrain = driveTrain;
     _oi = oi;
-    addRequirements(lights);
+    addRequirements(_lights);
     }
     @Override
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        _lights.switchAnimation(AnimationType.STATIC);
-        _lights.setColor(Constants.CANdle.BLUE);
+        _lights.setColor(Constants.CANdle.PURPLE);
+        _lights.switchAnimation(AnimationType.LARSON);
     }
     @Override
     public void execute() {
         super.execute();
+        // _
         _lights.switchAnimation(AnimationType.STATIC);
-        metric("isConeMode", _endEffector.getConeMode());
-         if(_endEffector.getConeMode()){ 
-            if(_oi.autoAim() && _driveTrain.isConeDetected()){
-                _lights.switchAnimation(AnimationType.STROBE);
-            } else{
-                _lights.switchAnimation(AnimationType.STATIC);
-            }
-            _lights.setColor(Constants.CANdle.YELLOW);   
-         } else { 
-            if(_oi.autoAim() && _driveTrain.isCubeDetected()){
-              _lights.switchAnimation(AnimationType.STROBE);
-            } else{
-              _lights.switchAnimation(AnimationType.STATIC);
-            }
-            _lights.setColor(Constants.CANdle.PURPLE);
-         } 
+        // if(_endEffector.getConeMode()){ 
+            // if(_oi.autoAim() && _driveTrain.isConeDetected()){
+                // _lights.switchAnimation(AnimationType.STROBE);
+            // } else {
+                // _lights.switchAnimation(AnimationType.STATIC);
+            // }
+            // _lights.setColor(Constants.CANdle.YELLOW);   
+        // } else { 
+            // if(_oi.autoAim() && _driveTrain.isCubeDetected()){
+                // _lights.switchAnimation(AnimationType.STROBE);
+            // } else {
+                // _lights.switchAnimation(AnimationType.STATIC);
+            // }
+            _lights.setColor(Constants.CANdle.YELLOW);
+        // }
+        
     }
     @Override
     public boolean isFinished() {
