@@ -7,6 +7,9 @@ import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
+
+import edu.wpi.first.wpilibj.DriverStation;
+
 import com.ctre.phoenix.led.*;
 
 public class Lights extends OutliersSubsystem{
@@ -33,6 +36,7 @@ public class Lights extends OutliersSubsystem{
         _config.brightnessScalar = Constants.CANdle.BRIGHTNESS;
         _candle.configAllSettings(_config);
         _color = Constants.CANdle.GREEN;
+        switchAnimation(AnimationType.STATIC);
     }
 
     //Set the color of the lights
@@ -141,7 +145,7 @@ public class Lights extends OutliersSubsystem{
      * Has all the logic for the lights, and updates the CANdle with animations and static colors.
      */
     @Override
-    public void dataPeriodic(double timestamp) {
+    public void periodic() {
 
         /* if (_oi.rainbow()) {
             switchAnimation(AnimationType.RAINBOW);
@@ -159,13 +163,15 @@ public class Lights extends OutliersSubsystem{
         // } else {
         //     switchAnimation(AnimationType.FIRE);
         // } */
-
-        if (_animate == null) {
+        if (DriverStation.isDisabled()) {
+            switchAnimation(AnimationType.RAINBOW);
+            _candle.animate(_animate, 0);
+        } else if (_animate == null) {
+            _candle.clearAnimation(0); // very important
             _candle.setLEDs(_color[0], _color[1], _color[2]);
         } else {
-            _candle.animate(_animate);
+            _candle.animate(_animate, 0);
         } 
-        // _candle.clearAnimation(1);
 
     } 
 

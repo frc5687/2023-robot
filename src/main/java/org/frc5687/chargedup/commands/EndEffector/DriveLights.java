@@ -29,33 +29,26 @@ public class DriveLights extends OutliersCommand {
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        // _lights.setColor(Constants.CANdle.PURPLE);
-        // _lights.switchAnimation(AnimationType.LARSON);
     }
     @Override
     public void execute() {
         super.execute();
-        _lights.setColor(Constants.CANdle.RED);
-        _lights.switchAnimation(AnimationType.TWINKLE);
-        if (DriverStation.isDisabled()) {
-            _lights.switchAnimation(AnimationType.RAINBOW);
-        } else {
-            if(/*_endEffector.getConeMode()*/ true){ 
-                _lights.setColor(Constants.CANdle.YELLOW);
-                if(_oi.autoAim() /*&& _driveTrain.isConeDetected()*/){
-                    _lights.switchAnimation(AnimationType.STROBE);
-                } else {
-                    _lights.switchAnimation(AnimationType.STATIC);
-                }   
-            } else { 
-                _lights.setColor(Constants.CANdle.PURPLE);
-                if(_oi.autoAim() /*&& _driveTrain.isCubeDetected()*/){
-                    _lights.switchAnimation(AnimationType.STROBE);
-                } else {
-                    _lights.switchAnimation(AnimationType.STATIC);
-                }    
-            }
+        if(/*_endEffector.getConeMode()*/ true){ 
+            _lights.setColor(Constants.CANdle.YELLOW);
+            if(_oi.autoAim() /*&& _driveTrain.isConeDetected()*/){
+                _lights.switchAnimation(AnimationType.STROBE);
+            } else {
+                _lights.switchAnimation(AnimationType.STATIC);
+            }   
+        } else { 
+            _lights.setColor(Constants.CANdle.PURPLE);
+            if(_oi.autoAim() /*&& _driveTrain.isCubeDetected()*/){
+                _lights.switchAnimation(AnimationType.STROBE);
+            } else {
+                _lights.switchAnimation(AnimationType.STATIC);
+            }    
         }
+        
         
     }
     @Override
