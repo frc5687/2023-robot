@@ -46,18 +46,18 @@ public class SuperStructureSetpoints {
 
     public static final Setpoint conePickupSetpoint = new Setpoint();
     static {
-        conePickupSetpoint.elevatorPosition = 0.385;
+        conePickupSetpoint.elevatorPosition = 0.307;
         conePickupSetpoint.wristAngle = Constants.EndEffector.WRIST_PICKUP_ANGLE;
         conePickupSetpoint.gripperSpeed = Constants.EndEffector.GRIPPER_IN_SPEED;
-        conePickupSetpoint.armAngle = 1.72;
+        conePickupSetpoint.armAngle = 1.875;
     }
 
     public static final Setpoint cubePickupSetpoint = new Setpoint();
     static {
-        cubePickupSetpoint.elevatorPosition = 0.335;
+        cubePickupSetpoint.elevatorPosition = 0.28;
         cubePickupSetpoint.wristAngle = Units.degreesToRadians(295);
         cubePickupSetpoint.gripperSpeed = -Constants.EndEffector.GRIPPER_IN_SPEED;
-        cubePickupSetpoint.armAngle = 1.75;
+        cubePickupSetpoint.armAngle = 1.875;
     }
 
     public static final Setpoint coneGroundPickupSetpoint = new Setpoint();
@@ -65,7 +65,8 @@ public class SuperStructureSetpoints {
         coneGroundPickupSetpoint.elevatorPosition = 0.19;
         coneGroundPickupSetpoint.wristAngle = Units.degreesToRadians(274);
         coneGroundPickupSetpoint.gripperSpeed = Constants.EndEffector.GRIPPER_IN_SPEED;
-        coneGroundPickupSetpoint.armAngle = 0.7;
+//        coneGroundPickupSetpoint.armAngle = 0.7;
+        coneGroundPickupSetpoint.armAngle = 1.875;
     }
 
     public static final Setpoint cubeGroundPickupSetpoint = new Setpoint();
@@ -73,7 +74,8 @@ public class SuperStructureSetpoints {
         cubeGroundPickupSetpoint.elevatorPosition = 0.276;
         cubeGroundPickupSetpoint.wristAngle = Units.degreesToRadians(257);
         cubeGroundPickupSetpoint.gripperSpeed = -Constants.EndEffector.GRIPPER_IN_SPEED;
-        cubeGroundPickupSetpoint.armAngle = 0.667;
+//        cubeGroundPickupSetpoint.armAngle = 0.667;
+        coneGroundPickupSetpoint.armAngle = 1.875;
     }
 
     public static final Setpoint idleConeSetpoint = new Setpoint();

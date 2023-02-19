@@ -28,6 +28,7 @@ import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
 import org.photonvision.EstimatedRobotPose;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -414,8 +415,9 @@ public class DriveTrain extends OutliersSubsystem {
     public TrackedObjectInfo getClosestCone() {
         TrackedObjectInfo closest = null;
         double minDistance = Double.MAX_VALUE;
-        if (_visionProcessor.getTrackedObjects().size() > 0) {
-            for (TrackedObjectInfo info : _visionProcessor.getTrackedObjects()) {
+        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
+        if (_objectCopy.size() > 0) {
+            for (TrackedObjectInfo info : _objectCopy) {
                 if (info.getElement() == TrackedObjectInfo.GameElement.CONE) {
                     double distance = info.getDistance();
                     if (distance < minDistance) {
@@ -431,8 +433,9 @@ public class DriveTrain extends OutliersSubsystem {
     public TrackedObjectInfo getClosestCube() {
         TrackedObjectInfo closest = null;
         double minDistance = Double.MAX_VALUE;
-        if (_visionProcessor.getTrackedObjects().size() > 0) {
-            for (TrackedObjectInfo info : _visionProcessor.getTrackedObjects()) {
+        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
+        if (_objectCopy.size() > 0) {
+            for (TrackedObjectInfo info : _objectCopy) {
                 if (info.getElement() == TrackedObjectInfo.GameElement.CUBE) {
                     double distance = info.getDistance();
                     if (distance < minDistance) {
