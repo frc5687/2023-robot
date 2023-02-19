@@ -35,8 +35,8 @@ public class RobotContainer extends OutliersContainer {
     // private EndEffector _endEffector;
     // private Arm _arm;
     // private Elevator _elevator;
-    // private Lights _lights;
-    private LightsExample _lights;
+    private Lights _lights;
+    // private LightsExample _lights;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -60,14 +60,14 @@ public class RobotContainer extends OutliersContainer {
         // _arm = new Arm(this);
         // _endEffector = new EndEffector(this);
 
-        // _lights = new Lights(this, /* _driveTrain, _endEffector,*/ _oi);
-        _lights = new LightsExample(_oi._driverGamepad);
+        _lights = new Lights(this, /* _driveTrain, _endEffector,*/ _oi);
+        // _lights = new LightsExample(_oi._driverGamepad);
 
 
         // setDefaultCommand(_driveTrain, new Drive(_driveTrain, _oi));
         // setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         // setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        // setDefaultCommand(_lights, new DriveLights(/*_endEffector,*/ _lights, /*_driveTrain,*/ _oi));
+        setDefaultCommand(_lights, new DriveLights(/*_endEffector,*/ _lights, /*_driveTrain,*/ _oi));
 
     //    setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));

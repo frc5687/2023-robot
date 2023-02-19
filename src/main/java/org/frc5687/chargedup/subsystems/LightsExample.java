@@ -21,7 +21,7 @@ import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 
 public class LightsExample extends SubsystemBase {
-    private final CANdle m_candle = new CANdle(RobotMap.CAN.CANDLE.PORT, "rio");
+    private final CANdle m_candle = new CANdle(RobotMap.CAN.CANDLE.PORT, "CANivore");
     private Gamepad joystick;
 
     private Animation m_toAnimate = null;
@@ -130,7 +130,7 @@ public class LightsExample extends SubsystemBase {
                 m_toAnimate = null;
                 break;
         }
-        System.out.println("Changed to " + m_currentAnimation.toString());
+        // System.out.println("Changed to " + m_currentAnimation.toString());
     }
 
     @Override
