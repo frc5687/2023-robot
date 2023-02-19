@@ -6,6 +6,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
 
 public class LinearSystems {
 
@@ -52,10 +53,11 @@ public class LinearSystems {
      * @return LinearSystem of state space model.
      */
     public static LinearSystem<N3, N2, N3> createDifferentialSwerveModuleCurrent(
-            DCMotor motor, double Js, double Jw, double Gs, double Gw, double CFriction) {
+            DCMotor motor, double Js, double Jw, double Gs, double Gw, double Fs, double Fw) {
 
         // friction damping
-        var fD = -CFriction * Jw;
+        var fS = -Fs / Js;
+        var fW = -Fw / Jw;
         // current steer
         var Cs = Gs * motor.KtNMPerAmp / Js;
         var Cw = Gw * motor.KtNMPerAmp / Jw;
@@ -64,8 +66,8 @@ public class LinearSystems {
                 Matrix.mat(Nat.N3(), Nat.N3())
                         .fill(
                                 0.0, 1.0, 0.0,
-                                0.0, 0.0, 0.0,
-                                0.0, 0.0, fD);
+                                0.0, fS, 0.0,
+                                0.0, 0.0, fW);
         var B = Matrix.mat(Nat.N3(), Nat.N2()).fill(
                 0.0, 0.0,
                 Cs, Cs,
@@ -81,5 +83,15 @@ public class LinearSystems {
                                 0.0, 0.0,
                                 0.0, 0.0);
         return new LinearSystem<>(A, B, C, D);
+    }
+    public static DCMotor getFalcon500FOC(int numMotors) {
+        return new DCMotor(
+                12,
+                5.84,
+                304,
+                1.5,
+                Units.rotationsPerMinuteToRadiansPerSecond(6080.0),
+                numMotors
+        );
     }
 }

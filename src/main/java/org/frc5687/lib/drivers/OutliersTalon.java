@@ -78,15 +78,15 @@ public class OutliersTalon extends TalonFX {
         _currentLimitsConfigs.SupplyCurrentLimit = config.MAX_SUPPLY_CURRENT;
         _currentLimitsConfigs.StatorCurrentLimitEnable = config.ENABLE_STATOR_CURRENT_LIMIT;
         _currentLimitsConfigs.SupplyCurrentLimitEnable = config.ENABLE_SUPPLY_CURRENT_LIMIT;
-       
+
         _torqueCurrentConfigs.PeakForwardTorqueCurrent = config.MAX_CURRENT;
         _torqueCurrentConfigs.PeakReverseTorqueCurrent = -config.MAX_CURRENT;
         _torqueCurrentConfigs.TorqueNeutralDeadband = config.CURRENT_DEADBAND;
-        
+
         _voltageConfigs.PeakForwardVoltage = config.MAX_VOLTAGE;
         _voltageConfigs.PeakReverseVoltage = -config.MAX_VOLTAGE;
         _voltageConfigs.SupplyVoltageTimeConstant = config.VOLTAGE_TIME_CONSTANT;
- 
+
         _feedbackConfigs.FeedbackSensorSource = config.FEEDBACK_SENSOR;
         _feedbackConfigs.SensorToMechanismRatio = config.SENSOR_TO_MECHANISM_RATIO;
 
@@ -115,16 +115,19 @@ public class OutliersTalon extends TalonFX {
 
     }
 
-    
+
     public static double ticksToRadians(double ticks, double gearRatio) {
         return ticks * ((2.0 * Math.PI) / (gearRatio * 2048.0));
     }
+
     public static double radiansToRotations(double radians, double gearRatio) {
         return radians / ((2.0 * Math.PI) / gearRatio);
     }
+
     public static double radiansToTicks(double degrees, double gearRatio) {
         return degrees / ((2.0 * Math.PI) / (gearRatio * 2048.0));
     }
+
     public static double rotationsToRadians(double rotations, double gearRatio) {
         return rotations * ((2.0 * Math.PI) / gearRatio);
     }
@@ -157,7 +160,7 @@ public class OutliersTalon extends TalonFX {
 
         public double RAMP_RATE = 0.0;
 
-        public int CRUISE_VELOCITY = 0; // RPS 
+        public int CRUISE_VELOCITY = 0; // RPS
         public int ACCELERATION = 0; // RPS / Second
         public int JERK = 0; // RPS / Second / Second
     }
@@ -168,13 +171,13 @@ public class OutliersTalon extends TalonFX {
         public NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
         public InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
         public boolean USE_FOC = false;
-        
+
         // current/torque config
         public double MAX_CURRENT = 60.0;
         public double CURRENT_DEADBAND = 0.0;
 
         // voltage config
-        public double MAX_VOLTAGE = 12.0; 
+        public double MAX_VOLTAGE = 12.0;
         public double VOLTAGE_TIME_CONSTANT = 0.0;
 
         // current limits

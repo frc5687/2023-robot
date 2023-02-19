@@ -2,10 +2,7 @@
 package org.frc5687.chargedup.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.*;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
 import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -83,12 +80,13 @@ public class DiffSwerveModuleCurrent {
         // Creates a Linear System of our Differential Swerve Module.
         LinearSystem<N3, N2, N3> swerveModuleModel =
                 LinearSystems.createDifferentialSwerveModuleCurrent(
-                        DCMotor.getFalcon500(2),
+                        LinearSystems.getFalcon500FOC(2),
                         INERTIA_STEER,
                         INERTIA_WHEEL,
                         GEAR_RATIO_STEER,
                         GEAR_RATIO_WHEEL,
-                        COEFF_FRICTION
+                        FRICTION_STEER,
+                        FRICTION_WHEEL
                 );
 
         // Creates a Kalman Filter as our Observer for our module. Works since system is linear.
@@ -120,11 +118,29 @@ public class DiffSwerveModuleCurrent {
 
         // Creates a LinearSystemLoop that contains the Model, Controller, Observer, Max Volts,
         // Update Rate.
+        moduleController.latencyCompensate(swerveModuleModel, 0.005, 0.001);
+        Matrix<N2, N1> u_limit = VecBuilder.fill(CONFIG.MAX_CURRENT,CONFIG.MAX_CURRENT);
         _moduleControlLoop =
                 new LinearSystemLoop<>(
-                        swerveModuleModel, moduleController, moduleObserver, CONTROL_EFFORT, kDt);
+                        swerveModuleModel,
+                        moduleController,
+                        moduleObserver,
+                        u -> StateSpaceUtil.clampInputMaxMagnitude(
+                                u,
+                                u_limit.times(-1.0),
+                                u_limit),
+                        kDt
+                );
         //         Initializes the vectors and matrices.
+        System.out.println("K mat:\n" + _moduleControlLoop.getController().getK().toString());
+
         _moduleControlLoop.reset(VecBuilder.fill(0, 0, 0));
+
+        _leftFalcon.getVelocity().setUpdateFrequency(200);
+        _leftFalcon.getPosition().setUpdateFrequency(200);
+        _rightFalcon.getVelocity().setUpdateFrequency(200);
+        _rightFalcon.getPosition().setUpdateFrequency(200);
+
         _u = VecBuilder.fill(0, 0);
         // boolean for if we want the modules to be running as we set voltage in the periodic loop.
         _systemIO = new SystemIO();
@@ -155,7 +171,7 @@ public class DiffSwerveModuleCurrent {
         _systemIO.moduleAzimuthAngularVelocity = getAzimuthAngularVelocity();
         _systemIO.moduleWheelAngularVelocity = getWheelAngularVelocity();
     }
-        // periodic loop runs at 5ms.
+    // periodic loop runs at 5ms.
     public void periodic() {
         // read inputs from falcon;
         readInputs();
@@ -165,8 +181,9 @@ public class DiffSwerveModuleCurrent {
                 break;
             case STATE_CONTROL:
                 // sets the next reference / setpoint.
-//                Matrix<N3, N1> ref = VecBuilder.fill(Math.PI, 0.0, 20);
+//                Matrix<N3, N1> ref = VecBuilder.fill(0, 0.0, 2.0 / WHEEL_RADIUS);
                 _moduleControlLoop.setNextR(_reference);
+//                _moduleControlLoop.setNextR(ref);
                 // updates the kalman filter with new data points.
                 _moduleControlLoop.correct(
                         VecBuilder.fill(
@@ -230,8 +247,11 @@ public class DiffSwerveModuleCurrent {
     private Matrix<N3, N1> wrapAngle(Matrix<N3, N1> reference, Matrix<N3, N1> xHat) {
         double angleError = reference.get(0, 0) - getModuleAngle();
         double positionError = MathUtil.inputModulus(angleError, -Math.PI, Math.PI);
-        Matrix<N3, N1> error = reference.minus(xHat);
-        return VecBuilder.fill(positionError, error.get(1, 0), error.get(2, 0));
+//        Matrix<N3, N1> error = reference.minus(xHat);
+        double aziVelError = reference.get(1, 0) - getAzimuthAngularVelocity();
+        double wheelVelError = reference.get(2, 0) - getWheelAngularVelocity();
+//        return VecBuilder.fill(positionError, error.get(1, 0), error.get(2, 0));
+        return VecBuilder.fill(positionError, aziVelError, wheelVelError);
     }
     // use custom predict() function for as absolute encoder azimuth angle and the angular velocity
     // of the module need to be continuous.
@@ -244,13 +264,13 @@ public class DiffSwerveModuleCurrent {
                                 .getController()
                                 .getK()
                                 .times(
-                                        profiledReference(
-                                                _moduleControlLoop.getNextR(),
-                                                _moduleControlLoop.getXHat()
-                                        )));
-//                                        wrapAngle(
+//                                        profiledReference(
 //                                                _moduleControlLoop.getNextR(),
-//                                                _moduleControlLoop.getXHat()))
+//                                                _moduleControlLoop.getXHat()
+//                                        )));
+                                        wrapAngle(
+                                                _moduleControlLoop.getNextR(),
+                                                _moduleControlLoop.getXHat())));
 //                                .plus(
 //                                        _moduleControlLoop
 //                                                .getFeedforward()
@@ -301,8 +321,8 @@ public class DiffSwerveModuleCurrent {
 
     public double getWheelAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                        getLeftFalconRPM() / GEAR_RATIO_WHEEL
-                                - getRightFalconRPM() / GEAR_RATIO_WHEEL)
+                getLeftFalconRPM() / GEAR_RATIO_WHEEL
+                        - getRightFalconRPM() / GEAR_RATIO_WHEEL)
                 / 2.0;
     }
 
@@ -320,8 +340,8 @@ public class DiffSwerveModuleCurrent {
 
     public double getAzimuthAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                        getLeftFalconRPM() / GEAR_RATIO_STEER
-                                + getRightFalconRPM() / GEAR_RATIO_STEER)
+                getLeftFalconRPM() / GEAR_RATIO_STEER
+                        + getRightFalconRPM() / GEAR_RATIO_STEER)
                 / 2.0;
     }
 
@@ -408,7 +428,7 @@ public class DiffSwerveModuleCurrent {
     }
 
     public double getReferenceWheelVelocity() {
-        return _moduleControlLoop.getNextR(2);
+        return _moduleControlLoop.getNextR(2) * WHEEL_RADIUS;
     }
 
     public SwerveModuleState getState() {
@@ -452,14 +472,20 @@ public class DiffSwerveModuleCurrent {
 //        SmartDashboard.putNumber(_name + "/rightSupplyCurrent", _rightFalcon.getSupplyCurrent());
         SmartDashboard.putNumber(_name + "/leftStatorCurrent", getLeftCurrent());
         SmartDashboard.putNumber(_name + "/rightStatorCurrent", getRightCurrent());
-        SmartDashboard.putNumber(_name + "/referenceAngle", getReferenceModuleAngle());
-        SmartDashboard.putNumber(_name + "/velocityWheel", getWheelVelocity());
-
-        SmartDashboard.putString(_name + "/KMatrix", _moduleControlLoop.getController().getK().toString());
-
+        SmartDashboard.putNumber(_name + "/referenceAngleGoal", getReferenceModuleAngle());
+        SmartDashboard.putNumber(_name + "/referenceAngleSetpoint", _angleSetpoint.position);
         SmartDashboard.putNumber(_name + "/moduleAngle", getModuleAngle());
-        SmartDashboard.putNumber(_name + "/estimatedModuleAngle", getPredictedAzimuthAngle());
-        SmartDashboard.putString(_name + "/refernce", _reference.toString());
+
+        SmartDashboard.putNumber(_name + "/moduleAngVel", getAzimuthAngularVelocity());
+        SmartDashboard.putNumber(_name + "/refAngVelSetpoint", _angleSetpoint.velocity);
+
+        SmartDashboard.putNumber(_name + "/velocityWheel", getWheelVelocity());
+        SmartDashboard.putNumber(_name + "/referenceWheelVelocity", getReferenceWheelVelocity());
+//
+//        SmartDashboard.putString(_name + "/KMatrix", _moduleControlLoop.getController().getK().toString());
+//
+//        SmartDashboard.putNumber(_name + "/estimatedModuleAngle", getPredictedAzimuthAngle());
+//        SmartDashboard.putString(_name + "/refernce", _reference.toString());
     }
 
     public enum ControlState {
