@@ -41,14 +41,14 @@ public class Constants {
      * <p>Note: when robot is flipped over, this is clockwise.
      */
     public static class DriveTrain {
-        public static final String CAN_BUS = "DriveTrainPractice";
+        public static final String CAN_BUS = "CANivore";
         public static final int NUM_MODULES = 4;
     
         // Size of the robot chassis in meters
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
+        public static final double SCALED_TRANSLATION_INPUT = 1.0; // this makes the max speed from the joysticks some % of MAX_MPS.
         public static final double SCALED_ROTATION_INPUT = 1.0;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
@@ -58,7 +58,7 @@ public class Constants {
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.5; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 10.0; // m/s^2
+            KINEMATIC_LIMITS.maxDriveAcceleration = 15.0; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = Math.PI * 5; // rad/s
         }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG = new DiffSwerveModule.ModuleConfiguration();
