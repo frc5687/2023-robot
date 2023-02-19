@@ -66,7 +66,7 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getRightStickButton().getAsBoolean();
     }
     public boolean manualGrip() {
-        return _operatorGamepad.getRightBumper().getAsBoolean();
+        return _driverGamepad.getAButton().getAsBoolean();
     }
     public boolean setHeadingNorth() {
         return _driverGamepad.getYButton().getAsBoolean();
@@ -75,9 +75,9 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getBButton().getAsBoolean();
     }
 
-    public boolean setHeadingSouth() {
-        return _driverGamepad.getAButton().getAsBoolean();
-    }
+//    public boolean setHeadingSouth() {
+//        return _driverGamepad.getAButton().getAsBoolean();
+//    }
 
     public boolean setHeadingWest() {
         return _driverGamepad.getXButton().getAsBoolean();

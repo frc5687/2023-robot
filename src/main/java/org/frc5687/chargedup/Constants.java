@@ -262,7 +262,7 @@ public class Constants {
             CONFIG.TIME_OUT = 0.1;
     
             CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+            CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
     
             CONFIG.MAX_VOLTAGE = 12.0;
     
@@ -294,9 +294,9 @@ public class Constants {
         public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
-        public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
+        public static final double VERTICAL_ARM_ANGLE = 1.245; // rads
         public static final double LOWER_EXTREME = 0.378;
-        public static final double PLACE_ARM_ANGLE = 3.25; // testing
+        public static final double PLACE_ARM_ANGLE = 0.28; // testing
     }
 
     public static class Auto {
