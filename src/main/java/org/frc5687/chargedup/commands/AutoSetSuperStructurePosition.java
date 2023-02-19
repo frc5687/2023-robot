@@ -19,7 +19,7 @@ public class AutoSetSuperStructurePosition extends SequentialCommandGroup {
     public AutoSetSuperStructurePosition(Elevator elevator, EndEffector endEffector, Arm arm,
         Setpoint setpoint){
         addCommands(
-            // new AutoSetGripperAngle(_endEffector, _gripperAngle),
+            new AutoSetWristAngle(endEffector, setpoint.wristAngle),
             new ParallelDeadlineGroup(
 //                new AutoSetRollerSpeed(endEffector, gripperSpeed),
                 new AutoSetArmSetpoint(arm, setpoint.armAngle),

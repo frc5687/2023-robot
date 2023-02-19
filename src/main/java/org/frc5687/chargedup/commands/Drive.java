@@ -77,15 +77,13 @@ public class Drive extends OutliersCommand {
         rot = Math.signum(rot) * rot * rot;
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
         if (_oi.getSlowMode()) {
-            vx = vec.x() * Constants.DriveTrain.SLOW_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            vy = vec.y() * Constants.DriveTrain.SLOW_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            rot = -rot * Constants.DriveTrain.SLOW_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT; //negative added to flip rotation in slowmode, driver preference
+            vx = vec.x() * Constants.DriveTrain.SLOW_MPS;
+            vy = vec.y() * Constants.DriveTrain.SLOW_MPS;
+            rot = -rot * Constants.DriveTrain.SLOW_ANG_VEL; //negative added to flip rotation in slowmode, driver preference
         } else {
-            vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
-//        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-//        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
+            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
+            rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
         }
         
 

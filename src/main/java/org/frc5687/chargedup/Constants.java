@@ -49,15 +49,13 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
-        public static final double SCALED_ROTATION_INPUT = 0.4;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-        public static final double MAX_MPS = 5.0; // Max speed of robot (m/s)
-        public static final double SLOW_MPS = MAX_MPS / 2; // Slow speed of robot (m/s)
+        public static final double MAX_MPS = 4.5; // Max speed of robot (m/s)
+        public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
-        public static final double SLOW_ANG_VEL = Math.PI * MAX_ANG_VEL / 2; // Max rotation rate of robot (rads/s)
+        public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
