@@ -49,15 +49,13 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
-        public static final double SCALED_ROTATION_INPUT = 0.4;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-        public static final double MAX_MPS = 5.0; // Max speed of robot (m/s)
-        public static final double SLOW_MPS = MAX_MPS / 2; // Slow speed of robot (m/s)
+        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
+        public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
-        public static final double SLOW_ANG_VEL = Math.PI * MAX_ANG_VEL / 2; // Max rotation rate of robot (rads/s)
+        public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
@@ -101,10 +99,8 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderOffset = -0.079;
         }
         public static final double TRANSLATION_DEADBAND =
-                0.1; // Avoid unintentional joystick movement
-        public static final double ROTATION_DEADBAND = 0.1; // Avoid unintentional joystick movement
-        public static final double TRANSLATION_POWER = 1.75; // Determines the curve of drive input
-        public static final double ROTATION_POWER = 1.0; // Determines the curve of drive input
+                0.05; // Avoid unintentional joystick movement
+        public static final double ROTATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final long DISABLE_TIME = 500; // ms
     
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
@@ -262,7 +258,7 @@ public class Constants {
             CONFIG.TIME_OUT = 0.1;
     
             CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+            CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
     
             CONFIG.MAX_VOLTAGE = 12.0;
     
@@ -294,9 +290,9 @@ public class Constants {
         public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
-        public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
+        public static final double VERTICAL_ARM_ANGLE = 1.245; // rads
         public static final double LOWER_EXTREME = 0.378;
-        public static final double PLACE_ARM_ANGLE = 3.25; // testing
+        public static final double PLACE_ARM_ANGLE = 0.28; // testing
     }
 
     public static class Auto {
@@ -334,6 +330,7 @@ public class Constants {
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
 
+        public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(305);
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
@@ -354,10 +351,10 @@ public class Constants {
         // fully open angle
         public static final double GRIPPER_OUT_SPEED = 1.0;
         //public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
-        public static final boolean  GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.25;
+        public static final boolean GRIPPPER_INVERTED = false;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
-        public static final double PLACE_CUBE_ROLLER_SPEED = -0.5;
+        public static final double PLACE_CUBE_ROLLER_SPEED = -1.0;
         public static final double PLACE_CONE_ROLLER_SPEED = 1.0;
         public static final long GRIPPER_TIMEOUT = 1000;
     }

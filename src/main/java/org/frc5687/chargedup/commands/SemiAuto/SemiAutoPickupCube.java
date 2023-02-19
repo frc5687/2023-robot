@@ -6,6 +6,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
+import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
 import org.frc5687.chargedup.commands.EndEffector.CloseConeGripper;
 import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
@@ -24,10 +25,11 @@ public class SemiAutoPickupCube extends SequentialCommandGroup {
         addCommands(
                 // new DriveUntilInHall(elevator),
                // new AutoExtendElevator(elevator, 0.01),
+                new AutoSetWristAngle(endEffector, Constants.EndEffector.WRIST_SAFE_ANGLE),
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, setpoint
                 ),
-                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, setpoint.armAngle)),
+                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi, false), new HoldArm(arm, setpoint.armAngle)),
 
 //                new CloseConeGripper(endEffector),
                 new AutoSetSuperStructurePosition(
