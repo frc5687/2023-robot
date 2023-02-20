@@ -15,6 +15,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
+import edu.wpi.first.math.util.Units;
+
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
@@ -279,6 +281,20 @@ public class DriveTrain extends OutliersSubsystem {
 
     public SwerveSetpoint getSetpoint() {
         return _systemIO.setpoint;
+    }
+
+    public Vector2d getDesiredCOR(double rotfrompos){
+        Vector2d cor = new Vector2d();
+        if (Units.radiansToDegrees(getYaw()) + rotfrompos > 90 && Units.radiansToDegrees(getYaw()) < 180){
+            cor = new Vector2d(1, 1);
+        } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 180 && Units.radiansToDegrees(getYaw()) < 270){
+            cor = new Vector2d(-1, 1);
+        } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 270 && Units.radiansToDegrees(getYaw()) < 360){
+            cor = new Vector2d(-1, -1);
+        } else {
+            cor = new Vector2d(1, -1);
+        }
+            return cor;
     }
 
     public void updateDesiredStates() {
