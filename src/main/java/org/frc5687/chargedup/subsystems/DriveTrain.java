@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
@@ -29,6 +30,7 @@ import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
@@ -60,6 +62,8 @@ public class DriveTrain extends OutliersSubsystem {
     private double _PIDAngle;
     private final VisionProcessor _visionProcessor;
 
+    private Trajectory _trajectory;
+
     public DriveTrain(OutliersContainer container, VisionProcessor processor, OI oi, Pigeon2 imu) {
         super(container);
         _visionProcessor = processor;
@@ -69,6 +73,8 @@ public class DriveTrain extends OutliersSubsystem {
         _PIDAngle = getHeading().getRadians();
 
         _modules = new DiffSwerveModuleCurrent[4];
+
+        _trajectory = new TrajectoryGenerator.generateTrajectory(ManeuverPoint, getHeading());
 
         _modules[NORTH_WEST_IDX] = new DiffSwerveModuleCurrent(
                 NORTH_WEST_CONFIG,
@@ -402,6 +408,16 @@ public class DriveTrain extends OutliersSubsystem {
         return _odometry.getPoseMeters();
     }
 
+    public Pose2d SetEvasiveManeuverPoint(){
+        double dx = getOdometryPose().getX() + Math.sin(getYaw());
+        double dy = getOdometryPose().getY() + Math.cos(getYaw());
+        return new Pose2d(dx, dy, getHeading());
+    }
+
+    public List<Pose2d> ManeuverPoint = Arrays.asList(getOdometryPose(), 
+    SetEvasiveManeuverPoint());
+
+    _trajectory = new TrajectoryGenerator.generateTrajectory(ManeuverPoint, getConfig());
     /**
      * Reset position and gyroOffset of odometry
      *

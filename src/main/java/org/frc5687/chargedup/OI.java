@@ -3,6 +3,7 @@ package org.frc5687.chargedup;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -46,7 +47,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
+    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator, DriveTrain driveTrain) {
         _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
@@ -54,6 +55,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getXButton().onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this)); 
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         
+        _driverGamepad.getAButton().onTrue(new DriveTrajectory(driveTrain, TrajectoryGenerator.generateTrajectory(null, null, null, config), DISABLE_TIME))
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(

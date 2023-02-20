@@ -13,6 +13,6 @@ public class EvasiveManeuver extends OutliersCommand {
 
     @Override
     public void execute() {
-        new DriveTrajectory(_driveTrain, null)
+        new DriveTrajectory(_oi, )
     }
 }
