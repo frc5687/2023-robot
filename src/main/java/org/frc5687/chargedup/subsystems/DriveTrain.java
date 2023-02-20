@@ -224,18 +224,18 @@ public class DriveTrain extends OutliersSubsystem {
         // read sensors and modules so that they are cached for this loop
         readIMU();
         readModules();
-//        switch (_controlState) {
-//            case TRAJECTORY:
-//                break;
-//            case NEUTRAL:
-//            case MANUAL:
-//            case ROTATION:
-//            default:
-//                break;
-//        }
-        updateDesiredStates();
-        metric("Setpoint", _systemIO.setpoint.chassisSpeeds.toString());
-        setModuleStates(_systemIO.setpoint.moduleStates);
+       switch (_controlState) {
+           case TRAJECTORY:
+               break;
+           case NEUTRAL:
+           case MANUAL:
+            updateDesiredStates();
+            metric("Setpoint", _systemIO.setpoint.chassisSpeeds.toString());
+            setModuleStates(_systemIO.setpoint.moduleStates);
+           case ROTATION:
+           default:
+               break;
+       }
     }
 
     @Override

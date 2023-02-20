@@ -10,6 +10,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
 import org.frc5687.lib.control.HeadingController;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
@@ -59,7 +60,7 @@ public class Drive extends OutliersCommand {
         _driveTrain.setFieldRelative(true);
 //        _headingController.setGoal(_driveTrain.getHeading().getRadians());
         _headingController.setMaintainHeading(_driveTrain.getHeading());
-//        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
+       _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
     @Override
@@ -77,21 +78,15 @@ public class Drive extends OutliersCommand {
         rot = Math.signum(rot) * rot * rot;
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
         if (_oi.getSlowMode()) {
-            vx = vec.x() * Constants.DriveTrain.SLOW_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            vy = vec.y() * Constants.DriveTrain.SLOW_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            rot = -rot * Constants.DriveTrain.SLOW_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT; //negative added to flip rotation in slowmode, driver preference
+            vx = vec.x() * Constants.DriveTrain.SLOW_MPS;
+            vy = vec.y() * Constants.DriveTrain.SLOW_MPS;
+            rot = -rot * Constants.DriveTrain.SLOW_ANG_VEL; //negative added to flip rotation in slowmode, driver preference
         } else {
-            vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
-//        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-//        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
+            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
+            rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
         }
         
-
-        // if (_oi.evadeRight90Degrees()){
-            
-        // }
 
         // 0.01 is the tolerance to start heading controller.
 //        if (Math.abs(rot) < 0.01) {
@@ -186,5 +181,6 @@ public class Drive extends OutliersCommand {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
+        _driveTrain.setControlState(ControlState.NEUTRAL);
     }
 }
