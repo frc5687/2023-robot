@@ -130,6 +130,7 @@ public class Constants {
     
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double HEADING_TOLERANCE = 0.15; //rad
+        public static final double BUMP_DEGREES = 1;
     }
     
     public static class DifferentialSwerveModule {
