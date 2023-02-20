@@ -16,12 +16,13 @@ public class DriveTrajectory extends OutliersCommand {
     private Trajectory _trajectory;
     private final Timer _timer;
     private Translation2d _cor;
+    private double _rotfrompos;
 
-    public DriveTrajectory(DriveTrain driveTrain, Trajectory trajectory, Translation2d cor) {
+    public DriveTrajectory(DriveTrain driveTrain, Trajectory trajectory, double rotfrompos) {
         _driveTrain = driveTrain;
         _timer = new Timer();
         _trajectory = trajectory;
-        _cor = cor;
+        _rotfrompos = rotfrompos;
         addRequirements(_driveTrain);
     }
 
@@ -36,9 +37,9 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-
+        // double
         Trajectory.State goal = _trajectory.sample(_timer.get());
-        Translation2d cor = _driveTrain.getDesiredCOR();
+        Translation2d cor = _driveTrain.getDesiredCOR(_rotfrompos);
         _driveTrain.updateSwerve(goal, new Rotation2d(0.0), cor);
     }
 
