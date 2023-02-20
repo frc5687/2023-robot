@@ -46,10 +46,10 @@ public class SuperStructureSetpoints {
 
     public static final Setpoint conePickupSetpoint = new Setpoint();
     static {
-        conePickupSetpoint.elevatorPosition = 0.307;
+        conePickupSetpoint.elevatorPosition = 0.297;
         conePickupSetpoint.wristAngle = Constants.EndEffector.WRIST_PICKUP_ANGLE;
         conePickupSetpoint.gripperSpeed = Constants.EndEffector.GRIPPER_IN_SPEED;
-        conePickupSetpoint.armAngle = 1.875;
+        conePickupSetpoint.armAngle = 1.8;
     }
 
     public static final Setpoint cubePickupSetpoint = new Setpoint();
@@ -57,7 +57,7 @@ public class SuperStructureSetpoints {
         cubePickupSetpoint.elevatorPosition = 0.28;
         cubePickupSetpoint.wristAngle = Units.degreesToRadians(295);
         cubePickupSetpoint.gripperSpeed = -Constants.EndEffector.GRIPPER_IN_SPEED;
-        cubePickupSetpoint.armAngle = 1.875;
+        cubePickupSetpoint.armAngle = 1.8;
     }
 
     public static final Setpoint coneGroundPickupSetpoint = new Setpoint();
@@ -66,7 +66,7 @@ public class SuperStructureSetpoints {
         coneGroundPickupSetpoint.wristAngle = Units.degreesToRadians(274);
         coneGroundPickupSetpoint.gripperSpeed = Constants.EndEffector.GRIPPER_IN_SPEED;
 //        coneGroundPickupSetpoint.armAngle = 0.7;
-        coneGroundPickupSetpoint.armAngle = 1.875;
+        coneGroundPickupSetpoint.armAngle = 1.85;
     }
 
     public static final Setpoint cubeGroundPickupSetpoint = new Setpoint();
@@ -75,7 +75,7 @@ public class SuperStructureSetpoints {
         cubeGroundPickupSetpoint.wristAngle = Units.degreesToRadians(257);
         cubeGroundPickupSetpoint.gripperSpeed = -Constants.EndEffector.GRIPPER_IN_SPEED;
 //        cubeGroundPickupSetpoint.armAngle = 0.667;
-        coneGroundPickupSetpoint.armAngle = 1.875;
+        coneGroundPickupSetpoint.armAngle = 1.85;
     }
 
     public static final Setpoint idleConeSetpoint = new Setpoint();

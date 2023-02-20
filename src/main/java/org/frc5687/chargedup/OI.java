@@ -6,8 +6,12 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCube;
+import org.frc5687.chargedup.commands.Auto.DriveUntilLevel;
+import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
 
@@ -46,14 +50,16 @@ public class OI extends OutliersProxy {
         _operatorGamepad = new Gamepad(1);
     }
 
-    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
+    public void initializeButtons(DriveTrain drivetrain, EndEffector endEffector, Arm arm, Elevator elevator) {
         _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this)); 
         _operatorGamepad.getXButton().onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this)); 
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-        
+        _driverGamepad.getYButton().onTrue(new SequentialCommandGroup(
+                new AutoPlaceHighCube(arm, endEffector, elevator),
+                new DriveUntilLevel(drivetrain)));
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(
