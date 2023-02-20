@@ -55,7 +55,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getXButton().onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this)); 
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         
-        _driverGamepad.getAButton().onTrue(new DriveTrajectory(driveTrain, TrajectoryGenerator.generateTrajectory(null, null, null, config), DISABLE_TIME))
+        _driverGamepad.getAButton().onTrue(new DriveTrajectory(driveTrain, driveTrain.generateTrajectory(), 90));
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(
@@ -71,13 +71,13 @@ public class OI extends OutliersProxy {
         return _operatorGamepad.getRightBumper().getAsBoolean();
     }
 
-    public boolean evadeRight90Degrees(){
-        return _driverGamepad.getAButton().getAsBoolean();
-    }
+    // public boolean evadeRight90Degrees(){
+    //     return _driverGamepad.getAButton().getAsBoolean();
+    // }
 
-    public boolean evadeLeft90Degrees(){
-        return _driverGamepad.getBButton().getAsBoolean();
-    }
+    // public boolean evadeLeft90Degrees(){
+    //     return _driverGamepad.getBButton().getAsBoolean();
+    // }
 
     public boolean setHeadingNorth() {
         return _driverGamepad.getYButton().getAsBoolean();
@@ -86,9 +86,9 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getBButton().getAsBoolean();
     }
 
-    public boolean setHeadingSouth() {
-        return _driverGamepad.getAButton().getAsBoolean();
-    }
+    // public boolean setHeadingSouth() {
+    //     return _driverGamepad.getAButton().getAsBoolean();
+    // }
 
     public boolean setHeadingWest() {
         return _driverGamepad.getXButton().getAsBoolean();

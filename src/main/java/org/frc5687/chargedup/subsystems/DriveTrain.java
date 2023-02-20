@@ -74,8 +74,6 @@ public class DriveTrain extends OutliersSubsystem {
 
         _modules = new DiffSwerveModuleCurrent[4];
 
-        _trajectory = new TrajectoryGenerator.generateTrajectory(ManeuverPoint, getHeading());
-
         _modules[NORTH_WEST_IDX] = new DiffSwerveModuleCurrent(
                 NORTH_WEST_CONFIG,
                 RobotMap.CAN.TALONFX.NORTH_WEST_OUTER,
@@ -417,7 +415,11 @@ public class DriveTrain extends OutliersSubsystem {
     public List<Pose2d> ManeuverPoint = Arrays.asList(getOdometryPose(), 
     SetEvasiveManeuverPoint());
 
-    _trajectory = new TrajectoryGenerator.generateTrajectory(ManeuverPoint, getConfig());
+
+    public Trajectory generateTrajectory(){
+    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(ManeuverPoint, getConfig());
+    return trajectory;  
+    }
     /**
      * Reset position and gyroOffset of odometry
      *
