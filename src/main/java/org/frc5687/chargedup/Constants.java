@@ -1,6 +1,7 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -131,6 +132,12 @@ public class Constants {
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double HEADING_TOLERANCE = 0.15; //rad
         public static final double BUMP_DEGREES = 10;
+
+        public static final double PITCH_LOOKING_ANGLE = Units.degreesToRadians(15.0); // this is degrees because sad.
+        public static final double PITCH_LEVELED_ANGLE = Units.degreesToRadians(5.0); // this is degrees because sad.
+
+        public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
+        public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 2.0;
     }
     
     public static class DifferentialSwerveModule {
@@ -291,9 +298,9 @@ public class Constants {
         public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
-        public static final double VERTICAL_ARM_ANGLE = 1.245; // rads
+        public static final double VERTICAL_ARM_ANGLE = 1.22; // rads
         public static final double LOWER_EXTREME = 0.378;
-        public static final double PLACE_ARM_ANGLE = 0.28; // testing
+        public static final double PLACE_ARM_ANGLE = 0.255; // testing
     }
 
     public static class Auto {
@@ -303,7 +310,15 @@ public class Constants {
             public static final Pose2d POSE_3 = new Pose2d(2, 2, new Rotation2d());
 
         }
-    
+
+
+        public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
+        public static final Pose2d STARTING_CHARGING_STATION= new Pose2d(1.820, 4.025, new Rotation2d());
+        public static final Pose2d STARTING_ONE_TEMP = new Pose2d(0, 0, new Rotation2d());
+        public static final Pose2d TARGET_ONE = new Pose2d(7.065, 3.456, new Rotation2d(Math.PI / 2.0));
+        public static final Pose2d TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d());
+        public static final Pose2d TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d());
+        public static final Pose2d TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d());
 
         public static class TrajectoryPoints {
             public static class S {
@@ -312,6 +327,15 @@ public class Constants {
                                 FieldPoses.POSE_1,
                                 FieldPoses.POSE_2,
                                 FieldPoses.POSE_3);
+            }
+
+            public static class FIRST_TO_TARGET_ONE {
+                public static final List<Pose2d> waypoints =
+                        Arrays.asList(
+                                STARTING_ONE,
+                                TARGET_ONE
+                        );
+
             }
         }
     }

@@ -91,5 +91,15 @@
       <option name="name" value="BintrayJCenter" />
       <option name="url" value="https://jcenter.bintray.com/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="WPI515fe07e-bfc6-11fa-b3de-0242ac130004 _1Release" />
+      <option name="name" value="WPI515fe07e-bfc6-11fa-b3de-0242ac130004 _1Release" />
+      <option name="url" value="https://maven.photonvision.org/repository/snapshots" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="WPI515fe07e-bfc6-11fa-b3de-0242ac130004 _0Release" />
+      <option name="name" value="WPI515fe07e-bfc6-11fa-b3de-0242ac130004 _0Release" />
+      <option name="url" value="https://maven.photonvision.org/repository/internal" />
+    </remote-repository>
   </component>
 </project>
