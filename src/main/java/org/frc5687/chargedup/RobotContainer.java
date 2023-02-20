@@ -66,16 +66,15 @@ public class RobotContainer extends OutliersContainer {
         _elevator = new Elevator(this);
         _arm = new Arm(this);
         _endEffector = new EndEffector(this);
-
-
+        // This is for auto temporarily, need to fix for both in future.
         _endEffector.setCubeMode();
+
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-//        Trajectory T = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.FIRST_TO_TARGET_ONE.waypoints, _driveTrain.getConfig());
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
 
         _visionProcessor.start();

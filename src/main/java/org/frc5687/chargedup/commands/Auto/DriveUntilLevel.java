@@ -37,8 +37,6 @@ public class DriveUntilLevel extends OutliersCommand  {
 
     @Override
     public void execute() {
-        Trajectory T = new Trajectory();
-
         metric("Leveling State", String.valueOf(_state));
         switch(_state) {
             case INITIAL:
@@ -46,7 +44,7 @@ public class DriveUntilLevel extends OutliersCommand  {
                 break;
             case LOOKING_FOR_PITCH:
                 _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-                        2.0,
+                        Constants.DriveTrain.DRIVING_DOWN_RAMP_SPEEDS_VX,
                         0.0,
                         0.0,
                         _drivetrain.getHeading()
@@ -78,7 +76,7 @@ public class DriveUntilLevel extends OutliersCommand  {
                 break;
             case EXIT_LEVELING:
                 _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-                        2.0,
+                        Constants.DriveTrain.DRIVING_DOWN_RAMP_SPEEDS_VX,
                         0.0,
                         0.0,
                         _drivetrain.getHeading()
@@ -91,7 +89,7 @@ public class DriveUntilLevel extends OutliersCommand  {
             case DRIVE_FORWARD:
                 if (_timeout > System.currentTimeMillis()) {
                     _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-                            1.0,
+                            Constants.DriveTrain.DRIVING_DOWN_RAMP_SPEEDS_VX,
                             0.0,
                             0.0,
                             _drivetrain.getHeading()
@@ -102,7 +100,7 @@ public class DriveUntilLevel extends OutliersCommand  {
                 break;
             case LOOKING_FOR_PITCH_AGAIN:
                 _drivetrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-                        -2.0,
+                        -Constants.DriveTrain.DRIVING_UP_RAMP_SPEEDS_VX,
                         0.0,
                         0.0,
                         _drivetrain.getHeading()
