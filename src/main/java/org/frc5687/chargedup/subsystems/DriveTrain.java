@@ -283,16 +283,16 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.setpoint;
     }
 
-    public Vector2d getDesiredCOR(double rotfrompos){
-        Vector2d cor = new Vector2d();
+    public Translation2d getDesiredCOR(double rotfrompos){
+        Translation2d cor = new Translation2d();
         if (Units.radiansToDegrees(getYaw()) + rotfrompos > 90 && Units.radiansToDegrees(getYaw()) < 180){
-            cor = new Vector2d(1, 1);
+            cor = new Translation2d(1, 1);
         } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 180 && Units.radiansToDegrees(getYaw()) < 270){
-            cor = new Vector2d(-1, 1);
+            cor = new Translation2d(-1, 1);
         } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 270 && Units.radiansToDegrees(getYaw()) < 360){
-            cor = new Vector2d(-1, -1);
+            cor = new Translation2d(-1, -1);
         } else {
-            cor = new Vector2d(1, -1);
+            cor = new Translation2d(1, -1);
         }
             return cor;
     }
