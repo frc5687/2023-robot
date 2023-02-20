@@ -66,7 +66,7 @@ public class RobotContainer extends OutliersContainer {
        setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-        _oi.initializeButtons(_endEffector, _arm, _elevator);
+        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);

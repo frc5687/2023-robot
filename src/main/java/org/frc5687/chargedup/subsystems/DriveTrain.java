@@ -185,6 +185,12 @@ public class DriveTrain extends OutliersSubsystem {
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]);
     }
 
+    public void temporaryDisabledHeadingController() {
+        _headingController.temporaryDisable();
+    }
+    public void disableHeadingController() {
+        _headingController.disable();
+    }
     public void initializeHeadingController() {
         _headingController.setMaintainHeading(getHeading());
     }
@@ -496,6 +502,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Swerve State", _controlState.name());
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Current Heading", getHeading().getRadians());
+        metric("Heading Controller Target", _headingController.getTargetHeading().getRadians());
         metric("Rotation State", getYaw());
         moduleMetrics();
 //        metric("NW Angle", _modules[NORTH_WEST_IDX].getModuleAngle());

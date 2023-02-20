@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
 
@@ -18,6 +19,7 @@ import static org.frc5687.chargedup.util.Helpers.*;
 
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
+import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Arm.DriveUntilHall;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
@@ -39,20 +41,27 @@ import java.util.concurrent.ConcurrentMap;
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
     protected Gamepad _operatorGamepad;
+    protected Trigger _driverLeftTrigger;
+    protected Trigger _driverRightTrigger;
+
 
 
     public OI() {
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
+        _driverLeftTrigger = new Trigger(new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
+        _driverRightTrigger = new Trigger(new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
     }
 
-    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator) {
+    public void initializeButtons(DriveTrain driveTrain, EndEffector endEffector, Arm arm, Elevator elevator) {
         _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this)); 
         _operatorGamepad.getXButton().onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this)); 
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+        _driverLeftTrigger.onTrue(new Tap(driveTrain, false));
+        _driverRightTrigger.onTrue(new Tap(driveTrain, true));
         
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
@@ -144,7 +153,7 @@ public class OI extends OutliersProxy {
     }
 
     public boolean getSlowMode(){
-        return _driverGamepad.getLeftBumper().getAsBoolean();
+        return _driverGamepad.getLeftStickButton().getAsBoolean();
     }
 
     public double getWristSpeed() {

@@ -118,11 +118,11 @@ public class Drive extends OutliersCommand {
 
         if (rot == 0) {
             if (!_lockHeading) {
-                _driveTrain.initializeHeadingController();
+                _driveTrain.temporaryDisabledHeadingController();
             }
             _lockHeading = true;
         } else {
-            _driveTrain.initializeHeadingController();
+            _driveTrain.disableHeadingController();
             _lockHeading = false;
         }
         double controllerPower = _driveTrain.getRotationCorrection();
