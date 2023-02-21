@@ -18,11 +18,14 @@ import org.frc5687.chargedup.commands.Auto.DriveUntilLevel;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.chargedup.subsystems.*;
-
 import org.frc5687.chargedup.util.OutliersProxy;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
+import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
 
-import static org.frc5687.chargedup.Constants.DriveTrain.*;
 import static org.frc5687.chargedup.util.Helpers.*;
+import org.frc5687.chargedup.Constants;
 
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
@@ -67,8 +70,8 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this)); 
         _operatorGamepad.getXButton().onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this)); 
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-        _driverLeftTrigger.onTrue(new Tap(driveTrain, false));
-        _driverRightTrigger.onTrue(new Tap(driveTrain, true));
+        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
+        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
         
         _driverGamepad.getYButton().onTrue(new SequentialCommandGroup(
                 new AutoPlaceHighCube(arm, endEffector, elevator),
@@ -112,31 +115,31 @@ public class OI extends OutliersProxy {
 
     public double getDriveY() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        speed = applyDeadband(speed, TRANSLATION_DEADBAND);
+        speed = applyDeadband(speed, Constants.DriveTrain.TRANSLATION_DEADBAND);
         return speed; 
     }
 
     public double getDriveX() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber());
-        speed = applyDeadband(speed, TRANSLATION_DEADBAND);
+        speed = applyDeadband(speed, Constants.DriveTrain.TRANSLATION_DEADBAND);
         return speed;
     }
 
     public double getRotationX() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
-        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         return speed;
     }
 
     public double getArmY() {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         return speed/5; //for testing
        //  return 0;
     }
     public double getExtArmY(){
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-        speed = applyDeadband(speed, ROTATION_DEADBAND);
+        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         return speed;
     }
 

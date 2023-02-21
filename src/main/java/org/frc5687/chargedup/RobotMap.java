@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.wpilibj.DutyCycle;
 
 public class RobotMap {
 
@@ -28,6 +27,10 @@ public class RobotMap {
 
         public static class PIGEON {
             public static final int PIGEON = 0;
+        }
+
+        public static class CANDLE {
+            public static final int PORT = 13;
         }
         
         public static class TalonSRX {

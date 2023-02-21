@@ -18,6 +18,7 @@ public class WaitForManualGripper extends OutliersCommand {
 
     @Override
     public void initialize() {
+        error("Wait Roller Started");
         super.initialize();
     }
 

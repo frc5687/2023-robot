@@ -32,7 +32,6 @@ import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
 import org.photonvision.EstimatedRobotPose;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -526,6 +525,14 @@ public class DriveTrain extends OutliersSubsystem {
             }
         }
         return closest;
+    }
+    public boolean isConeDetected(){
+        TrackedObjectInfo obj = getClosestCone();
+        return obj != null;
+    }
+    public boolean isCubeDetected(){
+        TrackedObjectInfo obj = getClosestCube();
+        return obj != null;
     }
 
     public void moduleMetrics() {

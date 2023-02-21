@@ -17,7 +17,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.drivers.OutliersTalon;
@@ -31,7 +30,7 @@ import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.*;
  * <p>Wrapper class for a differential swerve module using LQR as the controller for azimuth angle
  * and wheel velocity of the module.
  */
-public class DiffSwerveModule {
+public class DiffSwerveModuleCurrent {
     private final OutliersTalon _rightFalcon;
     private final OutliersTalon _leftFalcon;
     private final DutyCycleEncoder _boreEncoder;
@@ -52,7 +51,7 @@ public class DiffSwerveModule {
     private TrapezoidProfile.State _wheelVelocityReference = new TrapezoidProfile.State();
     private final TrapezoidProfile.Constraints _profiledSteerConstraints;
     private final TrapezoidProfile.Constraints _profiledWheelConstraints;
-    public DiffSwerveModule(
+    public DiffSwerveModuleCurrent(
             DiffSwerveModule.ModuleConfiguration config, int leftMotorID, int rightMotorID, int encoderPort) {
         // setup azimuth bore encoder.
         _name = config.moduleName;
@@ -70,8 +69,8 @@ public class DiffSwerveModule {
 
         _leftFalcon.configure(CONFIG);
         _rightFalcon.configure(CONFIG);
-        _leftFalcon.setTorqueCurrentFOCRate(1000);
-        _leftFalcon.setTorqueCurrentFOCRate(1000);
+        _leftFalcon.setTorqueCurrentFOCRate(0);
+        _leftFalcon.setTorqueCurrentFOCRate(0);
 
 //        _leftFalcon.configureClosedLoop(CLOSED_LOOP_CONFIGURATION);
 //        _rightFalcon.configureClosedLoop(CLOSED_LOOP_CONFIGURATION);
@@ -117,7 +116,7 @@ public class DiffSwerveModule {
 
         // Creates a LinearSystemLoop that contains the Model, Controller, Observer, Max Volts,
         // Update Rate.
-        moduleController.latencyCompensate(swerveModuleModel, kDt, 0.001);
+        moduleController.latencyCompensate(swerveModuleModel, 0.005, 0.001);
         Matrix<N2, N1> u_limit = VecBuilder.fill(CONFIG.MAX_CURRENT,CONFIG.MAX_CURRENT);
         _moduleControlLoop =
                 new LinearSystemLoop<>(
@@ -135,10 +134,10 @@ public class DiffSwerveModule {
 
         _moduleControlLoop.reset(VecBuilder.fill(0, 0, 0));
 
-        _leftFalcon.getVelocity().setUpdateFrequency(1 / kDt);
-        _leftFalcon.getPosition().setUpdateFrequency(1 / kDt);
-        _rightFalcon.getVelocity().setUpdateFrequency(1 / kDt);
-        _rightFalcon.getPosition().setUpdateFrequency(1 / kDt);
+        _leftFalcon.getVelocity().setUpdateFrequency(200);
+        _leftFalcon.getPosition().setUpdateFrequency(200);
+        _rightFalcon.getVelocity().setUpdateFrequency(200);
+        _rightFalcon.getPosition().setUpdateFrequency(200);
 
         _u = VecBuilder.fill(0, 0);
         // boolean for if we want the modules to be running as we set voltage in the periodic loop.
@@ -346,23 +345,20 @@ public class DiffSwerveModule {
 
     public double getRightFalconRPM() {
         return OutliersTalon.rotationsPerSecToRPM(_systemIO.rightVelocityRotationsPerSec, 1.0);
-//        return OutliersTalon.rotationsPerSecToRPM(_leftFalcon.getVelocity().getValue(), 1.0);
         // return OutliersTalon.ticksPer100msToRPM(_systemIO.rightVelocityTicksPer100ms, 1.0);
     }
     public double getRightFalconDistanceRadians() {
         return _systemIO.rightPositionRotations * (Math.PI * 2.0);
-//        return _rightFalcon.getPosition().getValue() * (Math.PI * 2.0);
 
         // return OutliersTalon.ticksToRadians(_systemIO.rightPositionTicks, 1.0);
     }
     public double getLeftFalconRPM() {
         return OutliersTalon.rotationsPerSecToRPM(_systemIO.leftVelocityRotationsPerSec, 1.0);
-//        return OutliersTalon.rotationsPerSecToRPM(_leftFalcon.getVelocity().getValue(), 1.0);
 
+        // return OutliersTalon.ticksPer100msToRPM(_systemIO.leftVelocityTicksPer100ms, 1.0);
     }
     public double getLeftFalconDistanceRadians() {
         return _systemIO.leftPositionRotations * (Math.PI * 2.0);
-//        return _leftFalcon.getPosition().getValue() * (Math.PI * 2.0);
         // return OutliersTalon.ticksToRadians(_systemIO.leftPositionTicks, 1.0);
     }
 

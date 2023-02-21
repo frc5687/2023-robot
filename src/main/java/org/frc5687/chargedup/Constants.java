@@ -14,6 +14,8 @@ import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
+import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
+import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 
@@ -128,6 +130,7 @@ public class Constants {
         public static final double kD = 0.0;
     
         public static final double POSITION_TOLERANCE = 0.01;
+        public static final double LEVEL_TOLERANCE = 0.5;
         public static final double HEADING_TOLERANCE = 0.15; //rad
         public static final double BUMP_DEGREES = 10;
 
@@ -389,6 +392,28 @@ public class Constants {
         public static final float Z_CAM_X_OFFSET = 0.17439f;
     }
 
+
+    public static class CANdle {
+        public static double BRIGHTNESS = 1.0;
+        public static int NUM_LED = 128;
+        public static double SPEED = 0.1;
+        public static TwinklePercent TWINKLEPERCENT = TwinklePercent.Percent42;
+        public static TwinkleOffPercent TWINKLEOFFPERCENT = TwinkleOffPercent.Percent42;
+
+        public static int[] YELLOW = {255,65, 0};
+        public static int[] RED = {255, 0, 0};
+        public static int[] GREEN = {0, 255, 0};
+        public static int[] BLUE = {0, 0, 255};
+        public static int[] CYAN = {0, 255, 255};
+        public static int[] WHITE = {0, 0, 0};
+        public static int[] PINK = {255, 105, 18};
+        public static int[] GOLD = {212, 175, 55};
+        public static int[] PURPLE = {128, 0, 128};
+        public static int[] RUFOUS = {168, 28, 7};
+
+        public static int[] ORANGE_RED = {255, 69, 0};
+        public static int[] MAROON = {128, 0, 0};
+    }
 }  
 
 

@@ -11,11 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
+import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.Lights;
+import org.frc5687.chargedup.subsystems.LightsExample;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -34,6 +37,8 @@ public class RobotContainer extends OutliersContainer {
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
     private Robot _robot;
+    private Lights _lights;
+    // private LightsExample _lights;
     private DriveTrain _driveTrain;
     private EndEffector _endEffector;
     private Arm _arm;
@@ -62,10 +67,12 @@ public class RobotContainer extends OutliersContainer {
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
 
+        
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
         _elevator = new Elevator(this);
         _arm = new Arm(this);
         _endEffector = new EndEffector(this);
+        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
         // This is for auto temporarily, need to fix for both in future.
         _endEffector.setCubeMode();
 
@@ -73,6 +80,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
+        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);

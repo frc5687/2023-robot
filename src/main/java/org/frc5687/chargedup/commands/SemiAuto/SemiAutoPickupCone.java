@@ -2,7 +2,6 @@ package org.frc5687.chargedup.commands.SemiAuto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
@@ -14,6 +13,8 @@ import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
+
+import org.frc5687.chargedup.Constants;
 
 public class SemiAutoPickupCone extends SequentialCommandGroup {
     public SemiAutoPickupCone(
