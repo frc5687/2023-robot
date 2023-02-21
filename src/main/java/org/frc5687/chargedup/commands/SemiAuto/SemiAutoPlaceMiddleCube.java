@@ -26,7 +26,7 @@ public class SemiAutoPlaceMiddleCube extends SequentialCommandGroup {
                         elevator, endEffector, arm, setpoint
                 ),
                 new ParallelDeadlineGroup(
-                        new WaitForManualGripper(endEffector, oi),
+                        new WaitForManualGripper(endEffector, oi, false),
                         new HoldArm(arm, setpoint.armAngle)),
 
                 new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true),

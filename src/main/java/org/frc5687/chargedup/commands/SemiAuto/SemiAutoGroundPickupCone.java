@@ -25,7 +25,7 @@ public class SemiAutoGroundPickupCone extends SequentialCommandGroup {
                 new AutoSetSuperStructurePosition(
                         elevator, endEffector, arm, setpoint
                 ),
-                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi), new HoldArm(arm, setpoint.armAngle)),
+                new ParallelDeadlineGroup(new WaitForManualGripper(endEffector, oi, false), new HoldArm(arm, setpoint.armAngle)),
 
 //                new CloseConeGripper(endEffector),
                 new AutoSetSuperStructurePosition(

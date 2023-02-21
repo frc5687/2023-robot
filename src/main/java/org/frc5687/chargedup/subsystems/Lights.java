@@ -18,17 +18,17 @@ public class Lights extends OutliersSubsystem{
     private final CANdleConfiguration _config;
     private Animation _animate;
     private AnimationType _currentAnimation;
-    // private DriveTrain _driveTrain;
-    // private EndEffector _endEffector;
+    private DriveTrain _driveTrain;
+    private EndEffector _endEffector;
     private OI _oi;
     private int[] _color;
 
-    public Lights(OutliersContainer _container,/* DriveTrain driveTrain, EndEffector endEffector, */OI oi) {
+    public Lights(OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         super(_container);
-        // _driveTrain = driveTrain;
-        // _endEffector = endEffector;
+        _driveTrain = driveTrain;
+        _endEffector = endEffector;
         _oi = oi;
-        _candle = new CANdle(RobotMap.CAN.CANDLE.PORT, "CANivore");
+        _candle = new CANdle(RobotMap.CAN.CANDLE.PORT, "rio");
         _config = new CANdleConfiguration();
         //Set LED strip type
         _config.stripType = LEDStripType.RGB;

@@ -8,14 +8,17 @@ public class WaitForManualGripper extends OutliersCommand {
 
     private final OI _oi;
     private final EndEffector _endEffector;
+    private final boolean _isPlace;
 
-    public WaitForManualGripper(EndEffector endEffector, OI oi) {
+    public WaitForManualGripper(EndEffector endEffector, OI oi, boolean isPlace) {
         _oi = oi;
         _endEffector = endEffector;
+        _isPlace = isPlace;
     }
 
     @Override
     public void initialize() {
+        error("Wait Roller Started");
         super.initialize();
     }
 
@@ -25,7 +28,7 @@ public class WaitForManualGripper extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return _oi.manualGrip() || _endEffector.isRollerStalled();
+        return (_isPlace ? _oi.releaseRoller() : _oi.manualGrip()) || _endEffector.isRollerStalled();
     }
 
     @Override

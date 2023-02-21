@@ -53,6 +53,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         RioLogger.getInstance().init(_fileLogLevel, _dsLogLevel);
         LiveWindow.disableAllTelemetry();
         DriverStation.silenceJoystickConnectionWarning(true);
+        isSimulation();
 
         metric("Identity", _identityMode.toString());
         info("Robot " + _name + " running in " + _identityMode.toString() + " mode");

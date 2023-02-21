@@ -41,7 +41,6 @@ public class OutliersTalon extends TalonFX {
     private CurrentLimitsConfigs _currentLimitsConfigs = new CurrentLimitsConfigs();
     private FeedbackConfigs _feedbackConfigs = new FeedbackConfigs();
 
-
     private DutyCycleOut _percentOutput = new DutyCycleOut(0.0);
     private TorqueCurrentFOC _torqueCurrentFOC = new TorqueCurrentFOC(0.0);
     private VoltageOut _voltageOut = new VoltageOut(0.0);
@@ -55,10 +54,14 @@ public class OutliersTalon extends TalonFX {
         _name = name;
     }
     public void setPercentOutput(double output){
-        this.setControl(_percentOutput.withOutput(output));
+        if (_percentOutput.Output != output) {
+            this.setControl(_percentOutput.withOutput(output));
+        }
     }
-    public void setVoltage( double voltage){
-        this.setControl(_voltageOut.withOutput(voltage));
+    public void setVoltage(double voltage){
+        if (_voltageOut.Output != voltage) {
+            this.setControl(_voltageOut.withOutput(voltage));
+        }
     }
     public void setMotionMagic(double position){
         this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
@@ -67,7 +70,9 @@ public class OutliersTalon extends TalonFX {
         _torqueCurrentFOC.withUpdateFreqHz(hz);
     }
     public void setTorqueCurrentFOC(double current) {
-        this.setControl(_torqueCurrentFOC.withOutput(current));
+        if (_torqueCurrentFOC.Output != current) {
+            this.setControl(_torqueCurrentFOC.withOutput(current));
+        }
     }
 
     public void configure(Configuration config) {

@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
@@ -18,10 +19,8 @@ import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 
-import org.frc5687.chargedup.subsystems.DiffSwerveModule;
-
 public class Constants {
-    public static final int TICKS_PER_UPDATE = 5;
+    public static final int TICKS_PER_UPDATE = 10;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
     public static final double UPDATE_PERIOD = 0.02; // 20 ms
     public static final double CONTROL_PERIOD = 0.01; // 10 ms
@@ -51,15 +50,13 @@ public class Constants {
         public static final double WIDTH = 0.4445; // meters
         public static final double LENGTH = 0.4445; // meters
         // Distance of swerve modules from center of robot
-        public static final double SCALED_TRANSLATION_INPUT = 0.8; // this makes the max speed from the joysticks some % of MAX_MPS.
-        public static final double SCALED_ROTATION_INPUT = 0.4;
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-        public static final double MAX_MPS = 5.0; // Max speed of robot (m/s)
-        public static final double SLOW_MPS = MAX_MPS / 2; // Slow speed of robot (m/s)
+        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
+        public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
-        public static final double SLOW_ANG_VEL = Math.PI * MAX_ANG_VEL / 2; // Max rotation rate of robot (rads/s)
+        public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
@@ -103,10 +100,8 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderOffset = -0.079;
         }
         public static final double TRANSLATION_DEADBAND =
-                0.1; // Avoid unintentional joystick movement
-        public static final double ROTATION_DEADBAND = 0.1; // Avoid unintentional joystick movement
-        public static final double TRANSLATION_POWER = 1.75; // Determines the curve of drive input
-        public static final double ROTATION_POWER = 1.0; // Determines the curve of drive input
+                0.05; // Avoid unintentional joystick movement
+        public static final double ROTATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final long DISABLE_TIME = 500; // ms
     
         public static final double LINEAR_VELOCITY_REFERENCE = 0.5;
@@ -119,7 +114,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kP = 8.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
     
@@ -130,13 +125,20 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
     
-        public static final double kP = 5;
+        public static final double kP = 1.5;
         public static final double kI = 0.0;
-        public static final double kD = 0.5;
+        public static final double kD = 0.0;
     
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
         public static final double HEADING_TOLERANCE = 0.15; //rad
+        public static final double BUMP_DEGREES = 10;
+
+        public static final double PITCH_LOOKING_ANGLE = Units.degreesToRadians(15.0); // this is degrees because sad.
+        public static final double PITCH_LEVELED_ANGLE = Units.degreesToRadians(5.0); // this is degrees because sad.
+
+        public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
+        public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 2.0;
     }
     
     public static class DifferentialSwerveModule {
@@ -223,6 +225,7 @@ public class Constants {
         public static final double SHORT_ARM_DISTANCE = .2;
         public static final double MEDIUM_ARM_DISTANCE = .4;
         public static final double LONG_ARM_DISTANCE = .6;
+        
 
         public static final double ZERO_ARM_SPEED = 0;
         public static final double ZERO_ENCODER = 0.0;
@@ -255,7 +258,7 @@ public class Constants {
 
 
     public static class Arm {
-        public static final double kDt = 0.02;
+        public static final double kDt = CONTROL_PERIOD;
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static final String CAN_BUS = "CANivore";
@@ -265,7 +268,7 @@ public class Constants {
             CONFIG.TIME_OUT = 0.1;
     
             CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+            CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
     
             CONFIG.MAX_VOLTAGE = 12.0;
     
@@ -297,9 +300,9 @@ public class Constants {
         public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
-        public static final double VERTICAL_ARM_ANGLE = (3.0 * Math.PI) / 4.0;
+        public static final double VERTICAL_ARM_ANGLE = 1.22; // rads
         public static final double LOWER_EXTREME = 0.378;
-        public static final double PLACE_ARM_ANGLE = 3.25; // testing
+        public static final double PLACE_ARM_ANGLE = 0.255; // testing
     }
 
     public static class Auto {
@@ -309,7 +312,15 @@ public class Constants {
             public static final Pose2d POSE_3 = new Pose2d(2, 2, new Rotation2d());
 
         }
-    
+
+
+        public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
+        public static final Pose2d STARTING_CHARGING_STATION= new Pose2d(1.820, 4.025, new Rotation2d());
+        public static final Pose2d STARTING_ONE_TEMP = new Pose2d(0, 0, new Rotation2d());
+        public static final Pose2d TARGET_ONE = new Pose2d(7.065, 3.456, new Rotation2d(Math.PI / 2.0));
+        public static final Pose2d TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d());
+        public static final Pose2d TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d());
+        public static final Pose2d TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d());
 
         public static class TrajectoryPoints {
             public static class S {
@@ -319,24 +330,34 @@ public class Constants {
                                 FieldPoses.POSE_2,
                                 FieldPoses.POSE_3);
             }
+
+            public static class FIRST_TO_TARGET_ONE {
+                public static final List<Pose2d> waypoints =
+                        Arrays.asList(
+                                STARTING_ONE,
+                                TARGET_ONE
+                        );
+
+            }
         }
     }
     public static class EndEffector {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 2;
+        public static final double WRIST_kP = 3.0;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
         
         public static final double WRIST_VEL = Units.degreesToRadians(5);
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
-        public static final double WRIST_TOLERENCE = Units.degreesToRadians(5.5);
+        public static final double WRIST_TOLERENCE = Units.degreesToRadians(3.0);
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
 
+        public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(305);
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
@@ -357,10 +378,10 @@ public class Constants {
         // fully open angle
         public static final double GRIPPER_OUT_SPEED = 1.0;
         //public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
-        public static final boolean  GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.25;
+        public static final boolean GRIPPPER_INVERTED = false;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
-        public static final double PLACE_CUBE_ROLLER_SPEED = -0.5;
+        public static final double PLACE_CUBE_ROLLER_SPEED = -1.0;
         public static final double PLACE_CONE_ROLLER_SPEED = 1.0;
         public static final long GRIPPER_TIMEOUT = 1000;
     }
@@ -374,7 +395,7 @@ public class Constants {
 
     public static class CANdle {
         public static double BRIGHTNESS = 1.0;
-        public static int NUM_LED = 120;
+        public static int NUM_LED = 128;
         public static double SPEED = 0.1;
         public static TwinklePercent TWINKLEPERCENT = TwinklePercent.Percent42;
         public static TwinkleOffPercent TWINKLEOFFPERCENT = TwinkleOffPercent.Percent42;

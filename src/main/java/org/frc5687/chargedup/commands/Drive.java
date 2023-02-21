@@ -7,6 +7,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.lib.control.HeadingController;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.math.Vector2d;
@@ -15,17 +17,18 @@ import org.frc5687.lib.vision.TrackedObjectInfo;
 public class Drive extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
+    private final EndEffector _endEffector;
 //    private final HeadingController _headingController;
-    private final SwerveHeadingController _headingController;
     private final PIDController _yCordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
     private int segmentationArray[] = new int[((int)360/5)];
 
-    public Drive(DriveTrain driveTrain, OI oi) {
+    public Drive(DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         _lockHeading = false;
         _driveTrain = driveTrain;
-        _headingController = new SwerveHeadingController(Constants.UPDATE_PERIOD);
+        _endEffector = endEffector;
+        _oi = oi;
         _yCordinateElementController = new PIDController(
                 2.0,
                 0.0,
@@ -37,15 +40,12 @@ public class Drive extends OutliersCommand {
 //                        Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL
 //                )
 //        );
-        _oi = oi;
 
         for (int i = 0; i < segmentationArray.length; i++){
             double angle = 360 / segmentationArray.length;
             segmentationArray[i] = (int)angle * i;
         }
         addRequirements(_driveTrain);
-        //        logMetrics("vx","vy");
-        //        enableMetrics();
 
     }
 
@@ -53,8 +53,7 @@ public class Drive extends OutliersCommand {
     public void initialize() {
         _driveTrain.startModules();
         _driveTrain.setFieldRelative(true);
-//        _headingController.setGoal(_driveTrain.getHeading().getRadians());
-        _headingController.setMaintainHeading(_driveTrain.getHeading());
+//        _headingController.setGoal(_driveTrain.getHeading().getRadians());        
 //        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
@@ -62,8 +61,8 @@ public class Drive extends OutliersCommand {
     public void execute() {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
-            _headingController.setState(SwerveHeadingController.HeadingState.OFF);
-            _headingController.getRotationCorrection(_driveTrain.getHeading());
+            _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
+            _driveTrain.getRotationCorrection();
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveY(), _oi.getDriveX(), segmentationArray);
@@ -73,15 +72,13 @@ public class Drive extends OutliersCommand {
         rot = Math.signum(rot) * rot * rot;
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
         if (_oi.getSlowMode()) {
-            vx = vec.x() * Constants.DriveTrain.SLOW_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            vy = vec.y() * Constants.DriveTrain.SLOW_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            rot = -rot * Constants.DriveTrain.SLOW_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT; //negative added to flip rotation in slowmode, driver preference
+            vx = vec.x() * Constants.DriveTrain.SLOW_MPS;
+            vy = vec.y() * Constants.DriveTrain.SLOW_MPS;
+            rot = -rot * Constants.DriveTrain.SLOW_ANG_VEL; //negative added to flip rotation in slowmode, driver preference
         } else {
-            vx = vec.x() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            vy = vec.y() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-            rot = rot * Constants.DriveTrain.MAX_ANG_VEL * Constants.DriveTrain.SCALED_ROTATION_INPUT;
-//        double vx = _oi.getDriveY() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
-//        double vy = _oi.getDriveX() * Constants.DriveTrain.MAX_MPS * Constants.DriveTrain.SCALED_TRANSLATION_INPUT;
+            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
+            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
+            rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
         }
         
 
@@ -119,30 +116,38 @@ public class Drive extends OutliersCommand {
 
         if (rot == 0) {
             if (!_lockHeading) {
-                _headingController.temporaryDisable();
+                _driveTrain.temporaryDisabledHeadingController();
             }
             _lockHeading = true;
         } else {
-            _headingController.disable();
+            _driveTrain.disableHeadingController();
             _lockHeading = false;
         }
-        double controllerPower = _headingController.getRotationCorrection(_driveTrain.getHeading());
-        TrackedObjectInfo closestCone = _driveTrain.getClosestCone();
+        double controllerPower = _driveTrain.getRotationCorrection();
+        TrackedObjectInfo closestGameElement;
+        if (_endEffector.getConeMode()) {
+            closestGameElement = _driveTrain.getClosestCone();
+        } else {
+            closestGameElement = _driveTrain.getClosestCube();
+        }
         double power = 0.0;
         double coneDist = 1.0;
-        if (closestCone != null) {
-            metric("Closest cone", closestCone.toString());
-            power = -_yCordinateElementController.calculate(closestCone.getY());
-            coneDist = closestCone.getDistance();
+        double elementAngle = 0;
+        if (closestGameElement != null) {
+            metric("Closest Game Element", closestGameElement.toString());
+            power = -_yCordinateElementController.calculate(closestGameElement.getY());
+            coneDist = closestGameElement.getDistance();
+            elementAngle = closestGameElement.getAzimuthAngle();
         }
+        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {
-            _headingController.setSnapHeading(new Rotation2d(0));
+            _driveTrain.setSnapHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx * coneDist / 2.0,
                             power,
-                            _headingController.getRotationCorrection(_driveTrain.getHeading()),
+                            _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()
                     )
             );

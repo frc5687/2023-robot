@@ -36,5 +36,6 @@ public class AutoExtendElevator extends OutliersCommand {
 
     public void end(boolean interrupted){
         super.end(interrupted);
+        error("end elevator");
     }
 }
