@@ -54,6 +54,7 @@ public class AutoSetArmSetpoint extends OutliersCommand {
         error("Ending arm");
         _arm.setArmVoltage(0);
         _arm.setArmSpeed(0);
+        error("end arm");
         super.end(interrupted);
     
     }
