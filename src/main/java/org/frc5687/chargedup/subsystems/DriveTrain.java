@@ -324,6 +324,17 @@ public class DriveTrain extends OutliersSubsystem {
     public void setVelocity(ChassisSpeeds chassisSpeeds) {
         _systemIO.desiredChassisSpeeds = chassisSpeeds;
     }
+
+    public void setVelocityPose(Pose2d pose) {
+        ChassisSpeeds speeds = _poseController.calculate(
+                _poseEstimator.getEstimatedPosition(),
+                pose,
+                0.0,
+                _imu.getRotation2d()
+        );
+        speeds.omegaRadiansPerSecond = 0.0;
+        _systemIO.desiredChassisSpeeds=speeds;
+    }
     public void updateSwerve(Vector2d translationVector, double rotationalInput) {
         SwerveModuleState[] swerveModuleStates =
                 _kinematics.toSwerveModuleStates(
@@ -370,7 +381,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void readIMU() {
-        _systemIO.heading = Rotation2d.fromDegrees(_imu.getYaw().getValue() - _yawOffset);
+        _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
         _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue() - _pitchOffset);
     }
 
@@ -406,6 +417,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     public Pose2d getOdometryPose() {
         return _odometry.getPoseMeters();
+    }
+    public Pose2d getEstimatedPose() {
+        return _poseEstimator.getEstimatedPosition();
     }
 
     /**
@@ -491,6 +505,8 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Current Heading", getHeading().getRadians());
         metric("Rotation State", getYaw());
         metric("Pitch Angle", getPitch());
+        metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
+        metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
         SmartDashboard.putData(_field);
 //        metric("Pitch Angle Deg", Units.radiansToDegrees(getPitch()));
 //        moduleMetrics();

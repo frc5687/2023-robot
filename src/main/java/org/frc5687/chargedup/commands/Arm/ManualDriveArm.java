@@ -24,7 +24,7 @@ public class ManualDriveArm extends OutliersCommand {
     public void execute() {
         super.execute();
         // set the arm reference to be current arm angle and zero velocity.
-        if (_arm.getLowerHall() && (_oi.getArmY() < 0)) {
+        if (Math.abs(_oi.getArmY()) < 0.1) {
             _arm.setArmSpeed(0);
 //         } else if (_oi.getArmY() == 0) {
 //             _arm.setArmVoltage(_arm.getNextVoltage());
