@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,16 +10,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
+import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 
-import org.frc5687.chargedup.subsystems.DiffSwerveModule;
-
 public class Constants {
-    public static final int TICKS_PER_UPDATE = 5;
+    public static final int TICKS_PER_UPDATE = 10;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
     public static final double UPDATE_PERIOD = 0.02; // 20 ms
     public static final double CONTROL_PERIOD = 0.01; // 10 ms
@@ -255,7 +253,7 @@ public class Constants {
 
 
     public static class Arm {
-        public static final double kDt = 0.02;
+        public static final double kDt = CONTROL_PERIOD;
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static final String CAN_BUS = "CANivore";

@@ -76,7 +76,7 @@ public class Arm extends OutliersSubsystem{
     }
 
     @Override
-    public void periodic() {
+    public void controlPeriodic(double timestamp) {
         super.periodic();
         // update our kalman filter.
 //       if (_lowerHall.get() && _controlLoop.getU(0) < 0) {
