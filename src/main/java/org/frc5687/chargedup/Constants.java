@@ -223,6 +223,7 @@ public class Constants {
         public static final double SHORT_ARM_DISTANCE = .2;
         public static final double MEDIUM_ARM_DISTANCE = .4;
         public static final double LONG_ARM_DISTANCE = .6;
+        
 
         public static final double ZERO_ARM_SPEED = 0;
         public static final double ZERO_ENCODER = 0.0;
@@ -342,14 +343,14 @@ public class Constants {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 2;
+        public static final double WRIST_kP = 3.0;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0;
         
         public static final double WRIST_VEL = Units.degreesToRadians(5);
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
 
-        public static final double WRIST_TOLERENCE = Units.degreesToRadians(5.5);
+        public static final double WRIST_TOLERENCE = Units.degreesToRadians(3.0);
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
