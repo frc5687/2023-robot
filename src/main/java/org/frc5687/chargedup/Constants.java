@@ -114,7 +114,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
     
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kP = 8.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
     
@@ -131,6 +131,7 @@ public class Constants {
     
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double HEADING_TOLERANCE = 0.15; //rad
+        public static final double BUMP_DEGREES = 10;
 
         public static final double PITCH_LOOKING_ANGLE = Units.degreesToRadians(15.0); // this is degrees because sad.
         public static final double PITCH_LEVELED_ANGLE = Units.degreesToRadians(5.0); // this is degrees because sad.

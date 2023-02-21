@@ -21,7 +21,6 @@ public class Drive extends OutliersCommand {
     private final DriveTrain _driveTrain;
     private final EndEffector _endEffector;
 //    private final HeadingController _headingController;
-    private final SwerveHeadingController _headingController;
     private final PIDController _yCordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
@@ -32,7 +31,6 @@ public class Drive extends OutliersCommand {
         _driveTrain = driveTrain;
         _endEffector = endEffector;
         _oi = oi;
-        _headingController = new SwerveHeadingController(Constants.UPDATE_PERIOD);
         _yCordinateElementController = new PIDController(
                 2.0,
                 0.0,
@@ -57,8 +55,7 @@ public class Drive extends OutliersCommand {
     public void initialize() {
         _driveTrain.startModules();
         _driveTrain.setFieldRelative(true);
-//        _headingController.setGoal(_driveTrain.getHeading().getRadians());
-        _headingController.setMaintainHeading(_driveTrain.getHeading());
+//        _headingController.setGoal(_driveTrain.getHeading().getRadians());        
 //        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
@@ -66,8 +63,8 @@ public class Drive extends OutliersCommand {
     public void execute() {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
-            _headingController.setState(SwerveHeadingController.HeadingState.OFF);
-            _headingController.getRotationCorrection(_driveTrain.getHeading());
+            _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
+            _driveTrain.getRotationCorrection();
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveY(), _oi.getDriveX(), segmentationArray);
@@ -121,14 +118,14 @@ public class Drive extends OutliersCommand {
 
         if (rot == 0) {
             if (!_lockHeading) {
-                _headingController.temporaryDisable();
+                _driveTrain.temporaryDisabledHeadingController();
             }
             _lockHeading = true;
         } else {
-            _headingController.disable();
+            _driveTrain.disableHeadingController();
             _lockHeading = false;
         }
-        double controllerPower = _headingController.getRotationCorrection(_driveTrain.getHeading());
+        double controllerPower = _driveTrain.getRotationCorrection();
         TrackedObjectInfo closestGameElement;
         if (_endEffector.getConeMode()) {
             closestGameElement = _driveTrain.getClosestCone();
@@ -147,12 +144,12 @@ public class Drive extends OutliersCommand {
         metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {
-            _headingController.setSnapHeading(new Rotation2d(0));
+            _driveTrain.setSnapHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx * coneDist / 2.0,
                             power,
-                            _headingController.getRotationCorrection(_driveTrain.getHeading()),
+                            _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()
                     )
             );

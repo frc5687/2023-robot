@@ -15,6 +15,9 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
+
+import org.frc5687.lib.control.SwerveHeadingController;
+import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +32,7 @@ import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
 import org.photonvision.EstimatedRobotPose;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +54,8 @@ public class DriveTrain extends OutliersSubsystem {
     private boolean _fieldRelative;
     private final Pigeon2 _imu;
     private final HolonomicDriveController _poseController;
+
+    private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
     private final SwerveSetpointGenerator _swerveSetpointGenerator;
@@ -172,10 +178,15 @@ public class DriveTrain extends OutliersSubsystem {
                         _modules[NORTH_EAST_IDX].getModuleLocation()
                 }
         );
+
+        _headingController = new SwerveHeadingController(Constants.UPDATE_PERIOD);
+
         _field = new Field2d();
         readModules();
         setSetpointFromMeasuredModules();
     }
+
+
     public static class SystemIO {
         ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
         SwerveModuleState[] measuredStates = new SwerveModuleState[] {
@@ -189,6 +200,30 @@ public class DriveTrain extends OutliersSubsystem {
         double pitch = 0.0;
         // outputs
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]);
+    }
+
+    public void temporaryDisabledHeadingController() {
+        _headingController.temporaryDisable();
+    }
+    public void disableHeadingController() {
+        _headingController.disable();
+    }
+    public void initializeHeadingController() {
+        _headingController.setMaintainHeading(getHeading());
+    }
+
+    public void incrementHeadingControllerAngle() {
+        Rotation2d heading = getHeading();
+        _headingController.setMaintainHeading(Rotation2d.fromDegrees(heading.getDegrees() + Constants.DriveTrain.BUMP_DEGREES));
+    }
+
+    public void decrementHeadingControllerAngle() {
+        Rotation2d heading = getHeading();
+        _headingController.setMaintainHeading(Rotation2d.fromDegrees(heading.getDegrees() - Constants.DriveTrain.BUMP_DEGREES));
+    }
+
+    public void setSnapHeading(Rotation2d heading) {
+        _headingController.setSnapHeading(heading);
     }
 
     // use for modules as controller is running at 200Hz.
@@ -493,6 +528,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Swerve State", _controlState.name());
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Current Heading", getHeading().getRadians());
+        metric("Heading Controller Target", _headingController.getTargetHeading().getRadians());
         metric("Rotation State", getYaw());
         metric("Pitch Angle", getPitch());
 //        metric("Pitch Angle Deg", Units.radiansToDegrees(getPitch()));
@@ -518,5 +554,13 @@ public class DriveTrain extends OutliersSubsystem {
         public int getValue() {
             return _value;
         }
+    }
+
+    public void setHeadingControllerState(HeadingState state) {
+        _headingController.setState(state);
+    }
+
+    public double getRotationCorrection() {
+        return _headingController.getRotationCorrection(getHeading());
     }
 }
