@@ -74,12 +74,12 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
         
-        _driverGamepad.getAButton().onTrue(new DriveTrajectory(drivetrain, drivetrain.generateTrajectory(), 90));
+        _driverGamepad.getBButton().onTrue(new DriveTrajectory(drivetrain, drivetrain.generateTrajectory(), 90));
         _driverGamepad.getYButton().onTrue(new SequentialCommandGroup(
                 new AutoPlaceHighCube(arm, endEffector, elevator),
                 new DriveUntilLevel(drivetrain)));
-        _driverGamepad.getXButton().onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 2.1, Rotation2d.fromDegrees(180.0))));
-        _driverGamepad.getBButton().onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 4.4, Rotation2d.fromDegrees(180.0))));
+        // _driverGamepad.getXButton().onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 2.1, Rotation2d.fromDegrees(180.0))));
+        // _driverGamepad.getBButton().onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 4.4, Rotation2d.fromDegrees(180.0))));
 //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
 //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
 //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(
@@ -91,9 +91,9 @@ public class OI extends OutliersProxy {
     public boolean autoAim() {
         return _driverGamepad.getRightStickButton().getAsBoolean();
     }
-    // public boolean releaseRoller() {
-    //     return _driverGamepad.getAButton().getAsBoolean();
-    // }
+    public boolean releaseRoller() {
+        return _driverGamepad.getAButton().getAsBoolean();
+    }
     public boolean manualGrip() {
         return _operatorGamepad.getLeftBumper().getAsBoolean();
     }
