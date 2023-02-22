@@ -32,6 +32,11 @@ public class SemiAutoGroundPickup extends OutliersCommand{
             (new SemiAutoGroundPickupCube(_arm, _endEffector, _elevator, _oi)).schedule();
         }
     }
+    @Override
+    public void execute() {
+        // TODO Auto-generated method stub
+        super.execute();
+    }
 
     @Override
     public boolean isFinished() {

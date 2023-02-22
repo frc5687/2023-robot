@@ -345,9 +345,9 @@ public class Constants {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 3.0;
+        public static final double WRIST_kP = 2.2;
         public static final double WRIST_kI = 0;
-        public static final double WRIST_kD = 0;
+        public static final double WRIST_kD = 0.03;
         
         public static final double WRIST_VEL = Units.degreesToRadians(5);
         public static final double WRIST_ACCEL = Units.degreesToRadians(1);
@@ -357,7 +357,7 @@ public class Constants {
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
         public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
 
-        public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(305);
+        public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(240);
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
@@ -365,7 +365,7 @@ public class Constants {
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
         
-        public static final double GRIPPER_STALL_CURRENT = 17; //was 10
+        public static final double GRIPPER_STALL_CURRENT = 14.1; //was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 

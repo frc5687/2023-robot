@@ -33,5 +33,7 @@ public class WaitForManualGripper extends OutliersCommand {
 
     @Override
     public void end(boolean interrupted) {
+        super.end(interrupted);
+        error("Wait Roller Ended");
     }
 }
