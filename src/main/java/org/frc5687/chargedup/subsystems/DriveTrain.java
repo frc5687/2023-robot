@@ -415,6 +415,9 @@ public class DriveTrain extends OutliersSubsystem {
     public List<Pose2d> ManeuverPoint = Arrays.asList(getOdometryPose(), 
     SetEvasiveManeuverPoint());
 
+    // public TrajectoryConfig continueSpeedConfig() {
+    //     return new TrajectoryConfig(HEADING_TOLERANCE, DISABLE_TIME)
+    // }
 
     public Trajectory generateTrajectory(){
     Trajectory trajectory = TrajectoryGenerator.generateTrajectory(ManeuverPoint, getConfig());
