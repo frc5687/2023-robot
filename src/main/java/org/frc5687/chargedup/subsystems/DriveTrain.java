@@ -34,6 +34,8 @@ import org.frc5687.lib.vision.VisionProcessor;
 import org.photonvision.EstimatedRobotPose;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
@@ -384,7 +386,7 @@ public class DriveTrain extends OutliersSubsystem {
         speeds.omegaRadiansPerSecond = 0.0;
         _systemIO.desiredChassisSpeeds=speeds;
     }
-    public void updateSwerve(Vector2d translationVector, double rotationalInput) {
+    public void updateSwerve(Vector2d translationVector, double rotationalInput, Translation2d cor) {
         SwerveModuleState[] swerveModuleStates =
                 _kinematics.toSwerveModuleStates(
                         _fieldRelative

@@ -39,7 +39,7 @@ public class RobotContainer extends OutliersContainer {
     private Robot _robot;
     private Lights _lights;
     // private LightsExample _lights;
-    private DriveTrain _driveTrain;
+    private DriveTrain _drivetrain;
     private EndEffector _endEffector;
     private Arm _arm;
     private Elevator _elevator;
@@ -68,22 +68,22 @@ public class RobotContainer extends OutliersContainer {
         _imu.getConfigurator().apply(pigeonConfig);
 
         
-        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
+        _drivetrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
         _elevator = new Elevator(this);
         _arm = new Arm(this);
         _endEffector = new EndEffector(this);
-        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
+        _lights = new Lights(this, _drivetrain, _endEffector, _oi);
         // This is for auto temporarily, need to fix for both in future.
         _endEffector.setCubeMode();
 
-        setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
+        setDefaultCommand(_drivetrain, new Drive(_drivetrain, _endEffector, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
-        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
+        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _drivetrain, _oi));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+        _oi.initializeButtons(_endEffector, _arm,  _elevator, _drivetrain);
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
@@ -113,8 +113,8 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public void controllerPeriodic() {
-        if (_driveTrain != null) {
-            _driveTrain.modulePeriodic();
+        if (_drivetrain != null) {
+            _drivetrain.modulePeriodic();
         } 
     }
 }

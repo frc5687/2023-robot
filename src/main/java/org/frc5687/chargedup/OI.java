@@ -64,8 +64,7 @@ public class OI extends OutliersProxy {
         _driverRightTrigger = new Trigger(new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
     }
 
-    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator, DriveTrain driveTrain) {
-    public void initializeButtons(DriveTrain drivetrain, EndEffector endEffector, Arm arm, Elevator elevator) {
+    public void initializeButtons(EndEffector endEffector, Arm arm, Elevator elevator, DriveTrain drivetrain) {
         _operatorGamepad.getBackButton().onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorGamepad.getStartButton().onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
@@ -75,7 +74,7 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
         
-        _driverGamepad.getAButton().onTrue(new DriveTrajectory(driveTrain, driveTrain.generateTrajectory(), 90));
+        _driverGamepad.getAButton().onTrue(new DriveTrajectory(drivetrain, drivetrain.generateTrajectory(), 90));
         _driverGamepad.getYButton().onTrue(new SequentialCommandGroup(
                 new AutoPlaceHighCube(arm, endEffector, elevator),
                 new DriveUntilLevel(drivetrain)));
