@@ -165,8 +165,8 @@ public class Arm extends OutliersSubsystem{
     }
 
     public double armFeedForward() {
-//        return ((ARM_LENGTH / 2.0) * (MOTOR_R * ARM_WEIGHT * 9.81) / (GEAR_RATIO * MOTOR_kT)) * Math.cos(getArmAngleRadians() - (0.25 * Math.PI));
-        return 0;
+       return ((ARM_LENGTH / 2.0) * (MOTOR_R * ARM_WEIGHT * 9.81) / (GEAR_RATIO * MOTOR_kT)) * Math.cos(getArmAngleRadians() + 0.35);
+        // return 0;
     }
     /**
      * Gets the next voltage to send to the falcon500.
