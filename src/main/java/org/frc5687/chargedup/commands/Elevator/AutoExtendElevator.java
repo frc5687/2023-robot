@@ -4,7 +4,6 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Elevator;
 
-import edu.wpi.first.math.util.Units;
 
 public class AutoExtendElevator extends OutliersCommand {
     private Elevator _extArm;
@@ -37,5 +36,6 @@ public class AutoExtendElevator extends OutliersCommand {
 
     public void end(boolean interrupted){
         super.end(interrupted);
+        error("end elevator");
     }
 }

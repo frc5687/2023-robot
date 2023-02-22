@@ -4,7 +4,6 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.EndEffector;
 
-import edu.wpi.first.math.util.Units;
 
 public class SetEndEffectorPosition extends OutliersCommand{
     
@@ -42,13 +41,14 @@ public class SetEndEffectorPosition extends OutliersCommand{
      public boolean isFinished() {
          // TODO Auto-generated method stub
          return
-          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE && _endEffector.isRollerStalled();
+          Math.abs(_wristAngle- _endEffector.getWristAngleRadians()) < Constants.EndEffector.WRIST_TOLERENCE;
           //&&  Math.abs(_gripperSpeed - _endEffector.getGripperAngleRadians()) < Constants.EndEffector.GRIPPER_TOLERENCE;
         }
      @Override
      public void end(boolean interrupted) {
          // TODO Auto-generated method stub
          super.end(interrupted);
+         error("end wrist");
          _endEffector.setWristSpeed(0.0);
      }
 }

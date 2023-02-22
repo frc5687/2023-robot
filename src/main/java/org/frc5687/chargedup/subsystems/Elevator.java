@@ -1,6 +1,5 @@
 package org.frc5687.chargedup.subsystems;
 
-import javax.swing.text.Position;
 
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -8,8 +7,6 @@ import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.sensors.HallEffect;
 import org.frc5687.chargedup.RobotMap;
 
-
-import edu.wpi.first.math.controller.PIDController;
 
 public class Elevator extends OutliersSubsystem {
     private OutliersTalon _talon;
