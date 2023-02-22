@@ -91,9 +91,9 @@ public class OI extends OutliersProxy {
     public boolean autoAim() {
         return _driverGamepad.getRightStickButton().getAsBoolean();
     }
-    public boolean releaseRoller() {
-        return _driverGamepad.getAButton().getAsBoolean();
-    }
+    // public boolean releaseRoller() {
+    //     return _driverGamepad.getAButton().getAsBoolean();
+    // }
     public boolean manualGrip() {
         return _operatorGamepad.getLeftBumper().getAsBoolean();
     }

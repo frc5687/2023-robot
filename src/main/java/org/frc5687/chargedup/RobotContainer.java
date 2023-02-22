@@ -12,6 +12,7 @@ import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
+import org.frc5687.chargedup.commands.EvasiveManeuver;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -81,6 +82,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _drivetrain, _oi));
+        setDefaultCommand(_drivetrain, new EvasiveManeuver(_drivetrain, _oi));
 //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
         _oi.initializeButtons(_endEffector, _arm,  _elevator, _drivetrain);

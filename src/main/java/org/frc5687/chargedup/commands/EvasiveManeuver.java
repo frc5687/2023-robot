@@ -12,7 +12,7 @@ public class EvasiveManeuver extends OutliersCommand {
     private final DriveTrain _driveTrain;
     
 
-    public EvasiveManeuver(OI oi, DriveTrain driveTrain){
+    public EvasiveManeuver(DriveTrain driveTrain, OI oi){
         _oi = oi;
         _driveTrain = driveTrain;
     }
