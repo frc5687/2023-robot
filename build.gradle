@@ -4,6 +4,11 @@ plugins {
 	id "edu.wpi.first.GradleRIO" version "2023.4.1"
 }
 
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:unchecked'
+	options.deprecation = true
+}
+
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
@@ -34,10 +39,14 @@ deploy {
 						jvmArgs.add("-Dcom.sun.management.jmxremote.local.only=false")
 						jvmArgs.add("-Dcom.sun.management.jmxremote.ssl=false")
 						jvmArgs.add("-Dcom.sun.management.jmxremote.authenticate=false")
-						jvmArgs.add("-Djava.rmi.server.hostname=10.56.87.2")
+						jvmArgs.add("-Djava.rmi.server.hostname=172.22.11.2")
+						jvmArgs.add("-XX:+UseG1GC")
+						jvmArgs.add("-XX:MaxGCPauseMillis=5")
 					} else {
 						jvmArgs.add("-XX:+UseG1GC")
+						jvmArgs.add("-XX:MaxGCPauseMillis=5")
 					}
+//					robotCommand = "/usr/local/frc/JRE/bin/java -Djava.library.path=/usr/local/frc/third-party/lib -Djava.lang.invoke.stringConcat=BC_SB " + jvmArgs.join(" ") + " " + (debug ? debugFlags : "") + " -jar \"<<BINARY>>\"" + arguments.join(" ")
 				}
 
 				// Static files artifact

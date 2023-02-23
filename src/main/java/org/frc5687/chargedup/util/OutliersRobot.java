@@ -1,6 +1,7 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.util;
 
+import edu.wpi.first.hal.NotifierJNI;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,7 +13,7 @@ public abstract class OutliersRobot extends TimedRobot implements ILoggingSource
 
     public OutliersRobot() {
         super(Constants.UPDATE_PERIOD);
-        Notifier.setHALThreadPriority(true, 40);
+//        Notifier.setHALThreadPriority(true, 99);
     }
 
     public void metric(String name, boolean value) {
