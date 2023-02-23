@@ -117,7 +117,7 @@ public class DiffSwerveModule {
 
         // Creates a LinearSystemLoop that contains the Model, Controller, Observer, Max Volts,
         // Update Rate.
-        moduleController.latencyCompensate(swerveModuleModel, kDt, 0.001);
+        moduleController.latencyCompensate(swerveModuleModel, kDt, 0.002);
         Matrix<N2, N1> u_limit = VecBuilder.fill(CONFIG.MAX_CURRENT,CONFIG.MAX_CURRENT);
         _moduleControlLoop =
                 new LinearSystemLoop<>(

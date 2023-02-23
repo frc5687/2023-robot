@@ -53,7 +53,6 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         RioLogger.getInstance().init(_fileLogLevel, _dsLogLevel);
         LiveWindow.disableAllTelemetry();
         DriverStation.silenceJoystickConnectionWarning(true);
-        isSimulation();
 
         metric("Identity", _identityMode.toString());
         info("Robot " + _name + " running in " + _identityMode.toString() + " mode");
@@ -65,7 +64,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
         _time = _timer.get();
-        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
+//        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
     }
 
     /**

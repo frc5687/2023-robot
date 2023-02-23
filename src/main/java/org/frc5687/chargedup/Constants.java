@@ -23,7 +23,7 @@ public class Constants {
     public static final int TICKS_PER_UPDATE = 10;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
     public static final double UPDATE_PERIOD = 0.02; // 20 ms
-    public static final double CONTROL_PERIOD = 0.01; // 10 ms
+    public static final double CONTROL_PERIOD = 0.005; // 10 ms
     public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-9;
     
@@ -258,7 +258,7 @@ public class Constants {
 
 
     public static class Arm {
-        public static final double kDt = CONTROL_PERIOD;
+        public static final double kDt = 0.02;
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static final String CAN_BUS = "CANivore";

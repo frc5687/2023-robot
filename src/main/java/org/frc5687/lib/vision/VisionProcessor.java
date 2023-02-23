@@ -4,9 +4,13 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
@@ -21,9 +25,7 @@ public class VisionProcessor {
     private final Map<String, ZMQ.Socket> subscribers = new HashMap<>();
     private final Map<String, ZMQ.Socket> publishers = new HashMap<>();
     private volatile boolean running = false;
-
-
-    private ArrayList<TrackedObjectInfo> _trackedTargets;
+    private volatile ArrayList<TrackedObjectInfo> _trackedTargets = new ArrayList<>();
 
     private final Notifier _receiveNotifier =
             new Notifier(
@@ -35,37 +37,15 @@ public class VisionProcessor {
 
     public VisionProcessor() {
         context = ZMQ.context(1);
-        _trackedTargets = new ArrayList<>();
     }
 
     public void createSubscriber(String topic, String addr) {
-        Thread t = new Thread(() -> {
-            ZMQ.Socket subscriber = null;
-            while (subscriber == null) {
-                try {
-                    subscriber = context.socket(SocketType.SUB);
-                    subscriber.connect(addr);
-                    subscriber.subscribe(topic.getBytes());
-                    subscriber.setReceiveTimeOut(0);
-                    subscribers.put(topic, subscriber);
-                    System.out.println("Subscriber added");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Error connecting to publisher, retrying in 1 seconds");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            ZMQ.Socket subscriber = context.socket(SocketType.SUB);
+            subscriber.connect(addr);
+            subscriber.subscribe(topic.getBytes());
+            subscriber.setReceiveTimeOut(0);
+            subscribers.put(topic, subscriber);
+            System.out.println("Subscriber added");
     }
     public synchronized void createPublisher(String topic) {
 //        ZMQ.Socket publisher = context.socket(SocketType.PUB);
@@ -95,14 +75,14 @@ public class VisionProcessor {
         }
     }
 
-    private synchronized void processData(String topic, byte[] data) {
+    private void processData(String topic, byte[] data) {
         if (topic.equals("vision")) {
             _trackedTargets.clear();
             decodeToTrackedObjectInfoList(data, _trackedTargets);
         }
     }
 
-    public synchronized ArrayList<TrackedObjectInfo> getTrackedObjects() {
+    public ArrayList<TrackedObjectInfo> getTrackedObjects() {
         return _trackedTargets;
     }
 

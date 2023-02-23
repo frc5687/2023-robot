@@ -230,26 +230,15 @@ public class DriveTrain extends OutliersSubsystem {
             diffSwerveModule.periodic();
         }
     }
+
     @Override
-    public void controlPeriodic(double timestamp) {
-        // read sensors and modules so that they are cached for this loop
+    public void periodic() {
+        super.periodic();
         readIMU();
         readModules();
         updateDesiredStates();
         setModuleStates(_systemIO.setpoint.moduleStates);
-    }
 
-    @Override
-    public void dataPeriodic(double timestamp) {
-        _odometry.update(
-                getHeading(),
-                new SwerveModulePosition[] {
-                        _modules[NORTH_WEST_IDX].getModulePosition(),
-                        _modules[SOUTH_WEST_IDX].getModulePosition(),
-                        _modules[SOUTH_EAST_IDX].getModulePosition(),
-                        _modules[NORTH_EAST_IDX].getModulePosition()
-                }
-        );
         _poseEstimator.update(
                 _imu.getRotation2d().minus(new Rotation2d(_yawOffset)),
                 new SwerveModulePosition[] {
@@ -278,13 +267,21 @@ public class DriveTrain extends OutliersSubsystem {
                     camSW.estimatedPose.toPose2d(), camSW.timestampSeconds
             );
         }
-//
         if (southEastCameraResult.isPresent()) {
             EstimatedRobotPose camSE = southEastCameraResult.get();
             _poseEstimator.addVisionMeasurement(
                     camSE.estimatedPose.toPose2d(), camSE.timestampSeconds
             );
         }
+    }
+
+    @Override
+    public void controlPeriodic(double timestamp) {
+        // read sensors and modules so that they are cached for this loop
+    }
+
+    @Override
+    public void dataPeriodic(double timestamp) {
 
         _field.setRobotPose(_poseEstimator.getEstimatedPosition());
     }
@@ -351,7 +348,7 @@ public class DriveTrain extends OutliersSubsystem {
                 _systemIO.setpoint,
                  _systemIO.desiredChassisSpeeds,
 //                updatedChassisSpeeds,
-                Constants.CONTROL_PERIOD
+                0.02
         );
     }
 
@@ -512,9 +509,9 @@ public class DriveTrain extends OutliersSubsystem {
     public TrackedObjectInfo getClosestCube() {
         TrackedObjectInfo closest = null;
         double minDistance = Double.MAX_VALUE;
-        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
-        if (_objectCopy.size() > 0) {
-            for (TrackedObjectInfo info : _objectCopy) {
+//        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
+        if (_visionProcessor.getTrackedObjects().size() > 0) {
+            for (TrackedObjectInfo info : _visionProcessor.getTrackedObjects()) {
                 if (info.getElement() == TrackedObjectInfo.GameElement.CUBE) {
                     double distance = info.getDistance();
                     if (distance < minDistance) {

@@ -74,7 +74,7 @@ public class RobotContainer extends OutliersContainer {
         _endEffector = new EndEffector(this);
         _lights = new Lights(this, _driveTrain, _endEffector, _oi);
         // This is for auto temporarily, need to fix for both in future.
-        _endEffector.setCubeMode();
+//        _endEffector.setCubeMode();
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
@@ -87,7 +87,7 @@ public class RobotContainer extends OutliersContainer {
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
-        startPeriodic();
+//        startPeriodic();
     }
 
     public void periodic() {
@@ -115,7 +115,7 @@ public class RobotContainer extends OutliersContainer {
     public void controllerPeriodic() {
         if (_driveTrain != null) {
             _driveTrain.modulePeriodic();
-        } 
+        }
     }
 }
 

@@ -146,23 +146,6 @@ public class Lights extends OutliersSubsystem{
      */
     @Override
     public void periodic() {
-
-        /* if (_oi.rainbow()) {
-            switchAnimation(AnimationType.RAINBOW);
-        } else if (_endEffector.getConeMode()) {
-            switchAnimation(AnimationType.STATIC);
-            setColor(Constants.CANdle.YELLOW);
-        } else {
-            switchAnimation(AnimationType.STATIC);
-            setColor(Constants.CANdle.PURPLE);
-        } 
-    
-        // } else if (_driveTrain.isLevel()) {
-        //     switchAnimation(AnimationType.STATIC);
-        //     setColor(Constants.CANdle.PURPLE);
-        // } else {
-        //     switchAnimation(AnimationType.FIRE);
-        // } */
         if (DriverStation.isDisabled()) {
             switchAnimation(AnimationType.RAINBOW);
             _candle.animate(_animate, 0);

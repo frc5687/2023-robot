@@ -75,8 +75,7 @@ public class Arm extends OutliersSubsystem{
         _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), getArmVelocityRadPerSec()));
     }
 
-    @Override
-    public void controlPeriodic(double timestamp) {
+    public void periodic() {
         super.periodic();
         // update our kalman filter.
 //       if (_lowerHall.get() && _controlLoop.getU(0) < 0) {

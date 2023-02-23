@@ -16,26 +16,26 @@ public final class SubsystemManager {
     private double _dataPrevTimestamp;
     private double _controlDt;
     private double _dataDt;
-    private final Notifier _controlThread =
-            new Notifier(
-                    () -> {
-                        synchronized (SubsystemManager.this) {
-                            final double timestamp = Timer.getFPGATimestamp();
-                            _controlDt = timestamp - _controlPrevTimestamp;
-                            _controlPrevTimestamp = timestamp;
-                            _subsystems.forEach(p -> p.controlPeriodic(timestamp));
-                        }
-                    });
-    private final Notifier _dataThread =
-            new Notifier(
-                    () -> {
-                        synchronized (SubsystemManager.this) {
-                            final double timestamp = Timer.getFPGATimestamp();
-                            _dataDt = timestamp - _dataPrevTimestamp;
-                            _dataPrevTimestamp = timestamp;
-                            _subsystems.forEach(p -> p.dataPeriodic(timestamp));
-                        }
-                    });
+//    private final Notifier _controlThread =
+//            new Notifier(
+//                    () -> {
+//                        synchronized (SubsystemManager.this) {
+//                            final double timestamp = Timer.getFPGATimestamp();
+//                            _controlDt = timestamp - _controlPrevTimestamp;
+//                            _controlPrevTimestamp = timestamp;
+//                            _subsystems.forEach(p -> p.controlPeriodic(timestamp));
+//                        }
+//                    });
+//    private final Notifier _dataThread =
+//            new Notifier(
+//                    () -> {
+//                        synchronized (SubsystemManager.this) {
+//                            final double timestamp = Timer.getFPGATimestamp();
+//                            _dataDt = timestamp - _dataPrevTimestamp;
+//                            _dataPrevTimestamp = timestamp;
+//                            _subsystems.forEach(p -> p.dataPeriodic(timestamp));
+//                        }
+//                    });
 
     public SubsystemManager() {}
 
@@ -48,13 +48,13 @@ public final class SubsystemManager {
     }
 
     public void startPeriodic() {
-        _controlThread.startPeriodic(Constants.CONTROL_PERIOD);
-        _dataThread.startPeriodic(Constants.DATA_PERIOD);
+//        _controlThread.startPeriodic(Constants.CONTROL_PERIOD);
+//        _dataThread.startPeriodic(Constants.DATA_PERIOD);
     }
 
     public void stopPeriodic() {
-        _controlThread.stop();
-        _dataThread.stop();
+//        _controlThread.stop();
+//        _dataThread.stop();
     }
 
     public void updateDashboard() {
@@ -63,7 +63,7 @@ public final class SubsystemManager {
     }
 
     public void outputToDashboard() {
-        SmartDashboard.putNumber("Periodic Control DT", _controlDt);
-        SmartDashboard.putNumber("Periodic Data DT", _dataDt);
+//        SmartDashboard.putNumber("Periodic Control DT", _controlDt);
+//        SmartDashboard.putNumber("Periodic Data DT", _dataDt);
     }
 }
