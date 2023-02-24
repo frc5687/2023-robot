@@ -6,9 +6,6 @@ import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.ctre.phoenix.led.CANdle.LEDStripType;
-import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
-
-import edu.wpi.first.wpilibj.DriverStation;
 
 import com.ctre.phoenix.led.*;
 
@@ -23,6 +20,9 @@ public class Lights extends OutliersSubsystem{
     private OI _oi;
     private int[] _color;
 
+    private boolean _dirty  = true;
+    private boolean _slow = false;
+
     public Lights(OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         super(_container);
         _driveTrain = driveTrain;
@@ -35,18 +35,28 @@ public class Lights extends OutliersSubsystem{
         //Sets LED brightness
         _config.brightnessScalar = Constants.CANdle.BRIGHTNESS;
         _candle.configAllSettings(_config);
-        _color = Constants.CANdle.GREEN;
+        setColor(Constants.CANdle.GREEN);
         switchAnimation(AnimationType.STATIC);
     }
 
     //Set the color of the lights
 
     public void setColor(int[] color) {
-        _color = color;
+        if (_color == null &&  !colorsMatch(color, _color))  {
+            _color = color;
+            _dirty = true;
+        }
     }
 
     public int[] getColor() {
         return _color;
+    }
+
+    private boolean colorsMatch(int[] color1, int[] color2) {
+        if (color1[0] != color2[0]) { return false;}
+        if (color1[1] != color2[1]) { return false;}
+        if (color1[2] != color2[2]) { return false;}
+        return true;
     }
 
     /**
@@ -54,6 +64,9 @@ public class Lights extends OutliersSubsystem{
      * @param animation
      */
     public void switchAnimation(AnimationType animation) {
+        if (_currentAnimation == animation && !_dirty) {
+            return;
+        }
         _currentAnimation = animation;
         switch (animation) {
             case COLOR_FLOW:
@@ -139,6 +152,7 @@ public class Lights extends OutliersSubsystem{
                 break;
             
         }
+        _dirty = true;
     }
 
     /**
@@ -163,15 +177,17 @@ public class Lights extends OutliersSubsystem{
         // } else {
         //     switchAnimation(AnimationType.FIRE);
         // } */
-        if (DriverStation.isDisabled()) {
-            switchAnimation(AnimationType.RAINBOW);
-            _candle.animate(_animate, 0);
-        } else if (_animate == null) {
+        if (!_dirty) {
+            return;
+        }
+        
+        if (_animate == null) {
             _candle.clearAnimation(0); // very important
             _candle.setLEDs(_color[0], _color[1], _color[2]);
         } else {
             _candle.animate(_animate, 0);
         } 
+        _dirty = false;
 
     } 
 
