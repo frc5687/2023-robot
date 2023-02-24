@@ -1,7 +1,6 @@
 package org.frc5687.chargedup.commands.Auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 

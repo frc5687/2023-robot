@@ -3,10 +3,10 @@ package org.frc5687.chargedup.commands.Elevator;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Elevator;
 
-public class DriveUntilInHall extends OutliersCommand{
+public class DriveUntilInHall extends OutliersCommand {
     private Elevator _elevator;
 
-    public DriveUntilInHall(Elevator elevator){
+    public DriveUntilInHall(Elevator elevator) {
         _elevator = elevator;
         addRequirements(_elevator);
     }

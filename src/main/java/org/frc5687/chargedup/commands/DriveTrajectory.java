@@ -6,9 +6,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
-import org.frc5687.lib.math.Vector2d;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
+import org.frc5687.lib.math.Vector2d;
 
 public class DriveTrajectory extends OutliersCommand {
 

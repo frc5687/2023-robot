@@ -3,7 +3,7 @@ package org.frc5687.chargedup.commands.Arm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 
-public class DriveUntilHall extends OutliersCommand{
+public class DriveUntilHall extends OutliersCommand {
     private Arm _arm;
     private boolean _reversed;
 
@@ -23,7 +23,7 @@ public class DriveUntilHall extends OutliersCommand{
         if (_reversed) {
             _arm.setArmSpeed(-0.2);
         }
-            _arm.setArmSpeed(0.2);
+        _arm.setArmSpeed(0.2);
     }
 
     public boolean isFinished() {

@@ -10,13 +10,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import org.frc5687.lib.drivers.LazyTalonSRX;
 
 import static org.frc5687.chargedup.Constants.EndEffector.*;
 
 public class EndEffector extends OutliersSubsystem {
    
-    private final TalonSRX _wrist;
-    private final TalonSRX _gripper;
+    private final LazyTalonSRX _wrist;
+    private final LazyTalonSRX _gripper;
     
     private final DutyCycleEncoder _wristEncoder;
     private final DutyCycleEncoder _gripperEncoder;
@@ -29,8 +30,8 @@ public class EndEffector extends OutliersSubsystem {
     public EndEffector(OutliersContainer container) {
         super(container);
 
-        _wrist = new TalonSRX(RobotMap.CAN.TalonSRX.WRIST);
-        _gripper = new TalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
+        _wrist = new LazyTalonSRX(RobotMap.CAN.TalonSRX.WRIST);
+        _gripper = new LazyTalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
         _wrist.setInverted(Constants.EndEffector.WRIST_INVERTED);
         _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
         
