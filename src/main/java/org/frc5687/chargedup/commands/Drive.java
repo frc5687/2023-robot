@@ -68,7 +68,7 @@ public class Drive extends OutliersCommand {
         }
 
         if (_oi.setCOR()){
-            _driveTrain.setCenterOfRotation(new Translation2d(0.4572, 0.4572));
+            _driveTrain.setCenterOfRotation(new Translation2d(0.5, 0.3));
         } else {
             _driveTrain.setCenterOfRotation(new Translation2d());
         }

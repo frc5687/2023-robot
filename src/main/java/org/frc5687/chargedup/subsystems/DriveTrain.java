@@ -399,7 +399,7 @@ public class DriveTrain extends OutliersSubsystem {
                         _fieldRelative
                                 ? ChassisSpeeds.fromFieldRelativeSpeeds(
                                         translationVector.x(), translationVector.y(), rotationalInput, getHeading())
-                                : new ChassisSpeeds(translationVector.x(), translationVector.y(), rotationalInput));
+                                : new ChassisSpeeds(translationVector.x(), translationVector.y(), rotationalInput), cor);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
         setModuleStates(swerveModuleStates);
     }
@@ -470,23 +470,23 @@ public class DriveTrain extends OutliersSubsystem {
         return _poseEstimator.getEstimatedPosition();
     }
 
-    public Pose2d SetEvasiveManeuverPoint(){
-        double dx = getOdometryPose().getX() + Math.sin(getYaw());
-        double dy = getOdometryPose().getY() + Math.cos(getYaw());
-        return new Pose2d(dx, dy, getHeading());
-    }
+    // public Pose2d SetEvasiveManeuverPoint(){
+    //     double dx = getOdometryPose().getX() + Math.sin(getYaw());
+    //     double dy = getOdometryPose().getY() + Math.cos(getYaw());
+    //     return new Pose2d(dx, dy, getHeading());
+    // }
 
-    public List<Pose2d> ManeuverPoint = Arrays.asList(getOdometryPose(), 
-    SetEvasiveManeuverPoint());
+    // public List<Pose2d> ManeuverPoint = Arrays.asList(getOdometryPose(), 
+    // SetEvasiveManeuverPoint());
 
     // public TrajectoryConfig continueSpeedConfig() {
     //     return new TrajectoryConfig(HEADING_TOLERANCE, DISABLE_TIME)
     // }
 
-    public Trajectory generateTrajectory(){
-    Trajectory trajectory = TrajectoryGenerator.generateTrajectory(ManeuverPoint, getConfig());
-    return trajectory;  
-    }
+    // public Trajectory generateTrajectory(){
+    // Trajectory trajectory = TrajectoryGenerator.generateTrajectory(ManeuverPoint, getConfig());
+    // return trajectory;  
+    // }
     /**
      * Reset position and gyroOffset of odometry
      *
