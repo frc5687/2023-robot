@@ -56,6 +56,8 @@ public class DriveTrain extends OutliersSubsystem {
     private final Pigeon2 _imu;
     private final HolonomicDriveController _poseController;
 
+    private Translation2d _centerOfRotation;
+
     private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
@@ -77,6 +79,8 @@ public class DriveTrain extends OutliersSubsystem {
         _photonProcessor = photonProcessor;
         _imu = imu;
         _systemIO = new SystemIO();
+
+        _centerOfRotation = new Translation2d();
 
         _modules = new DiffSwerveModule[4];
 
@@ -201,6 +205,14 @@ public class DriveTrain extends OutliersSubsystem {
         double pitch = 0.0;
         // outputs
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]);
+    }
+
+    public Translation2d getCenterOfRotation(){
+        return _centerOfRotation;
+    }
+
+    public void setCenterOfRotation(Translation2d desiredCOR){
+        _centerOfRotation = desiredCOR;
     }
 
     public void temporaryDisabledHeadingController() {
@@ -367,6 +379,7 @@ public class DriveTrain extends OutliersSubsystem {
                 _kinematicLimits,
                 _systemIO.setpoint,
                  _systemIO.desiredChassisSpeeds,
+                 _centerOfRotation,
 //                updatedChassisSpeeds,
                 Constants.CONTROL_PERIOD
         );

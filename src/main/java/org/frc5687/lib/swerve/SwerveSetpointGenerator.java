@@ -153,13 +153,14 @@ public class SwerveSetpointGenerator {
      * @param prevSetpoint The previous setpoint motion. Normally, you'd pass in the previous iteration setpoint instead of the actual
      *                     measured/estimated kinematic state.
      * @param desiredState The desired state of motion, such as from the driver sticks or a path following algorithm.
+     * @param cor The center of rotation of the swerve.
      * @param dt The loop time.
      * @return A Setpoint object that satisfies all of the KinematicLimits while converging to desiredState quickly.
      */
-    public SwerveSetpoint generateSetpoint(final KinematicLimits limits, final SwerveSetpoint prevSetpoint, ChassisSpeeds desiredState, double dt) {
+    public SwerveSetpoint generateSetpoint(final KinematicLimits limits, final SwerveSetpoint prevSetpoint, ChassisSpeeds desiredState, Translation2d cor, double dt) {
         final Translation2d[] modules = _modulePositions;
 
-        SwerveModuleState[] desiredModuleState = _kinematics.toSwerveModuleStates(desiredState);
+        SwerveModuleState[] desiredModuleState = _kinematics.toSwerveModuleStates(desiredState, cor);
         // Make sure desiredState respects velocity limits.
         if (limits.maxDriveVelocity > 0.0) {
             SwerveDriveKinematics.desaturateWheelSpeeds(desiredModuleState, limits.maxDriveVelocity);
@@ -210,7 +211,7 @@ public class SwerveSetpointGenerator {
                 !GeometryUtil.toTwist2d(desiredState).equals(GeometryUtil.IDENTITY)) {
             // It will (likely) be faster to stop the robot, rotate the modules in place to the complement of the desired
             // angle, and accelerate again.
-            return generateSetpoint(limits, prevSetpoint, new ChassisSpeeds(), dt);
+            return generateSetpoint(limits, prevSetpoint, new ChassisSpeeds(), cor, dt);
         }
 
         // Compute the deltas between start and goal. We can then interpolate from the start state to the goal state; then
@@ -301,7 +302,7 @@ public class SwerveSetpointGenerator {
                 prevSetpoint.chassisSpeeds.vxMetersPerSecond + min_s * dx,
                 prevSetpoint.chassisSpeeds.vyMetersPerSecond + min_s * dy,
                 prevSetpoint.chassisSpeeds.omegaRadiansPerSecond + min_s * dtheta);
-        var retStates = _kinematics.toSwerveModuleStates(retSpeeds);
+        var retStates = _kinematics.toSwerveModuleStates(retSpeeds, cor);
         for (int i = 0; i < modules.length; ++i) {
             final var maybeOverride = overrideSteering.get(i);
             if (maybeOverride.isPresent()) {

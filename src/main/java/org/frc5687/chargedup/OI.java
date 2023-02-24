@@ -157,6 +157,10 @@ public class OI extends OutliersProxy {
         return speed;
     }
 
+    public boolean setCOR(){
+        return _driverGamepad.getAButton().getAsBoolean();
+    }
+
     public double getCOR(){
         double cor = 0.0;
         if (Gamepad.Axes.RIGHT_TRIGGER.getNumber() > 0.0){

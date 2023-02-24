@@ -3,6 +3,7 @@ package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
@@ -20,7 +21,7 @@ public class Drive extends OutliersCommand {
     private final DriveTrain _driveTrain;
     private final EndEffector _endEffector;
 //    private final HeadingController _headingController;
-    private final PIDController _yCordinateElementController;
+    private final PIDController _yCoordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
     private int segmentationArray[] = new int[((int)360/5)];
@@ -30,7 +31,7 @@ public class Drive extends OutliersCommand {
         _driveTrain = driveTrain;
         _endEffector = endEffector;
         _oi = oi;
-        _yCordinateElementController = new PIDController(
+        _yCoordinateElementController = new PIDController(
                 2.0,
                 0.0,
                 0.2
@@ -65,6 +66,12 @@ public class Drive extends OutliersCommand {
             _driveTrain.zeroGyroscope();
             _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
             _driveTrain.getRotationCorrection();
+        }
+
+        if (_oi.setCOR()){
+            _driveTrain.setCenterOfRotation(new Translation2d(0.4572, 0.4572));
+        } else {
+            _driveTrain.setCenterOfRotation(new Translation2d());
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec = Helpers.axisToSegmentedUnitCircleRadians(_oi.getDriveY(), _oi.getDriveX(), segmentationArray);
@@ -137,7 +144,7 @@ public class Drive extends OutliersCommand {
         double elementAngle = 0;
         if (closestGameElement != null) {
             metric("Closest Game Element", closestGameElement.toString());
-            power = -_yCordinateElementController.calculate(closestGameElement.getY());
+            power = -_yCoordinateElementController.calculate(closestGameElement.getY());
             coneDist = closestGameElement.getDistance();
             elementAngle = closestGameElement.getAzimuthAngle();
         }
