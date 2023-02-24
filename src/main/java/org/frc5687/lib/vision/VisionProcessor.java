@@ -1,5 +1,6 @@
 package org.frc5687.lib.vision;
 
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -20,17 +21,24 @@ import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQException;
 
+import javax.imageio.plugins.tiff.TIFFImageReadParam;
+
 public class VisionProcessor {
     private final ZMQ.Context context;
     private final Map<String, ZMQ.Socket> subscribers = new HashMap<>();
     private final Map<String, ZMQ.Socket> publishers = new HashMap<>();
     private volatile boolean running = false;
-    private volatile ArrayList<TrackedObjectInfo> _trackedTargets = new ArrayList<>();
-
+    private boolean firstRun;
+    private ArrayList<TrackedObjectInfo> _trackedTargets = new ArrayList<>();
     private final Notifier _receiveNotifier =
             new Notifier(
                     () -> {
                         synchronized (VisionProcessor.this) {
+                            if (firstRun) {
+                                Thread.currentThread().setPriority(2);
+                                Thread.currentThread().setName("Vision Thread");
+                                firstRun = false;
+                            }
                             receive();
                         }
                     });
@@ -75,15 +83,15 @@ public class VisionProcessor {
         }
     }
 
-    private void processData(String topic, byte[] data) {
+    private synchronized void processData(String topic, byte[] data) {
         if (topic.equals("vision")) {
             _trackedTargets.clear();
             decodeToTrackedObjectInfoList(data, _trackedTargets);
         }
     }
 
-    public ArrayList<TrackedObjectInfo> getTrackedObjects() {
-        return _trackedTargets;
+    public synchronized ArrayList<TrackedObjectInfo> getTrackedObjects() {
+        return new ArrayList<>(_trackedTargets);
     }
 
     public synchronized void sendData(String topic) {

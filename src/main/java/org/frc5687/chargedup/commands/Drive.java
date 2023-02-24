@@ -139,7 +139,7 @@ public class Drive extends OutliersCommand {
             coneDist = closestGameElement.getDistance();
             elementAngle = closestGameElement.getAzimuthAngle();
         }
-        metric("Element Angle", elementAngle);
+//        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {
             _driveTrain.setSnapHeading(new Rotation2d(0));

@@ -22,9 +22,9 @@ import com.ctre.phoenixpro.signals.NeutralModeValue;
 public class Constants {
     public static final int TICKS_PER_UPDATE = 10;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
-    public static final double UPDATE_PERIOD = 0.01; // 20 ms
+    public static final double UPDATE_PERIOD = 0.02; // 20 ms
     public static final double CONTROL_PERIOD = 0.005; // 10 ms
-    public static final double DATA_PERIOD = 0.01; // 20 ms
+    public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-9;
     
     /**
@@ -152,8 +152,8 @@ public class Constants {
     
             CONFIG.MAX_VOLTAGE = 12.0;
     
-            CONFIG.MAX_STATOR_CURRENT = 60;
-            CONFIG.MAX_CURRENT = 60;
+            CONFIG.MAX_STATOR_CURRENT = 80;
+            CONFIG.MAX_CURRENT = 80;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
 //            CONFIG.USE_FOC = true;
         }
@@ -161,8 +161,8 @@ public class Constants {
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
 
 //         update rate of our modules 5ms.
-        public static final double kDt = 0.005;
-//        public static final double kDt = 0.01;
+//        public static final double kDt = 0.005;
+        public static final double kDt = 0.01;
         public static final double FALCON_FREE_SPEED =
                 Units.rotationsPerMinuteToRadiansPerSecond(6080);// was 6380 foc is different speed
         public static final double GEAR_RATIO_WHEEL = 6.46875 / 1.2;
@@ -180,7 +180,7 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.04; // radians
+        public static final double Q_AZIMUTH = 0.05; // radians
         public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
         public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 

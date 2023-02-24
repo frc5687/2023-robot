@@ -80,7 +80,7 @@ public class RobotContainer extends OutliersContainer {
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
 
         _visionProcessor.start();
-//        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
+        _robot.addPeriodic(this::controllerPeriodic, 0.01, 0.000);
         startPeriodic();
     }
 
@@ -107,9 +107,9 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public void controllerPeriodic() {
-        double dt = Timer.getFPGATimestamp();
+//        double dt = Timer.getFPGATimestamp();
 //        SmartDashboard.putNumber("DtDiff", dt - _prevDtDiff);
-        NetworkTableInstance.getDefault().flush();
+//        NetworkTableInstance.getDefault().flush();
         if (_driveTrain != null) {
             _driveTrain.modulePeriodic();
         }

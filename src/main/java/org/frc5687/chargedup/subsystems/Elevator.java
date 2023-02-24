@@ -30,7 +30,7 @@ public class Elevator extends OutliersSubsystem {
              _talon.setRotorPosition(Constants.ExtendingArm.OUT_HALL_ENCODER_ROTATIONS);
          }
 
-         if (_inHall.get()){
+         if (_inHall.get()) {
             _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD);
         }
     }

@@ -1,6 +1,8 @@
 /* Team 5687 (C)5687-2022 */
 package org.frc5687.chargedup.subsystems;
 
+import com.ctre.phoenixpro.BaseStatusSignalValue;
+import com.ctre.phoenixpro.StatusSignalValue;
 import edu.wpi.first.math.*;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
 import edu.wpi.first.math.estimator.KalmanFilter;
@@ -47,11 +49,6 @@ public class DiffSwerveModule {
     private final SystemIO _systemIO;
     private final String _name;
 
-    private TrapezoidProfile.State _angleSetpoint = new TrapezoidProfile.State();
-    private TrapezoidProfile.State _angleGoal = new TrapezoidProfile.State();
-    private TrapezoidProfile.State _wheelVelocityReference = new TrapezoidProfile.State();
-    private final TrapezoidProfile.Constraints _profiledSteerConstraints;
-    private final TrapezoidProfile.Constraints _profiledWheelConstraints;
     public DiffSwerveModule(
             DiffSwerveModule.ModuleConfiguration config, int leftMotorID, int rightMotorID, int encoderPort) {
         // setup azimuth bore encoder.
@@ -73,8 +70,6 @@ public class DiffSwerveModule {
         _leftFalcon.setTorqueCurrentFOCRate(1000);
         _leftFalcon.setTorqueCurrentFOCRate(1000);
 
-//        _leftFalcon.configureClosedLoop(CLOSED_LOOP_CONFIGURATION);
-//        _rightFalcon.configureClosedLoop(CLOSED_LOOP_CONFIGURATION);
 
         // Creates a Linear System of our Differential Swerve Module.
         LinearSystem<N3, N2, N3> swerveModuleModel =
@@ -117,7 +112,7 @@ public class DiffSwerveModule {
 
         // Creates a LinearSystemLoop that contains the Model, Controller, Observer, Max Volts,
         // Update Rate.
-        moduleController.latencyCompensate(swerveModuleModel, kDt, 0.002);
+//        moduleController.latencyCompensate(swerveModuleModel, kDt, 0.002);
         Matrix<N2, N1> u_limit = VecBuilder.fill(CONFIG.MAX_CURRENT,CONFIG.MAX_CURRENT);
         _moduleControlLoop =
                 new LinearSystemLoop<>(
@@ -144,12 +139,6 @@ public class DiffSwerveModule {
         // boolean for if we want the modules to be running as we set voltage in the periodic loop.
         _systemIO = new SystemIO();
         _controlState = ControlState.OFF;
-        _profiledSteerConstraints = new TrapezoidProfile.Constraints(
-                Constants.DifferentialSwerveModule.MAX_ANGULAR_VELOCITY,
-                Constants.DifferentialSwerveModule.MAX_ANGULAR_ACCELERATION);
-        _profiledWheelConstraints = new TrapezoidProfile.Constraints(
-                Constants.DifferentialSwerveModule.MAX_MODULE_ACCELERATION,
-                Constants.DifferentialSwerveModule.MAX_MODULE_JERK);
     }
 
     public ControlState getControlState() {
@@ -184,56 +173,20 @@ public class DiffSwerveModule {
                 _moduleControlLoop.setNextR(_reference);
 //                _moduleControlLoop.setNextR(ref);
                 // updates the kalman filter with new data points.
-                _moduleControlLoop.correct(
-                        VecBuilder.fill(
-                                getModuleAngle(),
-                                getAzimuthAngularVelocity(),
-                                getWheelAngularVelocity()));
-                predict();
+                // Not using the kalman filter, so we can save CPU cycles.
+//                _moduleControlLoop.correct(
+//                        VecBuilder.fill(
+//                                getModuleAngle(),
+//                                getAzimuthAngularVelocity(),
+//                                getWheelAngularVelocity()));
+//                predict();
 
+                calculateNextU();
                 setLeftFalconCurrent(getLeftNextCurrent());
                 setRightFalconCurrent(getRightNextCurrent());
 //                setLeftFalconCurrent(10);
                 break;
         }
-    }
-    private Matrix<N3, N1> profiledReference(Matrix<N3, N1> reference, Matrix<N3, N1> xHat) {
-        double errorBound = (Math.PI - (-Math.PI)) / 2.0;
-        _angleGoal = new TrapezoidProfile.State(reference.get(0, 0), 0);
-        double angleMinimumGoalDistance = MathUtil.inputModulus(
-                _angleGoal.position - getModuleAngle(),
-                -errorBound,
-                errorBound
-        );
-        double angleMinimumSetpointDistance = MathUtil.inputModulus(
-                _angleSetpoint.position - getModuleAngle(),
-                -errorBound,
-                errorBound
-        );
-        _angleGoal.position = angleMinimumGoalDistance + getModuleAngle();
-        _angleSetpoint.position = angleMinimumSetpointDistance + getModuleAngle();
-//        _angleSetpoint.position = getModuleAngle();
-//        _angleSetpoint.velocity= getModuleAngle();
-
-        var steerProfile = new TrapezoidProfile(
-                _profiledSteerConstraints,
-                _angleGoal,
-                _angleSetpoint);
-
-        _angleSetpoint = steerProfile.calculate(Constants.DifferentialSwerveModule.kDt);
-        var wheelProfile = new TrapezoidProfile(
-                _profiledWheelConstraints,
-                new TrapezoidProfile.State(reference.get(2,0),0),
-                _wheelVelocityReference
-        );
-        _wheelVelocityReference = wheelProfile.calculate(Constants.DifferentialSwerveModule.kDt);
-
-        return VecBuilder.fill(
-                _angleSetpoint.position - getModuleAngle(),
-                _angleSetpoint.velocity - getAzimuthAngularVelocity(),
-//                error.get(2,0));
-//                0.0);
-                _wheelVelocityReference.position - getWheelAngularVelocity());
     }
     /**
      * wraps angle so that absolute encoder can be continuous. (i.e) No issues when switching
@@ -263,10 +216,6 @@ public class DiffSwerveModule {
                                 .getController()
                                 .getK()
                                 .times(
-//                                        profiledReference(
-//                                                _moduleControlLoop.getNextR(),
-//                                                _moduleControlLoop.getXHat()
-//                                        )));
                                         wrapAngle(
                                                 _moduleControlLoop.getNextR(),
                                                 _moduleControlLoop.getXHat())));
@@ -277,6 +226,17 @@ public class DiffSwerveModule {
         _moduleControlLoop.getObserver().predict(_u, kDt);
     }
 
+    private void calculateNextU() {
+        _u =
+                _moduleControlLoop.clampInput(
+                        _moduleControlLoop
+                                .getController()
+                                .getK()
+                                .times(
+                                        wrapAngle(
+                                                _moduleControlLoop.getNextR(),
+                                                _moduleControlLoop.getXHat())));
+    }
     public void start() {
         setControlState(ControlState.STATE_CONTROL);
     }
@@ -475,11 +435,9 @@ public class DiffSwerveModule {
         SmartDashboard.putNumber(_name + "/leftStatorCurrent", getLeftCurrent());
         SmartDashboard.putNumber(_name + "/rightStatorCurrent", getRightCurrent());
         SmartDashboard.putNumber(_name + "/referenceAngleGoal", getReferenceModuleAngle());
-        SmartDashboard.putNumber(_name + "/referenceAngleSetpoint", _angleSetpoint.position);
         SmartDashboard.putNumber(_name + "/moduleAngle", getModuleAngle());
 
         SmartDashboard.putNumber(_name + "/moduleAngVel", getAzimuthAngularVelocity());
-        SmartDashboard.putNumber(_name + "/refAngVelSetpoint", _angleSetpoint.velocity);
 
         SmartDashboard.putNumber(_name + "/velocityWheel", getWheelVelocity());
         SmartDashboard.putNumber(_name + "/referenceWheelVelocity", getReferenceWheelVelocity());
@@ -506,6 +464,7 @@ public class DiffSwerveModule {
 
     private static class SystemIO {
         // Falcon 500 sensor inputs
+
         public double leftVelocityRotationsPerSec;
         public double leftPositionRotations;
         public double rightVelocityRotationsPerSec;
