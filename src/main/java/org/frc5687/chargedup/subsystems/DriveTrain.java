@@ -557,6 +557,10 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
 
+    public HeadingState getHeadingControllerState() {
+        return _headingController.getHeadingState();
+    }
+
     public void setHeadingControllerState(HeadingState state) {
         _headingController.setState(state);
     }

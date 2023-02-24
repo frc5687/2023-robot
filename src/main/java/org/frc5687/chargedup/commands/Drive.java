@@ -9,7 +9,9 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
+import org.frc5687.lib.control.HeadingController;
 import org.frc5687.lib.control.SwerveHeadingController;
+import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.vision.TrackedObjectInfo;
 
@@ -56,7 +58,6 @@ public class Drive extends OutliersCommand {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
             _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
-            _driveTrain.getRotationCorrection();
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
@@ -117,7 +118,7 @@ public class Drive extends OutliersCommand {
         //            _lockHeading = false;
         //        }
 
-        if (rot == 0) {
+        if (rot == 0 && _driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
             if (!_lockHeading) {
                 _driveTrain.temporaryDisabledHeadingController();
             }

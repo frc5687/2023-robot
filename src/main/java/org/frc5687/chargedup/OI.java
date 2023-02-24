@@ -5,6 +5,7 @@ import static org.frc5687.chargedup.util.Helpers.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -16,6 +17,7 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
+import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersProxy;
@@ -56,12 +58,11 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
 
-        _driverGamepad
-                .getYButton()
-                .onTrue(
-                        new SequentialCommandGroup(
-                                new AutoPlaceHighCube(arm, endEffector, elevator),
-                                new DriveUntilLevel(drivetrain)));
+        _driverGamepad.getYButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
+                // .onTrue(
+                //         new SequentialCommandGroup(
+                //                 new AutoPlaceHighCube(arm, endEffector, elevator),
+                //                 new DriveUntilLevel(drivetrain)));
         _driverGamepad
                 .getXButton()
                 .onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 2.1, Rotation2d.fromDegrees(180.0))));
