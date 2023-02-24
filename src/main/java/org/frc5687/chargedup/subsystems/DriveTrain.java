@@ -68,7 +68,7 @@ public class DriveTrain extends OutliersSubsystem {
     private KinematicLimits _kinematicLimits = KINEMATIC_LIMITS;
 
     private final SystemIO _systemIO;
-    private double _yawOffset;
+    private Rotation2d _headingOffset;
     private double _pitchOffset;
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
@@ -134,7 +134,7 @@ public class DriveTrain extends OutliersSubsystem {
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _imu.getYaw().getValue();
+        _headingOffset = _imu.getRotation2d();
         _pitchOffset = _imu.getPitch().getValue();
         readIMU();
 
@@ -425,13 +425,13 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _imu.getYaw().getValue();
+        _headingOffset = _imu.getRotation2d();
         _pitchOffset = _imu.getPitch().getValue();
         readIMU();
     }
 
     public void readIMU() {
-        _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
+        _systemIO.heading = _imu.getRotation2d().minus(_headingOffset);
         _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue() - _pitchOffset);
     }
 
