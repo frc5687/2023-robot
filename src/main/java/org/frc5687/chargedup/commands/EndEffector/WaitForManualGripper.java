@@ -23,8 +23,7 @@ public class WaitForManualGripper extends OutliersCommand {
     }
 
     @Override
-    public void execute() {
-    }
+    public void execute() {}
 
     @Override
     public boolean isFinished() {

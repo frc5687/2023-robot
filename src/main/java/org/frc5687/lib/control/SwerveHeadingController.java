@@ -81,16 +81,14 @@ public class SwerveHeadingController {
                 _PIDController.setPID(
                         Constants.DriveTrain.MAINTAIN_kP,
                         Constants.DriveTrain.MAINTAIN_kI,
-                        Constants.DriveTrain.MAINTAIN_kD
-                );
+                        Constants.DriveTrain.MAINTAIN_kD);
                 power = _PIDController.calculate(heading.getRadians(), _targetHeading.getRadians());
                 break;
             case SNAP:
                 _PIDController.setPID(
                         Constants.DriveTrain.SNAP_kP,
                         Constants.DriveTrain.SNAP_kI,
-                        Constants.DriveTrain.SNAP_kD
-                );
+                        Constants.DriveTrain.SNAP_kD);
                 power = _PIDController.calculate(heading.getRadians(), _targetHeading.getRadians());
                 break;
         }

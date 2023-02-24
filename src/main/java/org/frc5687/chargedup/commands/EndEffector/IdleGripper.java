@@ -1,11 +1,12 @@
 package org.frc5687.chargedup.commands.EndEffector;
 
 import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.subsystems.EndEffector;
 
-public class IdleGripper extends OutliersCommand{
+public class IdleGripper extends OutliersCommand {
     private EndEffector _endEffector;
+
     public IdleGripper(EndEffector endEffector) {
         _endEffector = endEffector;
         addRequirements(_endEffector);
@@ -25,5 +26,4 @@ public class IdleGripper extends OutliersCommand{
     public boolean isFinished() {
         return super.isFinished();
     }
-    
 }

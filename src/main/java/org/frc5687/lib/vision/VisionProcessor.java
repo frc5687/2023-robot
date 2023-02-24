@@ -1,27 +1,14 @@
 package org.frc5687.lib.vision;
 
-import java.lang.reflect.Array;
+import edu.wpi.first.wpilibj.Notifier;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.Timer;
 import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.util.SubsystemManager;
 import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
-import org.zeromq.ZMQException;
-
-import javax.imageio.plugins.tiff.TIFFImageReadParam;
 
 public class VisionProcessor {
     private final ZMQ.Context context;
@@ -48,17 +35,18 @@ public class VisionProcessor {
     }
 
     public void createSubscriber(String topic, String addr) {
-            ZMQ.Socket subscriber = context.socket(SocketType.SUB);
-            subscriber.connect(addr);
-            subscriber.subscribe(topic.getBytes());
-            subscriber.setReceiveTimeOut(0);
-            subscribers.put(topic, subscriber);
-            System.out.println("Subscriber added");
+        ZMQ.Socket subscriber = context.socket(SocketType.SUB);
+        subscriber.connect(addr);
+        subscriber.subscribe(topic.getBytes());
+        subscriber.setReceiveTimeOut(0);
+        subscribers.put(topic, subscriber);
+        System.out.println("Subscriber added");
     }
+
     public synchronized void createPublisher(String topic) {
-//        ZMQ.Socket publisher = context.socket(SocketType.PUB);
-//        publisher.bind("tcp://*:5556");
-//        publishers.put(topic, publisher);
+        //        ZMQ.Socket publisher = context.socket(SocketType.PUB);
+        //        publisher.bind("tcp://*:5556");
+        //        publishers.put(topic, publisher);
     }
 
     public void start() {
@@ -97,8 +85,8 @@ public class VisionProcessor {
     public synchronized void sendData(String topic) {
         ZMQ.Socket publisher = publishers.get(topic);
         if (publisher != null) {
-//            publisher.sendMore(topic.getBytes());
-//            publisher.send(serializedData);
+            //            publisher.sendMore(topic.getBytes());
+            //            publisher.send(serializedData);
         } else {
             System.out.println("Publisher for topic " + topic + " does not exist.");
         }
@@ -112,22 +100,23 @@ public class VisionProcessor {
         return byteBuffer.array();
     }
     /* Decode the incoming packet from ZMQ */
-    private static void decodeToTrackedObjectInfoList(byte[] byteArray, ArrayList<TrackedObjectInfo> list) {
+    private static void decodeToTrackedObjectInfoList(
+            byte[] byteArray, ArrayList<TrackedObjectInfo> list) {
         int numElements = byteArray.length / TrackedObjectInfo.sizeBytes();
         ByteBuffer buffer = ByteBuffer.wrap(byteArray);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         for (int i = 0; i < numElements; i++) {
             int id = buffer.get();
-            list.add(new TrackedObjectInfo(
-                    TrackedObjectInfo.GameElement.valueOf(id),
-                    buffer.getFloat() - Constants.Vision.Z_CAM_X_OFFSET,
-                    buffer.getFloat() - Constants.Vision.Z_CAM_Y_OFFSET,
-                    buffer.getFloat() - Constants.Vision.Z_CAM_Z_OFFSET,
-                    buffer.getFloat(),
-                    buffer.getFloat(),
-                    buffer.getFloat()
-            ));
+            list.add(
+                    new TrackedObjectInfo(
+                            TrackedObjectInfo.GameElement.valueOf(id),
+                            buffer.getFloat() - Constants.Vision.Z_CAM_X_OFFSET,
+                            buffer.getFloat() - Constants.Vision.Z_CAM_Y_OFFSET,
+                            buffer.getFloat() - Constants.Vision.Z_CAM_Z_OFFSET,
+                            buffer.getFloat(),
+                            buffer.getFloat(),
+                            buffer.getFloat()));
         }
     }
 }

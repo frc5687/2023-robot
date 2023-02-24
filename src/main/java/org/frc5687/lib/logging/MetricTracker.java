@@ -2,7 +2,6 @@
 package org.frc5687.lib.logging;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,8 +41,7 @@ public class MetricTracker {
      * @param metrics list of the metric names to track. Other metrics will be ignored.
      * @return a fresh new MetricTracker.
      */
-    public static MetricTracker createMetricTracker(
-            String instrumentedClassName, String... metrics) {
+    public static MetricTracker createMetricTracker(String instrumentedClassName, String... metrics) {
         if (_allMetricsTrackers.containsKey(instrumentedClassName)) {
             return _allMetricsTrackers.get(instrumentedClassName);
         }
@@ -67,8 +65,7 @@ public class MetricTracker {
     }
 
     /**
-     * Starts a new row for all instrumented objects. This is called by robotPeriodic once per
-     * cycle.
+     * Starts a new row for all instrumented objects. This is called by robotPeriodic once per cycle.
      */
     public static void newMetricRowAll() {
         for (MetricTracker metricTracker : MetricTracker._allMetricsTrackers.values()) {
@@ -187,8 +184,8 @@ public class MetricTracker {
     }
 
     /**
-     * Starts a new row of metrics. You'd call this, e.g., once per tick. Normally this is called
-     * from the static newMetricRowAll method, so there's no need to call it directly.
+     * Starts a new row of metrics. You'd call this, e.g., once per tick. Normally this is called from
+     * the static newMetricRowAll method, so there's no need to call it directly.
      */
     protected void newMetricRow() {
         if (!_streamOpen || _paused) {
@@ -214,8 +211,8 @@ public class MetricTracker {
     }
 
     /**
-     * Helper function to determine in a threadsafe way whether there are rows to write. We know
-     * we've written all the rows when _out reaches _in.
+     * Helper function to determine in a threadsafe way whether there are rows to write. We know we've
+     * written all the rows when _out reaches _in.
      *
      * @return
      */
