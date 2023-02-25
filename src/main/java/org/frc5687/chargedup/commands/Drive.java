@@ -123,10 +123,11 @@ public class Drive extends OutliersCommand {
                 _driveTrain.temporaryDisabledHeadingController();
             }
             _lockHeading = true;
-        } else {
+        } else if (_driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
             _driveTrain.disableHeadingController();
             _lockHeading = false;
         }
+        
         double controllerPower = _driveTrain.getRotationCorrection();
         TrackedObjectInfo closestGameElement;
         if (_endEffector.getConeMode()) {

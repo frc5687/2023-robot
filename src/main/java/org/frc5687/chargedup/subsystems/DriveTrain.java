@@ -538,6 +538,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Current Heading", getHeading().getRadians());
         metric("Heading Controller Target", _headingController.getTargetHeading().getRadians());
+        metric("Heading State", _headingController.getHeadingState().name());
         metric("Rotation State", getYaw());
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());

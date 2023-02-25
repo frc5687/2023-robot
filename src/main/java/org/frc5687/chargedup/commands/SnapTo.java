@@ -11,8 +11,6 @@ public class SnapTo extends OutliersCommand{
     public SnapTo(DriveTrain driveTrain, Rotation2d rotation) {
         _driveTrain = driveTrain;
         _rotation = rotation;
-        addRequirements(_driveTrain);
-        error(" begun");
     }
 
     @Override
@@ -21,6 +19,8 @@ public class SnapTo extends OutliersCommand{
         super.initialize();
         // _driveTrain.setHeadingControllerState(HeadingState.SNAP); //unrequired, 
         _driveTrain.setSnapHeading(_rotation);
+        error(" begun");
+        error(" state is " + _driveTrain.getHeadingControllerState().name());
     }
 
     @Override
@@ -28,9 +28,16 @@ public class SnapTo extends OutliersCommand{
         // TODO Auto-generated method stub
         if (_driveTrain.getHeading().minus(_rotation).getRadians() < 0.01) {
             _driveTrain.setHeadingControllerState(HeadingState.MAINTAIN);
-            error(" finished");
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        // TODO Auto-generated method stub
+        error(" finished");
+        error(" state is " + _driveTrain.getHeadingControllerState().name());
+        super.end(interrupted);
     }
 }
