@@ -68,9 +68,15 @@ public class Drive extends OutliersCommand {
         }
 
         if (_oi.setCOR()){
-            _driveTrain.setCenterOfRotation(new Translation2d(0.5, 0.3));
-        } else {
-            _driveTrain.setCenterOfRotation(new Translation2d());
+            if (_driveTrain.getYaw() > Math.PI/2 && _driveTrain.getYaw()< Math.PI){
+                _driveTrain.setCenterOfRotation(new Translation2d(0.5, 0.3));
+            } else if (_driveTrain.getYaw() > Math.PI && _driveTrain.getYaw() < (3*Math.PI)/2){
+                _driveTrain.setCenterOfRotation(new Translation2d(-0.5, 0.3));
+            } else if (_driveTrain.getYaw() > (3*Math.PI)/2 && _driveTrain.getYaw() < 0){
+                _driveTrain.setCenterOfRotation(new Translation2d(-0.5, -0.3));
+            } else  if (_driveTrain.getYaw() > 0 && _driveTrain.getYaw() < Math.PI/2){
+                _driveTrain.setCenterOfRotation(new Translation2d(0.5, -0.3));
+            }
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
