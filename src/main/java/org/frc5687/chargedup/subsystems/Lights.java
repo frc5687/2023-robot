@@ -8,7 +8,11 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
 
-public class Lights extends OutliersSubsystem {
+import com.ctre.phoenix.led.CANdle.LEDStripType;
+
+import com.ctre.phoenix.led.*;
+
+public class Lights extends OutliersSubsystem{
 
     private final CANdle _candle;
     private final CANdleConfiguration _config;
@@ -19,8 +23,10 @@ public class Lights extends OutliersSubsystem {
     private OI _oi;
     private int[] _color;
 
-    public Lights(
-            OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
+    private boolean _dirty  = true;
+    private boolean _slow = false;
+
+    public Lights(OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         super(_container);
         _driveTrain = driveTrain;
         _endEffector = endEffector;
@@ -32,18 +38,28 @@ public class Lights extends OutliersSubsystem {
         // Sets LED brightness
         _config.brightnessScalar = Constants.CANdle.BRIGHTNESS;
         _candle.configAllSettings(_config);
-        _color = Constants.CANdle.GREEN;
+        setColor(Constants.CANdle.GREEN);
         switchAnimation(AnimationType.STATIC);
     }
 
     // Set the color of the lights
 
     public void setColor(int[] color) {
-        _color = color;
+        if (_color == null &&  !colorsMatch(color, _color))  {
+            _color = color;
+            _dirty = true;
+        }
     }
 
     public int[] getColor() {
         return _color;
+    }
+
+    private boolean colorsMatch(int[] color1, int[] color2) {
+        if (color1[0] != color2[0]) { return false;}
+        if (color1[1] != color2[1]) { return false;}
+        if (color1[2] != color2[2]) { return false;}
+        return true;
     }
 
     /**
@@ -52,6 +68,9 @@ public class Lights extends OutliersSubsystem {
      * @param animation
      */
     public void switchAnimation(AnimationType animation) {
+        if (_currentAnimation == animation && !_dirty) {
+            return;
+        }
         _currentAnimation = animation;
         switch (animation) {
             case COLOR_FLOW:
@@ -133,21 +152,42 @@ public class Lights extends OutliersSubsystem {
                 _animate = null;
                 break;
         }
+        _dirty = true;
     }
 
     /** Has all the logic for the lights, and updates the CANdle with animations and static colors. */
     @Override
     public void periodic() {
-        if (DriverStation.isDisabled()) {
+
+        /* if (_oi.rainbow()) {
             switchAnimation(AnimationType.RAINBOW);
-            _candle.animate(_animate, 0);
-        } else if (_animate == null) {
+        } else if (_endEffector.getConeMode()) {
+            switchAnimation(AnimationType.STATIC);
+            setColor(Constants.CANdle.YELLOW);
+        } else {
+            switchAnimation(AnimationType.STATIC);
+            setColor(Constants.CANdle.PURPLE);
+        } 
+    
+        // } else if (_driveTrain.isLevel()) {
+        //     switchAnimation(AnimationType.STATIC);
+        //     setColor(Constants.CANdle.PURPLE);
+        // } else {
+        //     switchAnimation(AnimationType.FIRE);
+        // } */
+        if (!_dirty) {
+            return;
+        }
+        
+        if (_animate == null) {
             _candle.clearAnimation(0); // very important
             _candle.setLEDs(_color[0], _color[1], _color[2]);
         } else {
             _candle.animate(_animate, 0);
-        }
-    }
+        } 
+        _dirty = false;
+
+    } 
 
     public void updateDashboard() {}
 
