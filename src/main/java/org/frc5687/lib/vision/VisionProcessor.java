@@ -1,76 +1,52 @@
 package org.frc5687.lib.vision;
 
+import edu.wpi.first.wpilibj.Notifier;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.Timer;
 import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.util.SubsystemManager;
 import org.zeromq.SocketType;
 import org.zeromq.ZMQ;
-import org.zeromq.ZMQException;
 
 public class VisionProcessor {
     private final ZMQ.Context context;
     private final Map<String, ZMQ.Socket> subscribers = new HashMap<>();
     private final Map<String, ZMQ.Socket> publishers = new HashMap<>();
     private volatile boolean running = false;
-
-
-    private ArrayList<TrackedObjectInfo> _trackedTargets;
-
+    private boolean firstRun;
+    private ArrayList<TrackedObjectInfo> _trackedTargets = new ArrayList<>();
     private final Notifier _receiveNotifier =
             new Notifier(
                     () -> {
                         synchronized (VisionProcessor.this) {
+                            if (firstRun) {
+                                Thread.currentThread().setPriority(2);
+                                Thread.currentThread().setName("Vision Thread");
+                                firstRun = false;
+                            }
                             receive();
                         }
                     });
 
     public VisionProcessor() {
         context = ZMQ.context(1);
-        _trackedTargets = new ArrayList<>();
     }
 
     public void createSubscriber(String topic, String addr) {
-        Thread t = new Thread(() -> {
-            ZMQ.Socket subscriber = null;
-            while (subscriber == null) {
-                try {
-                    subscriber = context.socket(SocketType.SUB);
-                    subscriber.connect(addr);
-                    subscriber.subscribe(topic.getBytes());
-                    subscriber.setReceiveTimeOut(0);
-                    subscribers.put(topic, subscriber);
-                    System.out.println("Subscriber added");
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Error connecting to publisher, retrying in 1 seconds");
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        ZMQ.Socket subscriber = context.socket(SocketType.SUB);
+        subscriber.connect(addr);
+        subscriber.subscribe(topic.getBytes());
+        subscriber.setReceiveTimeOut(0);
+        subscribers.put(topic, subscriber);
+        System.out.println("Subscriber added");
     }
+
     public synchronized void createPublisher(String topic) {
-//        ZMQ.Socket publisher = context.socket(SocketType.PUB);
-//        publisher.bind("tcp://*:5556");
-//        publishers.put(topic, publisher);
+        //        ZMQ.Socket publisher = context.socket(SocketType.PUB);
+        //        publisher.bind("tcp://*:5556");
+        //        publishers.put(topic, publisher);
     }
 
     public void start() {
@@ -103,14 +79,14 @@ public class VisionProcessor {
     }
 
     public synchronized ArrayList<TrackedObjectInfo> getTrackedObjects() {
-        return _trackedTargets;
+        return new ArrayList<>(_trackedTargets);
     }
 
     public synchronized void sendData(String topic) {
         ZMQ.Socket publisher = publishers.get(topic);
         if (publisher != null) {
-//            publisher.sendMore(topic.getBytes());
-//            publisher.send(serializedData);
+            //            publisher.sendMore(topic.getBytes());
+            //            publisher.send(serializedData);
         } else {
             System.out.println("Publisher for topic " + topic + " does not exist.");
         }
@@ -124,22 +100,23 @@ public class VisionProcessor {
         return byteBuffer.array();
     }
     /* Decode the incoming packet from ZMQ */
-    private static void decodeToTrackedObjectInfoList(byte[] byteArray, ArrayList<TrackedObjectInfo> list) {
+    private static void decodeToTrackedObjectInfoList(
+            byte[] byteArray, ArrayList<TrackedObjectInfo> list) {
         int numElements = byteArray.length / TrackedObjectInfo.sizeBytes();
         ByteBuffer buffer = ByteBuffer.wrap(byteArray);
         buffer.order(ByteOrder.LITTLE_ENDIAN);
 
         for (int i = 0; i < numElements; i++) {
             int id = buffer.get();
-            list.add(new TrackedObjectInfo(
-                    TrackedObjectInfo.GameElement.valueOf(id),
-                    buffer.getFloat() - Constants.Vision.Z_CAM_X_OFFSET,
-                    buffer.getFloat() - Constants.Vision.Z_CAM_Y_OFFSET,
-                    buffer.getFloat() - Constants.Vision.Z_CAM_Z_OFFSET,
-                    buffer.getFloat(),
-                    buffer.getFloat(),
-                    buffer.getFloat()
-            ));
+            list.add(
+                    new TrackedObjectInfo(
+                            TrackedObjectInfo.GameElement.valueOf(id),
+                            buffer.getFloat() - Constants.Vision.Z_CAM_X_OFFSET,
+                            buffer.getFloat() - Constants.Vision.Z_CAM_Y_OFFSET,
+                            buffer.getFloat() - Constants.Vision.Z_CAM_Z_OFFSET,
+                            buffer.getFloat(),
+                            buffer.getFloat(),
+                            buffer.getFloat()));
         }
     }
 }

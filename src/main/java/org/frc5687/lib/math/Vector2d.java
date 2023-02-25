@@ -12,6 +12,7 @@ public class Vector2d {
     public static Vector2d identity() {
         return IDENTITY;
     }
+
     protected double _x;
     protected double _y;
 
@@ -98,29 +99,29 @@ public class Vector2d {
     }
 
     public boolean isWithinAngle(Vector2d A, Vector2d B, Vector2d C, boolean vertical) {
-		Vector2d M = A.interpolate(C, 0.5); // midpoint
-		Vector2d m = (new Vector2d(B, M)).normalize(); // mid-vector
-		Vector2d a = (new Vector2d(B, A)).normalize(); // side vector
-		Vector2d d = (new Vector2d(B, this)).normalize(); // vector to here
-		if(vertical) {
-			m = m.inverse();
-			a = a.inverse();
-		}
-		return d.dot(m) > a.dot(m);
-	}
+        Vector2d M = A.interpolate(C, 0.5); // midpoint
+        Vector2d m = (new Vector2d(B, M)).normalize(); // mid-vector
+        Vector2d a = (new Vector2d(B, A)).normalize(); // side vector
+        Vector2d d = (new Vector2d(B, this)).normalize(); // vector to here
+        if (vertical) {
+            m = m.inverse();
+            a = a.inverse();
+        }
+        return d.dot(m) > a.dot(m);
+    }
 
-	public boolean isWithinAngle(Vector2d A, Vector2d B, Vector2d C) {
-		return isWithinAngle(A, B, C, false);
-	}
+    public boolean isWithinAngle(Vector2d A, Vector2d B, Vector2d C) {
+        return isWithinAngle(A, B, C, false);
+    }
 
-	/** Assumes an angle centered at the origin. */
-	public boolean isWithinAngle(Vector2d A, Vector2d C, boolean vertical) {
-		return isWithinAngle(A, identity(), C, vertical);
-	}
+    /** Assumes an angle centered at the origin. */
+    public boolean isWithinAngle(Vector2d A, Vector2d C, boolean vertical) {
+        return isWithinAngle(A, identity(), C, vertical);
+    }
 
-	public boolean isWithinAngle(Vector2d A, Vector2d C) {
-		return isWithinAngle(A, C, false);
-	}
+    public boolean isWithinAngle(Vector2d A, Vector2d C) {
+        return isWithinAngle(A, C, false);
+    }
 
     public Rotation2d angle(Vector2d other) {
         double cosAngle = dot(other) / (magnitude() * other.magnitude());

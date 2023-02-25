@@ -6,17 +6,13 @@ import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 
-public class SemiAutoGroundPickup extends OutliersCommand{
+public class SemiAutoGroundPickup extends OutliersCommand {
     private EndEffector _endEffector;
     private Elevator _elevator;
     private Arm _arm;
     private OI _oi;
-    public SemiAutoGroundPickup(
-        Arm arm,
-        EndEffector endEffector,
-        Elevator elevator,
-        OI oi
-    ) {
+
+    public SemiAutoGroundPickup(Arm arm, EndEffector endEffector, Elevator elevator, OI oi) {
         _endEffector = endEffector;
         _elevator = elevator;
         _arm = arm;
@@ -32,6 +28,7 @@ public class SemiAutoGroundPickup extends OutliersCommand{
             (new SemiAutoGroundPickupCube(_arm, _endEffector, _elevator, _oi)).schedule();
         }
     }
+
     @Override
     public void execute() {
         // TODO Auto-generated method stub

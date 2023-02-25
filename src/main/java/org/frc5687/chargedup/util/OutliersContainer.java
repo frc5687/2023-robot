@@ -2,12 +2,11 @@
 package org.frc5687.chargedup.util;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.lib.logging.ILoggingSource;
-import org.frc5687.lib.logging.RioLogger;
-import org.frc5687.chargedup.subsystems.OutliersSubsystem;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.frc5687.chargedup.subsystems.OutliersSubsystem;
+import org.frc5687.lib.logging.ILoggingSource;
+import org.frc5687.lib.logging.RioLogger;
 
 public abstract class OutliersContainer implements ILoggingSource {
     private final List<OutliersSubsystem> _subsystems = new LinkedList<>();
@@ -21,6 +20,7 @@ public abstract class OutliersContainer implements ILoggingSource {
     public void metric(String name, boolean value) {
         SmartDashboard.putBoolean(getClass().getSimpleName() + "/" + name, value);
     }
+
     public void metric(String name, String value) {
         SmartDashboard.putString(getClass().getSimpleName() + "/" + name, value);
     }

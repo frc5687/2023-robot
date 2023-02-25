@@ -2,18 +2,18 @@ package org.frc5687.chargedup.commands;
 
 import org.frc5687.chargedup.subsystems.DriveTrain;
 
-public class Tap extends OutliersCommand{
+public class Tap extends OutliersCommand {
 
     private DriveTrain _driveTrain;
     private boolean _isToTheRight;
 
     /**
-     * Increments the DriveTrain's heading controller either left or right a bit based on isToTheRight.
-     * 
+     * Increments the DriveTrain's heading controller either left or right a bit based on
+     * isToTheRight.
+     *
      * @param driveTrain The DriveTrain we use
      * @param isToTheRight If true, tap right. If false, tap left.
      */
-
     public Tap(DriveTrain driveTrain, boolean isToTheRight) {
         _driveTrain = driveTrain;
         _isToTheRight = isToTheRight;
@@ -28,7 +28,6 @@ public class Tap extends OutliersCommand{
         } else {
             _driveTrain.decrementHeadingControllerAngle();
         }
-        
     }
 
     @Override
@@ -36,5 +35,4 @@ public class Tap extends OutliersCommand{
         // TODO Auto-generated method stub
         return true;
     }
-
 }

@@ -7,6 +7,7 @@ import org.frc5687.chargedup.subsystems.Arm;
 public class HoldArm extends OutliersCommand {
     private final Arm _arm;
     private double _angle;
+
     public HoldArm(Arm arm, double angle) {
         _arm = arm;
         _angle = angle;

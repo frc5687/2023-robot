@@ -2,32 +2,18 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
-import org.frc5687.chargedup.subsystems.Arm;
-import org.frc5687.chargedup.commands.Drive;
-import org.frc5687.chargedup.commands.DriveLights;
-import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
-import org.frc5687.chargedup.commands.OutliersCommand;
-import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
-import org.frc5687.chargedup.subsystems.DriveTrain;
-import org.frc5687.chargedup.subsystems.EndEffector;
-import org.frc5687.chargedup.subsystems.Lights;
-import org.frc5687.chargedup.subsystems.LightsExample;
-import org.frc5687.chargedup.subsystems.Elevator;
-import org.frc5687.chargedup.subsystems.OutliersSubsystem;
-import org.frc5687.chargedup.util.OutliersContainer;
-
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
-
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
+import org.frc5687.chargedup.commands.Drive;
+import org.frc5687.chargedup.commands.DriveLights;
+import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
+import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
+import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.subsystems.*;
+import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
 import org.frc5687.lib.vision.VisionProcessor;
 
@@ -44,6 +30,7 @@ public class RobotContainer extends OutliersContainer {
     private Arm _arm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
+    private double _prevDtDiff;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -51,6 +38,8 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public void init() {
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        Thread.currentThread().setName("Robot Thread");
         _oi = new OI();
         // create the vision processor
         _visionProcessor = new VisionProcessor();
@@ -58,7 +47,8 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
 
         try {
-            _photonProcessor = new PhotonProcessor(AprilTagFieldLayout.loadFromResource("2023-chargedup.json"));
+            _photonProcessor =
+                    new PhotonProcessor(AprilTagFieldLayout.loadFromResource("2023-chargedup.json"));
         } catch (Exception e) {
             e.getMessage();
         }
@@ -67,13 +57,12 @@ public class RobotContainer extends OutliersContainer {
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
 
-        
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
         _elevator = new Elevator(this);
         _arm = new Arm(this);
         _endEffector = new EndEffector(this);
         _lights = new Lights(this, _driveTrain, _endEffector, _oi);
-        // This is for auto temporarily, need to fix for both in future.
+        //         This is for auto temporarily, need to fix for both in future.
         _endEffector.setCubeMode();
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
@@ -81,17 +70,16 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
-//        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+        //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
 
         _visionProcessor.start();
-        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.005);
+        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         startPeriodic();
     }
 
-    public void periodic() {
-    }
+    public void periodic() {}
 
     public void disabledPeriodic() {}
 
@@ -113,9 +101,12 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public void controllerPeriodic() {
+        //        double dt = Timer.getFPGATimestamp();
+        //        SmartDashboard.putNumber("DtDiff", dt - _prevDtDiff);
+        //        NetworkTableInstance.getDefault().flush();
         if (_driveTrain != null) {
             _driveTrain.modulePeriodic();
-        } 
+        }
+        //        _prevDtDiff = dt;
     }
 }
-

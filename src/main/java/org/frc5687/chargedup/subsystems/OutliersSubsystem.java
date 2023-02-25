@@ -3,10 +3,10 @@ package org.frc5687.chargedup.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.frc5687.chargedup.util.*;
 import org.frc5687.lib.logging.ILoggingSource;
 import org.frc5687.lib.logging.MetricTracker;
 import org.frc5687.lib.logging.RioLogger;
-import org.frc5687.chargedup.util.*;
 
 /**
  * Base class to provide metrics and logging infrustructure.

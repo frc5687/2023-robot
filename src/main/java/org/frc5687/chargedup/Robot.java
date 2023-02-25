@@ -2,19 +2,17 @@
 package org.frc5687.chargedup;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import org.frc5687.lib.logging.ILoggingSource;
-import org.frc5687.lib.logging.MetricTracker;
-import org.frc5687.lib.logging.RioLogger;
-import org.frc5687.chargedup.util.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import org.frc5687.chargedup.util.*;
+import org.frc5687.lib.logging.ILoggingSource;
+import org.frc5687.lib.logging.MetricTracker;
+import org.frc5687.lib.logging.RioLogger;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -53,7 +51,6 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         RioLogger.getInstance().init(_fileLogLevel, _dsLogLevel);
         LiveWindow.disableAllTelemetry();
         DriverStation.silenceJoystickConnectionWarning(true);
-        isSimulation();
 
         metric("Identity", _identityMode.toString());
         info("Robot " + _name + " running in " + _identityMode.toString() + " mode");
@@ -65,7 +62,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
         _time = _timer.get();
-        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
+        //        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
     }
 
     /**
@@ -116,7 +113,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
 
     private void ourPeriodic() {
 
-//        _robotContainer.periodic();
+        //        _robotContainer.periodic();
         // Example of starting a new row of metrics for all instrumented objects.
         // MetricTracker.newMetricRowAll();
         MetricTracker.newMetricRowAll();
@@ -207,7 +204,4 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     }
 
     private void update() {}
-
-   
-    }
-
+}
