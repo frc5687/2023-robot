@@ -31,16 +31,23 @@ public class DriveLights extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-        if (_endEffector.getConeMode()) {
+
+        if (DriverStation.isDisabled()) {
+            _lights.switchAnimation(AnimationType.RAINBOW);
+        } else if(_endEffector.getConeMode()){ 
             _lights.setColor(Constants.CANdle.YELLOW);
-            if (_oi.autoAim() && _driveTrain.isConeDetected()) {
+            if  (_driveTrain.getSlowMode())  {
+                _lights.switchAnimation(AnimationType.SINGLE_FADE);
+            } else if(_oi.autoAim() && _driveTrain.isConeDetected()){
                 _lights.switchAnimation(AnimationType.STROBE);
             } else {
                 _lights.switchAnimation(AnimationType.STATIC);
             }
         } else {
             _lights.setColor(Constants.CANdle.PURPLE);
-            if (_oi.autoAim() && _driveTrain.isCubeDetected()) {
+            if  (_driveTrain.getSlowMode())  {
+                _lights.switchAnimation(AnimationType.SINGLE_FADE);
+            } else if(_oi.autoAim() && _driveTrain.isCubeDetected()){
                 _lights.switchAnimation(AnimationType.STROBE);
             } else {
                 _lights.switchAnimation(AnimationType.STATIC);

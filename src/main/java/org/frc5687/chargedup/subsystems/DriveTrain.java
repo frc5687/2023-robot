@@ -50,6 +50,8 @@ public class DriveTrain extends OutliersSubsystem {
     private final Pigeon2 _imu;
     private final HolonomicDriveController _poseController;
 
+    private boolean _slowMode =  false;
+
     private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
@@ -576,5 +578,11 @@ public class DriveTrain extends OutliersSubsystem {
 
     public double getRotationCorrection() {
         return _headingController.getRotationCorrection(getHeading());
+    }
+    public void setSlowMode(boolean slow) {
+        _slowMode = slow;
+    }
+    public boolean getSlowMode() {
+        return _slowMode;
     }
 }

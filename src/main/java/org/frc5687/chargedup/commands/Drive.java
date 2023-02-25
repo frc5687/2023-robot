@@ -69,6 +69,7 @@ public class Drive extends OutliersCommand {
         rot = Math.signum(rot) * rot * rot;
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
         if (_oi.getSlowMode()) {
+            _driveTrain.setSlowMode(true);
             vx = vec.x() * Constants.DriveTrain.SLOW_MPS;
             vy = vec.y() * Constants.DriveTrain.SLOW_MPS;
             rot =
@@ -76,6 +77,7 @@ public class Drive extends OutliersCommand {
                             * Constants.DriveTrain
                                     .SLOW_ANG_VEL; // negative added to flip rotation in slowmode, driver preference
         } else {
+            _driveTrain.setSlowMode(false);
             vx = vec.x() * Constants.DriveTrain.MAX_MPS;
             vy = vec.y() * Constants.DriveTrain.MAX_MPS;
             rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
