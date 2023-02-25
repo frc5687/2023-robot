@@ -4,6 +4,7 @@ package org.frc5687.chargedup.subsystems;
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
+import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -67,6 +68,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SwerveSetpointGenerator _swerveSetpointGenerator;
     private KinematicLimits _kinematicLimits = KINEMATIC_LIMITS;
 
+    private final BaseStatusSignalValue[] _moduleSignals;
     private final SystemIO _systemIO;
     private Rotation2d _headingOffset;
     private double _pitchOffset;
@@ -184,6 +186,14 @@ public class DriveTrain extends OutliersSubsystem {
 
         _headingController = new SwerveHeadingController(Constants.UPDATE_PERIOD);
 
+        _moduleSignals = new BaseStatusSignalValue[NUM_MODULES * 4];
+        for (int i = 0; i < NUM_MODULES; ++i) {
+            var signals = _modules[i].getSignals();
+            _moduleSignals[(i * 4)] = signals[0];
+            _moduleSignals[(i * 4) + 1] = signals[1];
+            _moduleSignals[(i * 4) + 2] = signals[2];
+            _moduleSignals[(i * 4) + 3] = signals[3];
+        }
         _field = new Field2d();
         readModules();
         setSetpointFromMeasuredModules();
@@ -243,8 +253,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     // use for modules as controller is running at 200Hz.
     public void modulePeriodic() {
+        BaseStatusSignalValue.waitForAll(0.0, _moduleSignals);
         for (DiffSwerveModule diffSwerveModule : _modules) {
-            diffSwerveModule.periodic();
+            diffSwerveModule.controlPeriodic();
         }
     }
 
