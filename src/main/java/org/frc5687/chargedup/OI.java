@@ -51,7 +51,8 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
-
+        
+        _driverGamepad.getLeftBumper().onTrue(null)
         //        _driverGamepad
         //                .getYButton()
         //                .onTrue(

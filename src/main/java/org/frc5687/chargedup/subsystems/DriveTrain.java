@@ -75,6 +75,9 @@ public class DriveTrain extends OutliersSubsystem {
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
 
+    private Translation2d _clockwise;
+    private Translation2d _counterclockwise;
+
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
 
@@ -413,6 +416,10 @@ public class DriveTrain extends OutliersSubsystem {
                                 : new ChassisSpeeds(translationVector.x(), translationVector.y(), rotationalInput), cor);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, MAX_MODULE_SPEED_MPS);
         setModuleStates(swerveModuleStates);
+    }
+
+    public void determineCORForEvasion(ChassisSpeeds speed){
+        
     }
 
     public void updateSwerve(Trajectory.State goal, Rotation2d heading, Translation2d cor) {
