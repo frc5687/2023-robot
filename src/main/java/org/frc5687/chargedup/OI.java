@@ -153,15 +153,15 @@ public class OI extends OutliersProxy {
         }
     }
 
-    public double getCOR(){
-        double cor = 0.0;
-        if (Gamepad.Axes.RIGHT_TRIGGER.getNumber() > 0.0){
-        cor = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber());
-        } else if (Gamepad.Axes.LEFT_TRIGGER.getNumber() > 0.0){
-        cor = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber());
-        }
-        return cor;
-    }
+    // public double getCOR(){
+    //     double cor = 0.0;
+    //     if (Gamepad.Axes.RIGHT_TRIGGER.getNumber() > 0.0){
+    //     cor = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber());
+    //     } else if (Gamepad.Axes.LEFT_TRIGGER.getNumber() > 0.0){
+    //     cor = getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber());
+    //     }
+    //     return cor;
+    // }
 
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         return gamepad.getRawAxis(axisNumber);
