@@ -8,8 +8,9 @@ import org.frc5687.lib.sensors.HallEffect;
 
 public class Elevator extends OutliersSubsystem {
     private OutliersTalon _talon;
-    private HallEffect _outHall;
-    private HallEffect _inHall;
+    private final HallEffect _outHall;
+    private final HallEffect _inHall;
+    private boolean _hasZeroed;
 
     public Elevator(OutliersContainer container) {
         super(container);
@@ -21,17 +22,24 @@ public class Elevator extends OutliersSubsystem {
 
         _outHall = new HallEffect(RobotMap.DIO.OUT_EXT_HALL);
         _inHall = new HallEffect(RobotMap.DIO.IN_EXT_HALL);
+        _hasZeroed = false;
     }
 
     @Override
     public void periodic() {
         super.periodic();
-        if (_outHall.get()) {
+        if (_outHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.OUT_HALL_ENCODER_ROTATIONS);
+            _hasZeroed = true;
+        } else {
+            _hasZeroed = false;
         }
 
-        if (_inHall.get()) {
+        if (_inHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD);
+            _hasZeroed = true;
+        } else {
+            _hasZeroed = false;
         }
     }
 

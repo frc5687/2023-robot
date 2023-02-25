@@ -10,6 +10,7 @@ import org.frc5687.chargedup.commands.Arm.HoldArm;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetWristAngle;
+import org.frc5687.chargedup.commands.EndEffector.HoldWristAngle;
 import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
@@ -23,7 +24,9 @@ public class SemiAutoPickupCone extends SequentialCommandGroup {
                 new AutoExtendElevator(elevator, Constants.ExtendingArm.SHORT_ARM_DISTANCE),
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
                 new ParallelDeadlineGroup(
-                        new WaitForManualGripper(endEffector, oi, false), new HoldArm(arm, setpoint.armAngle)),
+                        new WaitForManualGripper(endEffector, oi, false),
+                        new HoldWristAngle(endEffector, setpoint.wristAngle),
+                        new HoldArm(arm, setpoint.armAngle)),
 
                 //                new CloseConeGripper(endEffector),
                 new AutoSetWristAngle(endEffector, Constants.EndEffector.WRIST_SAFE_ANGLE),
