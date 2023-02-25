@@ -13,8 +13,10 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
 import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersProxy;
+import org.frc5687.lib.logging.RioLogger;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
+import org.frc5687.lib.oi.Gamepad.Axes;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -135,8 +137,20 @@ public class OI extends OutliersProxy {
         return speed;
     }
 
-    public boolean setCOR(){
-        return _driverGamepad.getAButton().getAsBoolean();
+    public boolean setCORRight(){
+        if (_driverGamepad.getRawAxis(Axes.RIGHT_TRIGGER) > 0.0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean setCORLeft(){
+        if (_driverGamepad.getRawAxis(Axes.LEFT_TRIGGER) > 0.0){
+        return true;
+        } else {
+            return false;
+        }
     }
 
     public double getCOR(){
