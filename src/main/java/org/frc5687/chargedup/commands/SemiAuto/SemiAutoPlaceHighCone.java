@@ -9,6 +9,7 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
+import org.frc5687.chargedup.commands.EndEffector.HoldWristAngle;
 import org.frc5687.chargedup.commands.EndEffector.WaitForManualGripper;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
@@ -20,7 +21,9 @@ public class SemiAutoPlaceHighCone extends SequentialCommandGroup {
         addCommands(
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
                 new ParallelDeadlineGroup(
-                        new WaitForManualGripper(endEffector, oi, true), new HoldArm(arm, setpoint.armAngle)),
+                        new WaitForManualGripper(endEffector, oi, true),
+                        new HoldWristAngle(endEffector, setpoint.wristAngle),
+                        new HoldArm(arm, setpoint.armAngle)),
                 new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CONE_ROLLER_SPEED, true),
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint));
     }

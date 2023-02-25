@@ -174,8 +174,8 @@ public class Constants {
                 new OutliersTalon.ClosedLoopConfiguration();
 
         //         update rate of our modules 5ms.
-        //        public static final double kDt = 0.005;
-        public static final double kDt = 0.01;
+        public static final double kDt = 0.005;
+        //        public static final double kDt = 0.01;
         public static final double FALCON_FREE_SPEED =
                 Units.rotationsPerMinuteToRadiansPerSecond(6080); // was 6380 foc is different speed
         public static final double GEAR_RATIO_WHEEL = 6.46875 / 1.2;
@@ -193,11 +193,11 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.05; // radians
+        public static final double Q_AZIMUTH = 0.08; // radians
         public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
         public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 
-        public static final double CONTROL_EFFORT = 5.0;
+        public static final double CONTROL_EFFORT = 4.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
         // Model noise are assuming that our model isn't as accurate as our sensors.
         public static final double MODEL_AZIMUTH_ANGLE_NOISE = 0.1; // radians
@@ -371,7 +371,7 @@ public class Constants {
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
 
-        public static final double GRIPPER_STALL_CURRENT = 14.1; // was 10
+        public static final double GRIPPER_STALL_CURRENT = 15.1; // was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 
