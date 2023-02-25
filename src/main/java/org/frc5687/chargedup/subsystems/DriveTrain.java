@@ -59,7 +59,6 @@ public class DriveTrain extends OutliersSubsystem {
     private final BaseStatusSignalValue[] _moduleSignals;
     private final SystemIO _systemIO;
     private double _yawOffset;
-    private double _pitchOffset;
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
 
@@ -123,7 +122,6 @@ public class DriveTrain extends OutliersSubsystem {
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
         _yawOffset = _imu.getYaw().getValue();
-        _pitchOffset = _imu.getPitch().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -402,13 +400,12 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void zeroGyroscope() {
         _yawOffset = _imu.getYaw().getValue();
-        _pitchOffset = _imu.getPitch().getValue();
         readIMU();
     }
 
     public void readIMU() {
         _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
-        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue() - _pitchOffset);
+        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue());
     }
 
     public TrajectoryConfig getConfig() {

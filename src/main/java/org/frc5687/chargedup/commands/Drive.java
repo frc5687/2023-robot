@@ -30,7 +30,7 @@ public class Drive extends OutliersCommand {
         _driveTrain = driveTrain;
         _endEffector = endEffector;
         _oi = oi;
-        _yCordinateElementController = new PIDController(2.0, 0.0, 0.2);
+        _yCordinateElementController = new PIDController(3.0, 0.0, 0.3);
         //        _headingController = new HeadingController(
         //                new TrapezoidProfile.Constraints(
         //                        Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
@@ -136,7 +136,8 @@ public class Drive extends OutliersCommand {
             closestGameElement = _driveTrain.getClosestCube();
         }
         double power = 0.0;
-        double coneDist = 1.0;
+        // settings
+        double coneDist = vx;
         double elementAngle = 0;
         if (closestGameElement != null) {
             metric("Closest Game Element", closestGameElement.toString());

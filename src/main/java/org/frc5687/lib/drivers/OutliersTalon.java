@@ -62,7 +62,9 @@ public class OutliersTalon extends TalonFX {
     }
 
     public void setMotionMagic(double position) {
-        this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
+        if (_motionMagicVoltage.Position != position) {
+            this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
+        }
     }
 
     public void setTorqueCurrentFOCRate(double hz) {

@@ -16,15 +16,16 @@ public class DriveUntilLevel extends OutliersCommand {
 
     public DriveUntilLevel(DriveTrain driveTrain) {
         _drivetrain = driveTrain;
-        _pitchController = new PIDController(0.06, 0.0, 0.0);
+        _pitchController = new PIDController(3.3, 0.0, 0.01);
         _finished = false;
         _state = LevelingState.INITIAL;
-        addRequirements(_drivetrain);
         _timeout = System.currentTimeMillis();
+        addRequirements(_drivetrain);
     }
 
     @Override
     public void initialize() {
+        error(" Starting Drive");
         _state = LevelingState.INITIAL;
     }
 
@@ -38,7 +39,7 @@ public class DriveUntilLevel extends OutliersCommand {
             case LOOKING_FOR_PITCH:
                 _drivetrain.setVelocity(
                         ChassisSpeeds.fromFieldRelativeSpeeds(
-                                Constants.DriveTrain.DRIVING_DOWN_RAMP_SPEEDS_VX,
+                                Constants.DriveTrain.DRIVING_UP_RAMP_SPEEDS_VX,
                                 0.0,
                                 0.0,
                                 _drivetrain.getHeading()));
