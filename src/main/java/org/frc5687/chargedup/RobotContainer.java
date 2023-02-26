@@ -21,8 +21,6 @@ import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
 import org.frc5687.lib.vision.VisionProcessor;
 
-import java.util.concurrent.ConcurrentMap;
-
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
@@ -83,7 +81,7 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         _driveTrain.startModules();
-        startPeriodic();
+        //        startPeriodic();
     }
 
     public void periodic() {}
@@ -109,9 +107,7 @@ public class RobotContainer extends OutliersContainer {
 
     public Command getAutoCommand() {
         return new SequentialCommandGroup(
-                new AutoPlaceHighCube(_arm, _endEffector, _elevator),
-                new DriveUntilLevel(_driveTrain)
-        );
+                new AutoPlaceHighCube(_arm, _endEffector, _elevator), new DriveUntilLevel(_driveTrain));
     }
 
     public void controllerPeriodic() {
