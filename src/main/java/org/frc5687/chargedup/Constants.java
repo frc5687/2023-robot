@@ -420,5 +420,7 @@ public class Constants {
 
         public static int[] ORANGE_RED = {255, 69, 0};
         public static int[] MAROON = {128, 0, 0};
+
+        public static int[] OFF = {0, 0, 0};
     }
 }

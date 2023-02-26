@@ -15,10 +15,11 @@ public class Lights extends OutliersSubsystem{
     private Animation _animate;
     private AnimationType _currentAnimation;
     private int[] _color;
+    private LightsState _state;
 
     private boolean _dirty  = true;
 
-    public Lights(OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
+    public Lights(OutliersContainer _container) {
         super(_container);
         _candle = new CANdle(RobotMap.CAN.CANDLE.PORT, "rio");
         _config = new CANdleConfiguration();
@@ -29,6 +30,7 @@ public class Lights extends OutliersSubsystem{
         _candle.configAllSettings(_config);
         // set the _color in the constructor to make sure it's not null;
         _color = Constants.CANdle.RED;
+        _state = LightsState.OFF;
         setColor(Constants.CANdle.GREEN);
         switchAnimation(AnimationType.STATIC);
     }
@@ -44,6 +46,14 @@ public class Lights extends OutliersSubsystem{
 
     public int[] getColor() {
         return _color;
+    }
+
+    public LightsState getState() {
+        return _state;
+    }
+
+    public void setState(LightsState state) {
+        _state = state;
     }
 
     private boolean colorsMatch(int[] color1, int[] color2) {
@@ -197,6 +207,24 @@ public class Lights extends OutliersSubsystem{
         private int _value;
 
         AnimationType(int value) {
+            _value = value;
+        }
+
+        public int getValue() {
+            return _value;
+        }
+    }
+
+    public enum LightsState {
+        OFF(0),
+        CONEMODE(1),
+        CUBEMODE(2),
+        SLOWCONE(3),
+        SLOWCUBE(4);
+
+        private int _value;
+
+        LightsState(int value){
             _value = value;
         }
 
