@@ -6,14 +6,11 @@ import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import org.frc5687.lib.drivers.LazyTalonSRX;
-
-import java.awt.*;
 
 import static org.frc5687.chargedup.Constants.EndEffector.*;
 

@@ -34,7 +34,6 @@ public class RobotContainer extends OutliersContainer {
     private Arm _arm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
-    private double _prevDtDiff;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);

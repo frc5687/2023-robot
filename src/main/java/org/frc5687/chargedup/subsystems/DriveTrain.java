@@ -24,7 +24,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
-import java.util.Optional;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
@@ -36,7 +35,6 @@ import org.frc5687.lib.swerve.SwerveSetpointGenerator;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
-import org.photonvision.EstimatedRobotPose;
 
 public class DriveTrain extends OutliersSubsystem {
     // Order we define swerve modules in kinematics
@@ -65,7 +63,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SystemIO _systemIO;
     private double _yawOffset;
     private final VisionProcessor _visionProcessor;
-    private final PhotonProcessor _photonProcessor;
+  //  private final PhotonProcessor _photonProcessor;
 
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
@@ -77,7 +75,7 @@ public class DriveTrain extends OutliersSubsystem {
             Pigeon2 imu) {
         super(container);
         _visionProcessor = processor;
-        _photonProcessor = photonProcessor;
+    //    _photonProcessor = photonProcessor;
         _imu = imu;
         _systemIO = new SystemIO();
 

@@ -1,7 +1,6 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;

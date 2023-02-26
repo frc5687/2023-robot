@@ -253,7 +253,7 @@ public class Constants {
 
         public static final double EXT_ARM_TOLERANCE = .01;
 
-        public static final double ROTATIONS_TO_METERS = 411281.3171 / 2048;
+        public static final double ROTATIONS_TO_METERS = 79.26509;
 
         public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG =
                 new OutliersTalon.ClosedLoopConfiguration();
@@ -267,8 +267,8 @@ public class Constants {
             CONTROLLER_CONFIG.kF = 0;
 
             CONTROLLER_CONFIG.CRUISE_VELOCITY = 100;
-            CONTROLLER_CONFIG.ACCELERATION = 300;
-            CONTROLLER_CONFIG.JERK = 800;
+            CONTROLLER_CONFIG.ACCELERATION = 600;
+            CONTROLLER_CONFIG.JERK = 3200;
         }
     }
 
@@ -277,7 +277,7 @@ public class Constants {
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static final String CAN_BUS = "CANivore";
-        public static final double GEAR_RATIO = 375;
+        public static final double GEAR_RATIO = 240;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
 
         static {
