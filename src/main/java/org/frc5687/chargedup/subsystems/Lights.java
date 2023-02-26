@@ -2,15 +2,11 @@ package org.frc5687.chargedup.subsystems;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
 
-import com.ctre.phoenix.led.CANdle.LEDStripType;
-
-import com.ctre.phoenix.led.*;
 
 public class Lights extends OutliersSubsystem{
 
@@ -18,19 +14,12 @@ public class Lights extends OutliersSubsystem{
     private final CANdleConfiguration _config;
     private Animation _animate;
     private AnimationType _currentAnimation;
-    private DriveTrain _driveTrain;
-    private EndEffector _endEffector;
-    private OI _oi;
     private int[] _color;
 
     private boolean _dirty  = true;
-    private boolean _slow = false;
 
     public Lights(OutliersContainer _container, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         super(_container);
-        _driveTrain = driveTrain;
-        _endEffector = endEffector;
-        _oi = oi;
         _candle = new CANdle(RobotMap.CAN.CANDLE.PORT, "rio");
         _config = new CANdleConfiguration();
         // Set LED strip type

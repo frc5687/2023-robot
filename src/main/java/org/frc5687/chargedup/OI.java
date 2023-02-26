@@ -2,8 +2,6 @@
 package org.frc5687.chargedup;
 
 import static org.frc5687.chargedup.util.Helpers.*;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,7 +13,6 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
-import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
@@ -55,10 +52,18 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
 
-        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        _driverGamepad.getBButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
-        _driverGamepad.getXButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
-        _driverGamepad.getYButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        _driverGamepad
+                .getAButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        _driverGamepad
+                .getBButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
+        _driverGamepad
+                .getXButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
+        _driverGamepad
+                .getYButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
     }
 
     public void initializeButtons(DriveTrain drivetrain){
@@ -78,7 +83,7 @@ public class OI extends OutliersProxy {
     }
 
     public boolean getSlowMode() {
-        return _driverGamepad.getLeftStickButton().getAsBoolean();
+        return _driverGamepad.getLeftBumper().getAsBoolean();
     }
 
     public boolean zeroIMU() {

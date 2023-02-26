@@ -9,6 +9,7 @@ public class IdleGripper extends OutliersCommand {
     private EndEffector _endEffector;
 
     private OI _oi;
+
     public IdleGripper(EndEffector endEffector, OI oi) {
         _endEffector = endEffector;
         _oi = oi;

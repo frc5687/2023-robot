@@ -20,7 +20,7 @@ public class Constants {
     public static final int TICKS_PER_UPDATE = 10;
     public static final double METRIC_FLUSH_PERIOD = 2.0;
     public static final double UPDATE_PERIOD = 0.02; // 20 ms
-    public static final double CONTROL_PERIOD = 0.005; // 10 ms
+    public static final double CONTROL_PERIOD = 0.02; // 10 ms
     public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-9;
 
@@ -128,9 +128,11 @@ public class Constants {
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
-        public static final double SNAP_kP = 3.5;
+        public static final double SNAP_kP = 3.8;
         public static final double SNAP_kI = 0.0;
         public static final double SNAP_kD = 0.3;
+
+        public static final double SNAP_TOLERANCE = Units.degreesToRadians(5.0);
 
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
@@ -251,7 +253,7 @@ public class Constants {
 
         public static final double EXT_ARM_TOLERANCE = .01;
 
-        public static final double ROTATIONS_TO_METERS = 411281.3171 / 2048;
+        public static final double ROTATIONS_TO_METERS = 79.26509;
 
         public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG =
                 new OutliersTalon.ClosedLoopConfiguration();
@@ -265,8 +267,8 @@ public class Constants {
             CONTROLLER_CONFIG.kF = 0;
 
             CONTROLLER_CONFIG.CRUISE_VELOCITY = 100;
-            CONTROLLER_CONFIG.ACCELERATION = 300;
-            CONTROLLER_CONFIG.JERK = 800;
+            CONTROLLER_CONFIG.ACCELERATION = 600;
+            CONTROLLER_CONFIG.JERK = 3200;
         }
     }
 
@@ -275,7 +277,7 @@ public class Constants {
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static final String CAN_BUS = "CANivore";
-        public static final double GEAR_RATIO = 375;
+        public static final double GEAR_RATIO = 240;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
 
         static {
