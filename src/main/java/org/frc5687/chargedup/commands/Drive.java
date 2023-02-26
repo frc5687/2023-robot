@@ -94,7 +94,9 @@ public class Drive extends OutliersCommand {
 
         double controllerPower = _driveTrain.getRotationCorrection();
         TrackedObjectInfo closestGameElement;
-        if (_endEffector != null && _endEffector.getConeMode()) {
+        if(_endEffector == null){
+            closestGameElement = null;
+        }else if (_endEffector.getConeMode()) {
             closestGameElement = _driveTrain.getClosestCone();
         } else {
             closestGameElement = _driveTrain.getClosestCube();

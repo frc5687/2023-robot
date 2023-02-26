@@ -3,6 +3,8 @@ package org.frc5687.chargedup.commands.Arm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 /* This is to hold the last arm state sent to the controller. */
 public class HoldArm extends OutliersCommand {
     private final Arm _arm;

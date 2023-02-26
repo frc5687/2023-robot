@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
+import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.math.Vector2d;
@@ -63,6 +64,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SystemIO _systemIO;
     private double _yawOffset;
     private final VisionProcessor _visionProcessor;
+    private IdentityMode _identityMode;
   //  private final PhotonProcessor _photonProcessor;
 
     private final SwerveDrivePoseEstimator _poseEstimator;
@@ -72,15 +74,17 @@ public class DriveTrain extends OutliersSubsystem {
             OutliersContainer container,
             VisionProcessor processor,
             PhotonProcessor photonProcessor,
-            Pigeon2 imu) {
+            Pigeon2 imu, IdentityMode identityMode) {
         super(container);
         _visionProcessor = processor;
     //    _photonProcessor = photonProcessor;
         _imu = imu;
         _systemIO = new SystemIO();
+        _identityMode = identityMode;
 
         _modules = new DiffSwerveModule[4];
 
+        if(_identityMode == IdentityMode.competition){
         _modules[NORTH_WEST_IDX] =
                 new DiffSwerveModule(
                         NORTH_WEST_CONFIG,
@@ -105,6 +109,33 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
                         RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
                         RobotMap.DIO.ENCODER_NE);
+        } else {
+        _modules[NORTH_WEST_IDX] =
+                new DiffSwerveModule(
+                        NORTH_WEST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_WEST_OUTER,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_WEST_INNER,
+                        RobotMap.PRACTICEDIO.ENCODER_NW);
+        _modules[SOUTH_WEST_IDX] =
+                new DiffSwerveModule(
+                        SOUTH_WEST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_WEST_OUTER,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_WEST_INNER,
+                        RobotMap.PRACTICEDIO.ENCODER_SW);
+        _modules[SOUTH_EAST_IDX] =
+                new DiffSwerveModule(
+                        SOUTH_EAST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_INNER,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_OUTER,
+                        RobotMap.PRACTICEDIO.ENCODER_SE);
+        _modules[NORTH_EAST_IDX] =
+                new DiffSwerveModule(
+                        NORTH_EAST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_INNER,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_OUTER,
+                        RobotMap.PRACTICEDIO.ENCODER_NE);
+            
+        }
 
         // NB: it matters which order these are defined
         _poseController =

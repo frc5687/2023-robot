@@ -71,7 +71,7 @@ public class RobotContainer extends OutliersContainer {
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
-        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
+        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, identityMode);
 
         if (identityMode == IdentityMode.competition){
             _elevator = new Elevator(this);
