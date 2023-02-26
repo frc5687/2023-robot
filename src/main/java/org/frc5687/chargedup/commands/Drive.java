@@ -43,7 +43,7 @@ public class Drive extends OutliersCommand {
         }
         addRequirements(_driveTrain);
     }
-
+    
     @Override
     public void initialize() {
         _driveTrain.startModules();
@@ -94,11 +94,14 @@ public class Drive extends OutliersCommand {
 
         double controllerPower = _driveTrain.getRotationCorrection();
         TrackedObjectInfo closestGameElement;
-        if (_endEffector.getConeMode()) {
+        if(_endEffector == null){
+            closestGameElement = null;
+        }else if (_endEffector.getConeMode()) {
             closestGameElement = _driveTrain.getClosestCone();
         } else {
             closestGameElement = _driveTrain.getClosestCube();
         }
+    
         double power = 0.0;
         // settings
         double coneDist = vx;
@@ -131,7 +134,6 @@ public class Drive extends OutliersCommand {
         //                _driveTrain.getHeading()
         //        ));
     }
-
     @Override
     public boolean isFinished() {
         return super.isFinished();
