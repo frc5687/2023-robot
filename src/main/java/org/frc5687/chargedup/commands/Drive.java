@@ -82,43 +82,6 @@ public class Drive extends OutliersCommand {
             rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
         }
 
-        // 0.01 is the tolerance to start heading controller.
-        //        if (Math.abs(rot) < 0.01) {
-        //            if (_oi.setHeadingNorth()) {
-        //                _headingController.setSnapHeading(new Rotation2d(0.0));
-        //            } else if (_oi.setHeadingEast()) {
-        //                _headingController.setSnapHeading(new Rotation2d(-Math.PI / 2.0));
-        //            } else if (_oi.setHeadingSouth()) {
-        //                _headingController.setSnapHeading(new Rotation2d(Math.PI));
-        //            } else if (_oi.setHeadingWest()) {
-        //                _headingController.setSnapHeading(new Rotation2d(Math.PI / 2.0));
-        //            } else if (_headingController.getHeadingState() ==
-        // SwerveHeadingController.HeadingState.SNAP) {
-        //                _headingController.setState(SwerveHeadingController.HeadingState.MAINTAIN);
-        //                _headingController.setMaintainHeading(_driveTrain.getHeading());
-        ////
-        // _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.MAINTAIN);
-        ////                _headingController.setGoal(_headingController.getGoal());
-        //            } else if (_headingController.getHeadingControllerState() ==
-        // HeadingController.HeadingControllerState.OFF) {
-        //
-        // _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.MAINTAIN);
-        //            }
-        //        } else {
-        //
-        // _headingController.setHeadingControllerState(HeadingController.HeadingControllerState.OFF);
-        //            _headingController.reset();
-        //            _headingController.setGoal(_driveTrain.getHeading().getRadians());
-        //        }
-        //        if (_oi.setHeadingNorth()) {
-        //            _headingController.setSnapHeading(new Rotation2d(0));
-        //            _headingController.setState(SwerveHeadingController.HeadingState.SNAP);
-        //            _lockHeading = true;
-        ////            _headingController.setSnapHeading(new Rotation2d(0));
-        //        } else if (){
-        //            _lockHeading = false;
-        //        }
-
         if (rot == 0 && _driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
             if (!_lockHeading) {
                 _driveTrain.temporaryDisabledHeadingController();
@@ -128,7 +91,7 @@ public class Drive extends OutliersCommand {
             _driveTrain.disableHeadingController();
             _lockHeading = false;
         }
-        
+
         double controllerPower = _driveTrain.getRotationCorrection();
         TrackedObjectInfo closestGameElement;
         if (_endEffector.getConeMode()) {

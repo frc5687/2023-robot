@@ -28,12 +28,13 @@ public class Elevator extends OutliersSubsystem {
     @Override
     public void periodic() {
         super.periodic();
-        if (_outHall.get() && !_hasZeroed) {
+       /*
+         if (_outHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.OUT_HALL_ENCODER_ROTATIONS);
             _hasZeroed = true;
         } else {
             _hasZeroed = false;
-        }
+        } */
 
         if (_inHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD);

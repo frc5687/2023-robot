@@ -35,20 +35,20 @@ public class DriveLights extends OutliersCommand {
 
         if (DriverStation.isDisabled()) {
             _lights.switchAnimation(AnimationType.RAINBOW);
-        } else if(_endEffector.getConeMode()){ 
+        } else if (_endEffector.getConeMode()) {
             _lights.setColor(Constants.CANdle.YELLOW);
-            if  (_driveTrain.getSlowMode())  {
+            if (_driveTrain.getSlowMode()) {
                 _lights.switchAnimation(AnimationType.SINGLE_FADE);
-            } else if(_oi.autoAim() && _driveTrain.isConeDetected()){
+            } else if (_oi.autoAim() && _driveTrain.isConeDetected()) {
                 _lights.switchAnimation(AnimationType.STROBE);
             } else {
                 _lights.switchAnimation(AnimationType.STATIC);
             }
         } else {
             _lights.setColor(Constants.CANdle.PURPLE);
-            if  (_driveTrain.getSlowMode())  {
+            if (_driveTrain.getSlowMode()) {
                 _lights.switchAnimation(AnimationType.SINGLE_FADE);
-            } else if(_oi.autoAim() && _driveTrain.isCubeDetected()){
+            } else if (_oi.autoAim() && _driveTrain.isCubeDetected()) {
                 _lights.switchAnimation(AnimationType.STROBE);
             } else {
                 _lights.switchAnimation(AnimationType.STATIC);
@@ -60,5 +60,10 @@ public class DriveLights extends OutliersCommand {
     public boolean isFinished() {
         // TODO Auto-generated method stub
         return super.isFinished();
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }

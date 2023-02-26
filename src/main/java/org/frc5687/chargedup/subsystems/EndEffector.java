@@ -1,5 +1,6 @@
 package org.frc5687.chargedup.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -33,6 +34,7 @@ public class EndEffector extends OutliersSubsystem {
         _gripper = new LazyTalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
         _wrist.setInverted(Constants.EndEffector.WRIST_INVERTED);
         _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
+        _wrist.setNeutralMode(NeutralMode.Brake);
         
         _wristEncoder = new DutyCycleEncoder(RobotMap.DIO.ENCODER_WRIST);
         _wristEncoder.setDistancePerRotation(2.0 * Math.PI);
