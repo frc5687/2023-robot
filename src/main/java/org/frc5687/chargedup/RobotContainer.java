@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class RobotContainer extends OutliersContainer {
 
-    public static IdentityMode identityMode = IdentityMode.competition;
+    public static IdentityMode identityMode = IdentityMode.practice;
 
     private RioLogger _dsLogLevel;
     private RioLogger _fileLogLevel;
@@ -89,9 +89,11 @@ public class RobotContainer extends OutliersContainer {
         //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
             _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+            error("YOUR IDENTITY MODE IS COMPETITION");
         } else if (identityMode == IdentityMode.practice){ 
             setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
             _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+            error("YOUR IDENTITY MODE IS PRACTICE");
         }
 
         _visionProcessor.start();
