@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
+import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
 import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCube;
+import org.frc5687.chargedup.commands.Auto.DriveForTime;
 import org.frc5687.chargedup.commands.Auto.DriveUntilLevel;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
@@ -106,7 +108,7 @@ public class RobotContainer extends OutliersContainer {
 
     public Command getAutoCommand() {
         return new SequentialCommandGroup(
-                new AutoPlaceHighCube(_arm, _endEffector, _elevator), new DriveUntilLevel(_driveTrain));
+                new AutoPlaceHighCone(_elevator, _endEffector, _arm), new DriveForTime(_driveTrain, 2000));
     }
 
     public void controllerPeriodic() {
