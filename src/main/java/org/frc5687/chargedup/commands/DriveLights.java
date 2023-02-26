@@ -1,5 +1,6 @@
 package org.frc5687.chargedup.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;

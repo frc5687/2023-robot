@@ -38,6 +38,8 @@ public class Lights extends OutliersSubsystem{
         // Sets LED brightness
         _config.brightnessScalar = Constants.CANdle.BRIGHTNESS;
         _candle.configAllSettings(_config);
+        // set the _color in the constructor to make sure it's not null;
+        _color = Constants.CANdle.RED;
         setColor(Constants.CANdle.GREEN);
         switchAnimation(AnimationType.STATIC);
     }
@@ -45,7 +47,7 @@ public class Lights extends OutliersSubsystem{
     // Set the color of the lights
 
     public void setColor(int[] color) {
-        if (_color == null &&  !colorsMatch(color, _color))  {
+        if (_color != null &&  !colorsMatch(color, _color))  {
             _color = color;
             _dirty = true;
         }

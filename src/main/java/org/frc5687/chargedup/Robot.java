@@ -58,9 +58,9 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _robotContainer = new RobotContainer(this, _identityMode);
         _timer = new Timer();
         _robotContainer.init();
-
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
+        _autoCommand = _robotContainer.getAutoCommand();
         _time = _timer.get();
         //        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
     }

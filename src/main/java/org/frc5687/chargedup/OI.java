@@ -3,6 +3,9 @@ package org.frc5687.chargedup;
 
 import static org.frc5687.chargedup.util.Helpers.*;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -10,7 +13,9 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
+import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
+import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
@@ -50,25 +55,10 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
 
-        //        _driverGamepad
-        //                .getYButton()
-        //                .onTrue(
-        //                        new SequentialCommandGroup(
-        //                                new AutoPlaceHighCube(arm, endEffector, elevator),
-        //                                new DriveUntilLevel(drivetrain)));
-        //        _driverGamepad
-        //                .getXButton()
-        //                .onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 2.1,
-        // Rotation2d.fromDegrees(180.0))));
-        //        _driverGamepad
-        //                .getBButton()
-        //                .onTrue(new DriveToPose(drivetrain, new Pose2d(14.6, 4.4,
-        // Rotation2d.fromDegrees(180.0))));
-        //        _operatorGamepad.getBButton().onTrue(new AutoSetWristAngle(
-        //                endEffector, Constants.EndEffector.WRIST_MAX_ANGLE));
-        //        _operatorGamepad.getAButton().onTrue(new AutoSetWristAngle(
-        //                endEffector, Constants.EndEffector.WRIST_MIN_ANGLE
-        //        ));
+        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        _driverGamepad.getBButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
+        _driverGamepad.getXButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
+        _driverGamepad.getYButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
@@ -77,31 +67,27 @@ public class OI extends OutliersProxy {
     }
 
     public boolean releaseRoller() {
-        return _driverGamepad.getAButton().getAsBoolean();
+        return _driverGamepad.getRightBumper().getAsBoolean();
+    }
+
+    public boolean getSlowMode() {
+        return _driverGamepad.getLeftStickButton().getAsBoolean();
+    }
+
+    public boolean zeroIMU() {
+        return _driverGamepad.getStartButton().getAsBoolean();
     }
 
     public boolean manualGrip() {
         return _operatorGamepad.getLeftBumper().getAsBoolean();
     }
 
-    public boolean setHeadingNorth() {
-        return _driverGamepad.getYButton().getAsBoolean();
+    public boolean getIntakeIn() {
+        return _operatorGamepad.getAButton().getAsBoolean();
     }
 
-    public boolean setHeadingEast() {
-        return _driverGamepad.getBButton().getAsBoolean();
-    }
-
-    //    public boolean setHeadingSouth() {
-    //        return _driverGamepad.getAButton().getAsBoolean();
-    //    }
-
-    public boolean setHeadingWest() {
-        return _driverGamepad.getXButton().getAsBoolean();
-    }
-
-    public boolean zeroIMU() {
-        return _driverGamepad.getStartButton().getAsBoolean();
+    public boolean getIntakeOut() {
+        return _operatorGamepad.getBButton().getAsBoolean();
     }
 
     public double getDriveY() {
@@ -150,18 +136,6 @@ public class OI extends OutliersProxy {
         //  speed = applyDeadband(speed, ROTATION_DEADBAND);
         //  return speed;
         return 0;
-    }
-
-    public boolean getIntakeIn() {
-        return _operatorGamepad.getAButton().getAsBoolean();
-    }
-
-    public boolean getIntakeOut() {
-        return _operatorGamepad.getBButton().getAsBoolean();
-    }
-
-    public boolean getSlowMode() {
-        return _driverGamepad.getLeftStickButton().getAsBoolean();
     }
 
     public double getWristSpeed() {

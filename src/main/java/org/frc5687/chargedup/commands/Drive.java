@@ -9,7 +9,9 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
+import org.frc5687.lib.control.HeadingController;
 import org.frc5687.lib.control.SwerveHeadingController;
+import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.vision.TrackedObjectInfo;
 
@@ -28,7 +30,7 @@ public class Drive extends OutliersCommand {
         _driveTrain = driveTrain;
         _endEffector = endEffector;
         _oi = oi;
-        _yCordinateElementController = new PIDController(2.0, 0.0, 0.2);
+        _yCordinateElementController = new PIDController(3.0, 0.0, 0.3);
         //        _headingController = new HeadingController(
         //                new TrapezoidProfile.Constraints(
         //                        Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
@@ -56,7 +58,6 @@ public class Drive extends OutliersCommand {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
             _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
-            _driveTrain.getRotationCorrection();
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
@@ -119,15 +120,16 @@ public class Drive extends OutliersCommand {
         //            _lockHeading = false;
         //        }
 
-        if (rot == 0) {
+        if (rot == 0 && _driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
             if (!_lockHeading) {
                 _driveTrain.temporaryDisabledHeadingController();
             }
             _lockHeading = true;
-        } else {
+        } else if (_driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
             _driveTrain.disableHeadingController();
             _lockHeading = false;
         }
+        
         double controllerPower = _driveTrain.getRotationCorrection();
         TrackedObjectInfo closestGameElement;
         if (_endEffector.getConeMode()) {
@@ -136,7 +138,8 @@ public class Drive extends OutliersCommand {
             closestGameElement = _driveTrain.getClosestCube();
         }
         double power = 0.0;
-        double coneDist = 1.0;
+        // settings
+        double coneDist = vx;
         double elementAngle = 0;
         if (closestGameElement != null) {
             metric("Closest Game Element", closestGameElement.toString());

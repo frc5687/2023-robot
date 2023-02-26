@@ -61,7 +61,6 @@ public class DriveTrain extends OutliersSubsystem {
     private final BaseStatusSignalValue[] _moduleSignals;
     private final SystemIO _systemIO;
     private double _yawOffset;
-    private double _pitchOffset;
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
 
@@ -125,7 +124,6 @@ public class DriveTrain extends OutliersSubsystem {
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
         _yawOffset = _imu.getYaw().getValue();
-        _pitchOffset = _imu.getPitch().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -404,13 +402,12 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void zeroGyroscope() {
         _yawOffset = _imu.getYaw().getValue();
-        _pitchOffset = _imu.getPitch().getValue();
         readIMU();
     }
 
     public void readIMU() {
         _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
-        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue() - _pitchOffset);
+        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue());
     }
 
     public TrajectoryConfig getConfig() {
@@ -540,6 +537,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Odometry Pose", getOdometryPose().toString());
         metric("Current Heading", getHeading().getRadians());
         metric("Heading Controller Target", _headingController.getTargetHeading().getRadians());
+        metric("Heading State", _headingController.getHeadingState().name());
         metric("Rotation State", getYaw());
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
@@ -568,6 +566,10 @@ public class DriveTrain extends OutliersSubsystem {
         public int getValue() {
             return _value;
         }
+    }
+
+    public HeadingState getHeadingControllerState() {
+        return _headingController.getHeadingState();
     }
 
     public void setHeadingControllerState(HeadingState state) {

@@ -124,13 +124,13 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 8.0;
+        public static final double MAINTAIN_kP = 3.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
-        public static final double SNAP_kP = 5.0;
+        public static final double SNAP_kP = 3.5;
         public static final double SNAP_kI = 0.0;
-        public static final double SNAP_kD = 0.5;
+        public static final double SNAP_kD = 0.3;
 
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
@@ -150,7 +150,7 @@ public class Constants {
                 Units.degreesToRadians(5.0); // this is degrees because sad.
 
         public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
-        public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 2.0;
+        public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
     }
 
     public static class DifferentialSwerveModule {

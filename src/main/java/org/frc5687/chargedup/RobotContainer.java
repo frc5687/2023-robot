@@ -5,8 +5,12 @@ package org.frc5687.chargedup;
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
+import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCube;
+import org.frc5687.chargedup.commands.Auto.DriveUntilLevel;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -16,6 +20,8 @@ import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
 import org.frc5687.lib.vision.VisionProcessor;
+
+import java.util.concurrent.ConcurrentMap;
 
 public class RobotContainer extends OutliersContainer {
 
@@ -68,7 +74,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        setDefaultCommand(_endEffector, new IdleGripper(_endEffector));
+        setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
         //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
@@ -76,6 +82,7 @@ public class RobotContainer extends OutliersContainer {
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
+        _driveTrain.startModules();
         startPeriodic();
     }
 
@@ -100,13 +107,16 @@ public class RobotContainer extends OutliersContainer {
         s.setDefaultCommand(subSystem, command);
     }
 
+    public Command getAutoCommand() {
+        return new SequentialCommandGroup(
+                new AutoPlaceHighCube(_arm, _endEffector, _elevator),
+                new DriveUntilLevel(_driveTrain)
+        );
+    }
+
     public void controllerPeriodic() {
-        //        double dt = Timer.getFPGATimestamp();
-        //        SmartDashboard.putNumber("DtDiff", dt - _prevDtDiff);
-        //        NetworkTableInstance.getDefault().flush();
         if (_driveTrain != null) {
             _driveTrain.modulePeriodic();
         }
-        //        _prevDtDiff = dt;
     }
 }
