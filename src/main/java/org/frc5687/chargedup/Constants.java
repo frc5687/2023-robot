@@ -265,8 +265,8 @@ public class Constants {
             CONTROLLER_CONFIG.kF = 0;
 
             CONTROLLER_CONFIG.CRUISE_VELOCITY = 100;
-            CONTROLLER_CONFIG.ACCELERATION = 300;
-            CONTROLLER_CONFIG.JERK = 800;
+            CONTROLLER_CONFIG.ACCELERATION = 600;
+            CONTROLLER_CONFIG.JERK = 3200;
         }
     }
 
