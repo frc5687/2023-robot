@@ -44,7 +44,7 @@ public class Drive extends OutliersCommand {
         }
         addRequirements(_driveTrain);
     }
-
+    
     @Override
     public void initialize() {
         _driveTrain.startModules();
@@ -169,7 +169,6 @@ public class Drive extends OutliersCommand {
         //                _driveTrain.getHeading()
         //        ));
     }
-
     @Override
     public boolean isFinished() {
         return super.isFinished();

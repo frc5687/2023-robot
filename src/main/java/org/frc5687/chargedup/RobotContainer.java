@@ -19,12 +19,20 @@ import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
+import org.frc5687.lib.logging.RioLogger;
 import org.frc5687.lib.vision.VisionProcessor;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.concurrent.ConcurrentMap;
 
 public class RobotContainer extends OutliersContainer {
 
+    public static IdentityMode identityMode = IdentityMode.competition;
+
+    private RioLogger _dsLogLevel;
+    private RioLogger _fileLogLevel;
     private OI _oi;
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
@@ -37,6 +45,7 @@ public class RobotContainer extends OutliersContainer {
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
     private double _prevDtDiff;
+    private String _name;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -62,23 +71,28 @@ public class RobotContainer extends OutliersContainer {
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
-
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
-        _elevator = new Elevator(this);
-        _arm = new Arm(this);
-        _endEffector = new EndEffector(this);
-        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
-        //         This is for auto temporarily, need to fix for both in future.
-        _endEffector.setCubeMode();
 
-        setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
-        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
-        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-        setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
-        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
+        if (identityMode == IdentityMode.competition){
+            _elevator = new Elevator(this);
+            _arm = new Arm(this);
+            _endEffector = new EndEffector(this);
+            _lights = new Lights(this, _driveTrain, _endEffector, _oi);
+        //         This is for auto temporarily, need to fix for both in future.
+            _endEffector.setCubeMode();
+
+            setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
+            setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+            setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+            setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
+            setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
         //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+            _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+        } else if (identityMode == IdentityMode.practice){ 
+            setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
+            _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+        }
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
