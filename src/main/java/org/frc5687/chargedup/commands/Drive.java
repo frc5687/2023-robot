@@ -9,7 +9,6 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
-import org.frc5687.lib.control.HeadingController;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.math.Vector2d;
@@ -140,12 +139,12 @@ public class Drive extends OutliersCommand {
         double power = 0.0;
         // settings
         double coneDist = vx;
-        double elementAngle = 0;
+        //double elementAngle = 0;
         if (closestGameElement != null) {
             metric("Closest Game Element", closestGameElement.toString());
             power = -_yCordinateElementController.calculate(closestGameElement.getY());
             coneDist = closestGameElement.getDistance();
-            elementAngle = closestGameElement.getAzimuthAngle();
+         //   elementAngle = closestGameElement.getAzimuthAngle();
         }
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));

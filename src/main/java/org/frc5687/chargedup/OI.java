@@ -2,8 +2,6 @@
 package org.frc5687.chargedup;
 
 import static org.frc5687.chargedup.util.Helpers.*;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,7 +13,6 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
-import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;

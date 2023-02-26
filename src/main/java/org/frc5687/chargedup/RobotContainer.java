@@ -21,8 +21,6 @@ import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
 import org.frc5687.lib.vision.VisionProcessor;
 
-import java.util.concurrent.ConcurrentMap;
-
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
@@ -36,7 +34,6 @@ public class RobotContainer extends OutliersContainer {
     private Arm _arm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
-    private double _prevDtDiff;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);

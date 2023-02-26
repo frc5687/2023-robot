@@ -6,7 +6,6 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 
 public class CloseConeGripper extends OutliersCommand {
     private EndEffector _endEffector;
-    private long _timeout;
 
     public CloseConeGripper(EndEffector endEffector) {
         _endEffector = endEffector;
@@ -17,7 +16,7 @@ public class CloseConeGripper extends OutliersCommand {
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
-        _timeout = System.currentTimeMillis() + 1600;
+        
     }
 
     @Override

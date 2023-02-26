@@ -62,7 +62,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SystemIO _systemIO;
     private double _yawOffset;
     private final VisionProcessor _visionProcessor;
-    private final PhotonProcessor _photonProcessor;
+  //  private final PhotonProcessor _photonProcessor;
 
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
@@ -74,7 +74,7 @@ public class DriveTrain extends OutliersSubsystem {
             Pigeon2 imu) {
         super(container);
         _visionProcessor = processor;
-        _photonProcessor = photonProcessor;
+    //    _photonProcessor = photonProcessor;
         _imu = imu;
         _systemIO = new SystemIO();
 

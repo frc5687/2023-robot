@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import org.frc5687.chargedup.util.*;
-import org.frc5687.lib.logging.ILoggingSource;
 import org.frc5687.lib.logging.MetricTracker;
 import org.frc5687.lib.logging.RioLogger;
 
@@ -20,7 +19,7 @@ import org.frc5687.lib.logging.RioLogger;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends OutliersRobot implements ILoggingSource {
+public class Robot extends OutliersRobot {
 
     public static OutliersContainer.IdentityMode _identityMode =
             OutliersContainer.IdentityMode.competition;

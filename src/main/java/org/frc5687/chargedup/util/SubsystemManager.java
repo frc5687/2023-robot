@@ -11,11 +11,11 @@ import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 
 public final class SubsystemManager {
     private final List<OutliersSubsystem> _subsystems = new ArrayList<>();
-    private boolean _firstControlRun = true;
+  //  private boolean _firstControlRun = true;
     private boolean _firstDataRun = true;
-    private double _controlPrevTimestamp;
+   // private double _controlPrevTimestamp;
     private double _dataPrevTimestamp;
-    private double _controlDt;
+   // private double _controlDt;
     private double _dataDt;
     //    private final Notifier _controlThread =
     //            new Notifier(
