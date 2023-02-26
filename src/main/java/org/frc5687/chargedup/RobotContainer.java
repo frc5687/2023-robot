@@ -92,7 +92,7 @@ public class RobotContainer extends OutliersContainer {
             error("YOUR IDENTITY MODE IS COMPETITION");
         } else if (identityMode == IdentityMode.practice){ 
             setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
-            _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
+            _oi.initializeButtons(_driveTrain);
             error("YOUR IDENTITY MODE IS PRACTICE");
         }
 
