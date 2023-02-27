@@ -1,25 +1,23 @@
 package org.frc5687.chargedup.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
-import org.frc5687.lib.drivers.OutliersTalon;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import org.frc5687.lib.drivers.LazyTalonSRX;
 
 import static org.frc5687.chargedup.Constants.EndEffector.*;
 
 public class EndEffector extends OutliersSubsystem {
    
-    private final TalonSRX _wrist;
-    private final TalonSRX _gripper;
+    private final LazyTalonSRX _wrist;
+    private final LazyTalonSRX _gripper;
     
     private final DutyCycleEncoder _wristEncoder;
     private final DutyCycleEncoder _gripperEncoder;
@@ -27,13 +25,16 @@ public class EndEffector extends OutliersSubsystem {
     private final PIDController _wristController;
     private final PIDController _gripperController;
 
+    private boolean _isConeMode = true;
+
     public EndEffector(OutliersContainer container) {
         super(container);
 
-        _wrist = new TalonSRX(RobotMap.CAN.TalonSRX.WRIST);
-        _gripper = new TalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
+        _wrist = new LazyTalonSRX(RobotMap.CAN.TalonSRX.WRIST);
+        _gripper = new LazyTalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
         _wrist.setInverted(Constants.EndEffector.WRIST_INVERTED);
         _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
+        _wrist.setNeutralMode(NeutralMode.Brake);
         
         _wristEncoder = new DutyCycleEncoder(RobotMap.DIO.ENCODER_WRIST);
         _wristEncoder.setDistancePerRotation(2.0 * Math.PI);
@@ -52,6 +53,7 @@ public class EndEffector extends OutliersSubsystem {
             GRIPPER_kI,
             GRIPPER_kD
             // new TrapezoidProfile.Constraints(GRIPPER_VEL, GRIPPER_ACCEL)
+
         );
         _gripperController.setIntegratorRange(-GRIPPER_I_ZONE, GRIPPER_I_ZONE);
     }  
@@ -66,6 +68,8 @@ public class EndEffector extends OutliersSubsystem {
         metric("Is Roller Stalled", isRollerStalled());
         metric("Roller Voltage", _gripper.getMotorOutputVoltage());
         metric("Roller Current", _gripper.getStatorCurrent());
+        metric("Is In Cone Mode", _isConeMode);
+        metric("Is In Cube Mode", !_isConeMode);
     }
     public void setWristSpeed(double demand){
         _wrist.set(ControlMode.PercentOutput, demand);
@@ -111,4 +115,16 @@ public class EndEffector extends OutliersSubsystem {
     /*public double getGripperControllerOutput(){
         return _gripperController.calculate(getGripperAngleRadians());
     }*/
+
+    public boolean getConeMode(){
+        return _isConeMode;
+    }
+
+    public void setConeMode(){
+        _isConeMode = true;
+    }
+
+    public void setCubeMode(){
+        _isConeMode = false;
+    }
 }

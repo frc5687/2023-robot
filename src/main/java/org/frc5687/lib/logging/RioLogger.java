@@ -2,7 +2,6 @@
 package org.frc5687.lib.logging;
 
 import edu.wpi.first.wpilibj.DriverStation;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -87,8 +86,7 @@ public class RioLogger {
             // Open File
             FileWriter fstream = new FileWriter(log_name, true);
             log_file =
-                    new BufferedWriter(
-                            fstream); // 8K by default. Probably big enough but size is 2nd arg if
+                    new BufferedWriter(fstream); // 8K by default. Probably big enough but size is 2nd arg if
             // not.
             // End of line
             log_file.write("\n\r");
@@ -157,9 +155,8 @@ public class RioLogger {
 
     /**
      * Clears the buffer in memory and forces things to file. Generally a good idea to use this as
-     * infrequently as possible (because it increases logging overhead), but definitely use it
-     * before the roboRIO might crash without a proper call to the close() method (during brownout,
-     * maybe?)
+     * infrequently as possible (because it increases logging overhead), but definitely use it before
+     * the roboRIO might crash without a proper call to the close() method (during brownout, maybe?)
      *
      * @return Returns 0 on flush success or -1 on failure.
      */

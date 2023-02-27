@@ -29,8 +29,7 @@ public class LinearSystems {
         var Vw = 0.5 * ((Gw * motor.KtNMPerAmp) / (motor.rOhms * Jw));
 
         var A =
-                Matrix.mat(Nat.N3(), Nat.N3())
-                        .fill(0.0, 1.0, 0.0, 0.0, Gs * Cs, 0.0, 0.0, 0.0, Gw * Cw);
+                Matrix.mat(Nat.N3(), Nat.N3()).fill(0.0, 1.0, 0.0, 0.0, Gs * Cs, 0.0, 0.0, 0.0, Gw * Cw);
         var B = Matrix.mat(Nat.N3(), Nat.N2()).fill(0.0, 0.0, Vs, Vs, Vw, -Vw);
         var C = Matrix.mat(Nat.N3(), Nat.N3()).fill(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
         var D =
@@ -62,20 +61,9 @@ public class LinearSystems {
         var Cs = Gs * motor.KtNMPerAmp / Js;
         var Cw = Gw * motor.KtNMPerAmp / Jw;
 
-        var A =
-                Matrix.mat(Nat.N3(), Nat.N3())
-                        .fill(
-                                0.0, 1.0, 0.0,
-                                0.0, fS, 0.0,
-                                0.0, 0.0, fW);
-        var B = Matrix.mat(Nat.N3(), Nat.N2()).fill(
-                0.0, 0.0,
-                Cs, Cs,
-                Cw, -Cw);
-        var C = Matrix.mat(Nat.N3(), Nat.N3()).fill(
-                1.0, 0.0, 0.0,
-                0.0, 1.0, 0.0,
-                0.0, 0.0, 1.0);
+        var A = Matrix.mat(Nat.N3(), Nat.N3()).fill(0.0, 1.0, 0.0, 0.0, fS, 0.0, 0.0, 0.0, fW);
+        var B = Matrix.mat(Nat.N3(), Nat.N2()).fill(0.0, 0.0, Cs, Cs, Cw, -Cw);
+        var C = Matrix.mat(Nat.N3(), Nat.N3()).fill(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
         var D =
                 Matrix.mat(Nat.N3(), Nat.N2())
                         .fill(
@@ -84,14 +72,9 @@ public class LinearSystems {
                                 0.0, 0.0);
         return new LinearSystem<>(A, B, C, D);
     }
+
     public static DCMotor getFalcon500FOC(int numMotors) {
         return new DCMotor(
-                12,
-                5.84,
-                304,
-                1.5,
-                Units.rotationsPerMinuteToRadiansPerSecond(6080.0),
-                numMotors
-        );
+                12, 5.84, 304, 1.5, Units.rotationsPerMinuteToRadiansPerSecond(6080.0), numMotors);
     }
 }

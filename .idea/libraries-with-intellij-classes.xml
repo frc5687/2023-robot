@@ -21,7 +21,8 @@
         </LibraryCoordinatesState>
         <LibraryCoordinatesState>
           <option name="artifactId" value="pycharmPY" />
-          <option name="groupId" value="com.jetbrains.intellij.pycharm" />
+          <option name="groupId"
+            value="com.jetbrains.intellij.pycharm" />
         </LibraryCoordinatesState>
         <LibraryCoordinatesState>
           <option name="artifactId" value="pycharmPY" />
@@ -29,7 +30,8 @@
         </LibraryCoordinatesState>
         <LibraryCoordinatesState>
           <option name="artifactId" value="pycharmPC" />
-          <option name="groupId" value="com.jetbrains.intellij.pycharm" />
+          <option name="groupId"
+            value="com.jetbrains.intellij.pycharm" />
         </LibraryCoordinatesState>
         <LibraryCoordinatesState>
           <option name="artifactId" value="pycharmPC" />

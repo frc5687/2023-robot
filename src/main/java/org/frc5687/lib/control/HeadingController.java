@@ -1,13 +1,13 @@
 package org.frc5687.lib.control;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import org.frc5687.chargedup.Constants;
 
 public class HeadingController {
     public enum HeadingControllerState {
-        OFF, SNAP,
+        OFF,
+        SNAP,
         MAINTAIN,
     }
 
@@ -21,12 +21,12 @@ public class HeadingController {
 
     public HeadingController(TrapezoidProfile.Constraints constraints) {
         _constraints = constraints;
-        _PIDController = new ProfiledPIDController(
-                Constants.DriveTrain.MAINTAIN_kP,
-                Constants.DriveTrain.MAINTAIN_kI,
-                Constants.DriveTrain.MAINTAIN_kD,
-                _constraints
-        );
+        _PIDController =
+                new ProfiledPIDController(
+                        Constants.DriveTrain.MAINTAIN_kP,
+                        Constants.DriveTrain.MAINTAIN_kI,
+                        Constants.DriveTrain.MAINTAIN_kD,
+                        _constraints);
         // _PIDController = new PIDController(
         //         Constants.DriveTrain.MAINTAIN_kP,
         //         Constants.DriveTrain.MAINTAIN_kI,
@@ -34,7 +34,6 @@ public class HeadingController {
         // );
         _PIDController.enableContinuousInput(-Math.PI, Math.PI);
         _PIDController.setTolerance(Constants.DriveTrain.HEADING_TOLERANCE);
-
     }
 
     public HeadingControllerState getHeadingControllerState() {
@@ -61,8 +60,9 @@ public class HeadingController {
     }
 
     public void reset() {
-        _PIDController.reset(_PIDController.getSetpoint()); 
+        _PIDController.reset(_PIDController.getSetpoint());
     }
+
     public double calculate(double currentAngle) {
         _PIDController.setGoal(_setpoint);
         // _PIDController.setSetpoint(_setpoint);
@@ -74,8 +74,7 @@ public class HeadingController {
                 _PIDController.setPID(
                         Constants.DriveTrain.SNAP_kP,
                         Constants.DriveTrain.SNAP_kI,
-                        Constants.DriveTrain.SNAP_kD
-                );
+                        Constants.DriveTrain.SNAP_kD);
                 break;
             case MAINTAIN:
                 _PIDController.setPID(
