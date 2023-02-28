@@ -62,6 +62,12 @@ public class Constants {
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
 
+        public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
+        static {
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.3; // m/s
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -137,9 +143,9 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
 
-        public static final double kP = 1.5;
+        public static final double kP = 3.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 0.2;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -336,6 +342,18 @@ public class Constants {
         public static final Pose2d TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d());
         public static final Pose2d TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d());
         public static final Pose2d TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d());
+
+        // left to right on red side
+        public static final Pose2d RED_FIRST_GOAL = new Pose2d(14.7, 0.519, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SECOND_GOAL = new Pose2d(14.7, 1.08, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_THIRD_GOAL = new Pose2d(14.7, 1.637, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FOURTH_GOAL = new Pose2d(14.7, 2.195, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FIFTH_GOAL = new Pose2d(14.75, 2.753, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SIXTH_GOAL = new Pose2d(14.7, 3.313, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SEVENTH_GOAL =
+                new Pose2d(14.7, 3.872, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_EIGHTH_GOAL = new Pose2d(14.7, 4.431, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_NINTH_GOAL = new Pose2d(14.7, 4.989, Rotation2d.fromDegrees(180));
 
         public static class TrajectoryPoints {
             public static class S {

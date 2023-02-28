@@ -2,11 +2,13 @@
 package org.frc5687.chargedup;
 
 import static org.frc5687.chargedup.util.Helpers.*;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
@@ -52,15 +54,9 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
 
-        _driverGamepad
-                .getAButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        _driverGamepad
-                .getBButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
-        _driverGamepad
-                .getXButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
+        _driverGamepad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL));
+        _driverGamepad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL));
+        _driverGamepad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL));
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));

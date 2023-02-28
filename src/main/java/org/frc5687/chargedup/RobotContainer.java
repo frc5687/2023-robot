@@ -80,7 +80,7 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         _driveTrain.startModules();
-        //        startPeriodic();
+        startPeriodic();
     }
 
     public void periodic() {}

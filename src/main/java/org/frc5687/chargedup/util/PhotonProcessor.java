@@ -4,6 +4,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -100,6 +101,24 @@ public class PhotonProcessor {
     public Optional<EstimatedRobotPose> getSouthEastCameraEstimatedGlobalPose(
             Pose2d prevEstimatedPose) {
         return _southEastCameraEstimator.update();
+    }
+
+    public CompletableFuture<Optional<EstimatedRobotPose>> getNorthCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getNorthCameraEstimatedGlobalPose(prevEstimatedPose));
+    }
+
+    public CompletableFuture<Optional<EstimatedRobotPose>> getSouthWestCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getSouthWestCameraEstimatedGlobalPose(prevEstimatedPose));
+    }
+
+    public CompletableFuture<Optional<EstimatedRobotPose>> getSouthEastCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getSouthEastCameraEstimatedGlobalPose(prevEstimatedPose));
     }
 
     public enum Pipeline {
