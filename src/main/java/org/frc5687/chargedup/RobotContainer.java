@@ -13,19 +13,24 @@ import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
 import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCube;
 import org.frc5687.chargedup.commands.Auto.DriveForTime;
 import org.frc5687.chargedup.commands.Auto.DriveUntilLevel;
+import org.frc5687.chargedup.Constants.Auto;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
+import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
+import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
+    private AutoChooser _autoChooser;
+    private Node _autoFirstNode;
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
     private Robot _robot;
@@ -46,6 +51,8 @@ public class RobotContainer extends OutliersContainer {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Thread.currentThread().setName("Robot Thread");
         _oi = new OI();
+        _autoChooser = new AutoChooser();
+        _autoFirstNode = Node.Unknown;
         // create the vision processor
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
@@ -87,7 +94,10 @@ public class RobotContainer extends OutliersContainer {
 
     public void periodic() {}
 
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        _autoChooser.updateChooser();
+        _autoFirstNode = _autoChooser.getFirstNode();
+    }
 
     @Override
     public void disabledInit() {}
