@@ -102,12 +102,12 @@ public class Drive extends OutliersCommand {
         double power = 0.0;
         // settings
         double coneDist = vx;
-        //double elementAngle = 0;
+        // double elementAngle = 0;
         if (closestGameElement != null) {
             metric("Closest Game Element", closestGameElement.toString());
             power = -_yCordinateElementController.calculate(closestGameElement.getY());
             coneDist = closestGameElement.getDistance();
-         //   elementAngle = closestGameElement.getAzimuthAngle();
+            //   elementAngle = closestGameElement.getAzimuthAngle();
         }
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));

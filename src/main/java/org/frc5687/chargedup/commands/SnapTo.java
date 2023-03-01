@@ -27,7 +27,8 @@ public class SnapTo extends OutliersCommand {
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
-        if (_driveTrain.getHeading().minus(_rotation).getRadians() < Constants.DriveTrain.SNAP_TOLERANCE) {
+        if (_driveTrain.getHeading().minus(_rotation).getRadians()
+                < Constants.DriveTrain.SNAP_TOLERANCE) {
             _driveTrain.setHeadingControllerState(HeadingState.MAINTAIN);
             return true;
         }

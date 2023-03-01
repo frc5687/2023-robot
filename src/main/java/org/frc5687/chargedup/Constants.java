@@ -276,6 +276,8 @@ public class Constants {
         public static final double kDt = 0.02;
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
+        public static double MOTOR_MAX_VEL =
+                Units.rotationsPerMinuteToRadiansPerSecond(6080); // foc enabled rpm
         public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 240;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
@@ -312,11 +314,12 @@ public class Constants {
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
-        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
-        public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
+        //        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
+        public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(150);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
-        public static final double VERTICAL_ARM_ANGLE = 1.22; // rads
+        public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
         public static final double LOWER_EXTREME = 0.378;
         public static final double PLACE_ARM_ANGLE = 0.255; // testing
     }
@@ -353,7 +356,7 @@ public class Constants {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 2.2;
+        public static final double WRIST_kP = 2.5;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0.03;
 
