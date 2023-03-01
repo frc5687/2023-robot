@@ -2,6 +2,7 @@
 package org.frc5687.chargedup;
 
 import static org.frc5687.chargedup.util.Helpers.*;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
@@ -52,15 +53,15 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
 
-        _driverGamepad
-                .getAButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        _driverGamepad
-                .getBButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
-        _driverGamepad
-                .getXButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
+        // _driverGamepad
+        //         .getAButton()
+        //         .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        // _driverGamepad
+        //         .getBButton()
+        //         .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
+        // _driverGamepad
+        //         .getXButton()
+        //         .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
@@ -68,7 +69,7 @@ public class OI extends OutliersProxy {
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-        return _driverGamepad.getRightStickButton().getAsBoolean();
+        return _driverGamepad.getAButton().getAsBoolean();
     }
 
     public boolean releaseRoller() {
