@@ -8,10 +8,13 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
 import org.frc5687.chargedup.commands.Auto.DriveForTime;
 import org.frc5687.chargedup.commands.Auto.OnePieceAuto;
+import org.frc5687.chargedup.commands.Auto.OnePieceLevelAuto;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -115,7 +118,15 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public Command getAutoCommand() {
-        return new OnePieceAuto(_driveTrain, _arm, _elevator, _endEffector);
+        if (_autoFirstNode == Node.OneCone) {
+            return new OnePieceAuto(_driveTrain, _arm, _elevator, _endEffector);
+        } else if (_autoFirstNode == Node.FiveCube) {
+            return new OnePieceLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+        } else if (_autoFirstNode == Node.NineCone) {
+            return new OnePieceAuto(_driveTrain, _arm, _elevator, _endEffector);
+        } else {
+            return new WaitCommand(15);
+        }
     }
 
     public void controllerPeriodic() {
