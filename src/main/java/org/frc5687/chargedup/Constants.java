@@ -143,7 +143,7 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
 
-        public static final double kP = 3.0;
+        public static final double kP = 3.3;
         public static final double kI = 0.0;
         public static final double kD = 0.2;
 

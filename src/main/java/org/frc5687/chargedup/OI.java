@@ -23,18 +23,28 @@ import org.frc5687.lib.oi.Gamepad;
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
     protected Gamepad _operatorGamepad;
+    protected Gamepad _buttonpad;
     protected Trigger _driverLeftTrigger;
     protected Trigger _driverRightTrigger;
+    protected Trigger _buttonLeftTrigger;
+    protected Trigger _buttonRightTrigger;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
+        _buttonpad = new Gamepad(2);
         _driverLeftTrigger =
                 new Trigger(
                         new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
         _driverRightTrigger =
+                    new Trigger(
+                            new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
+        _buttonLeftTrigger  =
                 new Trigger(
-                        new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
+                        new AxisButton(_buttonpad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
+        _buttonRightTrigger =
+                new Trigger(
+                        new AxisButton(_buttonpad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
     }
 
     public void initializeButtons(
@@ -60,6 +70,16 @@ public class OI extends OutliersProxy {
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL));
+        _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SECOND_GOAL));
+        _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL));
+        _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FOURTH_GOAL));
+        _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL));
+        _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SIXTH_GOAL));
+        _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SEVENTH_GOAL));
+        _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_EIGHTH_GOAL));
+        _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_NINTH_GOAL));
+        
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
