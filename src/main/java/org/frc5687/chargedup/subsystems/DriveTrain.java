@@ -67,6 +67,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
+    private Mode _mode = Mode.NORMAL;
 
     public DriveTrain(
             OutliersContainer container,
@@ -419,7 +420,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void setKinematicLimits(KinematicLimits limits) {
-        if (limits != KINEMATIC_LIMITS) {
+        if (limits != _kinematicLimits) {
             _kinematicLimits = limits;
         }
     }
@@ -565,6 +566,22 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
 
+    public enum Mode {
+        NORMAL(0),
+        SLOW(1),
+        VISION(2);
+
+        private final int _value;
+
+        Mode(int value) {
+            _value = value;
+        }
+
+        public int getValue() {
+            return _value;
+        }
+    }
+
     public HeadingState getHeadingControllerState() {
         return _headingController.getHeadingState();
     }
@@ -577,11 +594,11 @@ public class DriveTrain extends OutliersSubsystem {
         return _headingController.getRotationCorrection(getHeading());
     }
 
-    public void setSlowMode(boolean slow) {
-        _slowMode = slow;
+    public void setMode(Mode mode) {
+        _mode = mode;
     }
 
-    public boolean getSlowMode() {
-        return _slowMode;
+    public Mode getMode() {
+        return _mode;
     }
 }
