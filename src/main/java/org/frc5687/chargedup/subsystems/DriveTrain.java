@@ -29,6 +29,7 @@ import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
+import org.frc5687.lib.math.GeometryUtil;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.swerve.SwerveSetpoint;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator;
@@ -62,6 +63,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     private Translation2d _centerOfRotation;
 
+    private Translation2d _clockwiseCenter;
+    private Translation2d _counterClockwiseCenter;
+
     private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
@@ -77,6 +81,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     private Translation2d _clockwise;
     private Translation2d _counterclockwise;
+    private Vector2d _prevControlVector;
 
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
@@ -93,6 +98,7 @@ public class DriveTrain extends OutliersSubsystem {
         _systemIO = new SystemIO();
 
         _centerOfRotation = new Translation2d();
+        _prevControlVector = new Vector2d();
 
         _modules = new DiffSwerveModule[4];
 
@@ -359,19 +365,19 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.setpoint;
     }
 
-    public Translation2d getDesiredCOR(double rotfrompos){
-        Translation2d cor = new Translation2d();
-        if (Units.radiansToDegrees(getYaw()) + rotfrompos > 90 && Units.radiansToDegrees(getYaw()) < 180){
-            cor = new Translation2d(1, 1);
-        } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 180 && Units.radiansToDegrees(getYaw()) < 270){
-            cor = new Translation2d(-1, 1);
-        } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 270 && Units.radiansToDegrees(getYaw()) < 360){
-            cor = new Translation2d(-1, -1);
-        } else {
-            cor = new Translation2d(1, -1);
-        }
-            return cor;
-    }
+    // public Translation2d getDesiredCOR(double rotfrompos){
+    //     Translation2d cor = new Translation2d();
+    //     if (Units.radiansToDegrees(getYaw()) + rotfrompos > 90 && Units.radiansToDegrees(getYaw()) < 180){
+    //         cor = new Translation2d(1, 1);
+    //     } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 180 && Units.radiansToDegrees(getYaw()) < 270){
+    //         cor = new Translation2d(-1, 1);
+    //     } else if (Units.radiansToDegrees(getYaw()) + rotfrompos > 270 && Units.radiansToDegrees(getYaw()) < 360){
+    //         cor = new Translation2d(-1, -1);
+    //     } else {
+    //         cor = new Translation2d(1, -1);
+    //     }
+    //         return cor;
+    // }
 
     public void updateDesiredStates() {
 //        Pose2d robotPoseVel = new Pose2d(
@@ -419,9 +425,26 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void determineCORForEvasion(ChassisSpeeds speed){
-        
+       Translation2d currentLocation =  _prevControlVector.toTranslation().rotateBy(GeometryUtil.inverse(getHeading()));
+       _clockwiseCenter = _modules[0].getModuleLocation(); 
+       _counterClockwiseCenter = _modules[_modules.length - 1].getModuleLocation();
+
+       for (int i = 0; i < _modules.length - 1; i++){
+        Vector2d clockwise = GeometryUtil.translationToVector(_modules[i].getModuleLocation());
+        Vector2d counterClockwise = GeometryUtil.translationToVector(_modules[i + 1].getModuleLocation());
+        if (GeometryUtil.translationToVector(currentLocation).isWithinAngle(clockwise, counterClockwise)){
+            _clockwiseCenter = clockwise.toTranslation();
+            _counterClockwiseCenter = counterClockwise.toTranslation();
+        }
+       }
     }
 
+    public Translation2d getClockwiseCOR(){
+        return _clockwiseCenter;
+    }
+    public Translation2d getCounterClockwiseCOR(){
+        return _counterClockwiseCenter;
+    }
     public void updateSwerve(Trajectory.State goal, Rotation2d heading, Translation2d cor) {
         ChassisSpeeds adjustedSpeeds = _poseController.calculate(getOdometryPose(), goal, heading);
         SwerveModuleState[] moduleStates = _kinematics.toSwerveModuleStates(adjustedSpeeds, cor);

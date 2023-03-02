@@ -39,7 +39,7 @@ public class DriveTrajectory extends OutliersCommand {
         super.execute();
         // double
         Trajectory.State goal = _trajectory.sample(_timer.get());
-        Translation2d cor = _driveTrain.getDesiredCOR(_rotfrompos);
+        Translation2d cor = new Translation2d(0, 1);
         _driveTrain.updateSwerve(goal, new Rotation2d(0.0), cor);
     }
 
