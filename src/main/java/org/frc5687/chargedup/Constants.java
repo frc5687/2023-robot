@@ -54,12 +54,29 @@ public class Constants {
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
+
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
             KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
+        }
+
+        public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            SLOW_KINEMATIC_LIMITS.maxDriveVelocity = 2; // m/s
+            SLOW_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            SLOW_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
+
+        public static final KinematicLimits VISION_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            VISION_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
+            VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
 
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
@@ -95,7 +112,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.08;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.062;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
