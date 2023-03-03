@@ -151,6 +151,9 @@ public class Constants {
 
         public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
         public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 2.0;
+
+        public static final double PREV_VECTOR_CHANGE_X = 0.05;
+        public static final double PREV_VECTOR_CHANGE_Y = 0.05;
     }
 
     public static class DifferentialSwerveModule {

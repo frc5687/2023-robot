@@ -367,6 +367,14 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.previousChassisSpeeds;
     }
 
+    public Vector2d getPrevVector2d(){
+        return _prevControlVector;
+    }
+
+    public void setPrevVector2d(double x, double y){
+        _prevControlVector = new Vector2d(x, y);
+    }
+
     public SwerveSetpoint getSetpoint() {
         return _systemIO.setpoint;
     }
