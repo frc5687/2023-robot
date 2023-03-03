@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
 import org.frc5687.chargedup.commands.Auto.DriveForTime;
-import org.frc5687.chargedup.commands.Auto.OnePieceAuto;
-import org.frc5687.chargedup.commands.Auto.OnePieceLevelAuto;
+import org.frc5687.chargedup.commands.Auto.OneConeAuto;
+import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
+import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
+import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -107,7 +109,9 @@ public class RobotContainer extends OutliersContainer {
     public void teleopInit() {}
 
     @Override
-    public void autonomousInit() {}
+    public void autonomousInit() {
+        // _autoChooser.updateChooser();
+    }
 
     private void setDefaultCommand(OutliersSubsystem subSystem, OutliersCommand command) {
         if (subSystem == null || command == null) {
@@ -118,15 +122,39 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public Command getAutoCommand() {
-        if (_autoFirstNode == Node.OneCone) {
-            return new OnePieceAuto(_driveTrain, _arm, _elevator, _endEffector);
-        } else if (_autoFirstNode == Node.FiveCube) {
-            return new OnePieceLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-        } else if (_autoFirstNode == Node.NineCone) {
-            return new OnePieceAuto(_driveTrain, _arm, _elevator, _endEffector);
-        } else {
-            return new WaitCommand(15);
-        }
+        // if (_autoFirstNode == Node.OneCone) {
+        //     return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        // } else if (_autoFirstNode == Node.FiveCube) {
+        //     return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+        // } else if (_autoFirstNode == Node.NineCone) {
+        //     return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        // } else {
+        //     return new WaitCommand(15);
+        // }
+        error("Current mode is: " + _autoFirstNode);
+        switch (_autoFirstNode) {
+            case OneCone:
+                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case TwoCube:
+                return new WaitCommand(15);
+            case ThreeCone:
+                return new WaitCommand(15);
+            case FourCone:
+                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case FiveCube:
+                return new OneCubeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case SixCone:
+                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case SevenCone:
+                return new WaitCommand(15);
+            case EightCube:
+                return new WaitCommand(15);
+            case NineCone:
+                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+            default:
+                error("uh oh");
+                return new WaitCommand(15);
+        }    
     }
 
     public void controllerPeriodic() {
