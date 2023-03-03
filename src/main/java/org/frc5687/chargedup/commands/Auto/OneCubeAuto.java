@@ -20,7 +20,7 @@ public class OneCubeAuto extends SequentialCommandGroup{
         addCommands(
             new SequentialCommandGroup(
                 Commands.runOnce(endEffector::setCubeMode, endEffector),
-                new AutoPlaceHighCube(elevator, endEffector, arm), new DriveForTime(driveTrain, 2000)
+                new AutoPlaceHighCube(elevator, endEffector, arm), new DriveForTime(driveTrain, 2500)
             )
         );
     }

@@ -20,7 +20,7 @@ public class OneConeAuto extends SequentialCommandGroup{
         addCommands(
             new SequentialCommandGroup(
                 Commands.runOnce(endEffector::setConeMode, endEffector),
-                new AutoPlaceHighCone(elevator, endEffector, arm), new DriveForTime(driveTrain, 2000)
+                new AutoPlaceHighCone(elevator, endEffector, arm), new DriveForTime(driveTrain, 2500)
             )
         );
     }
