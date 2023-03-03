@@ -69,7 +69,7 @@ public class Drive extends OutliersCommand {
             _driveTrain.getRotationCorrection();
         }
 
-        if (_oi.getTranslationVector().x() - _driveTrain.getPrevVector2d().x() > Constants.DriveTrain.PREV_VECTOR_CHANGE_X || _oi.getTranslationVector().y() - _driveTrain.getPrevVector2d().y() > Constants.DriveTrain.PREV_VECTOR_CHANGE_Y){
+        if ((_oi.getTranslationVector().x() - _driveTrain.getPrevVector2d().x() > Constants.DriveTrain.PREV_VECTOR_CHANGE_X || _oi.getTranslationVector().y() - _driveTrain.getPrevVector2d().y() > Constants.DriveTrain.PREV_VECTOR_CHANGE_Y) && !_oi.getTranslationVector().equals(new Vector2d(0, 0))){
             _driveTrain.setPrevVector2d(_oi.getTranslationVector().x(), _oi.getTranslationVector().y());
         }
         _driveTrain.determineCORForEvasion(_driveTrain.getPrevVector2d());
