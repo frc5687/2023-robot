@@ -59,7 +59,6 @@ public class Robot extends OutliersRobot {
         _robotContainer.init();
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
-        _autoCommand = _robotContainer.getAutoCommand();
         _time = _timer.get();
         //        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
     }
@@ -89,6 +88,7 @@ public class Robot extends OutliersRobot {
     @Override
     public void autonomousInit() {
         _fmsConnected = DriverStation.isFMSAttached();
+        _autoCommand = _robotContainer.getAutoCommand();
         _robotContainer.autonomousInit();
         if (_autoCommand != null) {
             _autoCommand.schedule();
