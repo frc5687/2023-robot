@@ -334,7 +334,7 @@ public class Constants {
             public static final Pose2d BLUE_NODE_NINE_GOAL = new Pose2d(1.795, 4.989, new Rotation2d());
  
             public static final Pose2d RED_NODE_ONE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI)); 
-            public static final Pose2d RED_NODE_TWO_GOAL = new Pose2d(1.795, new Rotation3d(Math.PI));
+            public static final Pose2d RED_NODE_TWO_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
             public static final Pose2d RED_NODE_THREE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
             public static final Pose2d RED_NODE_FOUR_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
             public static final Pose2d RED_NODE_FIVE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));

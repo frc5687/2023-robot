@@ -9,6 +9,8 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class TwoPieceAuto extends SequentialCommandGroup {
@@ -26,45 +28,90 @@ public class TwoPieceAuto extends SequentialCommandGroup {
         Arm arm,
         Lights lights 
     ){
-        /* var config = driveTrain.getConfig();
+         var config = driveTrain.getConfig();
          switch(Node) {
-            case Node.1cone:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.NODE_ONE_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.NODE_ONE_TRAJECTORY_TWO, config);
+            case OneCone:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.RED_NODE_ONE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.RED_NODE_ONE_TRAJECTORY_TWO, config);
+            } else { 
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.BLUE_NODE_ONE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.BLUE_NODE_ONE_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.2cube:
-               _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node2.NODE_TWO_TRAJECTORY_ONE, config);
-               _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node2.NODE_TWO_TRAJECTORY_TWO, config);
+            case TwoCube:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node2.RED_NODE_TWO_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node2.RED_NODE_TWO_TRAJECTORY_TWO, config);
+            } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node2.BLUE_NODE_TWO_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node2.BLUE_NODE_TWO_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.3cone:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node3.NODE_THREE_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node3.NODE_THREE_TRAJECTORY_TWO, config);
+            case ThreeCone:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node3.RED_NODE_THREE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node3.RED_NODE_THREE_TRAJECTORY_TWO, config);
+            } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node3.BLUE_NODE_THREE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node3.BLUE_NODE_THREE_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.4cone:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node4.NODE_FOUR_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node4.NODE_FOUR_TRAJECTORY_TWO, config);
+            case FourCone:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node4.RED_NODE_FOUR_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node4.RED_NODE_FOUR_TRAJECTORY_TWO, config);
+            } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node4.BLUE_NODE_FOUR_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node4.BLUE_NODE_FOUR_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.5cube:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node5.NODE_FIVE_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node5.NODE_FIVE_TRAJECTORY_TWO, config);
+            case FiveCube:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node5.RED_NODE_FIVE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node5.RED_NODE_FIVE_TRAJECTORY_TWO, config);
+            } else{
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node5.BLUE_NODE_FIVE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node5.BLUE_NODE_FIVE_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.6cone:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node6.NODE_SIX_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node6.NODE_SIX_TRAJECTORY_TWO, config);
+            case SixCone:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node6.RED_NODE_SIX_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node6.RED_NODE_SIX_TRAJECTORY_TWO, config);
+                } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node6.BLUE_NODE_SIX_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node6.BLUE_NODE_SIX_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.7cone:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node7.NODE_SEVEN_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node7.NODE_SEVEN_TRAJECTORY_TWO, config);
+            case SevenCone:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node7.RED_NODE_SEVEN_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node7.RED_NODE_SEVEN_TRAJECTORY_TWO, config);
+                } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node7.BLUE_NODE_SEVEN_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node7.BLUE_NODE_SEVEN_TRAJECTORY_TWO, config);
+                }    
                 break;
-            case Node.8cube:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node8.NODE_EIGHT_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node8.NODE_EIGHT_TRAJECTORY_TWO, config);
+            case EightCube:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_TWO, config);
+                } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node8.BLUE_NODE_EIGHT_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node8.BLUE_NODE_EIGHT_TRAJECTORY_TWO, config);
+                }
                 break;
-            case Node.9cone:
-                _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.NODE_NINE_TRAJECTORY_ONE, config);
-                _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.NODE_NINE_TRAJECTORY_TWO, config);
+            case NineCone:
+                if (DriverStation.getAlliance() == Alliance.Red){
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.RED_NODE_NINE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.RED_NODE_NINE_TRAJECTORY_TWO, config);
+                } else {
+                    _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_ONE, config);
+                    _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_TWO, config);
+                }    
                 break; 
-        } */
+        } 
                    
         
 

@@ -25,7 +25,6 @@ public class DriveLights extends OutliersCommand {
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         super.initialize();
     }
 
@@ -58,7 +57,6 @@ public class DriveLights extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return super.isFinished();
     }
 

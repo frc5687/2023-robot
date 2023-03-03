@@ -16,8 +16,6 @@ public class AutoPlaceHighCone extends SequentialCommandGroup {
         addCommands(
             new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
             new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CONE_ROLLER_SPEED, true),
-            new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint));
-                   
-    
+            new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint));     
     }
 }
