@@ -56,6 +56,8 @@ public class Drive extends OutliersCommand {
         _driveTrain.setFieldRelative(true);
 //        _headingController.setGoal(_driveTrain.getHeading().getRadians());
         // _headingController.setMaintainHeading(_driveTrain.getHeading());
+        _driveTrain.setPrevVelocity(_driveTrain.getDesiredChassisSpeeds());
+        _driveTrain.determineCORForEvasion(_oi.getTranslationVector());
        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
@@ -73,7 +75,6 @@ public class Drive extends OutliersCommand {
         if (_oi.setCORRight()){
             _driveTrain.setCenterOfRotation(_driveTrain.getClockwiseCOR());
         }
-        
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
                 Helpers.axisToSegmentedUnitCircleRadians(

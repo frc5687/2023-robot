@@ -6,7 +6,6 @@ import org.frc5687.lib.math.Vector2d;
 
 /** Created by Ben Bernard on 6/4/2018. */
 public class Helpers {
-
     /** Limit motor values to the -1.0 to +1.0 range. */
     public static double limit(double value) {
         return limit(value, 1.0);

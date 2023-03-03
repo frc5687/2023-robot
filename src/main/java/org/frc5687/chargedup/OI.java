@@ -3,6 +3,8 @@ package org.frc5687.chargedup;
 
 import static org.frc5687.chargedup.util.Helpers.*;
 
+import java.util.Vector;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -14,6 +16,7 @@ import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.logging.RioLogger;
+import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.lib.oi.Gamepad.Axes;
@@ -123,6 +126,11 @@ public class OI extends OutliersProxy {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_X.getNumber());
         speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         return speed;
+    }
+
+    public Vector2d getTranslationVector(){
+        Vector2d transVector = new Vector2d(-getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber()), -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_X.getNumber()));
+        return transVector;
     }
 
     public double getArmY() {

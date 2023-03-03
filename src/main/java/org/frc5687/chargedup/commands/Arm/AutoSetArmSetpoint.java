@@ -5,8 +5,9 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 
-public class AutoSetArmSetpoint extends OutliersCommand {
+import com.ctre.phoenix.sensors.CANCoder;
 
+public class AutoSetArmSetpoint extends OutliersCommand {
     private Arm _arm;
     private TrapezoidProfile.State _lastProfiledReference;
 

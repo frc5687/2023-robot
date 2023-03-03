@@ -4,6 +4,7 @@ package org.frc5687.chargedup.subsystems;
 import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
+import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.math.VecBuilder;
@@ -210,6 +211,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     public static class SystemIO {
         ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+        ChassisSpeeds previousChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
         SwerveModuleState[] measuredStates =
                 new SwerveModuleState[] {
                     new SwerveModuleState(),
@@ -361,6 +363,10 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.desiredChassisSpeeds;
     }
 
+    public ChassisSpeeds getPrevChassisSpeeds(){
+        return _systemIO.previousChassisSpeeds;
+    }
+
     public SwerveSetpoint getSetpoint() {
         return _systemIO.setpoint;
     }
@@ -406,6 +412,10 @@ public class DriveTrain extends OutliersSubsystem {
         _systemIO.desiredChassisSpeeds = chassisSpeeds;
     }
 
+    public void setPrevVelocity(ChassisSpeeds prevChassisSpeeds){
+        _systemIO.previousChassisSpeeds = prevChassisSpeeds;
+    }
+
     public void setVelocityPose(Pose2d pose) {
         ChassisSpeeds speeds =
                 _poseController.calculate(
@@ -424,7 +434,7 @@ public class DriveTrain extends OutliersSubsystem {
         setModuleStates(swerveModuleStates);
     }
 
-    public void determineCORForEvasion(ChassisSpeeds speed){
+    public void determineCORForEvasion(Vector2d controlVector){
        Translation2d currentLocation =  _prevControlVector.toTranslation().rotateBy(GeometryUtil.inverse(getHeading()));
        _clockwiseCenter = _modules[0].getModuleLocation(); 
        _counterClockwiseCenter = _modules[_modules.length - 1].getModuleLocation();
