@@ -54,12 +54,29 @@ public class Constants {
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
+
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
             KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
+        }
+
+        public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            SLOW_KINEMATIC_LIMITS.maxDriveVelocity = 2; // m/s
+            SLOW_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            SLOW_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
+
+        public static final KinematicLimits VISION_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            VISION_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
+            VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
 
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
@@ -95,7 +112,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.08;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.062;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
@@ -276,6 +293,8 @@ public class Constants {
         public static final double kDt = 0.02;
         public static double MOTOR_kT = DCMotor.getFalcon500(1).KtNMPerAmp;
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
+        public static double MOTOR_MAX_VEL =
+                Units.rotationsPerMinuteToRadiansPerSecond(6080); // foc enabled rpm
         public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 240;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
@@ -312,11 +331,12 @@ public class Constants {
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
-        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
-        public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
+        //        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
+        public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(150);
 
         public static final double ANGLE_TOLERANCE = 0.05; // rads
-        public static final double VERTICAL_ARM_ANGLE = 1.22; // rads
+        public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
         public static final double LOWER_EXTREME = 0.378;
         public static final double PLACE_ARM_ANGLE = 0.255; // testing
     } 
@@ -437,7 +457,7 @@ public class Constants {
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
-        public static final double WRIST_kP = 2.2;
+        public static final double WRIST_kP = 2.5;
         public static final double WRIST_kI = 0;
         public static final double WRIST_kD = 0.03;
 

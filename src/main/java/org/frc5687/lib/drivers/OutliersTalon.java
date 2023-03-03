@@ -24,7 +24,7 @@ import com.ctre.phoenixpro.signals.NeutralModeValue;
  * duplicate set commands. (By default the Talon flushes the Tx buffer on every set call).
  */
 public class OutliersTalon extends TalonFX {
-   // private final String _name;
+    // private final String _name;
     private final TalonFXConfigurator _configurator;
     private TalonFXConfiguration _configuration = new TalonFXConfiguration();
 
@@ -46,7 +46,7 @@ public class OutliersTalon extends TalonFX {
         _configurator = this.getConfigurator();
         _configurator.apply(_configuration);
         setPercentOutput(0.0);
-       // _name = name;
+        // _name = name;
     }
 
     public void setPercentOutput(double output) {

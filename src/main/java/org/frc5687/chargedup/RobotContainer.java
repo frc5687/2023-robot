@@ -8,21 +8,32 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
+import org.frc5687.chargedup.commands.Auto.DriveForTime;
+import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
+import org.frc5687.chargedup.commands.Auto.*;
+import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
+import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
+import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
+import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
 
     private OI _oi;
+    private AutoChooser _autoChooser;
+    private Node _autoFirstNode;
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
     private Robot _robot;
@@ -43,6 +54,8 @@ public class RobotContainer extends OutliersContainer {
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         Thread.currentThread().setName("Robot Thread");
         _oi = new OI();
+        _autoChooser = new AutoChooser();
+        _autoFirstNode = Node.Unknown;
         // create the vision processor
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
@@ -84,7 +97,10 @@ public class RobotContainer extends OutliersContainer {
 
     public void periodic() {}
 
-    public void disabledPeriodic() {}
+    public void disabledPeriodic() {
+        _autoChooser.updateChooser();
+        _autoFirstNode = _autoChooser.getFirstNode();
+    }
 
     @Override
     public void disabledInit() {}
@@ -93,7 +109,9 @@ public class RobotContainer extends OutliersContainer {
     public void teleopInit() {}
 
     @Override
-    public void autonomousInit() {}
+    public void autonomousInit() {
+        // _autoChooser.updateChooser();
+    }
 
     private void setDefaultCommand(OutliersSubsystem subSystem, OutliersCommand command) {
         if (subSystem == null || command == null) {
@@ -104,8 +122,39 @@ public class RobotContainer extends OutliersContainer {
     }
 
     public Command getAutoCommand() {
-        return new SequentialCommandGroup(
-                new AutoPlaceHighCone(_elevator, _endEffector, _arm));
+        // if (_autoFirstNode == Node.OneCone) {
+        //     return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        // } else if (_autoFirstNode == Node.FiveCube) {
+        //     return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+        // } else if (_autoFirstNode == Node.NineCone) {
+        //     return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        // } else {
+        //     return new WaitCommand(15);
+        // }
+        error("Current mode is: " + _autoFirstNode);
+        switch (_autoFirstNode) {
+            case OneCone:
+                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case TwoCube:
+                return new WaitCommand(15);
+            case ThreeCone:
+                return new WaitCommand(15);
+            case FourCone:
+                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case FiveCube:
+                return new OneCubeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case SixCone:
+                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+            case SevenCone:
+                return new WaitCommand(15);
+            case EightCube:
+                return new WaitCommand(15);
+            case NineCone:
+                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+            default:
+                error("uh oh");
+                return new WaitCommand(15);
+        }    
     }
 
     public void controllerPeriodic() {

@@ -20,17 +20,17 @@ public class IdleGripper extends OutliersCommand {
     public void execute() {
         super.execute();
         if (_endEffector.getConeMode()) {
-            if (_oi.releaseRoller()) {
-                _endEffector.setRollerSpeed(Constants.EndEffector.PLACE_CONE_ROLLER_SPEED);
-            } else {
-                _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
-            }
+            //            if (_oi.releaseRoller()) {
+            //                _endEffector.setRollerSpeed(Constants.EndEffector.PLACE_CONE_ROLLER_SPEED);
+            //            } else {
+            _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
+            //            }
         } else {
-            if (_oi.releaseRoller()) {
-                _endEffector.setRollerSpeed(Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED);
-            } else {
-                _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED);
-            }
+            //            if (_oi.releaseRoller()) {
+            //                _endEffector.setRollerSpeed(Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED);
+            //            } else {
+            _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED);
+            //            }
         }
     }
 

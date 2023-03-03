@@ -15,7 +15,6 @@ public class CloseConeGripper extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        
     }
 
     @Override

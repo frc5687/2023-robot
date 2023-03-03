@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.DriveTrain.Mode;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
@@ -67,21 +68,6 @@ public class Drive extends OutliersCommand {
         double rot = _oi.getRotationX();
         rot = Math.signum(rot) * rot * rot;
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
-        if (_oi.getSlowMode()) {
-            _driveTrain.setSlowMode(true);
-            vx = vec.x() * Constants.DriveTrain.SLOW_MPS;
-            vy = vec.y() * Constants.DriveTrain.SLOW_MPS;
-            rot =
-                    -rot
-                            * Constants.DriveTrain
-                                    .SLOW_ANG_VEL; // negative added to flip rotation in slowmode, driver preference
-        } else {
-            _driveTrain.setSlowMode(false);
-            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
-            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
-            rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
-        }
-
         if (rot == 0 && _driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
             if (!_lockHeading) {
                 _driveTrain.temporaryDisabledHeadingController();
@@ -93,25 +79,31 @@ public class Drive extends OutliersCommand {
         }
 
         double controllerPower = _driveTrain.getRotationCorrection();
-        TrackedObjectInfo closestGameElement;
-        if (_endEffector.getConeMode()) {
-            closestGameElement = _driveTrain.getClosestCone();
-        } else {
-            closestGameElement = _driveTrain.getClosestCube();
-        }
-        double power = 0.0;
-        // settings
-        double coneDist = vx;
-        //double elementAngle = 0;
-        if (closestGameElement != null) {
-            metric("Closest Game Element", closestGameElement.toString());
-            power = -_yCordinateElementController.calculate(closestGameElement.getY());
-            coneDist = closestGameElement.getDistance();
-         //   elementAngle = closestGameElement.getAzimuthAngle();
-        }
+
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {
+            _driveTrain.setMode(Mode.VISION);
+            _driveTrain.setKinematicLimits(Constants.DriveTrain.VISION_KINEMATIC_LIMITS);
+            vx = vec.x() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
+            vy = vec.y() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
+            rot = rot * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxSteeringVelocity;
+            TrackedObjectInfo closestGameElement;
+            if (_endEffector.getConeMode()) {
+                closestGameElement = _driveTrain.getClosestCone();
+            } else {
+                closestGameElement = _driveTrain.getClosestCube();
+            }
+            double power = 0.0;
+            // settings
+            double coneDist = vx;
+            // double elementAngle = 0;
+            if (closestGameElement != null) {
+                metric("Closest Game Element", closestGameElement.toString());
+                power = -_yCordinateElementController.calculate(closestGameElement.getY());
+                coneDist = closestGameElement.getDistance();
+                //   elementAngle = closestGameElement.getAzimuthAngle();
+            }
             _driveTrain.setSnapHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -119,17 +111,28 @@ public class Drive extends OutliersCommand {
                             power,
                             _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()));
+        } else if (_oi.getSlowMode()) {
+            _driveTrain.setMode(Mode.SLOW);
+            _driveTrain.setKinematicLimits(Constants.DriveTrain.SLOW_KINEMATIC_LIMITS);
+            vx = vec.x() * Constants.DriveTrain.SLOW_KINEMATIC_LIMITS.maxDriveVelocity;
+            vy = vec.y() * Constants.DriveTrain.SLOW_KINEMATIC_LIMITS.maxDriveVelocity;
+            rot =
+                    -rot
+                            * Constants.DriveTrain
+                                    .SLOW_ANG_VEL; // negative added to flip rotation in slowmode, driver preference
+            _driveTrain.setVelocity(
+                    ChassisSpeeds.fromFieldRelativeSpeeds(
+                            vx, vy, rot + controllerPower, _driveTrain.getHeading()));
         } else {
+            _driveTrain.setMode(Mode.NORMAL);
+            _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
+            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
+            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
+            rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx, vy, rot + controllerPower, _driveTrain.getHeading()));
         }
-        //        _driveTrain.setVelocity(ChassisSpeeds.fromFieldRelativeSpeeds(
-        //                vx,
-        //                vy,
-        //                rot +controllerPower,
-        //                _driveTrain.getHeading()
-        //        ));
     }
 
     @Override

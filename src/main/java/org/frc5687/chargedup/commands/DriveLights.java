@@ -36,21 +36,43 @@ public class DriveLights extends OutliersCommand {
             _lights.switchAnimation(AnimationType.RAINBOW);
         } else if (_endEffector.getConeMode()) {
             _lights.setColor(Constants.CANdle.YELLOW);
-            if (_driveTrain.getSlowMode()) {
-                _lights.switchAnimation(AnimationType.SINGLE_FADE);
-            } else if (_oi.autoAim() && _driveTrain.isConeDetected()) {
-                _lights.switchAnimation(AnimationType.STROBE);
-            } else {
-                _lights.switchAnimation(AnimationType.STATIC);
+            switch (_driveTrain.getMode()) {
+                case VISION:
+                    if (_driveTrain.isConeDetected()) {
+                        _lights.switchAnimation(AnimationType.STROBE);
+                    } else {
+                        _lights.switchAnimation(AnimationType.STATIC);
+                    }
+                    break;
+                case SLOW:
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    break;
+                case NORMAL:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
+                default:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
             }
         } else {
             _lights.setColor(Constants.CANdle.PURPLE);
-            if (_driveTrain.getSlowMode()) {
-                _lights.switchAnimation(AnimationType.SINGLE_FADE);
-            } else if (_oi.autoAim() && _driveTrain.isCubeDetected()) {
-                _lights.switchAnimation(AnimationType.STROBE);
-            } else {
-                _lights.switchAnimation(AnimationType.STATIC);
+            switch (_driveTrain.getMode()) {
+                case VISION:
+                    if (_driveTrain.isCubeDetected()) {
+                        _lights.switchAnimation(AnimationType.STROBE);
+                    } else {
+                        _lights.switchAnimation(AnimationType.STATIC);
+                    }
+                    break;
+                case SLOW:
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    break;
+                case NORMAL:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
+                default:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
             }
         }
     }
