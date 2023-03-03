@@ -7,16 +7,11 @@ import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
-import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
-import org.frc5687.chargedup.commands.Auto.DriveForTime;
 import org.frc5687.chargedup.commands.Auto.OneConeAuto;
-import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
-import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
+import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -24,9 +19,9 @@ import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.AutoChooser;
+import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
-import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
@@ -154,7 +149,7 @@ public class RobotContainer extends OutliersContainer {
             default:
                 error("uh oh");
                 return new WaitCommand(15);
-        }    
+        }
     }
 
     public void controllerPeriodic() {
