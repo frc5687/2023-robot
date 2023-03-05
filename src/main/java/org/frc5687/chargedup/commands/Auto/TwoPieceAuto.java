@@ -7,6 +7,7 @@ import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
+import org.frc5687.chargedup.util.AutoChooser.Node;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -19,7 +20,6 @@ public class TwoPieceAuto extends SequentialCommandGroup {
     //private Rotation2d rotation1;
     //private Rotation2d rotation2;
 
- 
    
     public TwoPieceAuto(
         DriveTrain driveTrain,
@@ -113,12 +113,9 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                 break; 
         } 
                    
-        
-
-    
         addCommands(
             new SequentialCommandGroup(
-                new AutoPlaceHighCube(arm, endEffector, elevator),
+                new AutoPlaceHighCube(elevator, endEffector, arm),
                 new DriveTrajectory(driveTrain, _trajectory1),
                 new AutoGroundPickupCube(elevator, arm, endEffector),
                 new DriveTrajectory(driveTrain, _trajectory2),

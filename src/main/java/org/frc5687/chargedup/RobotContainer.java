@@ -7,13 +7,9 @@ import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
-import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
-import org.frc5687.chargedup.commands.Auto.DriveForTime;
-import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
 import org.frc5687.chargedup.commands.Auto.*;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
