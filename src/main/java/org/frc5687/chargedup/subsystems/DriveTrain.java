@@ -535,6 +535,9 @@ public class DriveTrain extends OutliersSubsystem {
             module.updateDashboard();
         }
     }
+    public boolean isTopSpeed() {
+        return Math.abs(_modules[0].getWheelVelocity()) >= (Constants.DriveTrain.MAX_MPS - 0.2);
+    }
 
     @Override
     public void updateDashboard() {

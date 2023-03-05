@@ -29,7 +29,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
         Lights lights 
     ){
          var config = driveTrain.getConfig();
-         switch(Node) {
+/*          switch(Node) {
             case OneCone:
                 if (DriverStation.getAlliance() == Alliance.Red){
                     _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.RED_NODE_ONE_TRAJECTORY_ONE, config);
@@ -111,7 +111,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_TWO, config);
                 }    
                 break; 
-        } 
+        } */ 
                    
         addCommands(
             new SequentialCommandGroup(
