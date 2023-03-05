@@ -2,6 +2,7 @@ package org.frc5687.chargedup.commands.Auto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import org.frc5687.chargedup.Constants;
+import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 
@@ -12,10 +13,12 @@ public class DriveToPose extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
     private Pose2d _destPose;
+    private final OI _oi;
 
-    public DriveToPose(DriveTrain driveTrain, Pose2d pose) {
+    public DriveToPose(DriveTrain driveTrain, Pose2d pose, OI oi) {
         _driveTrain = driveTrain;
         _destPose = pose;
+        _oi = oi;
         addRequirements(_driveTrain);
     }
 
@@ -35,7 +38,9 @@ public class DriveToPose extends OutliersCommand {
     public boolean isFinished() {
         double xDiff = _destPose.getX() - _driveTrain.getEstimatedPose().getX();
         double yDiff = _destPose.getY() - _driveTrain.getEstimatedPose().getY();
-        return Math.abs(xDiff) < 0.05 && Math.abs(yDiff) < 0.05;
+        return (Math.abs(xDiff) < 0.01 && Math.abs(yDiff) < 0.01)
+         || (_oi.getDriveX() > 0 || _oi.getDriveY() > 0) || 
+         (_oi.getTapRight() || _oi.getTapLeft());
     }
 
     @Override
