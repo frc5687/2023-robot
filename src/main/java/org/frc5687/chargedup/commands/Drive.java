@@ -4,6 +4,7 @@ package org.frc5687.chargedup.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -30,7 +31,7 @@ public class Drive extends OutliersCommand {
         _driveTrain = driveTrain;
         _endEffector = endEffector;
         _oi = oi;
-        _yCordinateElementController = new PIDController(3.0, 0.0, 0.3);
+        _yCordinateElementController = new PIDController(2.5, 0.0, 0.3);
         //        _headingController = new HeadingController(
         //                new TrapezoidProfile.Constraints(
         //                        Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
@@ -79,7 +80,6 @@ public class Drive extends OutliersCommand {
         }
 
         double controllerPower = _driveTrain.getRotationCorrection();
-
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {
@@ -97,11 +97,17 @@ public class Drive extends OutliersCommand {
             double power = 0.0;
             // settings
             double coneDist = vx;
+            boolean targetInTolerance;
             // double elementAngle = 0;
             if (closestGameElement != null) {
                 metric("Closest Game Element", closestGameElement.toString());
-                power = -_yCordinateElementController.calculate(closestGameElement.getY());
                 coneDist = closestGameElement.getDistance();
+                targetInTolerance =
+                        (closestGameElement.getZ() > Units.inchesToMeters(37)
+                                && closestGameElement.getZ() < Units.inchesToMeters(65));
+                if (targetInTolerance) {
+                    power = -_yCordinateElementController.calculate(closestGameElement.getY());
+                }
                 //   elementAngle = closestGameElement.getAzimuthAngle();
             }
             _driveTrain.setSnapHeading(new Rotation2d(0));

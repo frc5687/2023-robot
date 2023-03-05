@@ -4,6 +4,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -34,18 +35,18 @@ public class PhotonProcessor {
         Transform3d robotToSouthWestCam =
                 new Transform3d(
                         new Translation3d(
-                                Units.inchesToMeters(-9.0),
-                                Units.inchesToMeters(9.0 - (3.0 / 8.0)),
-                                Units.inchesToMeters(18.5)),
-                        new Rotation3d(0, 0, Units.degreesToRadians(135)));
+                                -.243,
+                                .249,
+                                .442),
+                        new Rotation3d(0, 0, Units.degreesToRadians(140)));
 
         Transform3d robotToSouthEastCam =
                 new Transform3d(
                         new Translation3d(
-                                Units.inchesToMeters(-9.0),
-                                Units.inchesToMeters(-9.5 - (3.0 / 8.0)),
-                                Units.inchesToMeters(17.5)),
-                        new Rotation3d(0, 0, Units.degreesToRadians(-135)));
+                                -.243,
+                                -.249,
+                                .442),
+                        new Rotation3d(0, 0, Units.degreesToRadians(-140)));
 
         _northCameraEstimator =
                 new PhotonPoseEstimator(
@@ -100,6 +101,24 @@ public class PhotonProcessor {
     public Optional<EstimatedRobotPose> getSouthEastCameraEstimatedGlobalPose(
             Pose2d prevEstimatedPose) {
         return _southEastCameraEstimator.update();
+    }
+
+    public CompletableFuture<Optional<EstimatedRobotPose>> getNorthCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getNorthCameraEstimatedGlobalPose(prevEstimatedPose));
+    }
+
+    public CompletableFuture<Optional<EstimatedRobotPose>> getSouthWestCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getSouthWestCameraEstimatedGlobalPose(prevEstimatedPose));
+    }
+
+    public CompletableFuture<Optional<EstimatedRobotPose>> getSouthEastCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getSouthEastCameraEstimatedGlobalPose(prevEstimatedPose));
     }
 
     public enum Pipeline {

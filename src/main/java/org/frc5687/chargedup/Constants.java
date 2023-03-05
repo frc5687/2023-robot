@@ -62,7 +62,12 @@ public class Constants {
             KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
-
+        public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
+        static {
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.3; // m/s
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
@@ -78,7 +83,6 @@ public class Constants {
             VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
-
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -88,7 +92,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.085;
+            NORTH_WEST_CONFIG.encoderOffset = -0.055;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
@@ -154,9 +158,9 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
 
-        public static final double kP = 1.5;
+        public static final double kP = 3.3;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 0.2;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -370,6 +374,18 @@ public class Constants {
         public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d(Math.PI / 2.0));
         public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d(Math.PI / 2.0));
 
+        // left to right on red side
+        public static final Pose2d RED_FIRST_GOAL = new Pose2d(14.7, 0.519, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SECOND_GOAL = new Pose2d(14.7, 1.08, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_THIRD_GOAL = new Pose2d(14.7, 1.637, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FOURTH_GOAL = new Pose2d(14.7, 2.195, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FIFTH_GOAL = new Pose2d(14.75, 2.753, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SIXTH_GOAL = new Pose2d(14.7, 3.313, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SEVENTH_GOAL =
+                new Pose2d(14.7, 3.872, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_EIGHTH_GOAL = new Pose2d(14.7, 4.431, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_NINTH_GOAL = new Pose2d(14.7, 4.989, Rotation2d.fromDegrees(180));
+
         public static class TrajectoryPoints {
             /* public static class S {
                 public static final List<Pose2d> waypoints =
@@ -495,13 +511,13 @@ public class Constants {
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -1.0;
         public static final double PLACE_CONE_ROLLER_SPEED = 1.0;
-        public static final long GRIPPER_TIMEOUT = 1000;
+        public static final long GRIPPER_TIMEOUT = 500;
     }
 
     public static class Vision {
         public static final float Z_CAM_Z_OFFSET = 0.78111f;
         public static final float Z_CAM_Y_OFFSET = 0.17653f;
-        public static final float Z_CAM_X_OFFSET = 0.17439f;
+        public static final float Z_CAM_X_OFFSET = 0.03566f;
     }
 
     public static class CANdle {
