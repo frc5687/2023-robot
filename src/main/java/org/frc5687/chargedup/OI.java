@@ -64,9 +64,6 @@ public class OI extends OutliersProxy {
         _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         _driverRightTrigger.onTrue(new Tap(drivetrain, true));
 
-        _driverGamepad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL));
-        _driverGamepad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL));
-        _driverGamepad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL));
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
@@ -84,7 +81,7 @@ public class OI extends OutliersProxy {
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-        return _driverGamepad.getRightStickButton().getAsBoolean();
+        return _driverGamepad.getAButton().getAsBoolean();
     }
 
     public boolean releaseRoller() {

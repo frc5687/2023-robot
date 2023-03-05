@@ -39,9 +39,10 @@ public class Elevator extends OutliersSubsystem {
         if (_inHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD);
             _hasZeroed = true;
-        } else {
+        } else if (!_inHall.get() && _hasZeroed) {
             _hasZeroed = false;
         }
+
     }
 
     public void setArmSpeed(double speed) {

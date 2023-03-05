@@ -3,6 +3,7 @@ package org.frc5687.chargedup.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
+import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -88,7 +89,7 @@ public class EndEffector extends OutliersSubsystem {
     }
 
     public double getWristAngleRadians(){
-         return _wristEncoder.getDistance() % (2.0 * Math.PI);
+         return Helpers.angleWrap(_wristEncoder.getDistance(), true);
     }
     /*public double getGripperAngleRadians(){
         return _gripperEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.GRIPPER_OFFSET;
