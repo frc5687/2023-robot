@@ -38,7 +38,7 @@ public class PhotonProcessor {
                                 -.243,
                                 .249,
                                 .442),
-                        new Rotation3d(0, 0, Units.degreesToRadians(140)));
+                        new Rotation3d(0, 0, Units.degreesToRadians(-140)));
 
         Transform3d robotToSouthEastCam =
                 new Transform3d(
@@ -46,7 +46,7 @@ public class PhotonProcessor {
                                 -.243,
                                 -.249,
                                 .442),
-                        new Rotation3d(0, 0, Units.degreesToRadians(-140)));
+                        new Rotation3d(0, 0, Units.degreesToRadians(140)));
 
         _northCameraEstimator =
                 new PhotonPoseEstimator(

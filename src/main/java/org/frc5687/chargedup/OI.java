@@ -67,15 +67,15 @@ public class OI extends OutliersProxy {
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-        _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL));
-        _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SECOND_GOAL));
-        _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL));
-        _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FOURTH_GOAL));
-        _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL));
-        _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SIXTH_GOAL));
-        _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SEVENTH_GOAL));
-        _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_EIGHTH_GOAL));
-        _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_NINTH_GOAL));
+        _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL, this));
+        _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SECOND_GOAL, this));
+        _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL, this));
+        _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FOURTH_GOAL, this));
+        _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL, this));
+        _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SIXTH_GOAL, this));
+        _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SEVENTH_GOAL, this));
+        _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_EIGHTH_GOAL, this));
+        _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_NINTH_GOAL, this));
         
     }
 
@@ -106,6 +106,14 @@ public class OI extends OutliersProxy {
 
     public boolean getIntakeOut() {
         return _operatorGamepad.getBButton().getAsBoolean();
+    }
+
+    public boolean getTapRight(){
+        return _driverRightTrigger.getAsBoolean();
+    }
+
+    public boolean getTapLeft(){
+        return _driverLeftTrigger.getAsBoolean();
     }
 
     public double getDriveY() {
