@@ -357,34 +357,26 @@ public class Constants {
             public static final Pose2d BLUE_NODE_EIGHT_GOAL = new Pose2d(1.795, 4.431, new Rotation2d());
             public static final Pose2d BLUE_NODE_NINE_GOAL = new Pose2d(1.795, 4.989, new Rotation2d());
  
-            public static final Pose2d RED_NODE_ONE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI)); 
-            public static final Pose2d RED_NODE_TWO_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_THREE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_FOUR_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_FIVE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_SIX_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_SEVEN_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_EIGHT_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));
-            public static final Pose2d RED_NODE_NINE_GOAL = new Pose2d(1.795, new Rotation2d(Math.PI));  
-        } 
+         // left to right on red side
+         public static final Pose2d RED_NODE_ONE_GOAL = new Pose2d(14.7, 0.519, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_TWO_GOAL = new Pose2d(14.7, 1.08, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_THREE_GOAL = new Pose2d(14.7, 1.637, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_FOUR_GOAL = new Pose2d(14.7, 2.195, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_FIVE_GOAL = new Pose2d(14.75, 2.753, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_SIX_GOAL = new Pose2d(14.7, 3.313, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_SEVEN_GOAL =
+                 new Pose2d(14.7, 3.872, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_EIGHT_GOAL = new Pose2d(14.7, 4.431, Rotation2d.fromDegrees(180));
+         public static final Pose2d RED_NODE_NINE_GOAL = new Pose2d(14.7, 4.989, Rotation2d.fromDegrees(180)); 
+         
 
         
         public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.065, 3.456, new Rotation2d(Math.PI / 2.0));
         public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d(Math.PI / 2.0));
         public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d(Math.PI / 2.0));
         public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d(Math.PI / 2.0));
-
-        // left to right on red side
-        public static final Pose2d RED_FIRST_GOAL = new Pose2d(14.7, 0.519, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_SECOND_GOAL = new Pose2d(14.7, 1.08, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_THIRD_GOAL = new Pose2d(14.7, 1.637, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_FOURTH_GOAL = new Pose2d(14.7, 2.195, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_FIFTH_GOAL = new Pose2d(14.75, 2.753, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_SIXTH_GOAL = new Pose2d(14.7, 3.313, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_SEVENTH_GOAL =
-                new Pose2d(14.7, 3.872, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_EIGHTH_GOAL = new Pose2d(14.7, 4.431, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_NINTH_GOAL = new Pose2d(14.7, 4.989, Rotation2d.fromDegrees(180));
+        }
+     
 
         public static class TrajectoryPoints {
             /* public static class S {
