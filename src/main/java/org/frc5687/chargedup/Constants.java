@@ -88,7 +88,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.085;
+            NORTH_WEST_CONFIG.encoderOffset = -0.055;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
@@ -411,13 +411,13 @@ public class Constants {
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -1.0;
         public static final double PLACE_CONE_ROLLER_SPEED = 1.0;
-        public static final long GRIPPER_TIMEOUT = 1000;
+        public static final long GRIPPER_TIMEOUT = 500;
     }
 
     public static class Vision {
         public static final float Z_CAM_Z_OFFSET = 0.78111f;
         public static final float Z_CAM_Y_OFFSET = 0.17653f;
-        public static final float Z_CAM_X_OFFSET = 0.17439f;
+        public static final float Z_CAM_X_OFFSET = 0.03566f;
     }
 
     public static class CANdle {

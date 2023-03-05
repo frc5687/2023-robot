@@ -542,7 +542,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
         SmartDashboard.putData(_field);
         //        metric("Pitch Angle Deg", Units.radiansToDegrees(getPitch()));
-        //        moduleMetrics();
+        moduleMetrics();
         //        metric("NW Angle", _modules[NORTH_WEST_IDX].getModuleAngle());
         //        metric("SW Angle", _modules[SOUTH_WEST_IDX].getModuleAngle());
         //        metric("SE Angle", _modules[SOUTH_EAST_IDX].getModuleAngle());
