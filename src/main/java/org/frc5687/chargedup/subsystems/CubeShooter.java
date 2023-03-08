@@ -4,17 +4,19 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 
 public class CubeShooter extends OutliersSubsystem {
-    private OutliersTalon _wrist;
-    private OutliersTalon _shooter;
+    private final OutliersTalon _wrist;
+    private final OutliersTalon _shooter;
 
    private CubeShooter(OutliersContainer container){
     super(container);
     _wrist = new OutliersTalon(0, getSubsystem(), getName());
     _shooter = new OutliersTalon(0, getSubsystem(), getName());
     _wrist.configure(Constants.CubeShooter.WRIST_CONFIG);
+    _wrist.configureClosedLoop(Constants.CubeShooter.CONTROLLER_CONFIG);
     _shooter.configure(Constants.CubeShooter.SHOOTER_CONFIG);
    } 
 

@@ -445,6 +445,23 @@ public class Constants {
             SHOOTER_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
             SHOOTER_CONFIG.USE_FOC = true;
         }
+
+        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG =
+                new OutliersTalon.ClosedLoopConfiguration();
+
+        static {
+            CONTROLLER_CONFIG.SLOT = 0;
+
+            CONTROLLER_CONFIG.kP = 1.3;
+            CONTROLLER_CONFIG.kI = 0;
+            CONTROLLER_CONFIG.kD = 0.0;
+            CONTROLLER_CONFIG.kF = 0;
+
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 25;
+            CONTROLLER_CONFIG.ACCELERATION = 150;
+            CONTROLLER_CONFIG.JERK = 800;
+        }
+        
     }
 
     public static class Vision {
