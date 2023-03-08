@@ -34,45 +34,63 @@ public class DriveLights extends OutliersCommand {
         super.execute();
 
         if (DriverStation.isDisabled()) {
-            _lights.switchAnimation(AnimationType.RAINBOW);
+            _lights.switchAnimation(AnimationType.RAINBOW, 0);
+            _lights.switchAnimation(AnimationType.RAINBOW, 1);
         } else if (_endEffector.getConeMode()) {
-            _lights.setColor(Constants.CANdle.YELLOW);
+            _lights.setColor(Constants.CANdle.YELLOW, 0);
+            _lights.setColor(Constants.CANdle.YELLOW, 1);
             switch (_driveTrain.getMode()) {
                 case VISION:
                     if (_driveTrain.isConeDetected()) {
-                        _lights.switchAnimation(AnimationType.STROBE);
+                        _lights.switchAnimation(AnimationType.STROBE, 0);
+                        _lights.switchAnimation(AnimationType.STROBE, 1);
+
                     } else {
-                        _lights.switchAnimation(AnimationType.STATIC);
+                        _lights.switchAnimation(AnimationType.STATIC, 0);
+                        _lights.switchAnimation(AnimationType.STATIC, 1);
+
                     }
                     break;
                 case SLOW:
-                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE, 0);
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE, 1);
                     break;
                 case NORMAL:
-                    _lights.switchAnimation(AnimationType.STATIC);
+                    _lights.switchAnimation(AnimationType.STATIC, 0);
+                    _lights.switchAnimation(AnimationType.STATIC, 1);
                     break;
                 default:
-                    _lights.switchAnimation(AnimationType.STATIC);
+                    _lights.switchAnimation(AnimationType.STATIC, 0);
+                    _lights.switchAnimation(AnimationType.STATIC, 1);
                     break;
             }
         } else {
-            _lights.setColor(Constants.CANdle.PURPLE);
+            _lights.setColor(Constants.CANdle.PURPLE, 0);
+            _lights.setColor(Constants.CANdle.PURPLE, 1);
+
             switch (_driveTrain.getMode()) {
                 case VISION:
                     if (_driveTrain.isCubeDetected()) {
-                        _lights.switchAnimation(AnimationType.STROBE);
+                        _lights.switchAnimation(AnimationType.STROBE, 0);
+                        _lights.switchAnimation(AnimationType.STROBE, 1);
+
                     } else {
-                        _lights.switchAnimation(AnimationType.STATIC);
+                        _lights.switchAnimation(AnimationType.STATIC, 0);
+                        _lights.switchAnimation(AnimationType.STATIC, 1);
+
                     }
                     break;
                 case SLOW:
-                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE, 0);
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE, 1);
                     break;
                 case NORMAL:
-                    _lights.switchAnimation(AnimationType.STATIC);
+                    _lights.switchAnimation(AnimationType.STATIC, 0);
+                    _lights.switchAnimation(AnimationType.STATIC, 1);
                     break;
                 default:
-                    _lights.switchAnimation(AnimationType.STATIC);
+                    _lights.switchAnimation(AnimationType.STATIC, 0);
+                    _lights.switchAnimation(AnimationType.STATIC, 1);
                     break;
             }
         }
