@@ -415,6 +415,8 @@ public class Constants {
     }
 
     public static class CubeShooter{
+        public static final double WRIST_ANGLE_TOLERANCE = Units.degreesToRadians(1);
+
         public static final OutliersTalon.Configuration WRIST_CONFIG = new OutliersTalon.Configuration();
 
         static {
