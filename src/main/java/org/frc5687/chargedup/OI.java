@@ -127,6 +127,12 @@ public class OI extends OutliersProxy {
         return speed;
     }
 
+    public double getCSWrist(){
+        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        return speed;
+    }
+
     protected double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         return gamepad.getRawAxis(axisNumber);
     }

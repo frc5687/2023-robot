@@ -414,6 +414,37 @@ public class Constants {
         public static final long GRIPPER_TIMEOUT = 500;
     }
 
+    public static class CubeShooter{
+        public static final OutliersTalon.Configuration WRIST_CONFIG = new OutliersTalon.Configuration();
+
+        static {
+            WRIST_CONFIG.TIME_OUT = 0.1;
+
+            WRIST_CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            WRIST_CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
+
+            WRIST_CONFIG.MAX_VOLTAGE = 12.0;
+
+            WRIST_CONFIG.MAX_STATOR_CURRENT = 60;
+            WRIST_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+            WRIST_CONFIG.USE_FOC = true;
+        }
+        public static final OutliersTalon.Configuration SHOOTER_CONFIG = new OutliersTalon.Configuration();
+
+        static {
+            SHOOTER_CONFIG.TIME_OUT = 0.1;
+
+            SHOOTER_CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            SHOOTER_CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
+
+            SHOOTER_CONFIG.MAX_VOLTAGE = 12.0;
+
+            SHOOTER_CONFIG.MAX_STATOR_CURRENT = 60;
+            SHOOTER_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+            SHOOTER_CONFIG.USE_FOC = true;
+        }
+    }
+
     public static class Vision {
         public static final float Z_CAM_Z_OFFSET = 0.78111f;
         public static final float Z_CAM_Y_OFFSET = 0.17653f;

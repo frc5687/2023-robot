@@ -12,6 +12,7 @@ import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.Auto.OneConeAuto;
 import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
+import org.frc5687.chargedup.commands.CubeShooter.ManualRotateWrist;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -36,6 +37,7 @@ public class RobotContainer extends OutliersContainer {
     // private LightsExample _lights;
     private DriveTrain _driveTrain;
     private EndEffector _endEffector;
+    private CubeShooter _cubeShooter;
     private Arm _arm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
@@ -80,6 +82,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
+        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
         //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator);
