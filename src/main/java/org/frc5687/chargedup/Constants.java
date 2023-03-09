@@ -414,25 +414,29 @@ public class Constants {
         public static final long GRIPPER_TIMEOUT = 500;
     }
 
-    public static class CubeShooter{
+    public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
         public static final double WRIST_ANGLE_TOLERANCE = Units.degreesToRadians(1);
 
-        public static final OutliersTalon.Configuration WRIST_CONFIG = new OutliersTalon.Configuration();
+        public static final OutliersTalon.Configuration WRIST_CONFIG =
+                new OutliersTalon.Configuration();
 
         static {
             WRIST_CONFIG.TIME_OUT = 0.1;
 
             WRIST_CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-            WRIST_CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
+            WRIST_CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
 
             WRIST_CONFIG.MAX_VOLTAGE = 12.0;
 
+            WRIST_CONFIG.MAX_CURRENT = 60;
             WRIST_CONFIG.MAX_STATOR_CURRENT = 60;
             WRIST_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-            WRIST_CONFIG.USE_FOC = true;
+            WRIST_CONFIG.USE_FOC = false;
         }
-        public static final OutliersTalon.Configuration SHOOTER_CONFIG = new OutliersTalon.Configuration();
+
+        public static final OutliersTalon.Configuration SHOOTER_CONFIG =
+                new OutliersTalon.Configuration();
 
         static {
             SHOOTER_CONFIG.TIME_OUT = 0.1;
@@ -453,16 +457,15 @@ public class Constants {
         static {
             CONTROLLER_CONFIG.SLOT = 0;
 
-            CONTROLLER_CONFIG.kP = 1.3;
+            CONTROLLER_CONFIG.kP = 2.8;
             CONTROLLER_CONFIG.kI = 0;
-            CONTROLLER_CONFIG.kD = 0.0;
+            CONTROLLER_CONFIG.kD = 0.4;
             CONTROLLER_CONFIG.kF = 0;
 
-            CONTROLLER_CONFIG.CRUISE_VELOCITY = 25;
-            CONTROLLER_CONFIG.ACCELERATION = 150;
-            CONTROLLER_CONFIG.JERK = 800;
+            CONTROLLER_CONFIG.CRUISE_VELOCITY = 20;
+            CONTROLLER_CONFIG.ACCELERATION = 50;
+            CONTROLLER_CONFIG.JERK = 500;
         }
-        
     }
 
     public static class Vision {

@@ -18,6 +18,7 @@ import com.ctre.phoenixpro.hardware.TalonFX;
 import com.ctre.phoenixpro.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * TalonFX wrapper class that uses 254's LazyTalonFX that reduces CAN bus / CPU overhead by skipping
@@ -51,6 +52,7 @@ public class OutliersTalon extends TalonFX {
 
     public void setPercentOutput(double output) {
         if (_percentOutput.Output != output) {
+            DriverStation.reportError("Output: " + _percentOutput.toString(), false);
             this.setControl(_percentOutput.withOutput(output));
         }
     }
