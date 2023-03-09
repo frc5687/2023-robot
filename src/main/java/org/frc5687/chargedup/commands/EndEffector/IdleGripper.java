@@ -7,14 +7,13 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 
 public class IdleGripper extends OutliersCommand {
     private EndEffector _endEffector;
-    private long _timeoutIn;
-    private long _timeoutOut;
+  
 
 
     public IdleGripper(EndEffector endEffector, OI oi) {
         _endEffector = endEffector;
-        _timeoutIn = (System.currentTimeMillis() + 400);
-        _timeoutOut = (System.currentTimeMillis() + 150);
+      /*   _timeoutIn = (System.currentTimeMillis() + 400);
+        _timeoutOut = (System.currentTimeMillis() + 150); */
         addRequirements(_endEffector);
     }
 

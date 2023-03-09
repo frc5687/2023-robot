@@ -20,6 +20,7 @@ import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
 
+
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
     protected Gamepad _operatorGamepad;
@@ -67,15 +68,15 @@ public class OI extends OutliersProxy {
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-        _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL, this));
-        _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SECOND_GOAL, this));
-        _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL, this));
-        _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FOURTH_GOAL, this));
-        _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL, this));
-        _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SIXTH_GOAL, this));
-        _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SEVENTH_GOAL, this));
-        _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_EIGHTH_GOAL, this));
-        _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_NINTH_GOAL, this));
+        _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL, this));
+        _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL, this));
+        _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_THREE_GOAL, this));
+        _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_FOUR_GOAL, this));
+        _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_FIVE_GOAL, this));
+        _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_SIX_GOAL, this));
+        _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_SEVEN_GOAL, this));
+        _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL, this));
+        _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.FieldPoses.RED_NODE_NINE_GOAL, this));
         
     }
 

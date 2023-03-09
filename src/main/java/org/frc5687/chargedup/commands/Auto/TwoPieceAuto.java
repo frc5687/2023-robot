@@ -7,6 +7,7 @@ import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
+import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.AutoChooser.Node;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -19,6 +20,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
     private Trajectory _trajectory2;
     //private Rotation2d rotation1;
     //private Rotation2d rotation2;
+    private Node _node;
 
    
     public TwoPieceAuto(
@@ -29,7 +31,8 @@ public class TwoPieceAuto extends SequentialCommandGroup {
         Lights lights 
     ){
          var config = driveTrain.getConfig();
-/*          switch(Node) {
+         _node = (AutoChooser.Node)
+          switch(_node) {
             case OneCone:
                 if (DriverStation.getAlliance() == Alliance.Red){
                     _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node1.RED_NODE_ONE_TRAJECTORY_ONE, config);
@@ -111,7 +114,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_TWO, config);
                 }    
                 break; 
-        } */ 
+        } 
                    
         addCommands(
             new SequentialCommandGroup(
