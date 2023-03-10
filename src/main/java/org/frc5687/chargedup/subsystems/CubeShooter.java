@@ -23,8 +23,10 @@ public class CubeShooter extends OutliersSubsystem {
                         Constants.CubeShooter.CAN_BUS,
                         "Cube Shooter Shooter");
         _wrist.configure(Constants.CubeShooter.WRIST_CONFIG);
-        _wrist.configureClosedLoop(Constants.CubeShooter.CONTROLLER_CONFIG);
+        _wrist.configureClosedLoop(Constants.CubeShooter.CONTROLLER_CONFIG_WRIST);
+
         _shooter.configure(Constants.CubeShooter.SHOOTER_CONFIG);
+        _shooter.configureClosedLoop(Constants.CubeShooter.CONTROLLER_CONFIG_SHOOTER);
     }
 
     public void setWristSpeed(double speed) {
@@ -42,7 +44,13 @@ public class CubeShooter extends OutliersSubsystem {
     public void setWristEncoderRotation(double rotation) {
         _wrist.setRotorPosition(rotation);
     }
+    public void setShooterRPS(double rps) {
+        _shooter.setVelocity(rps);
+    }
 
+    public double getShooterRPS() {
+        return _shooter.getVelocity().getValue();
+    }
     public void zeroWrist() {
         setWristEncoderRotation(0);
     }
@@ -61,6 +69,7 @@ public class CubeShooter extends OutliersSubsystem {
 
     public void updateDashboard() {
         metric("Wrist angle radians", getWristAngleRadians());
+        metric("Shooter RPM", getShooterRPS());
         metric("Wrist rotations", getWristEncoderRotation());
     }
 }

@@ -451,20 +451,32 @@ public class Constants {
             SHOOTER_CONFIG.USE_FOC = true;
         }
 
-        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG =
+        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG_WRIST =
                 new OutliersTalon.ClosedLoopConfiguration();
 
         static {
-            CONTROLLER_CONFIG.SLOT = 0;
+            CONTROLLER_CONFIG_WRIST.SLOT = 0;
 
-            CONTROLLER_CONFIG.kP = 2.8;
-            CONTROLLER_CONFIG.kI = 0;
-            CONTROLLER_CONFIG.kD = 0.4;
-            CONTROLLER_CONFIG.kF = 0;
+            CONTROLLER_CONFIG_WRIST.kP = 4.0;
+            CONTROLLER_CONFIG_WRIST.kI = 0;
+            CONTROLLER_CONFIG_WRIST.kD = 0.4;
+            CONTROLLER_CONFIG_WRIST.kF = 0.1;
 
-            CONTROLLER_CONFIG.CRUISE_VELOCITY = 20;
-            CONTROLLER_CONFIG.ACCELERATION = 50;
-            CONTROLLER_CONFIG.JERK = 500;
+            CONTROLLER_CONFIG_WRIST.CRUISE_VELOCITY = 100;
+            CONTROLLER_CONFIG_WRIST.ACCELERATION = 500;
+            CONTROLLER_CONFIG_WRIST.JERK = 1000;
+        }
+
+        public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG_SHOOTER =
+                new OutliersTalon.ClosedLoopConfiguration();
+
+        static {
+            CONTROLLER_CONFIG_SHOOTER.SLOT = 0;
+
+            CONTROLLER_CONFIG_SHOOTER.kP = 1.3;
+            CONTROLLER_CONFIG_SHOOTER.kI = 0;
+            CONTROLLER_CONFIG_SHOOTER.kD = 0.0;
+            CONTROLLER_CONFIG_SHOOTER.kF = 1;
         }
     }
 

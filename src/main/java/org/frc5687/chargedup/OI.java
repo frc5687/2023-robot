@@ -71,10 +71,10 @@ public class OI extends OutliersProxy {
         _driverGamepad.getBButton().onTrue(Commands.runOnce(cubeShooter::zeroWrist, cubeShooter));
         _driverGamepad
                 .getXButton()
-                .onTrue(new AutoRotateWrist(cubeShooter, 17)); // gear ratio was not added
+                .onTrue(new AutoRotateWrist(cubeShooter, 19)); // gear ratio was not added
         _driverGamepad
                 .getAButton()
-                .onTrue(new AutoRotateWrist(cubeShooter, 0)); // gear ratio was not added
+                .onTrue(new AutoRotateWrist(cubeShooter, 4.5)); // gear ratio was not added
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
@@ -82,7 +82,8 @@ public class OI extends OutliersProxy {
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-        return _driverGamepad.getAButton().getAsBoolean();
+//        return _driverGamepad.getAButton().getAsBoolean();
+        return false;
     }
 
     public boolean releaseRoller() {
