@@ -39,7 +39,7 @@ public class Shoot extends OutliersCommand {
                 break;
             case REVVING_UP:
                 _cubeShooter.setShooterRPS(Constants.CubeShooter.SHOOT_RPS);
-                if (Math.abs(_cubeShooter.getShooterRPS() - Constants.CubeShooter.SHOOT_RPS) < 5) {
+                if (Math.abs(_cubeShooter.getShooterRPS() - Constants.CubeShooter.SHOOT_RPS) < 1) {
                     _state = ShootingState.UP_TO_SPEED;
                 }
                 break;

@@ -69,7 +69,7 @@ public class CubeShooter extends OutliersSubsystem {
 
     public void updateDashboard() {
         metric("Wrist angle radians", getWristAngleRadians());
-        metric("Shooter RPM", getShooterRPS());
+        metric("Shooter RPS", getShooterRPS());
         metric("Wrist rotations", getWristEncoderRotation());
     }
 }
