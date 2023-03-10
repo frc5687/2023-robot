@@ -1,6 +1,6 @@
 package org.frc5687.chargedup.commands.CubeShooter;
 
-import edu.wpi.first.wpilibj.simulation.ADIS16448_IMUSim;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
@@ -38,8 +38,8 @@ public class Shoot extends OutliersCommand {
                 _state = ShootingState.REVVING_UP;
                 break;
             case REVVING_UP:
-                _cubeShooter.setShooterRPS(80);
-                if (Math.abs(_cubeShooter.getShooterRPS() - 80) < 5) {
+                _cubeShooter.setShooterRPS(Constants.CubeShooter.SHOOT_RPS);
+                if (Math.abs(_cubeShooter.getShooterRPS() - Constants.CubeShooter.SHOOT_RPS) < 5) {
                     _state = ShootingState.UP_TO_SPEED;
                 }
                 break;

@@ -60,7 +60,7 @@ public class OI extends OutliersProxy {
 //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
         _driverRightTrigger.onTrue(new Shoot(cubeShooter));
-        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
+        _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter, this));
 
         // _driverGamepad
         //         .getAButton()
@@ -71,10 +71,10 @@ public class OI extends OutliersProxy {
         _driverGamepad.getBButton().onTrue(Commands.runOnce(cubeShooter::zeroWrist, cubeShooter));
         _driverGamepad
                 .getXButton()
-                .onTrue(new AutoRotateWrist(cubeShooter, 19)); // gear ratio was not added
+                .onTrue(new AutoRotateWrist(cubeShooter, Constants.CubeShooter.INTAKE_ANGLE)); // gear ratio was not added
         _driverGamepad
                 .getAButton()
-                .onTrue(new AutoRotateWrist(cubeShooter, 4.5)); // gear ratio was not added
+                .onTrue(new AutoRotateWrist(cubeShooter, Constants.CubeShooter.IDLE_ANGLE)); // gear ratio was not added
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
@@ -109,6 +109,10 @@ public class OI extends OutliersProxy {
     public boolean getIntakeOut() {
         return _operatorGamepad.getBButton().getAsBoolean();
     }
+
+    public boolean getCubeIntake() {
+        return _driverLeftTrigger.getAsBoolean();
+    }    
 
     public double getDriveY() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());

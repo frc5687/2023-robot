@@ -417,6 +417,9 @@ public class Constants {
     public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
         public static final double WRIST_ANGLE_TOLERANCE = Units.degreesToRadians(1);
+        public static final double SHOOT_RPS = 80;
+        public static final double IDLE_ANGLE = 4.5;
+        public static final double INTAKE_ANGLE = 17.5;
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
@@ -460,11 +463,11 @@ public class Constants {
             CONTROLLER_CONFIG_WRIST.kP = 4.0;
             CONTROLLER_CONFIG_WRIST.kI = 0;
             CONTROLLER_CONFIG_WRIST.kD = 0.4;
-            CONTROLLER_CONFIG_WRIST.kF = 0.1;
+            CONTROLLER_CONFIG_WRIST.kF = 0.4;
 
-            CONTROLLER_CONFIG_WRIST.CRUISE_VELOCITY = 100;
-            CONTROLLER_CONFIG_WRIST.ACCELERATION = 500;
-            CONTROLLER_CONFIG_WRIST.JERK = 1000;
+            CONTROLLER_CONFIG_WRIST.CRUISE_VELOCITY = 80;
+            CONTROLLER_CONFIG_WRIST.ACCELERATION = 1000;
+            CONTROLLER_CONFIG_WRIST.JERK = 3000;
         }
 
         public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG_SHOOTER =
