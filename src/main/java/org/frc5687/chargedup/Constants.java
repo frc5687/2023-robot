@@ -416,10 +416,12 @@ public class Constants {
 
     public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
+        public static final double GEAR_RATIO = 7.2;
         public static final double WRIST_ANGLE_TOLERANCE = Units.degreesToRadians(1);
         public static final double SHOOT_RPS = 90;
-        public static final double IDLE_ANGLE = 4.5;
-        public static final double INTAKE_ANGLE = 17.5;
+        public static final double WRIST_OFFSET = -0.179;
+        public static final double IDLE_ANGLE = 0.87; //rotations
+        public static final double INTAKE_ANGLE = 2.8; //rotations
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
@@ -450,7 +452,7 @@ public class Constants {
             SHOOTER_CONFIG.MAX_VOLTAGE = 12.0;
 
             SHOOTER_CONFIG.MAX_STATOR_CURRENT = 60;
-            SHOOTER_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+            SHOOTER_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = false;
             SHOOTER_CONFIG.USE_FOC = true;
         }
 

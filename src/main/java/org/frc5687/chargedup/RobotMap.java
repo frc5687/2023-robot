@@ -80,8 +80,8 @@ public class RobotMap {
         //        public static final int BOTTOM_HALL_ARM = 8; // south is 8
 
         public static final int IN_EXT_HALL = 6;
-        public static final int OUT_EXT_HALL = 7;
+        public static final int CUBESHOOTER_PROXIMITY = 7;
         public static final int ARM_ENCODER = 8;
-        public static final int CUBESHOOTER_WRIST = 9;
+        public static final int ENCODER_CUBESHOOTER_WRIST = 9;
     }
 }

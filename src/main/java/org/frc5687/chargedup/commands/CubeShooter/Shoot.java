@@ -31,15 +31,15 @@ public class Shoot extends OutliersCommand {
         switch (_state) {
             case INITIALIZE:
 //                _cubeShooter.setShooterSpeed(-0.5);
-//                if (_timeout < System.currentTimeMillis()) {
-//                    _timeout = System.currentTimeMillis() + 2000;
-//                    _state = ShootingState.REVVING_UP;
-//                }
+               if (_timeout < System.currentTimeMillis()) {
+                   _timeout = System.currentTimeMillis() + 2000;
+                   _state = ShootingState.REVVING_UP;
+               }
                 _state = ShootingState.REVVING_UP;
                 break;
             case REVVING_UP:
-                _cubeShooter.setShooterRPS(Constants.CubeShooter.SHOOT_RPS);
-                if (Math.abs(_cubeShooter.getShooterRPS() - Constants.CubeShooter.SHOOT_RPS) < 1) {
+                _cubeShooter.setShooterSpeed(1);
+                if (_timeout < System.currentTimeMillis()) {
                     _state = ShootingState.UP_TO_SPEED;
                 }
                 break;
@@ -48,10 +48,10 @@ public class Shoot extends OutliersCommand {
                 _timeout = System.currentTimeMillis() + 500;
                 break;
             case KICK_INTAKE:
-                _cubeShooter.setWristSpeed(-0.2);
-                if (_timeout < System.currentTimeMillis()) {
+                // _cubeShooter.setWristSpeed(-0.2);
+                // if (_timeout < System.currentTimeMillis()) {
                     _finished = true;
-                }
+                // }
                 break;
         }
     }
