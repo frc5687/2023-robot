@@ -71,6 +71,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
+    private Pose2d _hoverGoal;
 
     public DriveTrain(
             OutliersContainer container,
@@ -188,6 +189,7 @@ public class DriveTrain extends OutliersSubsystem {
             _moduleSignals[(i * 4) + 3] = signals[3];
         }
         _field = new Field2d();
+        _hoverGoal = new Pose2d();
         readModules();
         setSetpointFromMeasuredModules();
     }
@@ -554,6 +556,7 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
         metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
+        metric("Hover Goal", getHoverGoal().toString());
         SmartDashboard.putData(_field);
         moduleMetrics();
     }
@@ -609,5 +612,13 @@ public class DriveTrain extends OutliersSubsystem {
 
     public Mode getMode() {
         return _mode;
+    }
+
+    public void setHoverGoal(Pose2d goal) {
+        _hoverGoal = goal;
+    }
+
+    public Pose2d getHoverGoal() {
+        return _hoverGoal;
     }
 }
