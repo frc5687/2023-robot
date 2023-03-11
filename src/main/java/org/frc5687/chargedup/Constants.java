@@ -451,9 +451,15 @@ public class Constants {
             }
             public static class Node8 {
 
-                public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_EIGHT_GOAL);
-                public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_EIGHT_GOAL);
-                public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_EIGHT_GOAL);
+                public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(
+                    FieldPoses.BLUE_NODE_EIGHT_GOAL,
+                    FieldPoses.BLUE_TARGET_ONE
+                    );
+                public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(
+                    FieldPoses.BLUE_TARGET_ONE,
+                    FieldPoses.BLUE_NODE_EIGHT_GOAL);
+                public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(
+                    FieldPoses.RED_NODE_EIGHT_GOAL);
                 public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(FieldPoses.RED_NODE_EIGHT_GOAL);
 
             }

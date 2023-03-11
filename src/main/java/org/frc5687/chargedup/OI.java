@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoRotateWrist;
+import org.frc5687.chargedup.commands.CubeShooter.Intake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
@@ -72,7 +73,7 @@ public class OI extends OutliersProxy {
 //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
         _driverRightTrigger.onTrue(new Shoot(cubeShooter, 1, 0.3));
-        _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter, this));
+        _driverLeftTrigger.onTrue(new Intake(cubeShooter, this));
 
         // _driverGamepad
         //         .getAButton()

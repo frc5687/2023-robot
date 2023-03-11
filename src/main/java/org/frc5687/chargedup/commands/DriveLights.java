@@ -29,10 +29,6 @@ public class DriveLights extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-        if (_driveTrain.isTopSpeed()){
-            _lights.switchAnimation(AnimationType.STATIC);
-            _lights.setColor(Constants.CANdle.GREEN);
-        } else {
         if (DriverStation.isDisabled()) {
             _lights.switchAnimation(AnimationType.RAINBOW);
         } else if (_endEffector.getConeMode()) {
@@ -75,7 +71,6 @@ public class DriveLights extends OutliersCommand {
                     _lights.switchAnimation(AnimationType.STATIC);
                     break;
             }
-        }
         }
     }
 

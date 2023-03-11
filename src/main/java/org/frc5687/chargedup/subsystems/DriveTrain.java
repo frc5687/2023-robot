@@ -471,14 +471,14 @@ public class DriveTrain extends OutliersSubsystem {
      *     <p>Rotation2d - gyroAngle = gyroOffset
      *     <p>If Rotation2d <> gyroAngle, then robot heading will no longer equal IMU heading.
      */
-    public void resetOdometry(Pose2d position) {
+    public void resetRobotPose(Pose2d position) {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].resetEncoders();
         }
         Translation2d _translation = position.getTranslation();
         Rotation2d _rotation = getHeading();
         Pose2d _reset = new Pose2d(_translation, _rotation);
-        _odometry.resetPosition(
+        _poseEstimator.resetPosition(
                 getHeading(),
                 new SwerveModulePosition[] {
                     _modules[NORTH_WEST_IDX].getModulePosition(),
