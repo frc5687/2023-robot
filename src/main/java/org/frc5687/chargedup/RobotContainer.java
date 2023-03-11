@@ -133,6 +133,7 @@ public class RobotContainer extends OutliersContainer {
         error("Current mode is: " + _autoFirstNode);
         switch (_autoFirstNode) {
             case OneCone:
+                _driveTrain.resetOdometry(Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL);
                 return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
             case TwoCube:
                 return new WaitCommand(15);

@@ -21,6 +21,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
@@ -56,6 +58,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     private boolean _slowMode = false;
 
+    private boolean _isRedAlliance = false;
+
     private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
@@ -84,6 +88,7 @@ public class DriveTrain extends OutliersSubsystem {
 
         _imu = imu;
         _systemIO = new SystemIO();
+        _isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
         _modules = new DiffSwerveModule[4];
 
@@ -130,7 +135,7 @@ public class DriveTrain extends OutliersSubsystem {
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() + 180: _imu.getYaw().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -414,7 +419,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() + 180 : _imu.getYaw().getValue();
         readIMU();
     }
 
