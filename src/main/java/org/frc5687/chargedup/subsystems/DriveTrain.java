@@ -265,21 +265,21 @@ public class DriveTrain extends OutliersSubsystem {
         _poseEstimator.update(
                 _imu.getRotation2d().minus(new Rotation2d(_yawOffset)), _systemIO.measuredPositions);
         Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
-        CompletableFuture<Optional<EstimatedRobotPose>> northPoseFuture =
-                _photonProcessor.getNorthCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+        // CompletableFuture<Optional<EstimatedRobotPose>> northPoseFuture =
+        //         _photonProcessor.getNorthCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
         CompletableFuture<Optional<EstimatedRobotPose>> southWestPoseFuture =
                 _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
         CompletableFuture<Optional<EstimatedRobotPose>> southEastPoseFuture =
                 _photonProcessor.getSouthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
 
-        Optional<EstimatedRobotPose> northPose = northPoseFuture.join();
+        // Optional<EstimatedRobotPose> northPose = northPoseFuture.join();
         Optional<EstimatedRobotPose> southWestPose = southWestPoseFuture.join();
         Optional<EstimatedRobotPose> southEastPose = southEastPoseFuture.join();
-        if (northPose.isPresent()) {
-            EstimatedRobotPose camNorthPose = northPose.get();
-            _poseEstimator.addVisionMeasurement(
-                    camNorthPose.estimatedPose.toPose2d(), camNorthPose.timestampSeconds);
-        }
+        // if (northPose.isPresent()) {
+        //     EstimatedRobotPose camNorthPose = northPose.get();
+        //     _poseEstimator.addVisionMeasurement(
+        //             camNorthPose.estimatedPose.toPose2d(), camNorthPose.timestampSeconds);
+        // }
         if (southWestPose.isPresent()) {
             EstimatedRobotPose camSW = southWestPose.get();
             _poseEstimator.addVisionMeasurement(camSW.estimatedPose.toPose2d(), camSW.timestampSeconds);

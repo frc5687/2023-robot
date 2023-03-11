@@ -103,11 +103,11 @@ public class PhotonProcessor {
         return _southEastCameraEstimator.update();
     }
 
-    public CompletableFuture<Optional<EstimatedRobotPose>> getNorthCameraEstimatedGlobalPoseAsync(
-            Pose2d prevEstimatedPose) {
-        return CompletableFuture.supplyAsync(
-                () -> getNorthCameraEstimatedGlobalPose(prevEstimatedPose));
-    }
+//     public CompletableFuture<Optional<EstimatedRobotPose>> getNorthCameraEstimatedGlobalPoseAsync(
+//             Pose2d prevEstimatedPose) {
+//         return CompletableFuture.supplyAsync(
+//                 () -> getNorthCameraEstimatedGlobalPose(prevEstimatedPose));
+//     }
 
     public CompletableFuture<Optional<EstimatedRobotPose>> getSouthWestCameraEstimatedGlobalPoseAsync(
             Pose2d prevEstimatedPose) {
