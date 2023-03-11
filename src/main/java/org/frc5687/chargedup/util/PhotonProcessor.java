@@ -11,26 +11,26 @@ import org.photonvision.PhotonPoseEstimator;
 
 public class PhotonProcessor {
 
-//     private final PhotonCamera _northCamera;
+    private final PhotonCamera _northCamera;
     private final PhotonCamera _southWestCamera;
     private final PhotonCamera _southEastCamera;
-//     private final PhotonPoseEstimator _northCameraEstimator;
+    private final PhotonPoseEstimator _northCameraEstimator;
     private final PhotonPoseEstimator _southWestCameraEstimator;
     private final PhotonPoseEstimator _southEastCameraEstimator;
 
     public PhotonProcessor(AprilTagFieldLayout layout) {
-        // _northCamera = new PhotonCamera("North_Camera");
+        _northCamera = new PhotonCamera("North_Camera");
         _southWestCamera = new PhotonCamera("South_West_Camera");
         _southEastCamera = new PhotonCamera("South_East_Camera");
 
         setPipeline(Pipeline.FAR);
 
         // dummy values
-        // Transform3d robotToNorthCam =
-        //         new Transform3d(
-        //                 new Translation3d(
-        //                         Units.inchesToMeters(0.5), Units.inchesToMeters(4.5), Units.inchesToMeters(20)),
-        //                 new Rotation3d(0, 0, 0));
+        Transform3d robotToNorthCam =
+                new Transform3d(
+                        new Translation3d(
+                                Units.inchesToMeters(0.5), Units.inchesToMeters(4.5), Units.inchesToMeters(20)),
+                        new Rotation3d(0, 0, 0));
 
         Transform3d robotToSouthWestCam =
                 new Transform3d(
@@ -48,9 +48,9 @@ public class PhotonProcessor {
                                 .442),
                         new Rotation3d(0, 0, Units.degreesToRadians(140)));
 
-        // _northCameraEstimator =
-        //         new PhotonPoseEstimator(
-        //                 layout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP, _northCamera, robotToNorthCam);
+        _northCameraEstimator =
+                new PhotonPoseEstimator(
+                        layout, PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP, _northCamera, robotToNorthCam);
 
         _southWestCameraEstimator =
                 new PhotonPoseEstimator(
@@ -68,8 +68,8 @@ public class PhotonProcessor {
 
         _southWestCameraEstimator.setMultiTagFallbackStrategy(
                 PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
-        // _northCameraEstimator.setMultiTagFallbackStrategy(
-        //         PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+        _northCameraEstimator.setMultiTagFallbackStrategy(
+                PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
         _southEastCameraEstimator.setMultiTagFallbackStrategy(
                 PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
     }
@@ -80,18 +80,18 @@ public class PhotonProcessor {
         _southEastCamera.setPipelineIndex(pipeline.getValue());
     }
 
-//     public double getNorthCameraLatency() {
-//         return _northCamera.getLatestResult().getLatencyMillis();
-//     }
+    public double getNorthCameraLatency() {
+        return _northCamera.getLatestResult().getLatencyMillis();
+    }
 
-//     public boolean hasNorthCameraTargets() {
-//         return _northCamera.getLatestResult().hasTargets();
-//     }
+    public boolean hasNorthCameraTargets() {
+        return _northCamera.getLatestResult().hasTargets();
+    }
 
-//     public Optional<EstimatedRobotPose> getNorthCameraEstimatedGlobalPose(Pose2d prevEstimatedPose) {
-//         //        _northCameraEstimator.setReferencePose(prevEstimatedPose);
-//         return _northCameraEstimator.update();
-//     }
+    public Optional<EstimatedRobotPose> getNorthCameraEstimatedGlobalPose(Pose2d prevEstimatedPose) {
+        //        _northCameraEstimator.setReferencePose(prevEstimatedPose);
+        return _northCameraEstimator.update();
+    }
 
     public Optional<EstimatedRobotPose> getSouthWestCameraEstimatedGlobalPose(
             Pose2d prevEstimatedPose) {
@@ -103,11 +103,11 @@ public class PhotonProcessor {
         return _southEastCameraEstimator.update();
     }
 
-//     public CompletableFuture<Optional<EstimatedRobotPose>> getNorthCameraEstimatedGlobalPoseAsync(
-//             Pose2d prevEstimatedPose) {
-//         return CompletableFuture.supplyAsync(
-//                 () -> getNorthCameraEstimatedGlobalPose(prevEstimatedPose));
-//     }
+    public CompletableFuture<Optional<EstimatedRobotPose>> getNorthCameraEstimatedGlobalPoseAsync(
+            Pose2d prevEstimatedPose) {
+        return CompletableFuture.supplyAsync(
+                () -> getNorthCameraEstimatedGlobalPose(prevEstimatedPose));
+    }
 
     public CompletableFuture<Optional<EstimatedRobotPose>> getSouthWestCameraEstimatedGlobalPoseAsync(
             Pose2d prevEstimatedPose) {
