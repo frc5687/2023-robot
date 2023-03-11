@@ -39,8 +39,8 @@ public class DriveToPose extends OutliersCommand {
         double xDiff = _destPose.getX() - _driveTrain.getEstimatedPose().getX();
         double yDiff = _destPose.getY() - _driveTrain.getEstimatedPose().getY();
         return (Math.abs(xDiff) < 0.03 && Math.abs(yDiff) < 0.03)
-         || (_oi.getDriveX() > 0 || _oi.getDriveY() > 0) || 
-         (_oi.getTapRight() || _oi.getTapLeft());
+         || (_oi.getDriveX() > 0 || _oi.getDriveY() > 0) /* || 
+         (_oi.getTapRight() || _oi.getTapLeft()) */;
     }
 
     @Override
