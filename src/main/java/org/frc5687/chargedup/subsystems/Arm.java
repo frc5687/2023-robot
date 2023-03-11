@@ -20,11 +20,10 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
-import org.frc5687.lib.sensors.HallEffect;
 
 public class Arm extends OutliersSubsystem {
     private final OutliersTalon _talon;
-    private final HallEffect _upperHall;
+    // private final HallEffect _upperHall;
     //    private final HallEffect _lowerHall;
     private final DutyCycleEncoder _absAngleEncoder;
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
@@ -38,7 +37,7 @@ public class Arm extends OutliersSubsystem {
         _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
 
-        _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
+        // _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
         //        _lowerHall = new HallEffect(RobotMap.DIO.BOTTOM_HALL_ARM);
 
         _absAngleEncoder = new DutyCycleEncoder(RobotMap.DIO.ARM_ENCODER);
@@ -94,7 +93,7 @@ public class Arm extends OutliersSubsystem {
     }
 
     public boolean getUpperHall() {
-        return _upperHall.get();
+        return false;
     }
 
     public boolean getLowerHall() {

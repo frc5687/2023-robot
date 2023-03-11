@@ -8,7 +8,6 @@ import org.frc5687.lib.sensors.HallEffect;
 
 public class Elevator extends OutliersSubsystem {
     private OutliersTalon _talon;
-    private final HallEffect _outHall;
     private final HallEffect _inHall;
     private boolean _hasZeroed;
 
@@ -20,7 +19,6 @@ public class Elevator extends OutliersSubsystem {
         _talon.configure(Constants.ExtendingArm.CONFIG);
         _talon.configureClosedLoop(Constants.ExtendingArm.CONTROLLER_CONFIG);
 
-        _outHall = new HallEffect(RobotMap.DIO.OUT_EXT_HALL);
         _inHall = new HallEffect(RobotMap.DIO.IN_EXT_HALL);
         _hasZeroed = false;
     }
@@ -62,10 +60,6 @@ public class Elevator extends OutliersSubsystem {
         setArmSpeed(Constants.ExtendingArm.ZERO_ARM_SPEED);
     }
 
-    public boolean getOutHall() {
-        return _outHall.get();
-    }
-
     public boolean getInHall() {
         return _inHall.get();
     }
@@ -92,7 +86,6 @@ public class Elevator extends OutliersSubsystem {
         metric("Encoder Radians", getEncoderRotationRadians());
         metric("Elevator Radians", getEncoderRotationRadians());
         metric("Elevator Length", getExtArmMeters());
-        metric("Out Hall", getOutHall());
         metric("In Hall", getInHall());
         metric("Motor Output", _talon.get());
     }
