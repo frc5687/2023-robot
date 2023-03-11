@@ -8,6 +8,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
+import org.frc5687.chargedup.commands.CubeShooter.AutoRotateWrist;
+import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
@@ -37,7 +40,11 @@ public class OI extends OutliersProxy {
     }
 
     public void initializeButtons(
-            DriveTrain drivetrain, EndEffector endEffector, Arm arm, Elevator elevator) {
+            DriveTrain drivetrain,
+            EndEffector endEffector,
+            Arm arm,
+            Elevator elevator,
+            CubeShooter cubeShooter) {
         _operatorGamepad
                 .getBackButton()
                 .onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
@@ -50,8 +57,10 @@ public class OI extends OutliersProxy {
                 .getXButton()
                 .onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
-        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
+//        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
+        //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
+        _driverRightTrigger.onTrue(new Shoot(cubeShooter));
+        _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter, this));
 
         // _driverGamepad
         //         .getAButton()
@@ -59,9 +68,13 @@ public class OI extends OutliersProxy {
         // _driverGamepad
         //         .getBButton()
         //         .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
-        // _driverGamepad
-        //         .getXButton()
-        //         .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
+        _driverGamepad.getBButton().onTrue(Commands.runOnce(cubeShooter::zeroWrist, cubeShooter));
+        _driverGamepad
+                .getXButton()
+                .onTrue(new AutoRotateWrist(cubeShooter, Constants.CubeShooter.INTAKE_ANGLE)); // gear ratio was not added
+        _driverGamepad
+                .getAButton()
+                .onTrue(new AutoRotateWrist(cubeShooter, Constants.CubeShooter.IDLE_ANGLE)); // gear ratio was not added
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
@@ -69,7 +82,8 @@ public class OI extends OutliersProxy {
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-        return _driverGamepad.getAButton().getAsBoolean();
+//        return _driverGamepad.getAButton().getAsBoolean();
+        return false;
     }
 
     public boolean releaseRoller() {
@@ -95,6 +109,10 @@ public class OI extends OutliersProxy {
     public boolean getIntakeOut() {
         return _operatorGamepad.getBButton().getAsBoolean();
     }
+
+    public boolean getCubeIntake() {
+        return _driverLeftTrigger.getAsBoolean();
+    }    
 
     public double getDriveY() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
@@ -122,6 +140,13 @@ public class OI extends OutliersProxy {
     }
 
     public double getExtArmY() {
+        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        // return speed;
+        return 0;
+    }
+
+    public double getCSWrist() {
         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         return speed;
