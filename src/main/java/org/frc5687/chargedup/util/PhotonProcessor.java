@@ -32,13 +32,13 @@ public class PhotonProcessor {
         Transform3d robotToNorthWestCam =
                 new Transform3d(
                         new Translation3d(
-                                Units.inchesToMeters(0.5), Units.inchesToMeters(4.5), Units.inchesToMeters(20)),
+                                0.73, -0.14, 0.2),
                         new Rotation3d(0, 0, 0));
 
         Transform3d robotToNorthEastCam =
                 new Transform3d(
                         new Translation3d(
-                                Units.inchesToMeters(0.5), Units.inchesToMeters(4.5), Units.inchesToMeters(20)),
+                               0.62, 0.14, 0.03),
                         new Rotation3d(0, 0, 0));
 
         Transform3d robotToSouthWestCam =
