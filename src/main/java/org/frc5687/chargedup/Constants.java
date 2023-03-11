@@ -516,7 +516,7 @@ public class Constants {
     public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 7.2;
-        public static final double WRIST_ANGLE_TOLERANCE = Units.degreesToRadians(1);
+        public static final double WRIST_ANGLE_TOLERANCE = 0.05; //rotations
         public static final double SHOOT_RPS = 90;
         public static final double WRIST_OFFSET = -0.179;
         public static final double IDLE_ANGLE = 0.87; //rotations
