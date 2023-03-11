@@ -8,7 +8,6 @@ import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.util.AutoChooser;
-import org.frc5687.chargedup.util.AutoChooser.Node;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -20,7 +19,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
     private Trajectory _trajectory2;
     //private Rotation2d rotation1;
     //private Rotation2d rotation2;
-    private Node _node;
+    private AutoChooser.Node _node;
 
    
     public TwoPieceAuto(
@@ -31,7 +30,6 @@ public class TwoPieceAuto extends SequentialCommandGroup {
         Lights lights 
     ){
          var config = driveTrain.getConfig();
-         _node = (AutoChooser.Node)
           switch(_node) {
             case OneCone:
                 if (DriverStation.getAlliance() == Alliance.Red){
@@ -113,14 +111,18 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     _trajectory1 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_ONE, config);
                     _trajectory2 = TrajectoryGenerator.generateTrajectory(Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_TWO, config);
                 }    
-                break; 
+                break;
+            case Unknown:
+                throw new UnsupportedOperationException("Unimplemented case: " + _node);
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + _node); 
         } 
                    
         addCommands(
             new SequentialCommandGroup(
                 new AutoPlaceHighCube(elevator, endEffector, arm),
                 new DriveTrajectory(driveTrain, _trajectory1),
-                new AutoGroundPickupCube(elevator, arm, endEffector),
+                //new AutoGroundPickupCube(elevator, arm, endEffector),
                 new DriveTrajectory(driveTrain, _trajectory2),
                 new AutoPlaceHighCone(elevator, endEffector, arm)
             )
