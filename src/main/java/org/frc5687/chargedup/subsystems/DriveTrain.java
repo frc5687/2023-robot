@@ -265,20 +265,28 @@ public class DriveTrain extends OutliersSubsystem {
         _poseEstimator.update(
                 _imu.getRotation2d().minus(new Rotation2d(_yawOffset)), _systemIO.measuredPositions);
         Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
-        CompletableFuture<Optional<EstimatedRobotPose>> northPoseFuture =
-                _photonProcessor.getNorthCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+        CompletableFuture<Optional<EstimatedRobotPose>> northWestPoseFuture =
+                _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+        CompletableFuture<Optional<EstimatedRobotPose>> northEastPoseFuture =
+                _photonProcessor.getNorthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
         CompletableFuture<Optional<EstimatedRobotPose>> southWestPoseFuture =
                 _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
         CompletableFuture<Optional<EstimatedRobotPose>> southEastPoseFuture =
                 _photonProcessor.getSouthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
 
-        Optional<EstimatedRobotPose> northPose = northPoseFuture.join();
+        Optional<EstimatedRobotPose> northWestPose = northWestPoseFuture.join();
+        Optional<EstimatedRobotPose> northEastPose = northEastPoseFuture.join();
         Optional<EstimatedRobotPose> southWestPose = southWestPoseFuture.join();
         Optional<EstimatedRobotPose> southEastPose = southEastPoseFuture.join();
-        if (northPose.isPresent()) {
-            EstimatedRobotPose camNorthPose = northPose.get();
+        if (northWestPose.isPresent()) {
+            EstimatedRobotPose camNorthWestPose = northWestPose.get();
             _poseEstimator.addVisionMeasurement(
-                    camNorthPose.estimatedPose.toPose2d(), camNorthPose.timestampSeconds);
+                    camNorthWestPose.estimatedPose.toPose2d(), camNorthWestPose.timestampSeconds);
+        }
+        if (northEastPose.isPresent()) {
+            EstimatedRobotPose camNorthEastPose = northEastPose.get();
+            _poseEstimator.addVisionMeasurement(
+                    camNorthEastPose.estimatedPose.toPose2d(), camNorthEastPose.timestampSeconds);
         }
         if (southWestPose.isPresent()) {
             EstimatedRobotPose camSW = southWestPose.get();
