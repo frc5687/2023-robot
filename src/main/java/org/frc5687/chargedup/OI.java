@@ -98,8 +98,8 @@ public class OI extends OutliersProxy {
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-       return _driverGamepad.getAButton().getAsBoolean();
-    // return false;
+        return _driverGamepad.getAButton().getAsBoolean();
+        // return false;
     }
 
     public boolean releaseRoller() {
