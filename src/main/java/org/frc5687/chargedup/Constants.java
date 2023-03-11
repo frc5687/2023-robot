@@ -348,15 +348,15 @@ public class Constants {
 
     public static class Auto {
         public static class FieldPoses {
-            public static final Pose2d BLUE_NODE_ONE_GOAL = new Pose2d(1.795, 0.519, new Rotation2d());
-            public static final Pose2d BLUE_NODE_TWO_GOAL = new Pose2d(1.795, 1.080, new Rotation2d());
-            public static final Pose2d BLUE_NODE_THREE_GOAL = new Pose2d(1.795, 1.637, new Rotation2d());
-            public static final Pose2d BLUE_NODE_FOUR_GOAL = new Pose2d(1.795, 2.195, new Rotation2d());
-            public static final Pose2d BLUE_NODE_FIVE_GOAL = new Pose2d(1.795, 2.753, new Rotation2d());
-            public static final Pose2d BLUE_NODE_SIX_GOAL = new Pose2d(1.795, 3.313, new Rotation2d());
-            public static final Pose2d BLUE_NODE_SEVEN_GOAL = new Pose2d(1.795, 3.872, new Rotation2d());
-            public static final Pose2d BLUE_NODE_EIGHT_GOAL = new Pose2d(1.795, 4.431, new Rotation2d());
-            public static final Pose2d BLUE_NODE_NINE_GOAL = new Pose2d(1.795, 4.989, new Rotation2d());
+            public static final Pose2d BLUE_NODE_ONE_GOAL = new Pose2d(BLUE_X_COORDINATE, 0.519, new Rotation2d());
+            public static final Pose2d BLUE_NODE_TWO_GOAL = new Pose2d(BLUE_X_COORDINATE, 1.080, new Rotation2d());
+            public static final Pose2d BLUE_NODE_THREE_GOAL = new Pose2d(BLUE_X_COORDINATE, 1.637, new Rotation2d());
+            public static final Pose2d BLUE_NODE_FOUR_GOAL = new Pose2d(BLUE_X_COORDINATE, 2.195, new Rotation2d());
+            public static final Pose2d BLUE_NODE_FIVE_GOAL = new Pose2d(BLUE_X_COORDINATE, 2.753, new Rotation2d());
+            public static final Pose2d BLUE_NODE_SIX_GOAL = new Pose2d(BLUE_X_COORDINATE, 3.313, new Rotation2d());
+            public static final Pose2d BLUE_NODE_SEVEN_GOAL = new Pose2d(BLUE_X_COORDINATE, 3.872, new Rotation2d());
+            public static final Pose2d BLUE_NODE_EIGHT_GOAL = new Pose2d(BLUE_X_COORDINATE, 4.431, new Rotation2d());
+            public static final Pose2d BLUE_NODE_NINE_GOAL = new Pose2d(BLUE_X_COORDINATE, 4.989, new Rotation2d());
  
          // left to right on red side
          public static final Pose2d RED_NODE_ONE_GOAL = new Pose2d(RED_X_COORDINATE, 0.519, Rotation2d.fromDegrees(180));
@@ -378,6 +378,7 @@ public class Constants {
         }
 
         public static final double RED_X_COORDINATE = 14.75;
+        public static final double BLUE_X_COORDINATE = 1.795;
 
         public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
         public static final Pose2d STARTING_CHARGING_STATION =

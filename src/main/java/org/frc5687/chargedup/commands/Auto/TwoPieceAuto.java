@@ -140,7 +140,6 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             new SequentialCommandGroup(
                 new AutoPlaceHighCube(elevator, endEffector, arm),
                 new DriveTrajectory(driveTrain, _trajectory1),
-                //new AutoGroundPickupCube(elevator, arm, endEffector),
                 new DriveTrajectory(driveTrain, _trajectory2),
                 new AutoPlaceHighCone(elevator, endEffector, arm)
             )
