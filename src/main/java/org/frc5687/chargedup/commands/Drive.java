@@ -80,7 +80,6 @@ public class Drive extends OutliersCommand {
         }
 
         double controllerPower = _driveTrain.getRotationCorrection();
-
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {

@@ -86,12 +86,12 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
         //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter);
+        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         _driveTrain.startModules();
-        //        startPeriodic();
+        startPeriodic();
     }
 
     public void periodic() {}

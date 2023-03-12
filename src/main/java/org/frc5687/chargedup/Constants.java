@@ -62,7 +62,12 @@ public class Constants {
             KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
-
+        public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
+        static {
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
+        }
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
@@ -78,7 +83,6 @@ public class Constants {
             VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
-
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -154,9 +158,9 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
 
-        public static final double kP = 1.5;
+        public static final double kP = 4.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.0;
+        public static final double kD = 0.5;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -335,10 +339,11 @@ public class Constants {
         public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
         public static final double MAX_ACCELERATION = Units.degreesToRadians(150);
 
+        //Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
         public static final double LOWER_EXTREME = 0.378;
-        public static final double PLACE_ARM_ANGLE = 0.255; // testing
+        public static final double PLACE_ARM_ANGLE = 0.25; // testing
     }
 
     public static class Auto {
@@ -348,6 +353,8 @@ public class Constants {
             public static final Pose2d POSE_3 = new Pose2d(2, 2, new Rotation2d());
         }
 
+        public static final double RED_X_COORDINATE = 14.75;
+
         public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
         public static final Pose2d STARTING_CHARGING_STATION =
                 new Pose2d(1.820, 4.025, new Rotation2d());
@@ -356,6 +363,18 @@ public class Constants {
         public static final Pose2d TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d());
         public static final Pose2d TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d());
         public static final Pose2d TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d());
+
+        // left to right on red side
+        public static final Pose2d RED_FIRST_GOAL = new Pose2d(RED_X_COORDINATE, 0.519, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SECOND_GOAL = new Pose2d(RED_X_COORDINATE, 1.08, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_THIRD_GOAL = new Pose2d(RED_X_COORDINATE, 1.637, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FOURTH_GOAL = new Pose2d(RED_X_COORDINATE, 2.195, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FIFTH_GOAL = new Pose2d(RED_X_COORDINATE, 2.753, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SIXTH_GOAL = new Pose2d(RED_X_COORDINATE, 3.313, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SEVENTH_GOAL =
+                new Pose2d(RED_X_COORDINATE, 3.872, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_EIGHTH_GOAL = new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_NINTH_GOAL = new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180));
 
         public static class TrajectoryPoints {
             public static class S {
@@ -410,7 +429,7 @@ public class Constants {
         public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -1.0;
-        public static final double PLACE_CONE_ROLLER_SPEED = 1.0;
+        public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
         public static final long GRIPPER_TIMEOUT = 500;
     }
 
