@@ -1,73 +1,86 @@
 /* Team 5687 (C)2022 */
 package org.frc5687.lib.drivers;
 
-
 import com.ctre.phoenixpro.configs.CurrentLimitsConfigs;
 import com.ctre.phoenixpro.configs.FeedbackConfigs;
 import com.ctre.phoenixpro.configs.MotionMagicConfigs;
 import com.ctre.phoenixpro.configs.MotorOutputConfigs;
-import com.ctre.phoenixpro.configs.ParentConfiguration;
 import com.ctre.phoenixpro.configs.Slot0Configs;
 import com.ctre.phoenixpro.configs.TalonFXConfiguration;
 import com.ctre.phoenixpro.configs.TalonFXConfigurator;
 import com.ctre.phoenixpro.configs.TorqueCurrentConfigs;
 import com.ctre.phoenixpro.configs.VoltageConfigs;
-import com.ctre.phoenixpro.controls.DutyCycleOut;
-import com.ctre.phoenixpro.controls.MotionMagicVoltage;
-import com.ctre.phoenixpro.controls.TorqueCurrentFOC;
-import com.ctre.phoenixpro.controls.VoltageOut;
+import com.ctre.phoenixpro.controls.*;
 import com.ctre.phoenixpro.hardware.TalonFX;
 import com.ctre.phoenixpro.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
-
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
- * TalonFX wrapper class that uses 254's LazyTalonFX that reduces CAN bus / CPU
- * overhead by skipping duplicate set commands. (By default the Talon flushes the Tx buffer on every
- * set call).
+ * TalonFX wrapper class that uses 254's LazyTalonFX that reduces CAN bus / CPU overhead by skipping
+ * duplicate set commands. (By default the Talon flushes the Tx buffer on every set call).
  */
 public class OutliersTalon extends TalonFX {
-    private final String _name;
+    // private final String _name;
     private final TalonFXConfigurator _configurator;
     private TalonFXConfiguration _configuration = new TalonFXConfiguration();
 
     private Slot0Configs _slot0Configs = new Slot0Configs();
     private MotorOutputConfigs _motorConfigs = new MotorOutputConfigs();
     private TorqueCurrentConfigs _torqueCurrentConfigs = new TorqueCurrentConfigs();
-    private VoltageConfigs _voltageConfigs = new VoltageConfigs();
-    private MotionMagicConfigs _motionMagicConfigs = new MotionMagicConfigs();
-    private CurrentLimitsConfigs _currentLimitsConfigs = new CurrentLimitsConfigs();
-    private FeedbackConfigs _feedbackConfigs = new FeedbackConfigs();
+    private final VoltageConfigs _voltageConfigs = new VoltageConfigs();
+    private final MotionMagicConfigs _motionMagicConfigs = new MotionMagicConfigs();
+    private final CurrentLimitsConfigs _currentLimitsConfigs = new CurrentLimitsConfigs();
+    private final FeedbackConfigs _feedbackConfigs = new FeedbackConfigs();
 
-
-    private DutyCycleOut _percentOutput = new DutyCycleOut(0.0);
-    private TorqueCurrentFOC _torqueCurrentFOC = new TorqueCurrentFOC(0.0);
-    private VoltageOut _voltageOut = new VoltageOut(0.0);
-    private MotionMagicVoltage _motionMagicVoltage = new MotionMagicVoltage(0.0);
+    private final DutyCycleOut _percentOutput = new DutyCycleOut(0.0);
+    private final TorqueCurrentFOC _torqueCurrentFOC = new TorqueCurrentFOC(0.0);
+    private final VoltageOut _voltageOut = new VoltageOut(0.0);
+    private final MotionMagicVoltage _motionMagicVoltage = new MotionMagicVoltage(0.0);
+    private final VelocityVoltage _velocityVoltage = new VelocityVoltage(0.0, true, 0, 0, false);
 
     public OutliersTalon(int port, String canBus, String name) {
         super(port, canBus);
         _configurator = this.getConfigurator();
         _configurator.apply(_configuration);
         setPercentOutput(0.0);
-        _name = name;
+        // _name = name;
     }
-    public void setPercentOutput(double output){
-        this.setControl(_percentOutput.withOutput(output));
+
+    public void setPercentOutput(double output) {
+        if (_percentOutput.Output != output) {
+            DriverStation.reportError("Output: " + _percentOutput.toString(), false);
+            this.setControl(_percentOutput.withOutput(output));
+        }
     }
-    public void setVoltage( double voltage){
-        this.setControl(_voltageOut.withOutput(voltage));
+
+    public void setVoltage(double voltage) {
+        if (_voltageOut.Output != voltage) {
+            this.setControl(_voltageOut.withOutput(voltage));
+        }
     }
-    public void setMotionMagic(double position){
-        this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
+
+    public void setMotionMagic(double position) {
+        if (_motionMagicVoltage.Position != position) {
+            this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
+        }
     }
+
+    public void setVelocity(double rpm) {
+        if (_velocityVoltage.Velocity != rpm) {
+            this.setControl(_velocityVoltage.withVelocity(rpm));
+        }
+    }
+
     public void setTorqueCurrentFOCRate(double hz) {
         _torqueCurrentFOC.withUpdateFreqHz(hz);
     }
+
     public void setTorqueCurrentFOC(double current) {
-        this.setControl(_torqueCurrentFOC.withOutput(current));
+        if (_torqueCurrentFOC.Output != current) {
+            this.setControl(_torqueCurrentFOC.withOutput(current));
+        }
     }
 
     public void configure(Configuration config) {
@@ -93,6 +106,7 @@ public class OutliersTalon extends TalonFX {
         _voltageOut.EnableFOC = config.USE_FOC;
         _motionMagicVoltage.EnableFOC = config.USE_FOC;
         _percentOutput.EnableFOC = config.USE_FOC;
+        _velocityVoltage.EnableFOC = config.USE_FOC;
 
         _configurator.apply(_motorConfigs, config.TIME_OUT);
         _configurator.apply(_torqueCurrentConfigs, config.TIME_OUT);
@@ -112,9 +126,7 @@ public class OutliersTalon extends TalonFX {
 
         _configurator.apply(_slot0Configs, config.TIME_OUT);
         _configurator.apply(_motionMagicConfigs);
-
     }
-
 
     public static double ticksToRadians(double ticks, double gearRatio) {
         return ticks * ((2.0 * Math.PI) / (gearRatio * 2048.0));
@@ -136,6 +148,7 @@ public class OutliersTalon extends TalonFX {
         double RPM = velocityCounts * (600.0 / 2048.0);
         return RPM / gearRatio;
     }
+
     public static double rotationsPerSecToRPM(double velocity, double gearRatio) {
         double RPM = velocity * (60.0);
         return RPM / gearRatio;

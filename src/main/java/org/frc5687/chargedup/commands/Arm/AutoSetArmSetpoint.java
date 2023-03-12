@@ -1,10 +1,9 @@
 package org.frc5687.chargedup.commands.Arm;
 
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
-import org.frc5687.chargedup.Constants;
-
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class AutoSetArmSetpoint extends OutliersCommand {
 
@@ -22,22 +21,23 @@ public class AutoSetArmSetpoint extends OutliersCommand {
         addRequirements(_arm);
     }
 
-
-
     @Override
     public void initialize() {
-        // We need to set the previous profiled reference to match the current state of the arm using sensors we have.
+        // We need to set the previous profiled reference to match the current state of the arm using
+        // sensors we have.
         _lastProfiledReference =
-        new TrapezoidProfile.State(_arm.getArmAngleRadians(), _arm.getArmVelocityRadPerSec());
-        error("Arm started");
+                new TrapezoidProfile.State(_arm.getArmAngleRadians(), _arm.getArmVelocityRadPerSec());
     }
 
     @Override
     public void execute() {
         // Step our TrapezoidalProfile forward 20ms and set it as our next reference
-        _lastProfiledReference = (new TrapezoidProfile(_arm.getConstraints(), goal, _lastProfiledReference)).calculate(0.020);
+        _lastProfiledReference =
+                (new TrapezoidProfile(_arm.getConstraints(), goal, _lastProfiledReference))
+                        .calculate(0.020);
         _arm.setNextReference(_lastProfiledReference);
-        // we need to set the arm reference so that our periodic function will give us the correct voltage.
+        // we need to set the arm reference so that our periodic function will give us the correct
+        // voltage.
 
         // we need to send the voltage to the motor, we should call a function here.
         _arm.setArmVoltage(_arm.getNextVoltage());
@@ -47,14 +47,15 @@ public class AutoSetArmSetpoint extends OutliersCommand {
     public boolean isFinished() {
         // This command should finish when the arm has done what we want.
         return Math.abs(goal.position - _arm.getArmAngleRadians()) < Constants.Arm.ANGLE_TOLERANCE;
-        //super.isFinished();
+        // super.isFinished();
     }
 
     @Override
     public void end(boolean interrupted) {
-        error("Finished Arm");
+        error("Ending arm");
+        _arm.setArmVoltage(0);
         _arm.setArmSpeed(0);
+        error("end arm");
         super.end(interrupted);
-    
     }
 }

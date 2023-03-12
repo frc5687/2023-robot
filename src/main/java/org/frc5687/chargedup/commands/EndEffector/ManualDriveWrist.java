@@ -9,24 +9,21 @@ public class ManualDriveWrist extends OutliersCommand {
     private OI _oi;
 
     public ManualDriveWrist(EndEffector wrist, OI oi) {
-      _wrist = wrist;  
-      _oi = oi;
-      addRequirements(_wrist);
-   }
-     
-
-
-    @Override
-    public void initialize(){
-        
+        _wrist = wrist;
+        _oi = oi;
+        addRequirements(_wrist);
     }
 
     @Override
-    public void execute(){
+    public void initialize() {}
+
+    @Override
+    public void execute() {
         double speed = _oi.getWristSpeed();
         _wrist.setWristSpeed(speed / 2.0);
         metric("wrist speed", speed / 2.0);
     }
+
     @Override
     public boolean isFinished() {
         return super.isFinished();
@@ -37,5 +34,3 @@ public class ManualDriveWrist extends OutliersCommand {
         super.end(interrupted);
     }
 }
-
-
