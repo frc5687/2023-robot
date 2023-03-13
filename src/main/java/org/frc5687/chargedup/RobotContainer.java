@@ -12,6 +12,7 @@ import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
 import org.frc5687.chargedup.commands.Auto.OneConeAuto;
 import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
+import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
 import org.frc5687.chargedup.commands.CubeShooter.ManualRotateWrist;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
@@ -147,7 +148,7 @@ public class RobotContainer extends OutliersContainer {
             case SevenCone:
                 return new WaitCommand(15);
             case EightCube:
-                return new WaitCommand(15);
+                return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.EightCube);
             case NineCone:
                 return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
             default:

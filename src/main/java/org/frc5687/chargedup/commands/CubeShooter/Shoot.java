@@ -9,10 +9,14 @@ public class Shoot extends OutliersCommand {
     private long _timeout;
     private ShootingState _state;
     private CubeShooter _cubeShooter;
+    private double _speed;
+    private double _angle;
     private boolean _finished;
 
-    public Shoot(CubeShooter shooter) {
+    public Shoot(CubeShooter shooter, double speed, double angle) {
         _cubeShooter = shooter;
+        _speed = speed;
+        _angle = angle;
         _state = ShootingState.INITIALIZE;
         _finished = false;
         addRequirements(_cubeShooter);
@@ -24,6 +28,7 @@ public class Shoot extends OutliersCommand {
         _state = ShootingState.INITIALIZE;
         _finished = false;
         _timeout = System.currentTimeMillis() + 750;
+        _cubeShooter.setWristAngle(_angle);
     }
 
     @Override
@@ -31,14 +36,14 @@ public class Shoot extends OutliersCommand {
         switch (_state) {
             case INITIALIZE:
 //                _cubeShooter.setShooterSpeed(-0.5);
-               if (_timeout < System.currentTimeMillis()) {
-                   _timeout = System.currentTimeMillis() + 2000;
+               if (Math.abs(_cubeShooter.getWristEncoderRotation() - _angle) < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE) {
+                   _timeout = System.currentTimeMillis() + 750;
                    _state = ShootingState.REVVING_UP;
                }
-                _state = ShootingState.REVVING_UP;
+                // _state = ShootingState.REVVING_UP;
                 break;
             case REVVING_UP:
-                _cubeShooter.setShooterSpeed(1);
+                _cubeShooter.setShooterSpeed(_speed);
                 if (_timeout < System.currentTimeMillis()) {
                     _state = ShootingState.UP_TO_SPEED;
                 }

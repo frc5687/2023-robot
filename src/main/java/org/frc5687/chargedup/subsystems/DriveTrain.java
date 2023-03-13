@@ -22,6 +22,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
@@ -57,6 +58,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     private boolean _slowMode = false;
 
+    private boolean _isRedAlliance = false;
+
     private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
@@ -72,8 +75,6 @@ public class DriveTrain extends OutliersSubsystem {
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
-    private Pose2d _hoverGoal;
-    private boolean _isRedAlliance;
 
     public DriveTrain(
             OutliersContainer container,
@@ -87,6 +88,7 @@ public class DriveTrain extends OutliersSubsystem {
 
         _imu = imu;
         _systemIO = new SystemIO();
+        _isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
         _modules = new DiffSwerveModule[4];
 
@@ -133,7 +135,7 @@ public class DriveTrain extends OutliersSubsystem {
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() + 180: _imu.getYaw().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -191,10 +193,8 @@ public class DriveTrain extends OutliersSubsystem {
             _moduleSignals[(i * 4) + 3] = signals[3];
         }
         _field = new Field2d();
-        _hoverGoal = new Pose2d();
         readModules();
         setSetpointFromMeasuredModules();
-        _isRedAlliance = DriverStation.getAlliance() == DriverStation.Alliance.Red;
     }
 
     public static class SystemIO {
@@ -419,7 +419,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() + 180 : _imu.getYaw().getValue();
         readIMU();
     }
 
@@ -471,14 +471,14 @@ public class DriveTrain extends OutliersSubsystem {
      *     <p>Rotation2d - gyroAngle = gyroOffset
      *     <p>If Rotation2d <> gyroAngle, then robot heading will no longer equal IMU heading.
      */
-    public void resetOdometry(Pose2d position) {
+    public void resetRobotPose(Pose2d position) {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].resetEncoders();
         }
         Translation2d _translation = position.getTranslation();
         Rotation2d _rotation = getHeading();
         Pose2d _reset = new Pose2d(_translation, _rotation);
-        _odometry.resetPosition(
+        _poseEstimator.resetPosition(
                 getHeading(),
                 new SwerveModulePosition[] {
                     _modules[NORTH_WEST_IDX].getModulePosition(),
@@ -548,6 +548,9 @@ public class DriveTrain extends OutliersSubsystem {
             module.updateDashboard();
         }
     }
+    public boolean isTopSpeed() {
+        return Math.abs(_modules[0].getWheelVelocity()) >= (Constants.DriveTrain.MAX_MPS - 0.2);
+    }
 
     @Override
     public void updateDashboard() {
@@ -559,7 +562,6 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
         metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
-        metric("Hover Goal", getHoverGoal().toString());
         SmartDashboard.putData(_field);
         moduleMetrics();
     }
@@ -615,17 +617,5 @@ public class DriveTrain extends OutliersSubsystem {
 
     public Mode getMode() {
         return _mode;
-    }
-
-    public void setHoverGoal(Pose2d goal) {
-        _hoverGoal = goal;
-    }
-
-    public Pose2d getHoverGoal() {
-        return _hoverGoal;
-    }
-
-    public boolean isRedAlliance() {
-        return _isRedAlliance;
     }
 }

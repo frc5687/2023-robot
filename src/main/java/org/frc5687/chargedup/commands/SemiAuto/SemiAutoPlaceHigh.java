@@ -31,7 +31,6 @@ public class SemiAutoPlaceHigh extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return true;
     }
 }
