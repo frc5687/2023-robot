@@ -80,13 +80,13 @@ public class PhotonProcessor {
                         robotToSouthEastCam);
 
         _southWestCameraEstimator.setMultiTagFallbackStrategy(
-                PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         _northWestCameraEstimator.setMultiTagFallbackStrategy(
-                PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         _northEastCameraEstimator.setMultiTagFallbackStrategy(
-                PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
         _southEastCameraEstimator.setMultiTagFallbackStrategy(
-                PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
     }
 
     public void setPipeline(Pipeline pipeline) {
@@ -112,22 +112,24 @@ public class PhotonProcessor {
     }
 
     public Optional<EstimatedRobotPose> getNorthWestCameraEstimatedGlobalPose(Pose2d prevEstimatedPose) {
-        //        _northCameraEstimator.setReferencePose(prevEstimatedPose);
+        _northWestCameraEstimator.setReferencePose(prevEstimatedPose);
         return _northWestCameraEstimator.update();
     }
 
     public Optional<EstimatedRobotPose> getNorthEastCameraEstimatedGlobalPose(Pose2d prevEstimatedPose) {
-        //        _northCameraEstimator.setReferencePose(prevEstimatedPose);
+        _northEastCameraEstimator.setReferencePose(prevEstimatedPose);
         return _northEastCameraEstimator.update();
     }
 
     public Optional<EstimatedRobotPose> getSouthWestCameraEstimatedGlobalPose(
             Pose2d prevEstimatedPose) {
+        _southWestCameraEstimator.setReferencePose(prevEstimatedPose);
         return _southWestCameraEstimator.update();
     }
 
     public Optional<EstimatedRobotPose> getSouthEastCameraEstimatedGlobalPose(
             Pose2d prevEstimatedPose) {
+        _southEastCameraEstimator.setReferencePose(prevEstimatedPose);
         return _southEastCameraEstimator.update();
     }
 
