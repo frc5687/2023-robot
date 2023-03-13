@@ -62,12 +62,15 @@ public class Constants {
             KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
+
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
+
         static {
             DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
             DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
+
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
@@ -83,6 +86,7 @@ public class Constants {
             VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -145,7 +149,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kP = 3.8;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
@@ -216,9 +220,9 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.08; // radians
+        public static final double Q_AZIMUTH = 0.07; // radians
         public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
-        public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.8; // radians per sec
 
         public static final double CONTROL_EFFORT = 4.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
@@ -339,7 +343,7 @@ public class Constants {
         public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
         public static final double MAX_ACCELERATION = Units.degreesToRadians(150);
 
-        //Positive is North, Negative is South (North is towards Battery)
+        // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
         public static final double LOWER_EXTREME = 0.378;
@@ -365,16 +369,24 @@ public class Constants {
         public static final Pose2d TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d());
 
         // left to right on red side
-        public static final Pose2d RED_FIRST_GOAL = new Pose2d(RED_X_COORDINATE, 0.519, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_SECOND_GOAL = new Pose2d(RED_X_COORDINATE, 1.08, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_THIRD_GOAL = new Pose2d(RED_X_COORDINATE, 1.637, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_FOURTH_GOAL = new Pose2d(RED_X_COORDINATE, 2.195, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_FIFTH_GOAL = new Pose2d(RED_X_COORDINATE, 2.753, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_SIXTH_GOAL = new Pose2d(RED_X_COORDINATE, 3.313, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FIRST_GOAL =
+                new Pose2d(RED_X_COORDINATE, 0.519, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SECOND_GOAL =
+                new Pose2d(RED_X_COORDINATE, 1.08, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_THIRD_GOAL =
+                new Pose2d(RED_X_COORDINATE, 1.637, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FOURTH_GOAL =
+                new Pose2d(RED_X_COORDINATE, 2.195, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_FIFTH_GOAL =
+                new Pose2d(RED_X_COORDINATE, 2.753, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_SIXTH_GOAL =
+                new Pose2d(RED_X_COORDINATE, 3.313, Rotation2d.fromDegrees(180));
         public static final Pose2d RED_SEVENTH_GOAL =
                 new Pose2d(RED_X_COORDINATE, 3.872, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_EIGHTH_GOAL = new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
-        public static final Pose2d RED_NINTH_GOAL = new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_EIGHTH_GOAL =
+                new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
+        public static final Pose2d RED_NINTH_GOAL =
+                new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180));
 
         public static class TrajectoryPoints {
             public static class S {
@@ -439,8 +451,8 @@ public class Constants {
         public static final double WRIST_ANGLE_TOLERANCE = Units.degreesToRadians(1);
         public static final double SHOOT_RPS = 90;
         public static final double WRIST_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.87; //rotations
-        public static final double INTAKE_ANGLE = 2.8; //rotations
+        public static final double IDLE_ANGLE = 0.87; // rotations
+        public static final double INTAKE_ANGLE = 2.8; // rotations
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();

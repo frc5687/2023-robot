@@ -284,7 +284,8 @@ public class DiffSwerveModule {
     }
 
     public double getRelativeEncoderAngle() {
-        return Helpers.boundHalfAngle(_boreQuadEncoder.getDistance() % (2.0 * Math.PI) + _absEncoderOffset, true);
+        return Helpers.boundHalfAngle(
+                _boreQuadEncoder.getDistance() % (2.0 * Math.PI) + _absEncoderOffset, true);
     }
 
     public double getModuleAngle() {

@@ -1,6 +1,5 @@
 package org.frc5687.chargedup.commands.CubeShooter;
 
-import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
@@ -30,11 +29,11 @@ public class Shoot extends OutliersCommand {
     public void execute() {
         switch (_state) {
             case INITIALIZE:
-//                _cubeShooter.setShooterSpeed(-0.5);
-               if (_timeout < System.currentTimeMillis()) {
-                   _timeout = System.currentTimeMillis() + 2000;
-                   _state = ShootingState.REVVING_UP;
-               }
+                //                _cubeShooter.setShooterSpeed(-0.5);
+                if (_timeout < System.currentTimeMillis()) {
+                    _timeout = System.currentTimeMillis() + 2000;
+                    _state = ShootingState.REVVING_UP;
+                }
                 _state = ShootingState.REVVING_UP;
                 break;
             case REVVING_UP:
@@ -50,7 +49,7 @@ public class Shoot extends OutliersCommand {
             case KICK_INTAKE:
                 // _cubeShooter.setWristSpeed(-0.2);
                 // if (_timeout < System.currentTimeMillis()) {
-                    _finished = true;
+                _finished = true;
                 // }
                 break;
         }

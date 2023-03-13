@@ -82,7 +82,6 @@ public class RobotMap {
         public static final int ENCODER_SW_A = 11;
         public static final int ENCODER_SW_B = 12;
 
-
         public static final int ENCODER_GRIPPER = 4;
         public static final int ENCODER_WRIST = 5;
         // public static final int TOP_HALL_ARM = 9; // north is 9

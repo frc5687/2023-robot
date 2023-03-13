@@ -8,15 +8,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
-import org.frc5687.chargedup.commands.Auto.OneConeAuto;
-import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
-import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
-import org.frc5687.chargedup.commands.CubeShooter.ManualRotateWrist;
 import org.frc5687.chargedup.commands.Drive;
-import org.frc5687.chargedup.commands.DriveLights;
-import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
-import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.AutoChooser;
@@ -33,13 +25,13 @@ public class RobotContainer extends OutliersContainer {
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
     private Robot _robot;
-//    private Lights _lights;
+    //    private Lights _lights;
     // private LightsExample _lights;
     private DriveTrain _driveTrain;
-//    private EndEffector _endEffector;
-//    private CubeShooter _cubeShooter;
-//    private Arm _arm;
-//    private Elevator _elevator;
+    //    private EndEffector _endEffector;
+    //    private CubeShooter _cubeShooter;
+    //    private Arm _arm;
+    //    private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
@@ -70,25 +62,27 @@ public class RobotContainer extends OutliersContainer {
         _imu.getConfigurator().apply(pigeonConfig);
 
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
-//        _elevator = new Elevator(this);
-//        _arm = new Arm(this);
-//        _cubeShooter = new CubeShooter(this);
-//        _endEffector = new EndEffector(this);
-//        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
+        //        _elevator = new Elevator(this);
+        //        _arm = new Arm(this);
+        //        _cubeShooter = new CubeShooter(this);
+        //        _endEffector = new EndEffector(this);
+        //        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
         //         This is for auto temporarily, need to fix for both in future.
-//        _endEffector.setCubeMode();
+        //        _endEffector.setCubeMode();
 
-        setDefaultCommand(_driveTrain, new Drive(_driveTrain/*, _endEffector,*/, _oi));
-//        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
-//        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
-//        setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
-//        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
-//        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
+        setDefaultCommand(_driveTrain, new Drive(_driveTrain /*, _endEffector,*/, _oi));
+        //        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+        //        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+        //        setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
+        //        setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
+        //        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
         //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
 
-//        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
+        //        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter,
+        // _lights);
+        _oi.initializeButtons(_driveTrain);
 
-//        _visionProcessor.start();
+        //        _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         _driveTrain.startModules();
         startPeriodic();
@@ -130,30 +124,30 @@ public class RobotContainer extends OutliersContainer {
         // } else {
         //     return new WaitCommand(15);
         // }
-//        error("Current mode is: " + _autoFirstNode);
-//        switch (_autoFirstNode) {
-//            case OneCone:
-//                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
-//            case TwoCube:
-//                return new WaitCommand(15);
-//            case ThreeCone:
-//                return new WaitCommand(15);
-//            case FourCone:
-//                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-//            case FiveCube:
-//                return new OneCubeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-//            case SixCone:
-//                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-//            case SevenCone:
-//                return new WaitCommand(15);
-//            case EightCube:
-//                return new WaitCommand(15);
-//            case NineCone:
-//                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
-//            default:
-//                error("uh oh");
-//                return new WaitCommand(15);
-//        }
+        //        error("Current mode is: " + _autoFirstNode);
+        //        switch (_autoFirstNode) {
+        //            case OneCone:
+        //                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        //            case TwoCube:
+        //                return new WaitCommand(15);
+        //            case ThreeCone:
+        //                return new WaitCommand(15);
+        //            case FourCone:
+        //                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+        //            case FiveCube:
+        //                return new OneCubeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+        //            case SixCone:
+        //                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+        //            case SevenCone:
+        //                return new WaitCommand(15);
+        //            case EightCube:
+        //                return new WaitCommand(15);
+        //            case NineCone:
+        //                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        //            default:
+        //                error("uh oh");
+        //                return new WaitCommand(15);
+        //        }
         return new WaitCommand(15);
     }
 

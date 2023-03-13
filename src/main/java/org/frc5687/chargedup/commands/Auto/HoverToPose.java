@@ -1,15 +1,14 @@
 package org.frc5687.chargedup.commands.Auto;
 
+import static org.frc5687.chargedup.Constants.DriveTrain.DRIVE_POSE_KINEMATIC_LIMITS;
+import static org.frc5687.chargedup.Constants.DriveTrain.KINEMATIC_LIMITS;
+
 import edu.wpi.first.math.geometry.Pose2d;
-import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.subsystems.Lights.AnimationType;
-
-import static org.frc5687.chargedup.Constants.DriveTrain.DRIVE_POSE_KINEMATIC_LIMITS;
-import static org.frc5687.chargedup.Constants.DriveTrain.KINEMATIC_LIMITS;
 
 public class HoverToPose extends OutliersCommand {
 

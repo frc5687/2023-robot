@@ -2,7 +2,6 @@ package org.frc5687.chargedup.subsystems;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -17,10 +16,8 @@ public class CubeShooter extends OutliersSubsystem {
 
     public CubeShooter(OutliersContainer container) {
         super(container);
-        _wristEncoder = 
-                new DutyCycleEncoder(RobotMap.DIO.ENCODER_CUBESHOOTER_WRIST);
-        _proximitySensor = 
-                new ProximitySensor(RobotMap.DIO.CUBESHOOTER_PROXIMITY);
+        _wristEncoder = new DutyCycleEncoder(RobotMap.DIO.ENCODER_CUBESHOOTER_WRIST);
+        _proximitySensor = new ProximitySensor(RobotMap.DIO.CUBESHOOTER_PROXIMITY);
         _wrist =
                 new OutliersTalon(
                         RobotMap.CAN.TALONFX.CUBESHOOTER_WRIST,
@@ -54,6 +51,7 @@ public class CubeShooter extends OutliersSubsystem {
     public void setWristEncoderRotation(double rotation) {
         _wrist.setRotorPosition(rotation);
     }
+
     public void setShooterRPS(double rps) {
         _shooter.setVelocity(rps);
     }
@@ -61,6 +59,7 @@ public class CubeShooter extends OutliersSubsystem {
     public double getShooterRPS() {
         return _shooter.getVelocity().getValue();
     }
+
     public void zeroWrist() {
         setWristEncoderRotation(getBoreEncoderRotation());
     }

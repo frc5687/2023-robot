@@ -2,34 +2,30 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.DriveTrain.Mode;
-import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.math.Vector2d;
-import org.frc5687.lib.vision.TrackedObjectInfo;
 
 public class Drive extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
-//    private final EndEffector _endEffector;
+    //    private final EndEffector _endEffector;
     //    private final HeadingController _headingController;
     private final PIDController _yCordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
     private int segmentationArray[] = new int[((int) 360 / 5)];
 
-    public Drive(DriveTrain driveTrain,/* EndEffector endEffector,*/ OI oi) {
+    public Drive(DriveTrain driveTrain, /* EndEffector endEffector,*/ OI oi) {
         _lockHeading = false;
         _driveTrain = driveTrain;
-//        _endEffector = endEffector;
+        //        _endEffector = endEffector;
         _oi = oi;
         _yCordinateElementController = new PIDController(2.5, 0.0, 0.3);
         //        _headingController = new HeadingController(
@@ -88,35 +84,36 @@ public class Drive extends OutliersCommand {
             vx = vec.x() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
             vy = vec.y() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
             rot = rot * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxSteeringVelocity;
-//            TrackedObjectInfo closestGameElement;
-//            if (_endEffector.getConeMode()) {
-//                closestGameElement = _driveTrain.getClosestCone();
-//            } else {
-//                closestGameElement = _driveTrain.getClosestCube();
-//            }
-//            double power = 0.0;
+            //            TrackedObjectInfo closestGameElement;
+            //            if (_endEffector.getConeMode()) {
+            //                closestGameElement = _driveTrain.getClosestCone();
+            //            } else {
+            //                closestGameElement = _driveTrain.getClosestCube();
+            //            }
+            //            double power = 0.0;
             // settings
-//            double coneDist = vx;
-//            boolean targetInTolerance;
+            //            double coneDist = vx;
+            //            boolean targetInTolerance;
             // double elementAngle = 0;
-//            if (closestGameElement != null) {
-//                metric("Closest Game Element", closestGameElement.toString());
-//                coneDist = closestGameElement.getDistance();
-//                targetInTolerance =
-//                        (closestGameElement.getZ() > Units.inchesToMeters(37)
-//                                && closestGameElement.getZ() < Units.inchesToMeters(65));
-//                if (targetInTolerance) {
-//                    power = -_yCordinateElementController.calculate(closestGameElement.getY());
-//                }
-//                //   elementAngle = closestGameElement.getAzimuthAngle();
-//            }
-//            _driveTrain.setSnapHeading(new Rotation2d(0));
-//            _driveTrain.setVelocity(
-//                    ChassisSpeeds.fromFieldRelativeSpeeds(
-//                            vx * coneDist / 2.0,
-//                            power,
-//                            _driveTrain.getRotationCorrection(),
-//                            _driveTrain.getHeading()));
+            //            if (closestGameElement != null) {
+            //                metric("Closest Game Element", closestGameElement.toString());
+            //                coneDist = closestGameElement.getDistance();
+            //                targetInTolerance =
+            //                        (closestGameElement.getZ() > Units.inchesToMeters(37)
+            //                                && closestGameElement.getZ() < Units.inchesToMeters(65));
+            //                if (targetInTolerance) {
+            //                    power =
+            // -_yCordinateElementController.calculate(closestGameElement.getY());
+            //                }
+            //                //   elementAngle = closestGameElement.getAzimuthAngle();
+            //            }
+            //            _driveTrain.setSnapHeading(new Rotation2d(0));
+            //            _driveTrain.setVelocity(
+            //                    ChassisSpeeds.fromFieldRelativeSpeeds(
+            //                            vx * coneDist / 2.0,
+            //                            power,
+            //                            _driveTrain.getRotationCorrection(),
+            //                            _driveTrain.getHeading()));
         } else if (_oi.getSlowMode()) {
             _driveTrain.setMode(Mode.SLOW);
             _driveTrain.setKinematicLimits(Constants.DriveTrain.SLOW_KINEMATIC_LIMITS);
