@@ -21,6 +21,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
@@ -72,6 +73,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
     private Pose2d _hoverGoal;
+    private boolean _isRedAlliance;
 
     public DriveTrain(
             OutliersContainer container,
@@ -192,6 +194,7 @@ public class DriveTrain extends OutliersSubsystem {
         _hoverGoal = new Pose2d();
         readModules();
         setSetpointFromMeasuredModules();
+        _isRedAlliance = DriverStation.getAlliance() == DriverStation.Alliance.Red;
     }
 
     public static class SystemIO {
@@ -620,5 +623,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     public Pose2d getHoverGoal() {
         return _hoverGoal;
+    }
+
+    public boolean isRedAlliance() {
+        return _isRedAlliance;
     }
 }

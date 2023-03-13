@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import org.frc5687.chargedup.util.SuperStructureSetpoints;
 import org.frc5687.lib.drivers.LazyTalonSRX;
 
 import static org.frc5687.chargedup.Constants.EndEffector.*;
@@ -25,11 +26,13 @@ public class EndEffector extends OutliersSubsystem {
 
     private final PIDController _wristController;
     private final PIDController _gripperController;
-
+    private SuperStructureSetpoints.Setpoint _setpoint;
     private boolean _isConeMode = true;
 
     public EndEffector(OutliersContainer container) {
         super(container);
+
+        _setpoint = SuperStructureSetpoints.idleConeSetpoint;
 
         _wrist = new LazyTalonSRX(RobotMap.CAN.TalonSRX.WRIST);
         _gripper = new LazyTalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
@@ -127,5 +130,12 @@ public class EndEffector extends OutliersSubsystem {
 
     public void setCubeMode(){
         _isConeMode = false;
+    }
+
+    public void setSuperStructureSetpoint(SuperStructureSetpoints.Setpoint setpoint) {
+        _setpoint = setpoint;
+    }
+    public SuperStructureSetpoints.Setpoint getSuperStructureSetpoint() {
+        return _setpoint;
     }
 }

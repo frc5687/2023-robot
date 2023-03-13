@@ -8,9 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
-import org.frc5687.chargedup.commands.CubeShooter.AutoRotateWrist;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
@@ -19,8 +17,8 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
 import org.frc5687.chargedup.commands.SetHoverGoal;
 import org.frc5687.chargedup.commands.SnapTo;
-import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.subsystems.*;
+import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
@@ -29,6 +27,8 @@ public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
     protected Gamepad _operatorGamepad;
     protected Gamepad _buttonpad;
+
+    protected CustomController _customController;
     protected Trigger _driverLeftTrigger;
     protected Trigger _driverRightTrigger;
     protected Trigger _buttonLeftTrigger;
@@ -38,6 +38,7 @@ public class OI extends OutliersProxy {
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
         _buttonpad = new Gamepad(2);
+        _customController = new CustomController();
         _driverLeftTrigger =
                 new Trigger(
                         new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
@@ -75,15 +76,6 @@ public class OI extends OutliersProxy {
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
         _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, lights, this));
-        // _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL, this));
-        // _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SECOND_GOAL, this));
-        // _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL, this));
-        // _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FOURTH_GOAL, this));
-        // _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL, this));
-        // _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SIXTH_GOAL, this));
-        // _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SEVENTH_GOAL, this));
-        // _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_EIGHTH_GOAL, this));
-        // _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_NINTH_GOAL, this));
         _buttonpad.getLeftBumper().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FIRST_GOAL));
         _buttonpad.getXButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SECOND_GOAL));
         _buttonpad.getYButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_THIRD_GOAL));

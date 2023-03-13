@@ -83,8 +83,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
-        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
-        //        setDefaultCommand(_endEffector, new ManualDriveWrist(_endEffector, _oi));
+//        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
 
@@ -94,7 +93,8 @@ public class RobotContainer extends OutliersContainer {
         startPeriodic();
     }
 
-    public void periodic() {}
+    public void periodic() {
+    }
 
     public void disabledPeriodic() {
         _autoChooser.updateChooser();
