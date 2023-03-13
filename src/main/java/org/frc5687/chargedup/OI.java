@@ -11,14 +11,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
+import org.frc5687.chargedup.commands.SemiAuto.*;
 import org.frc5687.chargedup.commands.SetHoverGoal;
+import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.CustomController;
+import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
@@ -63,29 +62,31 @@ public class OI extends OutliersProxy {
                 .onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
-        _operatorGamepad
-                .getXButton()
-                .onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this));
+//        _operatorGamepad
+//                .getXButton()
+//                .onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
 //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
-        _driverRightTrigger.onTrue(new Shoot(cubeShooter));
-        _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter, this));
+        _driverRightTrigger.onTrue(new Shoot(cubeShooter, 1, 0));
+        _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter));
 
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, lights, this));
-        _buttonpad.getLeftBumper().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FIRST_GOAL));
-        _buttonpad.getXButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SECOND_GOAL));
-        _buttonpad.getYButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_THIRD_GOAL));
-        _buttonpad.getRightBumper().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FOURTH_GOAL));
-        _buttonLeftTrigger.onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FIFTH_GOAL));
-        _buttonpad.getAButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SIXTH_GOAL));
-        _buttonpad.getBButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SEVENTH_GOAL));
-        _buttonRightTrigger.onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_EIGHTH_GOAL));
-        _buttonpad.getRightStickButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_NINTH_GOAL));
-        
+        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, lights));
+        for (int row = 0; row < 3; row ++) {
+            for (int col = 0; col < 9; col++) {
+                _customController.getButton(row, col).onTrue(
+                        new SetRobotGoal(
+                                drivetrain,
+                                endEffector,
+                                Nodes.Node.values()[col],
+                                Nodes.SuperStructurePosition.values()[row])
+                );
+            }
+        }
+        _operatorGamepad.getXButton().onTrue(new SemiAutoPlace(arm, endEffector, elevator, this));
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff

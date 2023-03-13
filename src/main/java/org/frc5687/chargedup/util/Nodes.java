@@ -2,9 +2,9 @@ package org.frc5687.chargedup.util;
 
 public class Nodes {
     public enum SuperStructurePosition{
-        LOW(0),
+        HIGH(0),
         MIDDLE(1),
-        HIGH(2);
+        LOW(2);
 
         private final int _value;
 

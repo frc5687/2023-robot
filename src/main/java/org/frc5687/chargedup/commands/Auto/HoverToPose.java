@@ -15,12 +15,10 @@ public class HoverToPose extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
     private Pose2d _destPose;
-    private final OI _oi;
     private final Lights _lights;
 
-    public HoverToPose(DriveTrain driveTrain, Lights lights, OI oi) {
+    public HoverToPose(DriveTrain driveTrain, Lights lights) {
         _driveTrain = driveTrain;
-        _oi = oi;
         _lights = lights;
         addRequirements(_driveTrain, _lights);
     }

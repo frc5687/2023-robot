@@ -75,6 +75,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
+    private Pose2d _hoverGoal;
 
     public DriveTrain(
             OutliersContainer container,
@@ -135,7 +136,7 @@ public class DriveTrain extends OutliersSubsystem {
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() + 180: _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue()/* + 180*/: _imu.getYaw().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -193,9 +194,11 @@ public class DriveTrain extends OutliersSubsystem {
             _moduleSignals[(i * 4) + 3] = signals[3];
         }
         _field = new Field2d();
+        _hoverGoal = new Pose2d();
         readModules();
         setSetpointFromMeasuredModules();
     }
+
 
     public static class SystemIO {
         ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
@@ -419,7 +422,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() + 180 : _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /*+ 180 */: _imu.getYaw().getValue();
         readIMU();
     }
 
@@ -617,5 +620,15 @@ public class DriveTrain extends OutliersSubsystem {
 
     public Mode getMode() {
         return _mode;
+    }
+    public boolean isRedAlliance() {
+        return _isRedAlliance;
+    }
+
+    public Pose2d getHoverGoal() {
+        return _hoverGoal;
+    }
+    public void setHoverGoal(Pose2d pose) {
+        _hoverGoal = pose;
     }
 }

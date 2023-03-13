@@ -133,6 +133,7 @@ public class EndEffector extends OutliersSubsystem {
     }
 
     public void setSuperStructureSetpoint(SuperStructureSetpoints.Setpoint setpoint) {
+        error("Set position");
         _setpoint = setpoint;
     }
     public SuperStructureSetpoints.Setpoint getSuperStructureSetpoint() {
