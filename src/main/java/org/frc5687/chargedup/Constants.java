@@ -405,32 +405,41 @@ public class Constants {
 
             public static class Node1 {
 
-                public static final List<Pose2d> BLUE_NODE_ONE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_ONE_GOAL);
+                public static final List<Pose2d> BLUE_NODE_ONE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_ONE_GOAL,
+                    FieldPoses.BLUE_BUMP_CENTER_GOAL,
+                    FieldPoses.BLUE_TARGET_ONE);
                 public static final List<Pose2d> BLUE_NODE_ONE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_ONE_GOAL);
                 public static final List<Pose2d> RED_NODE_ONE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_ONE_GOAL, 
-                FieldPoses.RED_BUMP_CENTER_GOAL, FieldPoses.RED_TARGET_ONE);
+                    FieldPoses.RED_BUMP_CENTER_GOAL, 
+                    FieldPoses.RED_TARGET_ONE);
                 public static final List<Pose2d> RED_NODE_ONE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.RED_TARGET_ONE, 
-                FieldPoses.RED_BUMP_CENTER_GOAL,
-                FieldPoses.RED_NODE_ONE_GOAL);
+                    FieldPoses.RED_BUMP_CENTER_GOAL,
+                    FieldPoses.RED_NODE_ONE_GOAL);
 
             }
             public static class Node2 {
 
-                public static final List<Pose2d> BLUE_NODE_TWO_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_TWO_GOAL);
+                public static final List<Pose2d> BLUE_NODE_TWO_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_TWO_GOAL,
+                    FieldPoses.BLUE_BUMP_CENTER_GOAL,
+                    FieldPoses.BLUE_TARGET_ONE);
                 public static final List<Pose2d> BLUE_NODE_TWO_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_TWO_GOAL);
                 public static final List<Pose2d> RED_NODE_TWO_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_TWO_GOAL, 
-                FieldPoses.RED_BUMP_CENTER_GOAL,
-                FieldPoses.RED_TARGET_ONE
-                );
+                    FieldPoses.RED_BUMP_CENTER_GOAL,
+                    FieldPoses.RED_TARGET_ONE);
                 public static final List<Pose2d> RED_NODE_TWO_TRAJECTORY_TWO = Arrays.asList(FieldPoses.RED_TARGET_ONE,
-                 FieldPoses.RED_BUMP_CENTER_GOAL,
-                 FieldPoses.RED_NODE_TWO_GOAL);
+                    FieldPoses.RED_BUMP_CENTER_GOAL,
+                    FieldPoses.RED_NODE_TWO_GOAL);
             }
             public static class Node3 {
 
-                public static final List<Pose2d> BLUE_NODE_THREE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_THREE_GOAL);
+                public static final List<Pose2d> BLUE_NODE_THREE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_THREE_GOAL,
+                    FieldPoses.BLUE_BUMP_CENTER_GOAL,
+                    FieldPoses.BLUE_TARGET_ONE);
                 public static final List<Pose2d> BLUE_NODE_THREE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_THREE_GOAL);
-                public static final List<Pose2d> RED_NODE_THREE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_THREE_GOAL);
+                public static final List<Pose2d> RED_NODE_THREE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_THREE_GOAL,
+                    FieldPoses.RED_BUMP_CENTER_GOAL,
+                    FieldPoses.RED_TARGET_ONE
+                );
                 public static final List<Pose2d> RED_NODE_THREE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.RED_NODE_THREE_GOAL);
 
             }
@@ -461,7 +470,9 @@ public class Constants {
 
                 public static final List<Pose2d> BLUE_NODE_SEVEN_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_SEVEN_GOAL);
                 public static final List<Pose2d> BLUE_NODE_SEVEN_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_SEVEN_GOAL);
-                public static final List<Pose2d> RED_NODE_SEVEN_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_SEVEN_GOAL);
+                public static final List<Pose2d> RED_NODE_SEVEN_TRAJECTORY_ONE = Arrays.asList(FieldPoses.RED_NODE_SEVEN_GOAL,
+                    FieldPoses.RED_NOBUMP_CENTER_GOAL,
+                    FieldPoses.RED_TARGET_FOUR);
                 public static final List<Pose2d> RED_NODE_SEVEN_TRAJECTORY_TWO = Arrays.asList(FieldPoses.RED_NODE_SEVEN_GOAL);
 
             }
@@ -469,7 +480,7 @@ public class Constants {
 
                 public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(
                     FieldPoses.BLUE_NODE_EIGHT_GOAL,
-                    FieldPoses.BLUE_BUMP_CENTER_GOAL,
+                    
                     FieldPoses.BLUE_TARGET_ONE
                     );
                 public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(
@@ -487,10 +498,8 @@ public class Constants {
             }
             public static class Node9 {
 
-                public static final List<Pose2d> BLUE_NODE_NINE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_NINE_GOAL,
-                FieldPoses.BLUE_BUMP_CENTER_GOAL);
-                public static final List<Pose2d> BLUE_NODE_NINE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_NINE_GOAL,
-                FieldPoses.BLUE_BUMP_CENTER_GOAL);
+                public static final List<Pose2d> BLUE_NODE_NINE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_NINE_GOAL);
+                public static final List<Pose2d> BLUE_NODE_NINE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_NINE_GOAL);
                 public static final List<Pose2d> RED_NODE_NINE_TRAJECTORY_ONE = Arrays.asList(
                     FieldPoses.RED_NODE_NINE_GOAL,
                     FieldPoses.RED_NOBUMP_CENTER_GOAL,

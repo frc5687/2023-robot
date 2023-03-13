@@ -214,7 +214,7 @@ public class DiffSwerveModule {
     }
     // use custom predict() function for as absolute encoder azimuth angle and the angular velocity
     // of the module need to be continuous.
-    private void predict() {
+   /*  private void predict() {
         // creates our input of voltage to our motors of u = K(r-x) but need to wrap angle to be
         // continuous
         _u =
@@ -228,7 +228,7 @@ public class DiffSwerveModule {
         //                                                .getFeedforward()
         //                                                .calculate(_moduleControlLoop.getNextR())));
         _moduleControlLoop.getObserver().predict(_u, kDt);
-    }
+    } */
 
     private void calculateNextU() {
         _u =

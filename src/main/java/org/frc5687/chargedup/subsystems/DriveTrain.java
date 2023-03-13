@@ -56,8 +56,6 @@ public class DriveTrain extends OutliersSubsystem {
     private final Pigeon2 _imu;
     private final HolonomicDriveController _poseController;
 
-    private boolean _slowMode = false;
-
     private boolean _isRedAlliance = false;
 
     private final SwerveHeadingController _headingController;

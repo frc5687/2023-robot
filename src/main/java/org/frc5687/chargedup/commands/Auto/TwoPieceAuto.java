@@ -4,6 +4,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
+import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -149,9 +150,9 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     new ParallelCommandGroup(
                         new DriveTrajectory(driveTrain, _trajectory1),
                         new AutoIntake(_shooter)
-                    ),
+                    ),   
                 new DriveTrajectory(driveTrain, _trajectory2),
-                new AutoPlaceHighCone(elevator, endEffector, arm)
+                new Shoot(_shooter, Constants.CubeShooter.SHOOT_RPS, Constants.CubeShooter.IDLE_ANGLE)
             )
         );
     }

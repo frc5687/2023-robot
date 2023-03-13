@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
+import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
+import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCube;
 import org.frc5687.chargedup.commands.Auto.OneConeAuto;
 import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
+import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
-import org.frc5687.chargedup.commands.CubeShooter.ManualRotateWrist;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -21,6 +23,7 @@ import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.AutoChooser;
+import org.frc5687.chargedup.util.AutoChooser.AutoType;
 import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
@@ -31,6 +34,7 @@ public class RobotContainer extends OutliersContainer {
     private OI _oi;
     private AutoChooser _autoChooser;
     private Node _autoFirstNode;
+    private AutoType _autoType;
     private VisionProcessor _visionProcessor;
     private Pigeon2 _imu;
     private Robot _robot;
@@ -54,6 +58,7 @@ public class RobotContainer extends OutliersContainer {
         _oi = new OI();
         _autoChooser = new AutoChooser();
         _autoFirstNode = Node.Unknown;
+        _autoType = AutoType.Unknown;
         // create the vision processor
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
@@ -100,6 +105,7 @@ public class RobotContainer extends OutliersContainer {
     public void disabledPeriodic() {
         _autoChooser.updateChooser();
         _autoFirstNode = _autoChooser.getFirstNode();
+        _autoType = _autoChooser.getAutoType();
     }
 
     @Override
@@ -132,28 +138,91 @@ public class RobotContainer extends OutliersContainer {
         //     return new WaitCommand(15);
         // }
         error("Current mode is: " + _autoFirstNode);
-        switch (_autoFirstNode) {
-            case OneCone:
-                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
-            case TwoCube:
-                return new WaitCommand(15);
-            case ThreeCone:
-                return new WaitCommand(15);
-            case FourCone:
-                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-            case FiveCube:
-                return new OneCubeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-            case SixCone:
-                return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
-            case SevenCone:
-                return new WaitCommand(15);
-            case EightCube:
-                return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.EightCube);
-            case NineCone:
-                return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+        switch (_autoType){
+
+            case DriveForTime:
+            switch (_autoFirstNode) {
+                case OneCone:
+                    return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case TwoCube:
+                    return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case ThreeCone:
+                    return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                case FourCone:
+                    return new AutoPlaceHighCube(_elevator, _endEffector, _arm);
+                case FiveCube:
+                    return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                case SixCone:
+                    return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                case SevenCone:
+                    return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                case EightCube:
+                    return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case NineCone:
+                    return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                default:
+                    error("uh oh");
+                    return new WaitCommand(15);
+            } 
+            case DrivetoLevel:
+            switch (_autoFirstNode) {
+                case OneCone:
+                    return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case TwoCube:
+                    return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case ThreeCone:
+                    return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                case FourCone:
+                    return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case FiveCube:
+                    return new OneCubeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case SixCone:
+                    return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case SevenCone:
+                    return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                case EightCube:
+                    return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                case NineCone:
+                    return new OneConeAuto(_driveTrain, _arm, _elevator, _endEffector);
+                default:
+                    error("uh oh");
+                    return new WaitCommand(15);
+            }
+            case TwoPiece:
+            switch (_autoFirstNode) {
+                case OneCone:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.OneCone);
+                case TwoCube:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.TwoCube);
+                case ThreeCone:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.ThreeCone);
+                case FourCone:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.FourCone);
+                case FiveCube:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.FiveCube);
+                case SixCone:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.SixCone);
+                case SevenCone:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.SevenCone);
+                case EightCube:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.EightCube);
+                case NineCone:
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.NineCone);
+                default:
+                    error("uh oh");
+                    return new WaitCommand(15);
+            }
+            
+
+            
             default:
-                error("uh oh");
-                return new WaitCommand(15);
+                error("big uh oh");
+                return new WaitCommand(15); 
+            
+            
+
+
+
         }
     }
 
