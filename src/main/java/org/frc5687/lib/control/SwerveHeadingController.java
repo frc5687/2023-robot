@@ -1,8 +1,10 @@
 package org.frc5687.lib.control;
 
 /* Team 5687 (C)2022 */
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import org.frc5687.chargedup.Constants;
 
 // use 1323's Swerve heading controller
@@ -10,16 +12,20 @@ public class SwerveHeadingController {
 
     private HeadingState _headingState;
     private Rotation2d _targetHeading;
-    private final PIDController _PIDController;
+    private final ProfiledPIDController _PIDController;
 
     private long _disableTime;
 
     public SwerveHeadingController(double kDt) {
         _PIDController =
-                new PIDController(
+                new ProfiledPIDController(
                         Constants.DriveTrain.MAINTAIN_kP,
                         Constants.DriveTrain.MAINTAIN_kI,
                         Constants.DriveTrain.MAINTAIN_kD,
+                        new TrapezoidProfile.Constraints(
+                                Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
+                                Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL
+                        ),
                         kDt);
         _PIDController.enableContinuousInput(-Math.PI, Math.PI);
         _headingState = HeadingState.OFF;
@@ -92,7 +98,10 @@ public class SwerveHeadingController {
                 power = _PIDController.calculate(heading.getRadians(), _targetHeading.getRadians());
                 break;
         }
-
+        if (Math.abs(heading.getRadians() - _targetHeading.getRadians())
+                < Units.degreesToRadians(1.0)) {
+            power = 0.0;
+        }
         return power;
     }
 

@@ -216,7 +216,7 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.08; // radians
+        public static final double Q_AZIMUTH = 0.065; // radians
         public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
         public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 
