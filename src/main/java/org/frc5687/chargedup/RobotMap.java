@@ -98,8 +98,8 @@ public class RobotMap {
 
     public static class PRACTICEDIO {
         public static final int ENCODER_NW = 0;
-        public static final int ENCODER_NE = 10;
-        public static final int ENCODER_SE = 16;
-        public static final int ENCODER_SW = 13;
+        public static final int ENCODER_NE = 3;
+        public static final int ENCODER_SE = 6;
+        public static final int ENCODER_SW = 10;
     }
 }
