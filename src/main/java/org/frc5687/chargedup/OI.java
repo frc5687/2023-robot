@@ -19,6 +19,7 @@ import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
 import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
+import org.frc5687.chargedup.commands.SelectModuleForEvasion;
 import org.frc5687.chargedup.commands.SetHoverGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
@@ -76,8 +77,8 @@ public class OI extends OutliersProxy {
         // _driverRightTrigger.onTrue(new Shoot(cubeShooter));
         // _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter, this));
 
-        _driverLeftTrigger.onTrue(Commands.runOnce(drivetrain::determineCORForEvasion, drivetrain));
-        _driverRightTrigger.onTrue(Commands.runOnce(drivetrain::determineCORForEvasion, drivetrain));
+        _driverLeftTrigger.onTrue(new SelectModuleForEvasion(drivetrain, false, this));
+        _driverRightTrigger.onTrue(new SelectModuleForEvasion(drivetrain, true, this));
 
         _driverGamepad
                 .getYButton()
