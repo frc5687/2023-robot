@@ -22,6 +22,8 @@ public class RobotMap {
             public static final int SOUTH_WEST_OUTER = 3;
             public static final int ARM = 9;
             public static final int EXT_ARM = 12;
+            public static final int CUBESHOOTER_WRIST = 15;
+            public static final int CUBESHOOTER_SHOOTER = 14;
         }
 
         public static class PRACTICETALONFX {
@@ -78,19 +80,20 @@ public class RobotMap {
      * DIO only one device can connect to each port, so the numbers should be unique.
      */
     public static class DIO {
-        public static final int ENCODER_NW = 0;
-        public static final int ENCODER_NE = 1;
-        public static final int ENCODER_SE = 2;
-        public static final int ENCODER_SW = 3;
+        public static final int ENCODER_NE = 0;// takes up 3 slots ABS, A, B channels (ie 1 and 2 are also used).
+        public static final int ENCODER_NW = 10;// takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SE = 16;// takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SW = 13; // takes up 3 slots ABS, A, B channels.
 
         public static final int ENCODER_GRIPPER = 4;
         public static final int ENCODER_WRIST = 5;
-        public static final int TOP_HALL_ARM = 9; // north is 9
+        // public static final int TOP_HALL_ARM = 9; // north is 9
         //        public static final int BOTTOM_HALL_ARM = 8; // south is 8
 
         public static final int IN_EXT_HALL = 6;
-        public static final int OUT_EXT_HALL = 7;
+        public static final int CUBESHOOTER_PROXIMITY = 7;
         public static final int ARM_ENCODER = 8;
+        public static final int ENCODER_CUBESHOOTER_WRIST = 9;
     }
 
     public static class PRACTICEDIO {

@@ -27,8 +27,8 @@ public class ManualExtendElevator extends OutliersCommand {
         double speed = _oi.getExtArmY();
         if (_elevator.getInHall() && speed < 0) {
             _elevator.setArmSpeed(0);
-        } else if (_elevator.getOutHall() && speed > 0) {
-            _elevator.setArmSpeed(0);
+        // } else if (_elevator.getOutHall() && speed > 0) {
+        //     _elevator.setArmSpeed(0);
         } else {
             _elevator.setArmSpeed(speed);
         }
