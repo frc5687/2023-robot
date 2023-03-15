@@ -176,16 +176,17 @@ public class OI extends OutliersProxy {
     }
 
     public double getExtArmY() {
-        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-        // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-        // return speed;
-        return 0;
+         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+         speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+         return speed;
+//        return 0;
     }
 
     public double getCSWrist() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-        return speed;
+//        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+//        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+//        return speed;
+        return 0;
     }
 
     public boolean setCORRight(){
