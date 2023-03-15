@@ -94,8 +94,32 @@ public class Constants {
             NORTH_WEST_CONFIG.encoderInverted = false;
             NORTH_WEST_CONFIG.encoderOffset = -0.055;
         }
+        
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_WEST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            NORTH_WEST_CONFIG.moduleName = "North West";
+            NORTH_WEST_CONFIG.canBus = CAN_BUS;
+            NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
+
+            NORTH_WEST_CONFIG.encoderInverted = false;
+            NORTH_WEST_CONFIG.encoderOffset = -0.055;
+        }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            SOUTH_WEST_CONFIG.moduleName = "South West";
+            SOUTH_WEST_CONFIG.canBus = CAN_BUS;
+            SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
+
+            SOUTH_WEST_CONFIG.encoderInverted = false;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.16;
+        }
+
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
         static {
@@ -119,6 +143,18 @@ public class Constants {
             SOUTH_EAST_CONFIG.encoderOffset = -0.062;
         }
 
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_EAST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            SOUTH_EAST_CONFIG.moduleName = "South East";
+            SOUTH_EAST_CONFIG.canBus = CAN_BUS;
+            SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
+
+            SOUTH_EAST_CONFIG.encoderInverted = false;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.062;
+        }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -131,6 +167,17 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderOffset = -0.079;
         }
 
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_EAST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            NORTH_EAST_CONFIG.moduleName = "North East";
+            NORTH_EAST_CONFIG.canBus = CAN_BUS;
+            NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
+
+            NORTH_EAST_CONFIG.encoderInverted = false;
+            NORTH_EAST_CONFIG.encoderOffset = -0.079;
+        }
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final double ROTATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final long DISABLE_TIME = 500; // ms
