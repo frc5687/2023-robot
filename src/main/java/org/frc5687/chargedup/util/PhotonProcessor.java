@@ -30,10 +30,10 @@ public class PhotonProcessor {
 
         // dummy values
         Transform3d robotToNorthWestCam =
-                new Transform3d(new Translation3d(0.2, -0.14, 0.73), new Rotation3d(0, 0, 0));
+                new Transform3d(new Translation3d(-0.2, .14, 0.73), new Rotation3d(0, 0, 0));
 
         Transform3d robotToNorthEastCam =
-                new Transform3d(new Translation3d(0.03, 0.14, 0.62), new Rotation3d(0, 0, 0));
+                new Transform3d(new Translation3d(0.03, -0.14, 0.62), new Rotation3d(0, 0, 0));
 
         Transform3d robotToSouthWestCam =
                 new Transform3d(

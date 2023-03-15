@@ -58,7 +58,7 @@ public class SemiAutoPlace extends OutliersCommand {
                             new WaitForPlace(_endEffector, _oi, true),
                             new HoldWristAngle(_endEffector, setpoint.wristAngle),
                             new HoldArm(_arm, setpoint.armAngle)),
-                    new AutoSetRollerSpeed(_endEffector, Constants.EndEffector.PLACE_CONE_ROLLER_SPEED, true),
+                    new AutoSetRollerSpeed(_endEffector, setpoint.placeSpeed, true),
                     new AutoSetSuperStructurePosition(_elevator, _endEffector, _arm, idleConeSetpoint));
             command.schedule();
         }

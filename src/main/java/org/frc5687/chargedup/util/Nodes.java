@@ -2,10 +2,10 @@ package org.frc5687.chargedup.util;
 
 public class Nodes {
     public enum Level {
-        HIGH(0),
+        LOW(0),
         MIDDLE(1),
-        LOW(2);
 
+        HIGH(2);
         private final int _value;
 
         Level(int value) {

@@ -42,7 +42,7 @@ public class Shoot extends OutliersCommand {
                 metric("Wanted Angle", _angle);
                 if (Math.abs(_cubeShooter.getWristAngleRadians() - _angle)
                                 < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE
-                        && _oi.place()) {
+                        && _oi.releaseRoller()) {
                     _timeout = System.currentTimeMillis() + 750;
                     _state = ShootingState.WRIST_AT_ANGLE;
                 }
