@@ -3,13 +3,13 @@ package org.frc5687.chargedup.util;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 import java.util.function.BooleanSupplier;
 
 public class CustomController {
     private NetworkTableInstance _instance;
     private NetworkTable _table;
     private CustomButton[][] _buttons = new CustomButton[3][9];
+
     public CustomController() {
         _instance = NetworkTableInstance.getDefault();
         _table = _instance.getTable("dashboard");
@@ -20,6 +20,7 @@ public class CustomController {
             }
         }
     }
+
     public void pollButtons() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
@@ -28,6 +29,7 @@ public class CustomController {
             }
         }
     }
+
     public Trigger getButton(int row, int col) {
         return new Trigger(_buttons[row][col]);
     }
@@ -41,6 +43,7 @@ public class CustomController {
 class CustomButton implements BooleanSupplier {
     private String _name;
     private NetworkTable _table;
+
     public CustomButton(int row, int col, NetworkTable table) {
         _table = table;
         _name = "button_" + row + "_" + col;

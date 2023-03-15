@@ -24,7 +24,7 @@ public class AutoChooser extends OutliersProxy {
 
     public void updateChooser() {
         _firstNode = _firstNodeChooser.getSelected();
-        
+
         metric("First Piece", _firstNode.name());
     }
 

@@ -30,7 +30,7 @@ public class DriveToPose extends OutliersCommand {
 
     @Override
     public void execute() {
-        _driveTrain.setVelocityPose(_destPose);
+        _driveTrain.setVelocityPose(_destPose, false);
     }
 
     @Override

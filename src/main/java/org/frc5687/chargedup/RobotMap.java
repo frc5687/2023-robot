@@ -69,10 +69,11 @@ public class RobotMap {
      * DIO only one device can connect to each port, so the numbers should be unique.
      */
     public static class DIO {
-        public static final int ENCODER_NW = 0;
-        public static final int ENCODER_NE = 1;
-        public static final int ENCODER_SE = 2;
-        public static final int ENCODER_SW = 3;
+        public static final int ENCODER_NE =
+                0; // takes up 3 slots ABS, A, B channels (ie 1 and 2 are also used).
+        public static final int ENCODER_NW = 10; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SE = 16; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SW = 13; // takes up 3 slots ABS, A, B channels.
 
         public static final int ENCODER_GRIPPER = 4;
         public static final int ENCODER_WRIST = 5;

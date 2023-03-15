@@ -1,14 +1,14 @@
 package org.frc5687.chargedup.util;
 
 public class Nodes {
-    public enum SuperStructurePosition{
+    public enum Level {
         HIGH(0),
         MIDDLE(1),
         LOW(2);
 
         private final int _value;
 
-        SuperStructurePosition(int value) {
+        Level(int value) {
             _value = value;
         }
 
