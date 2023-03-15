@@ -19,6 +19,7 @@ import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.drivers.OutliersTalon;
@@ -34,12 +35,15 @@ public class DiffSwerveModule {
     private final OutliersTalon _rightFalcon;
     private final OutliersTalon _leftFalcon;
     private final DutyCycleEncoder _boreEncoder;
+
+    private double _absEncoderOffset;
+    private final Encoder _boreQuadEncoder;
     private final Translation2d _positionVector;
     private final LinearSystemLoop<N3, N2, N3> _moduleControlLoop;
     private Matrix<N3, N1> _reference; // same thing as a set point.
     private Matrix<N2, N1> _u;
 
-    private final double _encoderOffset;
+    private double _relativeEncoderOffset;
     private final boolean _encoderInverted;
 
     private ControlState _controlState;
@@ -52,6 +56,8 @@ public class DiffSwerveModule {
     private final StatusSignalValue<Double> _rightPositionRotations;
     private final BaseStatusSignalValue[] _signals;
 
+    private boolean _hasZeroed;
+
     public DiffSwerveModule(
             DiffSwerveModule.ModuleConfiguration config,
             int leftMotorID,
@@ -62,8 +68,12 @@ public class DiffSwerveModule {
         _boreEncoder = new DutyCycleEncoder(encoderPort);
         _boreEncoder.setDistancePerRotation(2.0 * Math.PI);
 
-        _encoderOffset = config.encoderOffset;
+        _absEncoderOffset = config.encoderOffset;
         _encoderInverted = config.encoderInverted;
+        _relativeEncoderOffset = getABSEncoderAngle();
+
+        _boreQuadEncoder = new Encoder(encoderPort + 1, encoderPort + 2, true);
+        _boreQuadEncoder.setDistancePerPulse((2.0 * Math.PI) / 2048); // 2048 resolution of quad encoder
 
         _reference = Matrix.mat(Nat.N3(), Nat.N1()).fill(0, 0, 0);
         _positionVector = config.position;
@@ -158,8 +168,23 @@ public class DiffSwerveModule {
         _signals[3] = _rightPositionRotations;
 
         _controlState = ControlState.OFF;
+        _hasZeroed = false;
     }
 
+    /**
+     * Takes the ABS encoders current location and sets that to the new relative encoder offset.
+     */
+    public void zeroAzimuthEncoder() {
+        _relativeEncoderOffset = getABSEncoderAngle();
+        _hasZeroed = true;
+    }
+
+    /**
+     * Sets the _hasZeroed flag to false so next periodic the encoder zeros.
+     */
+    public void needsToZeroAzimuthEncoder() {
+        _hasZeroed = false;
+    }
     public ControlState getControlState() {
         return _controlState;
     }
@@ -169,11 +194,7 @@ public class DiffSwerveModule {
     }
 
     public void readInputs() {
-        //        _systemIO.leftVelocityRotationsPerSec = _leftFalcon.getVelocity().getValue();
-        //        _systemIO.leftPositionRotations = _leftFalcon.getPosition().getValue();
-        //        _systemIO.rightVelocityRotationsPerSec = _rightFalcon.getVelocity().getValue();
-        //        _systemIO.rightPositionRotations = _rightFalcon.getPosition().getValue();
-        _systemIO.moduleAngle = getEncoderAngle();
+        _systemIO.moduleAngle = getRelativeEncoderAngle();
     }
 
     public BaseStatusSignalValue[] getSignals() {
@@ -181,6 +202,9 @@ public class DiffSwerveModule {
     }
     // periodic loop runs at 5ms.
     public void controlPeriodic() {
+        if (!_hasZeroed) {
+            zeroAzimuthEncoder();
+        }
         readInputs();
         switch (_controlState) {
             case OFF:
@@ -272,11 +296,16 @@ public class DiffSwerveModule {
         _leftFalcon.setTorqueCurrentFOC(current);
     }
 
-    public double getEncoderAngle() {
+    public double getABSEncoderAngle() {
         return Helpers.boundHalfAngle(
                 ((_encoderInverted ? (-1.0) : 1.0) * _boreEncoder.getDistance() % (2.0 * Math.PI))
-                        - _encoderOffset,
+                        - _absEncoderOffset,
                 true);
+    }
+
+    public double getRelativeEncoderAngle() {
+        return Helpers.boundHalfAngle(
+                (_boreQuadEncoder.getDistance() % (2.0 * Math.PI)) + _relativeEncoderOffset, true);
     }
 
     public double getModuleAngle() {
@@ -285,7 +314,7 @@ public class DiffSwerveModule {
 
     public double getWheelAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                        getLeftFalconRPM() / GEAR_RATIO_WHEEL - getRightFalconRPM() / GEAR_RATIO_WHEEL)
+                getLeftFalconRPM() / GEAR_RATIO_WHEEL - getRightFalconRPM() / GEAR_RATIO_WHEEL)
                 / 2.0;
     }
 
@@ -295,8 +324,8 @@ public class DiffSwerveModule {
 
     public double getWheelDistance() {
         return ((getLeftFalconDistanceRadians() / GEAR_RATIO_WHEEL
-                                - getRightFalconDistanceRadians() / GEAR_RATIO_WHEEL)
-                        / 2.0)
+                - getRightFalconDistanceRadians() / GEAR_RATIO_WHEEL)
+                / 2.0)
                 * WHEEL_RADIUS;
     }
 
@@ -306,7 +335,7 @@ public class DiffSwerveModule {
 
     public double getAzimuthAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                        getLeftFalconRPM() / GEAR_RATIO_STEER + getRightFalconRPM() / GEAR_RATIO_STEER)
+                getLeftFalconRPM() / GEAR_RATIO_STEER + getRightFalconRPM() / GEAR_RATIO_STEER)
                 / 2.0;
     }
 
@@ -434,6 +463,7 @@ public class DiffSwerveModule {
         SmartDashboard.putNumber(_name + "/rightStatorCurrent", getRightCurrent());
         SmartDashboard.putNumber(_name + "/referenceAngleGoal", getReferenceModuleAngle());
         SmartDashboard.putNumber(_name + "/moduleAngle", getModuleAngle());
+        SmartDashboard.putNumber(_name + "/moduleAngleABS", getABSEncoderAngle());
 
         SmartDashboard.putNumber(_name + "/moduleAngVel", getAzimuthAngularVelocity());
 
@@ -478,7 +508,7 @@ public class DiffSwerveModule {
         public Translation2d position = new Translation2d();
 
         public double encoderOffset = 0.0;
-        public boolean encoderInverted = true;
+        public boolean encoderInverted = false;
 
         public String canBus = "rio";
     }
