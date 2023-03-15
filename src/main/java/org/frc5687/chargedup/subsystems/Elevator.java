@@ -8,7 +8,6 @@ import org.frc5687.lib.sensors.HallEffect;
 
 public class Elevator extends OutliersSubsystem {
     private OutliersTalon _talon;
-    private final HallEffect _outHall;
     private final HallEffect _inHall;
     private boolean _hasZeroed;
 
@@ -20,7 +19,6 @@ public class Elevator extends OutliersSubsystem {
         _talon.configure(Constants.ExtendingArm.CONFIG);
         _talon.configureClosedLoop(Constants.ExtendingArm.CONTROLLER_CONFIG);
 
-        _outHall = new HallEffect(RobotMap.DIO.OUT_EXT_HALL);
         _inHall = new HallEffect(RobotMap.DIO.IN_EXT_HALL);
         _hasZeroed = false;
     }
@@ -28,19 +26,21 @@ public class Elevator extends OutliersSubsystem {
     @Override
     public void periodic() {
         super.periodic();
-        if (_outHall.get() && !_hasZeroed) {
+       /*
+         if (_outHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.OUT_HALL_ENCODER_ROTATIONS);
             _hasZeroed = true;
         } else {
             _hasZeroed = false;
-        }
+        } */
 
         if (_inHall.get() && !_hasZeroed) {
             _talon.setRotorPosition(Constants.ExtendingArm.IN_HALL_RAD);
             _hasZeroed = true;
-        } else {
+        } else if (!_inHall.get() && _hasZeroed) {
             _hasZeroed = false;
         }
+
     }
 
     public void setArmSpeed(double speed) {
@@ -58,10 +58,6 @@ public class Elevator extends OutliersSubsystem {
 
     public void stopArm() {
         setArmSpeed(Constants.ExtendingArm.ZERO_ARM_SPEED);
-    }
-
-    public boolean getOutHall() {
-        return _outHall.get();
     }
 
     public boolean getInHall() {
@@ -90,7 +86,6 @@ public class Elevator extends OutliersSubsystem {
         metric("Encoder Radians", getEncoderRotationRadians());
         metric("Elevator Radians", getEncoderRotationRadians());
         metric("Elevator Length", getExtArmMeters());
-        metric("Out Hall", getOutHall());
         metric("In Hall", getInHall());
         metric("Motor Output", _talon.get());
     }

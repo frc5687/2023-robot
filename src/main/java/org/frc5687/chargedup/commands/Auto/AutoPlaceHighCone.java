@@ -10,12 +10,12 @@ import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 
-public class AutoPlaceHighCube extends SequentialCommandGroup {
-    public AutoPlaceHighCube(Elevator elevator, EndEffector endEffector, Arm arm) {
-        Setpoint setpoint = highCubePlaceSetpoint;
+public class AutoPlaceHighCone extends SequentialCommandGroup {
+    public AutoPlaceHighCone(Elevator elevator, EndEffector endEffector, Arm arm) {
+        Setpoint setpoint = highConePlaceSetpoint;
         addCommands(
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
-                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true),
-                new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleCubeSetpoint));
+                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CONE_ROLLER_SPEED, true),
+                new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint));
     }
 }

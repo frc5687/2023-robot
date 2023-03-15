@@ -102,6 +102,21 @@ public class Helpers {
         return radians ? angle : Units.radiansToDegrees(angle);
     }
 
+    /**
+     * Wraps the angle so that its always between 0 -> (2 * pi)
+     *
+     * @param angle that needs to be wrapped
+     * @param radians boolean to calculate radians vs degrees
+     */
+    public static double angleWrap(double angle, boolean radians) {
+        angle = radians ? angle : Units.degreesToRadians(angle);
+        if (angle < 0) {
+            angle += (2.0 * Math.PI);
+        }
+        angle = angle % (2.0 * Math.PI);
+        return radians ? angle : Units.radiansToDegrees(angle);
+    }
+
     public static double joystickToAngle(double x, double y) {
         return Units.radiansToDegrees(Math.atan2(y, x));
     }

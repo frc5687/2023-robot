@@ -10,7 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import org.frc5687.chargedup.util.*;
-import org.frc5687.lib.logging.ILoggingSource;
 import org.frc5687.lib.logging.MetricTracker;
 import org.frc5687.lib.logging.RioLogger;
 
@@ -20,7 +19,7 @@ import org.frc5687.lib.logging.RioLogger;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends OutliersRobot implements ILoggingSource {
+public class Robot extends OutliersRobot {
 
     public static OutliersContainer.IdentityMode _identityMode =
             OutliersContainer.IdentityMode.competition;
@@ -58,7 +57,6 @@ public class Robot extends OutliersRobot implements ILoggingSource {
         _robotContainer = new RobotContainer(this, _identityMode);
         _timer = new Timer();
         _robotContainer.init();
-
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
         _time = _timer.get();
@@ -90,6 +88,7 @@ public class Robot extends OutliersRobot implements ILoggingSource {
     @Override
     public void autonomousInit() {
         _fmsConnected = DriverStation.isFMSAttached();
+        _autoCommand = _robotContainer.getAutoCommand();
         _robotContainer.autonomousInit();
         if (_autoCommand != null) {
             _autoCommand.schedule();

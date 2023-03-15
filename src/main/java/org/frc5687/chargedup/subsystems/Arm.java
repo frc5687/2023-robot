@@ -2,6 +2,7 @@ package org.frc5687.chargedup.subsystems;
 
 import static org.frc5687.chargedup.Constants.Arm.*;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.LinearQuadraticRegulator;
@@ -19,23 +20,24 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
-import org.frc5687.lib.sensors.HallEffect;
 
 public class Arm extends OutliersSubsystem {
     private final OutliersTalon _talon;
-    private final HallEffect _upperHall;
+    // private final HallEffect _upperHall;
     //    private final HallEffect _lowerHall;
     private final DutyCycleEncoder _absAngleEncoder;
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
     private final TrapezoidProfile.Constraints _contraints;
     private TrapezoidProfile.State _lastArmState;
 
+    private Matrix<N1, N1> _u;
+
     public Arm(OutliersContainer container) {
         super(container);
         _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
 
-        _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
+        // _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
         //        _lowerHall = new HallEffect(RobotMap.DIO.BOTTOM_HALL_ARM);
 
         _absAngleEncoder = new DutyCycleEncoder(RobotMap.DIO.ARM_ENCODER);
@@ -63,24 +65,22 @@ public class Arm extends OutliersSubsystem {
         // we are setting velocity to 0 in the case that the arm was moving when starting up.
         _lastArmState = new TrapezoidProfile.State(getArmAngleRadians(), 0);
         _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), getArmVelocityRadPerSec()));
+        _u = VecBuilder.fill(0);
+    }
+
+    public void calculateNextU() {
+        Matrix<N2, N1> error =
+                VecBuilder.fill(
+                        _controlLoop.getNextR(0) - getArmAngleRadians(),
+                        _controlLoop.getNextR(1) - getArmVelocityRadPerSec());
+        _u = _controlLoop.clampInput(_controlLoop.getController().getK().times(error));
     }
 
     public void periodic() {
         super.periodic();
-        // update our kalman filter.
-        //       if (_lowerHall.get() && _controlLoop.getU(0) < 0) {
-        //           _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), 0));
-        //           _controlLoop.setNextR(VecBuilder.fill(getArmAngleRadians(), 0));
-        //           reset encoder
-        //           setEncoderRadians(LOWER_EXTREME);
-        //
-        //       }
-        //        if (getUpperHall()) {
-        //            setEncoderRadians(VERTICAL_ARM_ANGLE);
-        //        }
-
-        _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
-        _controlLoop.predict(kDt);
+        calculateNextU();
+        //        _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
+        //        _controlLoop.predict(kDt);
     }
 
     public void setArmSpeed(double speed) {
@@ -93,7 +93,7 @@ public class Arm extends OutliersSubsystem {
     }
 
     public boolean getUpperHall() {
-        return _upperHall.get();
+        return false;
     }
 
     public boolean getLowerHall() {
@@ -159,8 +159,7 @@ public class Arm extends OutliersSubsystem {
 
     public double armFeedForward() {
         return ((ARM_LENGTH / 2.0) * (MOTOR_R * ARM_WEIGHT * 9.81) / (GEAR_RATIO * MOTOR_kT))
-                * Math.cos(getArmAngleRadians() + 0.35);
-        // return 0;
+                * Math.cos(getArmAngleRadians() + (Math.PI / 2.0) - VERTICAL_ARM_ANGLE);
     }
     /**
      * Gets the next voltage to send to the falcon500.
@@ -168,7 +167,8 @@ public class Arm extends OutliersSubsystem {
      * @return voltage
      */
     public double getNextVoltage() {
-        return _controlLoop.getU(0); // + armFeedForward() / 2;
+        //        return _controlLoop.getU(0) + armFeedForward();
+        return _u.get(0, 0) + armFeedForward();
     }
 
     public void updateDashboard() {

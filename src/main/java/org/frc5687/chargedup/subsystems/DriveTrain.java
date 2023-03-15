@@ -15,6 +15,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -24,7 +25,11 @@ import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
@@ -66,6 +71,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     private Translation2d _clockwiseCenter;
     private Translation2d _counterClockwiseCenter;
+    private boolean _slowMode = false;
 
     private final SwerveHeadingController _headingController;
 
@@ -77,6 +83,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final SystemIO _systemIO;
     private Rotation2d _headingOffset;
     private double _pitchOffset;
+    private double _yawOffset;
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
 
@@ -86,6 +93,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
+    private Mode _mode = Mode.NORMAL;
+    private Pose2d _hoverGoal;
 
     public DriveTrain(
             OutliersContainer container,
@@ -93,8 +102,10 @@ public class DriveTrain extends OutliersSubsystem {
             PhotonProcessor photonProcessor,
             Pigeon2 imu) {
         super(container);
+
         _visionProcessor = processor;
         _photonProcessor = photonProcessor;
+
         _imu = imu;
         _systemIO = new SystemIO();
 
@@ -148,6 +159,7 @@ public class DriveTrain extends OutliersSubsystem {
         _imu.getPitch().setUpdateFrequency(200);
         _headingOffset = _imu.getRotation2d();
         _pitchOffset = _imu.getPitch().getValue();
+        _yawOffset = _imu.getYaw().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -182,7 +194,7 @@ public class DriveTrain extends OutliersSubsystem {
                             _modules[NORTH_EAST_IDX].getModulePosition()
                         },
                         new Pose2d(0, 0, getHeading()),
-                        VecBuilder.fill(0.04, 0.04, Units.degreesToRadians(1)),
+                        VecBuilder.fill(0.08, 0.08, Units.degreesToRadians(1)),
                         VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
         _swerveSetpointGenerator =
                 new SwerveSetpointGenerator(
@@ -205,6 +217,7 @@ public class DriveTrain extends OutliersSubsystem {
             _moduleSignals[(i * 4) + 3] = signals[3];
         }
         _field = new Field2d();
+        _hoverGoal = new Pose2d();
         readModules();
         setSetpointFromMeasuredModules();
     }
@@ -218,6 +231,13 @@ public class DriveTrain extends OutliersSubsystem {
                     new SwerveModuleState(),
                     new SwerveModuleState(),
                     new SwerveModuleState()
+                };
+        SwerveModulePosition[] measuredPositions =
+                new SwerveModulePosition[] {
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition()
                 };
 
         Rotation2d heading = new Rotation2d(0.0);
@@ -281,44 +301,41 @@ public class DriveTrain extends OutliersSubsystem {
 
     @Override
     public void dataPeriodic(double timestamp) {
-        //        _poseEstimator.update(
-        //                _imu.getRotation2d().minus(new Rotation2d(_yawOffset)),
-        //                new SwerveModulePosition[] {
-        //                        _modules[NORTH_WEST_IDX].getModulePosition(),
-        //                        _modules[SOUTH_WEST_IDX].getModulePosition(),
-        //                        _modules[SOUTH_EAST_IDX].getModulePosition(),
-        //                        _modules[NORTH_EAST_IDX].getModulePosition()
-        //                }
-        //        );
-        //        Optional<EstimatedRobotPose> northCameraResult =
-        //
-        // _photonProcessor.getNorthCameraEstimatedGlobalPose(_poseEstimator.getEstimatedPosition());
-        //        Optional<EstimatedRobotPose> southWestCameraResult =
-        //
-        // _photonProcessor.getSouthWestCameraEstimatedGlobalPose(_poseEstimator.getEstimatedPosition());
-        //        Optional<EstimatedRobotPose> southEastCameraResult =
-        //
-        // _photonProcessor.getSouthEastCameraEstimatedGlobalPose(_poseEstimator.getEstimatedPosition());
-        //
-        //        if (northCameraResult.isPresent()) {
-        //            EstimatedRobotPose camNorthPose = northCameraResult.get();
-        //            _poseEstimator.addVisionMeasurement(
-        //                    camNorthPose.estimatedPose.toPose2d(), camNorthPose.timestampSeconds
-        //            );
-        //        }
-        //        if (southWestCameraResult.isPresent()) {
-        //            EstimatedRobotPose camSW = southWestCameraResult.get();
-        //            _poseEstimator.addVisionMeasurement(
-        //                    camSW.estimatedPose.toPose2d(), camSW.timestampSeconds
-        //            );
-        //        }
-        //        if (southEastCameraResult.isPresent()) {
-        //            EstimatedRobotPose camSE = southEastCameraResult.get();
-        //            _poseEstimator.addVisionMeasurement(
-        //                    camSE.estimatedPose.toPose2d(), camSE.timestampSeconds
-        //            );
-        //        }
-        //        _field.setRobotPose(_poseEstimator.getEstimatedPosition());
+        _poseEstimator.update(
+                _imu.getRotation2d().minus(new Rotation2d(_yawOffset)), _systemIO.measuredPositions);
+        Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
+        CompletableFuture<Optional<EstimatedRobotPose>> northWestPoseFuture =
+                _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+        CompletableFuture<Optional<EstimatedRobotPose>> northEastPoseFuture =
+                _photonProcessor.getNorthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+        CompletableFuture<Optional<EstimatedRobotPose>> southWestPoseFuture =
+                _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+        CompletableFuture<Optional<EstimatedRobotPose>> southEastPoseFuture =
+                _photonProcessor.getSouthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+
+        Optional<EstimatedRobotPose> northWestPose = northWestPoseFuture.join();
+        Optional<EstimatedRobotPose> northEastPose = northEastPoseFuture.join();
+        Optional<EstimatedRobotPose> southWestPose = southWestPoseFuture.join();
+        Optional<EstimatedRobotPose> southEastPose = southEastPoseFuture.join();
+        if (northWestPose.isPresent()) {
+            EstimatedRobotPose camNorthWestPose = northWestPose.get();
+            _poseEstimator.addVisionMeasurement(
+                    camNorthWestPose.estimatedPose.toPose2d(), camNorthWestPose.timestampSeconds);
+        }
+        if (northEastPose.isPresent()) {
+            EstimatedRobotPose camNorthEastPose = northEastPose.get();
+            _poseEstimator.addVisionMeasurement(
+                    camNorthEastPose.estimatedPose.toPose2d(), camNorthEastPose.timestampSeconds);
+        }
+        if (southWestPose.isPresent()) {
+            EstimatedRobotPose camSW = southWestPose.get();
+            _poseEstimator.addVisionMeasurement(camSW.estimatedPose.toPose2d(), camSW.timestampSeconds);
+        }
+        if (southEastPose.isPresent()) {
+            EstimatedRobotPose camSE = southEastPose.get();
+            _poseEstimator.addVisionMeasurement(camSE.estimatedPose.toPose2d(), camSE.timestampSeconds);
+        }
+        _field.setRobotPose(_poseEstimator.getEstimatedPosition());
     }
 
     public void startModules() {
@@ -330,6 +347,7 @@ public class DriveTrain extends OutliersSubsystem {
     public void readModules() {
         for (int module = 0; module < _modules.length; module++) {
             _systemIO.measuredStates[module] = _modules[module].getState();
+            _systemIO.measuredPositions[module] = _modules[module].getModulePosition();
         }
     }
 
@@ -406,14 +424,35 @@ public class DriveTrain extends OutliersSubsystem {
 //                twistVel.dy / Constants.CONTROL_PERIOD,
 //                twistVel.dtheta / Constants.CONTROL_PERIOD
 //        );
-        _systemIO.setpoint = _swerveSetpointGenerator.generateSetpoint(
-                _kinematicLimits,
-                _systemIO.setpoint,
-                 _systemIO.desiredChassisSpeeds,
-                 _centerOfRotation,
-//                updatedChassisSpeeds,
-                 0.02
-        );
+//         _systemIO.setpoint = _swerveSetpointGenerator.generateSetpoint(
+//                 _kinematicLimits,
+//                 _systemIO.setpoint,
+//                  _systemIO.desiredChassisSpeeds,
+//                  _centerOfRotation,
+// //                updatedChassisSpeeds,
+//                  0.02
+//         );
+        Pose2d robotPoseVel =
+                new Pose2d(
+                        _systemIO.desiredChassisSpeeds.vxMetersPerSecond * Constants.UPDATE_PERIOD,
+                        _systemIO.desiredChassisSpeeds.vyMetersPerSecond * Constants.UPDATE_PERIOD,
+                        Rotation2d.fromRadians(
+                                _systemIO.desiredChassisSpeeds.omegaRadiansPerSecond * Constants.UPDATE_PERIOD));
+
+        Twist2d twistVel = new Pose2d().log(robotPoseVel);
+        ChassisSpeeds updatedChassisSpeeds =
+                new ChassisSpeeds(
+                        twistVel.dx / Constants.UPDATE_PERIOD,
+                        twistVel.dy / Constants.UPDATE_PERIOD,
+                        twistVel.dtheta / Constants.UPDATE_PERIOD);
+        _systemIO.setpoint =
+                _swerveSetpointGenerator.generateSetpoint(
+                        _kinematicLimits,
+                        _systemIO.setpoint,
+                        //                        _systemIO.desiredChassisSpeeds,
+                        updatedChassisSpeeds,
+                        _centerOfRotation,
+                        Constants.UPDATE_PERIOD);
     }
 
     public void setVelocity(ChassisSpeeds chassisSpeeds) {
@@ -428,7 +467,8 @@ public class DriveTrain extends OutliersSubsystem {
         ChassisSpeeds speeds =
                 _poseController.calculate(
                         _poseEstimator.getEstimatedPosition(), pose, 0.0, _imu.getRotation2d());
-        speeds.omegaRadiansPerSecond = 0.0;
+        _headingController.setMaintainHeading(new Rotation2d());
+        speeds.omegaRadiansPerSecond = _headingController.getRotationCorrection(getHeading());
         _systemIO.desiredChassisSpeeds = speeds;
     }
     public void updateSwerve(Vector2d translationVector, double rotationalInput, Translation2d cor) {
@@ -442,7 +482,7 @@ public class DriveTrain extends OutliersSubsystem {
         setModuleStates(swerveModuleStates);
     }
 
-    public void determineCORForEvasion(Vector2d controlVector){
+    public void determineCORForEvasion(){
        Translation2d currentLocation =  _prevControlVector.toTranslation().rotateBy(GeometryUtil.inverse(getHeading()));
        _clockwiseCenter = _modules[0].getModuleLocation(); 
        _counterClockwiseCenter = _modules[_modules.length - 1].getModuleLocation();
@@ -458,10 +498,18 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public Translation2d getClockwiseCOR(){
+        if (_clockwiseCenter == null){
+            return new Translation2d();
+        } else {
         return _clockwiseCenter;
+        }
     }
     public Translation2d getCounterClockwiseCOR(){
+        if (_counterClockwiseCenter == null){
+            return new Translation2d();
+        } else {
         return _counterClockwiseCenter;
+        }
     }
     public void updateSwerve(Trajectory.State goal, Rotation2d heading, Translation2d cor) {
         ChassisSpeeds adjustedSpeeds = _poseController.calculate(getOdometryPose(), goal, heading);
@@ -486,12 +534,13 @@ public class DriveTrain extends OutliersSubsystem {
     public void zeroGyroscope() {
         _headingOffset = _imu.getRotation2d();
         _pitchOffset = _imu.getPitch().getValue();
+        _yawOffset = _imu.getYaw().getValue();
         readIMU();
     }
 
     public void readIMU() {
-        _systemIO.heading = _imu.getRotation2d().minus(_headingOffset);
-        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue() - _pitchOffset);
+        _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
+        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue());
     }
 
     public TrajectoryConfig getConfig() {
@@ -505,7 +554,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void setKinematicLimits(KinematicLimits limits) {
-        if (limits != KINEMATIC_LIMITS) {
+        if (limits != _kinematicLimits) {
             _kinematicLimits = limits;
         }
     }
@@ -635,20 +684,18 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void updateDashboard() {
         metric("Swerve State", _controlState.name());
-        metric("Odometry Pose", getOdometryPose().toString());
         metric("Current Heading", getHeading().getRadians());
         metric("Heading Controller Target", _headingController.getTargetHeading().getRadians());
+        metric("Heading State", _headingController.getHeadingState().name());
         metric("Rotation State", getYaw());
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
         metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
+        metric("Hover Goal", getHoverGoal().toString());
+        metric("Clockwise Center Of Rotation", getClockwiseCOR().toString());
+        metric("Counter-Clockwise Center of Rotation", getCounterClockwiseCOR().toString());
         SmartDashboard.putData(_field);
-        //        metric("Pitch Angle Deg", Units.radiansToDegrees(getPitch()));
         moduleMetrics();
-        //        metric("NW Angle", _modules[NORTH_WEST_IDX].getModuleAngle());
-        //        metric("SW Angle", _modules[SOUTH_WEST_IDX].getModuleAngle());
-        //        metric("SE Angle", _modules[SOUTH_EAST_IDX].getModuleAngle());
-        //        metric("NE Angle", _modules[NORTH_EAST_IDX].getModuleAngle());
     }
 
     public enum ControlState {
@@ -668,11 +715,47 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
 
+    public enum Mode {
+        NORMAL(0),
+        SLOW(1),
+        VISION(2);
+
+        private final int _value;
+
+        Mode(int value) {
+            _value = value;
+        }
+
+        public int getValue() {
+            return _value;
+        }
+    }
+
+    public HeadingState getHeadingControllerState() {
+        return _headingController.getHeadingState();
+    }
+
     public void setHeadingControllerState(HeadingState state) {
         _headingController.setState(state);
     }
 
     public double getRotationCorrection() {
         return _headingController.getRotationCorrection(getHeading());
+    }
+
+    public void setMode(Mode mode) {
+        _mode = mode;
+    }
+
+    public Mode getMode() {
+        return _mode;
+    }
+
+    public void setHoverGoal(Pose2d goal) {
+        _hoverGoal = goal;
+    }
+
+    public Pose2d getHoverGoal() {
+        return _hoverGoal;
     }
 }

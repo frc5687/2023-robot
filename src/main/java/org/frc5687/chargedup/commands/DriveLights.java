@@ -1,5 +1,6 @@
 package org.frc5687.chargedup.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -31,19 +32,48 @@ public class DriveLights extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-        if (_endEffector.getConeMode()) {
+
+        if (DriverStation.isDisabled()) {
+            _lights.switchAnimation(AnimationType.RAINBOW);
+        } else if (_endEffector.getConeMode()) {
             _lights.setColor(Constants.CANdle.YELLOW);
-            if (_oi.autoAim() && _driveTrain.isConeDetected()) {
-                _lights.switchAnimation(AnimationType.STROBE);
-            } else {
-                _lights.switchAnimation(AnimationType.STATIC);
+            switch (_driveTrain.getMode()) {
+                case VISION:
+                    if (_driveTrain.isConeDetected()) {
+                        _lights.switchAnimation(AnimationType.STROBE);
+                    } else {
+                        _lights.switchAnimation(AnimationType.STATIC);
+                    }
+                    break;
+                case SLOW:
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    break;
+                case NORMAL:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
+                default:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
             }
         } else {
             _lights.setColor(Constants.CANdle.PURPLE);
-            if (_oi.autoAim() && _driveTrain.isCubeDetected()) {
-                _lights.switchAnimation(AnimationType.STROBE);
-            } else {
-                _lights.switchAnimation(AnimationType.STATIC);
+            switch (_driveTrain.getMode()) {
+                case VISION:
+                    if (_driveTrain.isCubeDetected()) {
+                        _lights.switchAnimation(AnimationType.STROBE);
+                    } else {
+                        _lights.switchAnimation(AnimationType.STATIC);
+                    }
+                    break;
+                case SLOW:
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    break;
+                case NORMAL:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
+                default:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
             }
         }
     }
@@ -52,5 +82,10 @@ public class DriveLights extends OutliersCommand {
     public boolean isFinished() {
         // TODO Auto-generated method stub
         return super.isFinished();
+    }
+
+    @Override
+    public boolean runsWhenDisabled() {
+        return true;
     }
 }

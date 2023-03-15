@@ -11,33 +11,15 @@ import org.frc5687.chargedup.subsystems.OutliersSubsystem;
 
 public final class SubsystemManager {
     private final List<OutliersSubsystem> _subsystems = new ArrayList<>();
-    private boolean _firstControlRun = true;
     private boolean _firstDataRun = true;
-    private double _controlPrevTimestamp;
     private double _dataPrevTimestamp;
-    private double _controlDt;
     private double _dataDt;
-    //    private final Notifier _controlThread =
-    //            new Notifier(
-    //                    () -> {
-    //                        synchronized (SubsystemManager.this) {
-    //                            if (_firstControlRun) {
-    //                                Thread.currentThread().setPriority(9);
-    //                                Thread.currentThread().setName("Control Thread");
-    //                                _firstControlRun = false;
-    //                            }
-    //                            final double timestamp = Timer.getFPGATimestamp();
-    //                            _controlDt = timestamp - _controlPrevTimestamp;
-    //                            _controlPrevTimestamp = timestamp;
-    //                            _subsystems.forEach(p -> p.controlPeriodic(timestamp));
-    //                        }
-    //                    });
     private final Notifier _dataThread =
             new Notifier(
                     () -> {
                         synchronized (SubsystemManager.this) {
                             if (_firstDataRun) {
-                                Thread.currentThread().setPriority(5);
+                                Thread.currentThread().setPriority(9);
                                 Thread.currentThread().setName("Data Thread");
                                 _firstDataRun = false;
                             }
@@ -59,12 +41,10 @@ public final class SubsystemManager {
     }
 
     public void startPeriodic() {
-        //        _controlThread.startPeriodic(Constants.CONTROL_PERIOD);
         _dataThread.startPeriodic(Constants.DATA_PERIOD);
     }
 
     public void stopPeriodic() {
-        //        _controlThread.stop();
         _dataThread.stop();
     }
 
