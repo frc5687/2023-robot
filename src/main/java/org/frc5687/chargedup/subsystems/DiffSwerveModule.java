@@ -171,20 +171,17 @@ public class DiffSwerveModule {
         _hasZeroed = false;
     }
 
-    /**
-     * Takes the ABS encoders current location and sets that to the new relative encoder offset.
-     */
+    /** Takes the ABS encoders current location and sets that to the new relative encoder offset. */
     public void zeroAzimuthEncoder() {
         _relativeEncoderOffset = getABSEncoderAngle();
         _hasZeroed = true;
     }
 
-    /**
-     * Sets the _hasZeroed flag to false so next periodic the encoder zeros.
-     */
+    /** Sets the _hasZeroed flag to false so next periodic the encoder zeros. */
     public void needsToZeroAzimuthEncoder() {
         _hasZeroed = false;
     }
+
     public ControlState getControlState() {
         return _controlState;
     }
@@ -314,7 +311,7 @@ public class DiffSwerveModule {
 
     public double getWheelAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                getLeftFalconRPM() / GEAR_RATIO_WHEEL - getRightFalconRPM() / GEAR_RATIO_WHEEL)
+                        getLeftFalconRPM() / GEAR_RATIO_WHEEL - getRightFalconRPM() / GEAR_RATIO_WHEEL)
                 / 2.0;
     }
 
@@ -324,8 +321,8 @@ public class DiffSwerveModule {
 
     public double getWheelDistance() {
         return ((getLeftFalconDistanceRadians() / GEAR_RATIO_WHEEL
-                - getRightFalconDistanceRadians() / GEAR_RATIO_WHEEL)
-                / 2.0)
+                                - getRightFalconDistanceRadians() / GEAR_RATIO_WHEEL)
+                        / 2.0)
                 * WHEEL_RADIUS;
     }
 
@@ -335,7 +332,7 @@ public class DiffSwerveModule {
 
     public double getAzimuthAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(
-                getLeftFalconRPM() / GEAR_RATIO_STEER + getRightFalconRPM() / GEAR_RATIO_STEER)
+                        getLeftFalconRPM() / GEAR_RATIO_STEER + getRightFalconRPM() / GEAR_RATIO_STEER)
                 / 2.0;
     }
 

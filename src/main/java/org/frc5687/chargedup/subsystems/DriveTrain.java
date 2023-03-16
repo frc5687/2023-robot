@@ -21,6 +21,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     private boolean _slowMode = false;
 
+    private boolean _isRedAlliance = false;
+
     private final SwerveHeadingController _headingController;
 
     // Setpoint generator for swerve.
@@ -89,6 +93,7 @@ public class DriveTrain extends OutliersSubsystem {
         _imu = imu;
         _systemIO = new SystemIO();
         _identityMode = identityMode;
+        _isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
         _modules = new DiffSwerveModule[4];
 
@@ -163,7 +168,7 @@ public class DriveTrain extends OutliersSubsystem {
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /* + 180*/ : _imu.getYaw().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -275,6 +280,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void setSnapHeading(Rotation2d heading) {
         _headingController.setSnapHeading(heading);
+    }
+    public void setMaintainHeading(Rotation2d heading) {
+        _headingController.setMaintainHeading(heading);
     }
 
     // use for modules as controller is running at 200Hz.
@@ -407,11 +415,11 @@ public class DriveTrain extends OutliersSubsystem {
         _systemIO.desiredChassisSpeeds = chassisSpeeds;
     }
 
-    public void setVelocityPose(Pose2d pose) {
+    public void setVelocityPose(Pose2d pose, boolean isShooter) {
         ChassisSpeeds speeds =
                 _poseController.calculate(
-                        _poseEstimator.getEstimatedPosition(), pose, 0.0, _imu.getRotation2d());
-        _headingController.setMaintainHeading(new Rotation2d());
+                        _poseEstimator.getEstimatedPosition(), pose, 0.0, _systemIO.heading);
+        _headingController.setMaintainHeading(isShooter ? new Rotation2d(Math.PI) : new Rotation2d());
         speeds.omegaRadiansPerSecond = _headingController.getRotationCorrection(getHeading());
         _systemIO.desiredChassisSpeeds = speeds;
     }
@@ -448,7 +456,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /*+ 180 */ : _imu.getYaw().getValue();
         readIMU();
     }
 
@@ -500,14 +508,14 @@ public class DriveTrain extends OutliersSubsystem {
      *     <p>Rotation2d - gyroAngle = gyroOffset
      *     <p>If Rotation2d <> gyroAngle, then robot heading will no longer equal IMU heading.
      */
-    public void resetOdometry(Pose2d position) {
+    public void resetRobotPose(Pose2d position) {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].resetEncoders();
         }
         Translation2d _translation = position.getTranslation();
         Rotation2d _rotation = getHeading();
         Pose2d _reset = new Pose2d(_translation, _rotation);
-        _odometry.resetPosition(
+        _poseEstimator.resetPosition(
                 getHeading(),
                 new SwerveModulePosition[] {
                     _modules[NORTH_WEST_IDX].getModulePosition(),
@@ -578,6 +586,17 @@ public class DriveTrain extends OutliersSubsystem {
         }
     }
 
+    public double getDistanceToGoal() {
+        return _poseEstimator
+                .getEstimatedPosition()
+                .getTranslation()
+                .getDistance(_hoverGoal.getTranslation());
+    }
+
+    public boolean isTopSpeed() {
+        return Math.abs(_modules[0].getWheelVelocity()) >= (Constants.DriveTrain.MAX_MPS - 0.2);
+    }
+
     @Override
     public void updateDashboard() {
         metric("Swerve State", _controlState.name());
@@ -588,7 +607,12 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
         metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
-        metric("Hover Goal", getHoverGoal().toString());
+        metric(
+                "Distance to goal node",
+                _poseEstimator
+                        .getEstimatedPosition()
+                        .getTranslation()
+                        .getDistance(_hoverGoal.getTranslation()));
         SmartDashboard.putData(_field);
         moduleMetrics();
     }
@@ -646,11 +670,15 @@ public class DriveTrain extends OutliersSubsystem {
         return _mode;
     }
 
-    public void setHoverGoal(Pose2d goal) {
-        _hoverGoal = goal;
+    public boolean isRedAlliance() {
+        return _isRedAlliance;
     }
 
     public Pose2d getHoverGoal() {
         return _hoverGoal;
+    }
+
+    public void setHoverGoal(Pose2d pose) {
+        _hoverGoal = pose;
     }
 }
