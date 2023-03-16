@@ -50,16 +50,16 @@ public class Constants {
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 4.2; // Max speed of robot (m/s)
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
-        public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
+        public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
 
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            KINEMATIC_LIMITS.maxDriveAcceleration = 22; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
@@ -145,13 +145,13 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.3;
+        public static final double MAINTAIN_kP = 4.0;
         public static final double MAINTAIN_kI = 0.0;
-        public static final double MAINTAIN_kD = 0.01;
+        public static final double MAINTAIN_kD = 0.1;
 
-        public static final double SNAP_kP = 3.3;
+        public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
-        public static final double SNAP_kD = 0.03;
+        public static final double SNAP_kD = 0.1;
 
         public static final double SNAP_TOLERANCE = Units.degreesToRadians(5.0);
 
@@ -188,8 +188,8 @@ public class Constants {
 
             CONFIG.MAX_VOLTAGE = 12.0;
 
-            CONFIG.MAX_STATOR_CURRENT = 80;
-            CONFIG.MAX_CURRENT = 80;
+            CONFIG.MAX_STATOR_CURRENT = 120;
+            CONFIG.MAX_CURRENT = 120;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
             //            CONFIG.USE_FOC = true;
         }
@@ -217,7 +217,7 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.08; // radians
+        public static final double Q_AZIMUTH = 0.065; // radians
         public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
         public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 
@@ -338,7 +338,7 @@ public class Constants {
         // profile constraints
         //        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
         public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
-        public static final double MAX_ACCELERATION = Units.degreesToRadians(150);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = 0.05; // rads

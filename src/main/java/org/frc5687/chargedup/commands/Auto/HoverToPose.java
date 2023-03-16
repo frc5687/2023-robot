@@ -39,6 +39,7 @@ public class HoverToPose extends OutliersCommand {
     @Override
     public void end(boolean interrupted) {
         _driveTrain.setKinematicLimits(KINEMATIC_LIMITS);
+        _driveTrain.setMaintainHeading(_driveTrain.getHeading());
         super.end(interrupted);
     }
 }

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
+import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.SemiAuto.*;
 import org.frc5687.chargedup.commands.SetRobotGoal;
@@ -70,7 +71,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
-        _driverRightTrigger.onTrue(new Shoot(cubeShooter, 0.5, 0.15, this));
+        _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
 
         _driverGamepad
@@ -101,7 +102,7 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getRightBumper().getAsBoolean();
     }
 
-    public boolean getSlowMode() {
+    public boolean getSlowMode()    {
         return _driverGamepad.getLeftBumper().getAsBoolean();
     }
 
@@ -109,7 +110,7 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getStartButton().getAsBoolean();
     }
 
-    public boolean place() {
+    public boolean overrideWrist() {
         return _operatorGamepad.getLeftBumper().getAsBoolean();
     }
 

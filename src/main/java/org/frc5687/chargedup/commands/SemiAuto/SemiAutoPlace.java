@@ -42,13 +42,6 @@ public class SemiAutoPlace extends OutliersCommand {
 
     @Override
     public void initialize() {
-        if (_cubeShooter.isCubeDetected()) {
-            error(" Shooter has cube, scheduling shoot command");
-            Pair<Double, Double> params =
-                    _cubeShooter.getShootingParameters(
-                            _driveTrain.getDistanceToGoal(), _endEffector.getLevelGoal());
-            (new Shoot(_cubeShooter, params.getFirst(), params.getSecond(), _oi)).schedule();
-        } else {
             super.initialize();
             SuperStructureSetpoints.Setpoint setpoint = _endEffector.getSuperStructureSetpoint();
             SequentialCommandGroup command = new SequentialCommandGroup();
@@ -61,7 +54,6 @@ public class SemiAutoPlace extends OutliersCommand {
                     new AutoSetRollerSpeed(_endEffector, setpoint.placeSpeed, true),
                     new AutoSetSuperStructurePosition(_elevator, _endEffector, _arm, idleConeSetpoint));
             command.schedule();
-        }
     }
 
     @Override

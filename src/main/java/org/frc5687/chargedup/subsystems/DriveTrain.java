@@ -249,6 +249,9 @@ public class DriveTrain extends OutliersSubsystem {
     public void setSnapHeading(Rotation2d heading) {
         _headingController.setSnapHeading(heading);
     }
+    public void setMaintainHeading(Rotation2d heading) {
+        _headingController.setMaintainHeading(heading);
+    }
 
     // use for modules as controller is running at 200Hz.
     public void modulePeriodic() {
