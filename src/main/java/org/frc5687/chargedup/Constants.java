@@ -188,8 +188,8 @@ public class Constants {
 
             CONFIG.MAX_VOLTAGE = 12.0;
 
-            CONFIG.MAX_STATOR_CURRENT = 120;
-            CONFIG.MAX_CURRENT = 120;
+            CONFIG.MAX_STATOR_CURRENT = 80;
+            CONFIG.MAX_CURRENT = 80;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
             //            CONFIG.USE_FOC = true;
         }
