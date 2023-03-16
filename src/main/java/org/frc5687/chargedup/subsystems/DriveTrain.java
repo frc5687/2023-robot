@@ -126,7 +126,7 @@ public class DriveTrain extends OutliersSubsystem {
                         new ProfiledPIDController(
                                 MAINTAIN_kP,
                                 MAINTAIN_kI,
-                                MAINTAIN_kP,
+                                MAINTAIN_kD,
                                 new TrapezoidProfile.Constraints(
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
@@ -137,7 +137,7 @@ public class DriveTrain extends OutliersSubsystem {
         _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /* + 180*/ : _imu.getYaw().getValue();
         readIMU();
 
-        _controlState = ControlState.NEUTRAL;
+        _controlState = ControlState.MANUAL;
         _fieldRelative = true;
 
         _kinematics =
@@ -264,8 +264,15 @@ public class DriveTrain extends OutliersSubsystem {
         super.periodic();
         readIMU();
         readModules();
-        updateDesiredStates();
-        setModuleStates(_systemIO.setpoint.moduleStates);
+        switch (_controlState) {
+            case MANUAL: 
+                updateDesiredStates();
+                setModuleStates(_systemIO.setpoint.moduleStates);
+                break;
+            case TRAJECTORY:
+                break;
+        }
+        
     }
 
     @Override
