@@ -5,6 +5,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
@@ -216,12 +217,12 @@ public class TwoPieceAuto extends SequentialCommandGroup {
         addCommands(
             new SequentialCommandGroup(
                 new AutoPlaceHighCube(elevator, endEffector, arm),
-                    new ParallelCommandGroup(
+                    new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory1),
                         new AutoIntake(_shooter)
                     ),   
                 new DriveTrajectory(driveTrain, _trajectory2),
-                new Shoot(_shooter, Constants.CubeShooter.SHOOT_RPS, Constants.CubeShooter.IDLE_ANGLE, _oi)
+                new Shoot(_shooter, 0.6, 0.21, _oi)
             )
         );
     }

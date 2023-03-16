@@ -2,8 +2,10 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
 import org.frc5687.lib.math.Vector2d;
@@ -24,7 +26,9 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
+        _driveTrain.startModules();
         _driveTrain.setControlState(ControlState.TRAJECTORY);
+        _driveTrain.setKinematicLimits(Constants.DriveTrain.TRAJECTORY_FOLLOWING);
         _timer.reset();
         _timer.start();
     }
@@ -32,9 +36,8 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-
         Trajectory.State goal = _trajectory.sample(_timer.get());
-        _driveTrain.updateSwerve(goal, new Rotation2d(0.0));
+        _driveTrain.followTrajectory(goal, new Rotation2d());
     }
 
     @Override
@@ -46,7 +49,8 @@ public class DriveTrajectory extends OutliersCommand {
     public void end(boolean interrupted) {
         super.end(interrupted);
         _driveTrain.setControlState(ControlState.MANUAL);
-        _driveTrain.updateSwerve(Vector2d.identity(), 0);
+        _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
+        _driveTrain.setVelocity(new ChassisSpeeds());
         _timer.reset();
     }
 }

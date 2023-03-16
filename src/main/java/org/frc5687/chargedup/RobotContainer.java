@@ -5,6 +5,7 @@ package org.frc5687.chargedup;
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -98,6 +99,12 @@ public class RobotContainer extends OutliersContainer {
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         _driveTrain.startModules();
         startPeriodic();
+        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
+                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_ONE, _driveTrain.getConfig()), "one");
+        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
+                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_TWO, _driveTrain.getConfig()), "Two");
+//        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
+//                Constants.Auto.TrajectoryPoints.Node2.RED_NODE_TWO_TRAJECTORY_ONE, _driveTrain.getConfig()));
     }
 
     public void periodic() {}

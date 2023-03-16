@@ -68,6 +68,13 @@ public class Constants {
             DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
+
+        public static final KinematicLimits TRAJECTORY_FOLLOWING = new KinematicLimits();
+        static {
+            TRAJECTORY_FOLLOWING.maxDriveVelocity = 3.0; // m/s
+            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 10; // m/s^2
+            TRAJECTORY_FOLLOWING.maxSteeringVelocity = 20; // rad/s
+        }
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
@@ -139,9 +146,6 @@ public class Constants {
 
         // Maximum rates of motion
 
-        public static final double MAX_AUTO_MPS = 2.0; // Max speed of robot (m/s)
-        public static final double MAX_MPSS = 1; // Max acceleration of robot (m/s^2)
-
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
@@ -207,7 +211,7 @@ public class Constants {
 
         public static final double FRICTION_STEER = 0.00;
         public static final double FRICTION_WHEEL = 0.00;
-        public static final double WHEEL_RADIUS = 0.04615; // Meters with compression.
+        public static final double WHEEL_RADIUS = 0.04697; // Meters with compression.
         public static final double TICKS_TO_ROTATIONS = 2048.0;
         public static final double VOLTAGE = 12.0;
 
@@ -370,20 +374,20 @@ public class Constants {
             public static final Pose2d RED_NODE_SEVEN_GOAL = new Pose2d(RED_X_COORDINATE, 3.872, Rotation2d.fromDegrees(180));
             public static final Pose2d RED_NODE_EIGHT_GOAL = new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
             public static final Pose2d RED_NODE_NINE_GOAL = new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180));
-            public static final Pose2d RED_BUMP_CENTER_GOAL = new Pose2d(12.762, 0.673, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_BUMP_CENTER_GOAL = new Pose2d(12.67, 0.74, Rotation2d.fromDegrees(180));
             public static final Pose2d RED_NOBUMP_CENTER_GOAL = new Pose2d(13.329, 4.776, Rotation2d.fromDegrees(180));
 
 
 
-            public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.065, 3.456, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.065, 4.6, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.065, 3.36, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 2.15, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 0.92, new Rotation2d(Math.PI));
 
-            public static final Pose2d RED_TARGET_ONE = new Pose2d(9.377, 7.114, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d RED_TARGET_TWO = new Pose2d(9.377, 5.844, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d RED_TARGET_THREE = new Pose2d(9.377, 4.676, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d RED_TARGET_FOUR = new Pose2d(9.377, 3.456, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_FOUR = new Pose2d(9.377, 4.6, new Rotation2d(Math.PI));
+            public static final Pose2d RED_TARGET_THREE = new Pose2d(9.377, 3.36, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_TWO = new Pose2d(9.377, 2.15, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_ONE = new Pose2d(9.377, 0.92, new Rotation2d(Math.PI)); // mechies give us magic units.
         }
 
         public static final double RED_X_COORDINATE = 14.75;
@@ -566,7 +570,7 @@ public class Constants {
         public static final double SHOOT_RPS = 90;
         public static final double WRIST_OFFSET = -0.179;
         public static final double IDLE_ANGLE = 0.87; // rotations
-        public static final double INTAKE_ANGLE = 2.8; // rotations
+        public static final double INTAKE_ANGLE = 2.0; //
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
