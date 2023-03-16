@@ -93,13 +93,6 @@ public class OI extends OutliersProxy {
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
     }
 
-    public void initializeButtons(DriveTrain drivetrain){
-        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        _driverGamepad.getBButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(270))));
-        _driverGamepad.getXButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(90))));
-        _driverGamepad.getYButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-    }
-
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
         return _driverGamepad.getAButton().getAsBoolean();
