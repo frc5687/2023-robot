@@ -70,6 +70,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
+        _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
         _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
 
