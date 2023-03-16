@@ -110,7 +110,7 @@ public class Drive extends OutliersCommand {
                 }
                 //   elementAngle = closestGameElement.getAzimuthAngle();
             }
-            _driveTrain.setSnapHeading(new Rotation2d(0));
+            _driveTrain.setMaintainHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx * coneDist / 2.0,

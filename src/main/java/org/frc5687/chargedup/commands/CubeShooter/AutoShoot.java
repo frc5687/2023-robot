@@ -1,24 +1,29 @@
 package org.frc5687.chargedup.commands.CubeShooter;
 
+import edu.wpi.first.math.Pair;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
+import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.EndEffector;
 
-public class Shoot extends OutliersCommand {
+public class AutoShoot extends OutliersCommand {
 
     private long _timeout;
     private ShootingState _state;
     private final CubeShooter _cubeShooter;
+    private final DriveTrain _driveTrain;
+    private final EndEffector _endEffector;
     private final OI _oi;
-    private final double _speed;
-    private final double _angle;
+    private double _speed;
+    private double _angle;
     private boolean _finished;
 
-    public Shoot(CubeShooter shooter, double speed, double angle, OI oi) {
+    public AutoShoot(CubeShooter shooter, DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         _cubeShooter = shooter;
-        _speed = speed;
-        _angle = angle;
+        _driveTrain = driveTrain;
+        _endEffector = endEffector;
         _state = ShootingState.INITIALIZE;
         _finished = false;
         _oi = oi;
@@ -35,14 +40,15 @@ public class Shoot extends OutliersCommand {
 
     @Override
     public void execute() {
+        Pair<Double, Double> params = _cubeShooter.getShootingParameters(_driveTrain.getDistanceToGoal(),_endEffector.getLevelGoal());
+        _speed = params.getFirst();
+        _angle = params.getSecond();
         switch (_state) {
             case INITIALIZE:
-                //                _cubeShooter.setShooterSpeed(-0.5);
                 metric("wrist angle", _cubeShooter.getWristAngleRadians());
                 metric("Wanted Angle", _angle);
                 if (Math.abs(_cubeShooter.getWristAngleRadians() - _angle)
-                                < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE
-                        && _oi.releaseRoller()) {
+                        < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE) {
                     _timeout = System.currentTimeMillis() + 750;
                     _state = ShootingState.WRIST_AT_ANGLE;
                 }

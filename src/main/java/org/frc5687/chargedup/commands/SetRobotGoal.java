@@ -1,7 +1,6 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
@@ -9,33 +8,38 @@ import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.SuperStructureSetpoints;
 
 /**
- * This command tells the arm and drivetrain to go to a specific setpoint and location based on a button press
- * For instance if they press Node 1 High, it sets the setpoint to be arm place high and drivetrain setpoint to node 1
+ * This command tells the arm and drivetrain to go to a specific setpoint and location based on a
+ * button press For instance if they press Node 1 High, it sets the setpoint to be arm place high
+ * and drivetrain setpoint to node 1
  */
-public class SetRobotGoal extends OutliersCommand{
-    private DriveTrain _driveTrain;
-    private EndEffector _endEffector;
-    private Nodes.Node _node;
-    private Nodes.SuperStructurePosition _superStructurePosition;
-    public SetRobotGoal(DriveTrain driveTrain, EndEffector endEffector, Nodes.Node node, Nodes.SuperStructurePosition position) {
+public class SetRobotGoal extends OutliersCommand {
+    private final DriveTrain _driveTrain;
+    private final EndEffector _endEffector;
+    private final Nodes.Node _node;
+    private final Nodes.Level _goalLevel;
+
+    public SetRobotGoal(
+            DriveTrain driveTrain, EndEffector endEffector, Nodes.Node node, Nodes.Level position) {
         _driveTrain = driveTrain;
         _endEffector = endEffector;
         _node = node;
-        _superStructurePosition = position;
+        _goalLevel = position;
     }
 
     @Override
     public void initialize() {
+        _endEffector.setGoalLevel(_goalLevel);
         super.initialize();
-        error("Setting to position " + _superStructurePosition.name() + "on node " + _node.name());
+        error("Setting to position " + _goalLevel.name() + "on node " + _node.name());
         boolean isRedAlliance = _driveTrain.isRedAlliance();
-        Pose2d pose = isRedAlliance ?
-                Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL :
-                Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL;
+        Pose2d pose =
+                isRedAlliance
+                        ? Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL
+                        : Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL;
         SuperStructureSetpoints.Setpoint setpoint = SuperStructureSetpoints.idleConeSetpoint;
         switch (_node) {
             case ONE:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
                         break;
@@ -46,12 +50,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL :
-                        Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL;
                 break;
             case TWO:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleCubeSetpoint;
                         break;
@@ -62,12 +67,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL :
-                        Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
                 break;
             case THREE:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
                         break;
@@ -78,12 +84,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_THREE_GOAL:
-                        Constants.Auto.FieldPoses.BLUE_NODE_THREE_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_THREE_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_THREE_GOAL;
                 break;
             case FOUR:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
                         break;
@@ -94,12 +101,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_FOUR_GOAL:
-                        Constants.Auto.FieldPoses.BLUE_NODE_FOUR_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_FOUR_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_FOUR_GOAL;
                 break;
             case FIVE:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleCubeSetpoint;
                         break;
@@ -109,12 +117,13 @@ public class SetRobotGoal extends OutliersCommand{
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_FIVE_GOAL:
-                        Constants.Auto.FieldPoses.BLUE_NODE_FIVE_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_FIVE_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_FIVE_GOAL;
                 break;
             case SIX:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
                         break;
@@ -125,12 +134,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_SIX_GOAL:
-                        Constants.Auto.FieldPoses.BLUE_NODE_SIX_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_SIX_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_SIX_GOAL;
                 break;
             case SEVEN:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
                         break;
@@ -141,12 +151,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_SEVEN_GOAL :
-                        Constants.Auto.FieldPoses.BLUE_NODE_SEVEN_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_SEVEN_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_SEVEN_GOAL;
                 break;
             case EIGHT:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleCubeSetpoint;
                         break;
@@ -157,12 +168,13 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL :
-                        Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
                 break;
             case NINE:
-                switch (_superStructurePosition) {
+                switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
                         break;
@@ -173,9 +185,10 @@ public class SetRobotGoal extends OutliersCommand{
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         break;
                 }
-                pose = isRedAlliance ?
-                        Constants.Auto.FieldPoses.RED_NODE_NINE_GOAL :
-                        Constants.Auto.FieldPoses.BLUE_NODE_NINE_GOAL;
+                pose =
+                        isRedAlliance
+                                ? Constants.Auto.FieldPoses.RED_NODE_NINE_GOAL
+                                : Constants.Auto.FieldPoses.BLUE_NODE_NINE_GOAL;
                 break;
         }
         _endEffector.setSuperStructureSetpoint(setpoint);

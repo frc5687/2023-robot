@@ -134,7 +134,7 @@ public class DriveTrain extends OutliersSubsystem {
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue()/* + 180*/: _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /* + 180*/ : _imu.getYaw().getValue();
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -197,7 +197,6 @@ public class DriveTrain extends OutliersSubsystem {
         setSetpointFromMeasuredModules();
     }
 
-
     public static class SystemIO {
         ChassisSpeeds desiredChassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
         SwerveModuleState[] measuredStates =
@@ -247,6 +246,9 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void setSnapHeading(Rotation2d heading) {
         _headingController.setSnapHeading(heading);
+    }
+    public void setMaintainHeading(Rotation2d heading) {
+        _headingController.setMaintainHeading(heading);
     }
 
     // use for modules as controller is running at 200Hz.
@@ -379,11 +381,11 @@ public class DriveTrain extends OutliersSubsystem {
         _systemIO.desiredChassisSpeeds = chassisSpeeds;
     }
 
-    public void setVelocityPose(Pose2d pose) {
+    public void setVelocityPose(Pose2d pose, boolean isShooter) {
         ChassisSpeeds speeds =
                 _poseController.calculate(
-                        _poseEstimator.getEstimatedPosition(), pose, 0.0, _imu.getRotation2d());
-        _headingController.setMaintainHeading(new Rotation2d());
+                        _poseEstimator.getEstimatedPosition(), pose, 0.0, _systemIO.heading);
+        _headingController.setMaintainHeading(isShooter ? new Rotation2d(Math.PI) : new Rotation2d());
         speeds.omegaRadiansPerSecond = _headingController.getRotationCorrection(getHeading());
         _systemIO.desiredChassisSpeeds = speeds;
     }
@@ -420,7 +422,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void zeroGyroscope() {
-        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /*+ 180 */: _imu.getYaw().getValue();
+        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /*+ 180 */ : _imu.getYaw().getValue();
         readIMU();
     }
 
@@ -549,6 +551,14 @@ public class DriveTrain extends OutliersSubsystem {
             module.updateDashboard();
         }
     }
+
+    public double getDistanceToGoal() {
+        return _poseEstimator
+                .getEstimatedPosition()
+                .getTranslation()
+                .getDistance(_hoverGoal.getTranslation());
+    }
+
     public boolean isTopSpeed() {
         return Math.abs(_modules[0].getWheelVelocity()) >= (Constants.DriveTrain.MAX_MPS - 0.2);
     }
@@ -563,6 +573,12 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
         metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
+        metric(
+                "Distance to goal node",
+                _poseEstimator
+                        .getEstimatedPosition()
+                        .getTranslation()
+                        .getDistance(_hoverGoal.getTranslation()));
         SmartDashboard.putData(_field);
         moduleMetrics();
     }
@@ -619,6 +635,7 @@ public class DriveTrain extends OutliersSubsystem {
     public Mode getMode() {
         return _mode;
     }
+
     public boolean isRedAlliance() {
         return _isRedAlliance;
     }
@@ -626,6 +643,7 @@ public class DriveTrain extends OutliersSubsystem {
     public Pose2d getHoverGoal() {
         return _hoverGoal;
     }
+
     public void setHoverGoal(Pose2d pose) {
         _hoverGoal = pose;
     }

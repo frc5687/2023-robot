@@ -16,6 +16,7 @@ import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
+import org.frc5687.chargedup.commands.CubeShooter.IdleWrist;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
@@ -89,7 +90,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
-//        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
+        setDefaultCommand(_cubeShooter, new IdleWrist(_cubeShooter, _driveTrain, _endEffector));
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
 
@@ -99,8 +100,7 @@ public class RobotContainer extends OutliersContainer {
         startPeriodic();
     }
 
-    public void periodic() {
-    }
+    public void periodic() {}
 
     public void disabledPeriodic() {
         _autoChooser.updateChooser();

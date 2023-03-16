@@ -50,16 +50,16 @@ public class Constants {
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-        public static final double MAX_MPS = 4.0; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 4.2; // Max speed of robot (m/s)
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
-        public static final double MAX_ANG_VEL = Math.PI * 2.0; // Max rotation rate of robot (rads/s)
+        public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
 
         public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            KINEMATIC_LIMITS.maxDriveAcceleration = 22; // m/s^2
             KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
@@ -145,13 +145,13 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.0;
+        public static final double MAINTAIN_kP = 4.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
-        public static final double SNAP_kP = 3.8;
+        public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
-        public static final double SNAP_kD = 0.3;
+        public static final double SNAP_kD = 0.1;
 
         public static final double SNAP_TOLERANCE = Units.degreesToRadians(5.0);
 
@@ -176,6 +176,7 @@ public class Constants {
         public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
     }
 
+
     public static class DifferentialSwerveModule {
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
         // this is the motor config for the diff swerve motors
@@ -187,8 +188,8 @@ public class Constants {
 
             CONFIG.MAX_VOLTAGE = 12.0;
 
-            CONFIG.MAX_STATOR_CURRENT = 80;
-            CONFIG.MAX_CURRENT = 80;
+            CONFIG.MAX_STATOR_CURRENT = 120;
+            CONFIG.MAX_CURRENT = 120;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
             //            CONFIG.USE_FOC = true;
         }
@@ -337,9 +338,9 @@ public class Constants {
         // profile constraints
         //        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
         public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
-        public static final double MAX_ACCELERATION = Units.degreesToRadians(150);
+        public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
-        //Positive is North, Negative is South (North is towards Battery)
+        // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = 0.05; // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
         public static final double LOWER_EXTREME = 0.378;
@@ -358,31 +359,31 @@ public class Constants {
             public static final Pose2d BLUE_NODE_EIGHT_GOAL = new Pose2d(BLUE_X_COORDINATE, 4.431, new Rotation2d());
             public static final Pose2d BLUE_NODE_NINE_GOAL = new Pose2d(BLUE_X_COORDINATE, 4.989, new Rotation2d());
             public static final Pose2d BLUE_BUMP_CENTER_GOAL = new Pose2d(3.988, 0.824, new Rotation2d());
- 
-         // left to right on red side
-         public static final Pose2d RED_NODE_ONE_GOAL = new Pose2d(RED_X_COORDINATE, 0.519, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_TWO_GOAL = new Pose2d(RED_X_COORDINATE, 1.08, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_THREE_GOAL = new Pose2d(RED_X_COORDINATE, 1.637, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_FOUR_GOAL = new Pose2d(RED_X_COORDINATE, 2.195, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_FIVE_GOAL = new Pose2d(RED_X_COORDINATE, 2.753, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_SIX_GOAL = new Pose2d(RED_X_COORDINATE, 3.313, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_SEVEN_GOAL = new Pose2d(RED_X_COORDINATE, 3.872, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_EIGHT_GOAL = new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NODE_NINE_GOAL = new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180)); 
-         public static final Pose2d RED_BUMP_CENTER_GOAL = new Pose2d(12.762, 0.673, Rotation2d.fromDegrees(180));
-         public static final Pose2d RED_NOBUMP_CENTER_GOAL = new Pose2d(13.329, 4.776, Rotation2d.fromDegrees(180));
-         
 
-        
-        public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.065, 3.456, new Rotation2d(Math.PI / 2.0));
-        public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d(Math.PI / 2.0));
-        public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d(Math.PI / 2.0));
-        public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d(Math.PI / 2.0));
+            // left to right on red side
+            public static final Pose2d RED_NODE_ONE_GOAL = new Pose2d(RED_X_COORDINATE, 0.519, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_TWO_GOAL = new Pose2d(RED_X_COORDINATE, 1.08, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_THREE_GOAL = new Pose2d(RED_X_COORDINATE, 1.637, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_FOUR_GOAL = new Pose2d(RED_X_COORDINATE, 2.195, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_FIVE_GOAL = new Pose2d(RED_X_COORDINATE, 2.753, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_SIX_GOAL = new Pose2d(RED_X_COORDINATE, 3.313, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_SEVEN_GOAL = new Pose2d(RED_X_COORDINATE, 3.872, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_EIGHT_GOAL = new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NODE_NINE_GOAL = new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_BUMP_CENTER_GOAL = new Pose2d(12.762, 0.673, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NOBUMP_CENTER_GOAL = new Pose2d(13.329, 4.776, Rotation2d.fromDegrees(180));
 
-        public static final Pose2d RED_TARGET_ONE = new Pose2d(9.377, 7.114, new Rotation2d(Math.PI / 2.0));
-        public static final Pose2d RED_TARGET_TWO = new Pose2d(9.377, 5.844, new Rotation2d(Math.PI / 2.0));
-        public static final Pose2d RED_TARGET_THREE = new Pose2d(9.377, 4.676, new Rotation2d(Math.PI / 2.0));
-        public static final Pose2d RED_TARGET_FOUR = new Pose2d(9.377, 3.456, new Rotation2d(Math.PI / 2.0));
+
+
+            public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.065, 3.456, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.065, 4.676, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 5.844, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 7.114, new Rotation2d(Math.PI / 2.0));
+
+            public static final Pose2d RED_TARGET_ONE = new Pose2d(9.377, 7.114, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_TWO = new Pose2d(9.377, 5.844, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_THREE = new Pose2d(9.377, 4.676, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_FOUR = new Pose2d(9.377, 3.456, new Rotation2d(Math.PI / 2.0));
         }
 
         public static final double RED_X_COORDINATE = 14.75;
@@ -484,16 +485,16 @@ public class Constants {
                     FieldPoses.BLUE_TARGET_ONE
                     );
                 public static final List<Pose2d> BLUE_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(
-                    FieldPoses.BLUE_TARGET_ONE,
-                    FieldPoses.BLUE_NODE_EIGHT_GOAL);
+                        FieldPoses.BLUE_TARGET_ONE,
+                        FieldPoses.BLUE_NODE_EIGHT_GOAL);
                 public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(
-                    FieldPoses.RED_NODE_EIGHT_GOAL,
-                    FieldPoses.RED_NOBUMP_CENTER_GOAL,
-                    FieldPoses.RED_TARGET_FOUR);
+                        FieldPoses.RED_NODE_EIGHT_GOAL,
+                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
+                        FieldPoses.RED_TARGET_FOUR);
                 public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(
-                    FieldPoses.RED_TARGET_FOUR,
-                    FieldPoses.RED_NOBUMP_CENTER_GOAL,
-                    FieldPoses.RED_NODE_EIGHT_GOAL);
+                        FieldPoses.RED_TARGET_FOUR,
+                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
+                        FieldPoses.RED_NODE_EIGHT_GOAL);
 
             }
             public static class Node9 {
@@ -501,13 +502,13 @@ public class Constants {
                 public static final List<Pose2d> BLUE_NODE_NINE_TRAJECTORY_ONE = Arrays.asList(FieldPoses.BLUE_NODE_NINE_GOAL);
                 public static final List<Pose2d> BLUE_NODE_NINE_TRAJECTORY_TWO = Arrays.asList(FieldPoses.BLUE_NODE_NINE_GOAL);
                 public static final List<Pose2d> RED_NODE_NINE_TRAJECTORY_ONE = Arrays.asList(
-                    FieldPoses.RED_NODE_NINE_GOAL,
-                    FieldPoses.RED_NOBUMP_CENTER_GOAL,
-                    FieldPoses.RED_TARGET_FOUR);
+                        FieldPoses.RED_NODE_NINE_GOAL,
+                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
+                        FieldPoses.RED_TARGET_FOUR);
                 public static final List<Pose2d> RED_NODE_NINE_TRAJECTORY_TWO = Arrays.asList(
-                    FieldPoses.RED_TARGET_FOUR,
-                    FieldPoses.RED_NOBUMP_CENTER_GOAL,
-                    FieldPoses.RED_NODE_NINE_GOAL);
+                        FieldPoses.RED_TARGET_FOUR,
+                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
+                        FieldPoses.RED_NODE_NINE_GOAL);
             }
 
         }
@@ -561,11 +562,11 @@ public class Constants {
     public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 7.2;
-        public static final double WRIST_ANGLE_TOLERANCE = 0.05; //rotations
+        public static final double WRIST_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double WRIST_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.87; //rotations
-        public static final double INTAKE_ANGLE = 2.8; //rotations
+        public static final double IDLE_ANGLE = 0.87; // rotations
+        public static final double INTAKE_ANGLE = 2.8; // rotations
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
@@ -606,14 +607,14 @@ public class Constants {
         static {
             CONTROLLER_CONFIG_WRIST.SLOT = 0;
 
-            CONTROLLER_CONFIG_WRIST.kP = 4.0;
+            CONTROLLER_CONFIG_WRIST.kP = 12.0;
             CONTROLLER_CONFIG_WRIST.kI = 0;
-            CONTROLLER_CONFIG_WRIST.kD = 0.4;
-            CONTROLLER_CONFIG_WRIST.kF = 0.4;
+            CONTROLLER_CONFIG_WRIST.kD = 0.01;
+            CONTROLLER_CONFIG_WRIST.kF = 0.0;
 
-            CONTROLLER_CONFIG_WRIST.CRUISE_VELOCITY = 80;
+            CONTROLLER_CONFIG_WRIST.CRUISE_VELOCITY = 90;
             CONTROLLER_CONFIG_WRIST.ACCELERATION = 1000;
-            CONTROLLER_CONFIG_WRIST.JERK = 3000;
+            CONTROLLER_CONFIG_WRIST.JERK = 8000;
         }
 
         public static final OutliersTalon.ClosedLoopConfiguration CONTROLLER_CONFIG_SHOOTER =

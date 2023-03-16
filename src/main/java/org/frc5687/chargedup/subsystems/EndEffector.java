@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.Helpers;
+import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -28,6 +29,7 @@ public class EndEffector extends OutliersSubsystem {
     private final PIDController _gripperController;
     private SuperStructureSetpoints.Setpoint _setpoint;
     private boolean _isConeMode = true;
+    private Nodes.Level _currentLevel;
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -130,6 +132,12 @@ public class EndEffector extends OutliersSubsystem {
 
     public void setCubeMode(){
         _isConeMode = false;
+    }
+    public void setGoalLevel(Nodes.Level level) {
+        _currentLevel = level;
+    }
+    public Nodes.Level getLevelGoal() {
+        return _currentLevel;
     }
 
     public void setSuperStructureSetpoint(SuperStructureSetpoints.Setpoint setpoint) {

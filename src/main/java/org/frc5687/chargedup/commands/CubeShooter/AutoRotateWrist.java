@@ -28,7 +28,7 @@ public class AutoRotateWrist extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(_wristAngle - _cubeShooter.getWristEncoderRotation())
+        return Math.abs(_wristAngle - _cubeShooter.getWristAngleRadians())
                 < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE;
     }
 

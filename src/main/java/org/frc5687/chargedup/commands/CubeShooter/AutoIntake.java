@@ -6,6 +6,7 @@ import org.frc5687.chargedup.subsystems.CubeShooter;
 
 public class AutoIntake extends OutliersCommand {
     private CubeShooter _cubeShooter;
+
     public AutoIntake(CubeShooter shooter) {
         _cubeShooter = shooter;
         addRequirements(_cubeShooter);
