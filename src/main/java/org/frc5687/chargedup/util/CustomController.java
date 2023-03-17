@@ -12,6 +12,7 @@ public class CustomController {
     private final CustomButton _override;
     private final CustomButton _changeMode;
     private final CustomButton _deploy;
+    private final CustomButton _intake;
 
     public CustomController() {
         _instance = NetworkTableInstance.getDefault();
@@ -24,6 +25,7 @@ public class CustomController {
         _override = new CustomButton("override", _table);
         _changeMode = new CustomButton("changeMode", _table);
         _deploy = new CustomButton("deploy", _table);
+        _intake = new CustomButton("intake", _table);
     }
 
     public void pollButtons() {
@@ -41,6 +43,7 @@ public class CustomController {
     public Trigger getOverrideButton() {return new Trigger(_override);}
     public Trigger getChangeModeButton() {return new Trigger(_changeMode);}
     public Trigger getDeployButton() {return new Trigger(_deploy);}
+    public Trigger getIntakeButton() {return new Trigger(_intake);}
 
     public boolean getState(int row, int col) {
         String name = "button_" + row + "_" + col;

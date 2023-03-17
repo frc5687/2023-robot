@@ -15,6 +15,7 @@ import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
 import org.frc5687.chargedup.commands.SemiAuto.*;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
+import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
@@ -65,14 +66,16 @@ public class OI extends OutliersProxy {
         _operatorGamepad
                 .getStartButton()
                 .onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _customController.getIntakeButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+
         _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
         //        _operatorGamepad
         //                .getXButton()
         //                .onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-        //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
-        //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
+               _driverGamepad.getLeftStickButton().onTrue(new Tap(drivetrain, false));
+               _driverGamepad.getRightStickButton().onTrue(new Tap(drivetrain, true));
 //        _driverGamepad.getXButton().onTrue(new DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
         _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
         _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
