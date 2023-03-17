@@ -6,6 +6,8 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
 import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -53,6 +55,7 @@ public class DriveTrain extends OutliersSubsystem {
     private boolean _fieldRelative;
     private final Pigeon2 _imu;
     private final HolonomicDriveController _poseController;
+    private final PPHolonomicDriveController _ppPoseController;
 
     private boolean _slowMode = false;
 
@@ -127,7 +130,11 @@ public class DriveTrain extends OutliersSubsystem {
                                 new TrapezoidProfile.Constraints(
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
-
+        
+        _ppPoseController = 
+                new PPHolonomicDriveController(new PIDController(Constants.DriveTrain.kP, MAINTAIN_kI, MAINTAIN_kD), 
+                new PIDController(MAINTAIN_kP, MAINTAIN_kI, MAINTAIN_kD), 
+                new PIDController(MAINTAIN_kP, MAINTAIN_kI, MAINTAIN_kD))
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
         _imu.getPitch().setUpdateFrequency(200);
@@ -402,6 +409,8 @@ public class DriveTrain extends OutliersSubsystem {
         setModuleStates(moduleStates);
     }
 
+
+    
     public double getYaw() {
         return _systemIO.heading.getRadians();
     }
@@ -433,6 +442,10 @@ public class DriveTrain extends OutliersSubsystem {
 
     public SwerveDriveKinematicsConstraint getKinematicConstraint() {
         return new SwerveDriveKinematicsConstraint(_kinematics, Constants.DriveTrain.MAX_AUTO_MPS);
+    }
+
+    public SwerveDriveKinematics getKinematics(){
+        return _kinematics;
     }
 
     public void setKinematicLimits(KinematicLimits limits) {
