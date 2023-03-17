@@ -268,6 +268,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     @Override
     public void dataPeriodic(double timestamp) {
+        if (_imu.getPitch().getValue() < 5){
+
         _poseEstimator.update(
                 _imu.getRotation2d().minus(new Rotation2d(_yawOffset)), _systemIO.measuredPositions);
                 Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
@@ -303,6 +305,7 @@ public class DriveTrain extends OutliersSubsystem {
                     _poseEstimator.addVisionMeasurement(camSE.estimatedPose.toPose2d(), camSE.timestampSeconds);
                 }
         _field.setRobotPose(_poseEstimator.getEstimatedPosition());
+        } else {}
     }
 
     // Heading controller functions
@@ -457,6 +460,8 @@ public class DriveTrain extends OutliersSubsystem {
     public double getPitch() {
         return _systemIO.pitch;
     }
+
+  
     // yaw is negative to follow wpi coordinate system.
     public Rotation2d getHeading() {
         return _systemIO.heading;
