@@ -1,16 +1,24 @@
 package org.frc5687.chargedup.util;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 
 public class PhotonProcessor {
 
+    private static final int NUM_CAMERAS = 4;
     private final PhotonCamera _northWestCamera;
     private final PhotonCamera _northEastCamera;
     private final PhotonCamera _southWestCamera;
@@ -20,11 +28,13 @@ public class PhotonProcessor {
     private final PhotonPoseEstimator _southWestCameraEstimator;
     private final PhotonPoseEstimator _southEastCameraEstimator;
 
+    private final ExecutorService _executorService;
     public PhotonProcessor(AprilTagFieldLayout layout) {
         _northWestCamera = new PhotonCamera("North_West_Camera");
         _northEastCamera = new PhotonCamera("North_East_Camera");
         _southWestCamera = new PhotonCamera("South_West_Camera");
         _southEastCamera = new PhotonCamera("South_East_Camera");
+        _executorService = Executors.newFixedThreadPool(NUM_CAMERAS);
 
         setPipeline(Pipeline.FAR);
 
@@ -153,6 +163,30 @@ public class PhotonProcessor {
             Pose2d prevEstimatedPose) {
         return CompletableFuture.supplyAsync(
                 () -> getSouthEastCameraEstimatedGlobalPose(prevEstimatedPose));
+    }
+
+    public void updatePoseEstimator(SwerveDrivePoseEstimator estimator, Rotation2d imuHeading) {
+
+        // Call the camera pose estimation methods asynchronously and in parallel
+        Pose2d estimatedRobotPose = estimator.getEstimatedPosition();
+        List<CompletableFuture<Optional<EstimatedRobotPose>>> poseFutures = new ArrayList<>();
+        poseFutures.add(getNorthWestCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
+        poseFutures.add(getNorthEastCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
+        poseFutures.add(getSouthWestCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
+        poseFutures.add(getSouthEastCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
+        CompletableFuture.allOf(poseFutures.toArray(new CompletableFuture[0]))
+                .thenRunAsync(() -> {
+                    // Once all pose estimation methods have completed, process the results
+                    for (CompletableFuture<Optional<EstimatedRobotPose>> poseFuture : poseFutures) {
+                        Optional<EstimatedRobotPose> pose = poseFuture.join();
+                        if (pose.isPresent()) {
+                            EstimatedRobotPose estimatedPose = pose.get();
+//                            Pose2d correctedPose = estimatedPose.estimatedPose.toPose2d().se;
+                            estimator.addVisionMeasurement(estimatedRobotPose, estimatedPose.timestampSeconds);
+                        }
+                    }
+                }, _executorService);
+
     }
 
     public enum Pipeline {
