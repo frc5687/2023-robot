@@ -1,6 +1,8 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
+import edu.wpi.first.wpilibj.DigitalSource;
+
 public class RobotMap {
 
     /**
@@ -83,5 +85,7 @@ public class RobotMap {
         public static final int CUBESHOOTER_PROXIMITY = 7;
         public static final int ARM_ENCODER = 8;
         public static final int ENCODER_CUBESHOOTER_WRIST = 9;
+        public static final int ARM_ENCODER_A = 19;
+        public static final int ARM_ENCODER_B = 20;
     }
 }
