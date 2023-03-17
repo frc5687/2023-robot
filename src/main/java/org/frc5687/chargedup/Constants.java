@@ -375,19 +375,19 @@ public class Constants {
             public static final Pose2d RED_NODE_EIGHT_GOAL = new Pose2d(RED_X_COORDINATE, 4.431, Rotation2d.fromDegrees(180));
             public static final Pose2d RED_NODE_NINE_GOAL = new Pose2d(RED_X_COORDINATE, 4.989, Rotation2d.fromDegrees(180));
             public static final Pose2d RED_BUMP_CENTER_GOAL = new Pose2d(12.67, 0.74, Rotation2d.fromDegrees(180));
-            public static final Pose2d RED_NOBUMP_CENTER_GOAL = new Pose2d(13.329, 4.776, Rotation2d.fromDegrees(180));
+            public static final Pose2d RED_NOBUMP_CENTER_GOAL = new Pose2d(13.329, 4.776, Rotation2d.fromDegrees(-180));
 
 
 
-            public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.065, 4.6, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.065, 3.36, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.065, 2.15, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.065, 0.92, new Rotation2d(Math.PI));
+            public static final Pose2d BLUE_TARGET_ONE = new Pose2d(7.12, 4.6, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_TWO = new Pose2d(7.12, 3.36, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_THREE = new Pose2d(7.12, 2.15, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d BLUE_TARGET_FOUR = new Pose2d(7.12, 0.92, new Rotation2d(Math.PI));
 
-            public static final Pose2d RED_TARGET_FOUR = new Pose2d(9.377, 4.6, new Rotation2d(Math.PI));
-            public static final Pose2d RED_TARGET_THREE = new Pose2d(9.377, 3.36, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d RED_TARGET_TWO = new Pose2d(9.377, 2.15, new Rotation2d(Math.PI / 2.0));
-            public static final Pose2d RED_TARGET_ONE = new Pose2d(9.377, 0.92, new Rotation2d(Math.PI)); // mechies give us magic units.
+            public static final Pose2d RED_TARGET_FOUR = new Pose2d(9.562, 4.6, new Rotation2d(Math.PI));
+            public static final Pose2d RED_TARGET_THREE = new Pose2d(9.562, 3.36, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_TWO = new Pose2d(9.562, 2.15, new Rotation2d(Math.PI / 2.0));
+            public static final Pose2d RED_TARGET_ONE = new Pose2d(9.562, 0.92, new Rotation2d(Math.PI)); // mechies give us magic units.
         }
 
         public static final double RED_X_COORDINATE = 14.75;
@@ -493,11 +493,11 @@ public class Constants {
                         FieldPoses.BLUE_NODE_EIGHT_GOAL);
                 public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_ONE = Arrays.asList(
                         FieldPoses.RED_NODE_EIGHT_GOAL,
-                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
+//                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
                         FieldPoses.RED_TARGET_FOUR);
                 public static final List<Pose2d> RED_NODE_EIGHT_TRAJECTORY_TWO = Arrays.asList(
                         FieldPoses.RED_TARGET_FOUR,
-                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
+//                        FieldPoses.RED_NOBUMP_CENTER_GOAL,
                         FieldPoses.RED_NODE_EIGHT_GOAL);
 
             }
@@ -570,7 +570,7 @@ public class Constants {
         public static final double SHOOT_RPS = 90;
         public static final double WRIST_OFFSET = -0.179;
         public static final double IDLE_ANGLE = 0.87; // rotations
-        public static final double INTAKE_ANGLE = 2.0; //
+        public static final double INTAKE_ANGLE = 2.5; //
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();

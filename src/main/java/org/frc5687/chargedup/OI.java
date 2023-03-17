@@ -8,6 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
@@ -70,6 +71,7 @@ public class OI extends OutliersProxy {
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
         //        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
         //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
+//        _driverGamepad.getXButton().onTrue(new DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
         _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
         _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
