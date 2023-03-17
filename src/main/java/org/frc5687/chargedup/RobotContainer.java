@@ -4,6 +4,7 @@ package org.frc5687.chargedup;
 
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,6 +24,7 @@ import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
+import org.frc5687.chargedup.util.Trajectories;
 import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
@@ -41,6 +43,7 @@ public class RobotContainer extends OutliersContainer {
     private Arm _arm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
+    private Trajectories _trajectories;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -57,6 +60,7 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
         _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
+        _trajectories = new Trajectories(new PathConstraints(4.0, 3.0));
 
         try {
             _photonProcessor =
