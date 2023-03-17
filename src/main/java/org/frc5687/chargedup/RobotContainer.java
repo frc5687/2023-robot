@@ -4,6 +4,7 @@ package org.frc5687.chargedup;
 
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +30,7 @@ import org.frc5687.chargedup.util.AutoChooser.AutoType;
 import org.frc5687.chargedup.util.AutoChooser.Node;
 import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.chargedup.util.PhotonProcessor;
+import org.frc5687.chargedup.util.Trajectories;
 import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
@@ -48,6 +50,7 @@ public class RobotContainer extends OutliersContainer {
     private Arm _arm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
+    private Trajectories _trajectories;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
@@ -65,6 +68,7 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
         _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
+        _trajectories = new Trajectories(new PathConstraints(4.0, 3.0));
 
         try {
             _photonProcessor =
@@ -199,23 +203,23 @@ public class RobotContainer extends OutliersContainer {
             case TwoPiece:
             switch (_autoFirstNode) {
                 case OneCone:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.OneCone);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.OneCone, _trajectories);
                 case TwoCube:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.TwoCube);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.TwoCube, _trajectories);
                 case ThreeCone:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.ThreeCone);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.ThreeCone, _trajectories);
                 case FourCone:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.FourCone);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.FourCone, _trajectories);
                 case FiveCube:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.FiveCube);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.FiveCube, _trajectories);
                 case SixCone:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.SixCone);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.SixCone, _trajectories);
                 case SevenCone:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.SevenCone);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.SevenCone, _trajectories);
                 case EightCube:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.EightCube);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.EightCube, _trajectories);
                 case NineCone:
-                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.NineCone);
+                    return new TwoPieceAuto(_driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, Node.NineCone, _trajectories);
                 default:
                     error("uh oh");
                     return new WaitCommand(15);
