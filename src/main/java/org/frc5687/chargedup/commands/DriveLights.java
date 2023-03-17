@@ -13,26 +13,22 @@ public class DriveLights extends OutliersCommand {
     private Lights _lights;
     private EndEffector _endEffector;
     private DriveTrain _driveTrain;
-    private OI _oi;
 
     public DriveLights(EndEffector endEffector, Lights lights, DriveTrain driveTrain, OI oi) {
         _endEffector = endEffector;
         _lights = lights;
         _driveTrain = driveTrain;
-        _oi = oi;
         addRequirements(_lights);
     }
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         super.initialize();
     }
 
     @Override
     public void execute() {
         super.execute();
-
         if (DriverStation.isDisabled()) {
             _lights.switchAnimation(AnimationType.RAINBOW);
         } else if (_endEffector.getConeMode()) {
@@ -80,7 +76,6 @@ public class DriveLights extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return super.isFinished();
     }
 

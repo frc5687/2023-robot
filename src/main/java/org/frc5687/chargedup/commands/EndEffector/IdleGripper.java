@@ -7,12 +7,13 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 
 public class IdleGripper extends OutliersCommand {
     private EndEffector _endEffector;
+  
 
-    private OI _oi;
 
     public IdleGripper(EndEffector endEffector, OI oi) {
         _endEffector = endEffector;
-        _oi = oi;
+      /*   _timeoutIn = (System.currentTimeMillis() + 400);
+        _timeoutOut = (System.currentTimeMillis() + 150); */
         addRequirements(_endEffector);
     }
 
@@ -20,17 +21,24 @@ public class IdleGripper extends OutliersCommand {
     public void execute() {
         super.execute();
         if (_endEffector.getConeMode()) {
-            //            if (_oi.releaseRoller()) {
-            //                _endEffector.setRollerSpeed(Constants.EndEffector.PLACE_CONE_ROLLER_SPEED);
-            //            } else {
             _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
-            //            }
+            /* if (_timeoutOut > System.currentTimeMillis()) {
+                _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
+            } else {
+                _timeoutIn = (System.currentTimeMillis() + 400);
+            } if (_timeoutIn < System.currentTimeMillis()){
+                _endEffector.setRollerSpeed(-Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
+            } else {
+                _timeoutOut = (System.currentTimeMillis() + 150);
+            } */
+
+            
+
+            
+
+                          
         } else {
-            //            if (_oi.releaseRoller()) {
-            //                _endEffector.setRollerSpeed(Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED);
-            //            } else {
             _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED);
-            //            }
         }
     }
 

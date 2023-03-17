@@ -16,6 +16,8 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
+
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -29,19 +31,27 @@ public class Arm extends OutliersSubsystem {
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
     private final TrapezoidProfile.Constraints _contraints;
     private TrapezoidProfile.State _lastArmState;
+    private final Encoder _boreQuadEncoder;
+    private double _relativeEncoderOffset;
 
+    private boolean _hasZeroed;
     private Matrix<N1, N1> _u;
 
     public Arm(OutliersContainer container) {
         super(container);
         _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
-
+        _boreQuadEncoder = new Encoder(RobotMap.DIO.ARM_ENCODER_A, RobotMap.DIO.ARM_ENCODER_B, true);
+        _boreQuadEncoder.setDistancePerPulse((Math.PI)/2048);
         // _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
         //        _lowerHall = new HallEffect(RobotMap.DIO.BOTTOM_HALL_ARM);
 
         _absAngleEncoder = new DutyCycleEncoder(RobotMap.DIO.ARM_ENCODER);
         _absAngleEncoder.setDistancePerRotation(Math.PI); // 2:1 from output to encoder
+        _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
+        
+
+        
 
         LinearSystem<N2, N1, N1> plant =
                 LinearSystemId.createSingleJointedArmSystem(
@@ -65,6 +75,7 @@ public class Arm extends OutliersSubsystem {
         // we are setting velocity to 0 in the case that the arm was moving when starting up.
         _lastArmState = new TrapezoidProfile.State(getArmAngleRadians(), 0);
         _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), getArmVelocityRadPerSec()));
+        _hasZeroed = false;
         _u = VecBuilder.fill(0);
     }
 
@@ -77,6 +88,10 @@ public class Arm extends OutliersSubsystem {
     }
 
     public void periodic() {
+        if (!_hasZeroed) {
+            _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
+            _hasZeroed = true;
+        }
         super.periodic();
         calculateNextU();
         //        _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
@@ -124,7 +139,8 @@ public class Arm extends OutliersSubsystem {
     public double getArmAngleRadians() {
         //        return OutliersTalon.rotationsToRadians(getEncoderRotation(),
         // Constants.Arm.GEAR_RATIO);
-        return getAbsoluteArmEncoderAngle();
+        //return getAbsoluteArmEncoderAngle();
+        return getRelativeEncoderAngle();
     }
 
     public double getPredictedArmAngleRadians() {
@@ -169,6 +185,9 @@ public class Arm extends OutliersSubsystem {
     public double getNextVoltage() {
         //        return _controlLoop.getU(0) + armFeedForward();
         return _u.get(0, 0) + armFeedForward();
+    }
+    public double getRelativeEncoderAngle(){
+        return _boreQuadEncoder.getDistance() + _relativeEncoderOffset;
     }
 
     public void updateDashboard() {

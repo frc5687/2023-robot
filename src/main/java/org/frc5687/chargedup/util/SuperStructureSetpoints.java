@@ -9,6 +9,7 @@ public class SuperStructureSetpoints {
         public double wristAngle = Constants.EndEffector.WRIST_MID_ANGLE;
         public double gripperSpeed = 0.0;
         public double armAngle = Constants.Arm.VERTICAL_ARM_ANGLE;
+        public double placeSpeed = 0.0;
     }
 
     public static final Setpoint highConePlaceSetpoint = new Setpoint();
@@ -18,6 +19,7 @@ public class SuperStructureSetpoints {
         highConePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         highConePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
         highConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        highConePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CONE_ROLLER_SPEED;
     }
 
     public static final Setpoint middleConePlaceSetpoint = new Setpoint();
@@ -27,6 +29,7 @@ public class SuperStructureSetpoints {
         middleConePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         middleConePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
         middleConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        middleConePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CONE_ROLLER_SPEED;
     }
 
     public static final Setpoint highCubePlaceSetpoint = new Setpoint();
@@ -36,6 +39,7 @@ public class SuperStructureSetpoints {
         highCubePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         highCubePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED;
         highCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        highCubePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED;
     }
 
     public static final Setpoint middleCubePlaceSetpoint = new Setpoint();
@@ -45,6 +49,7 @@ public class SuperStructureSetpoints {
         middleCubePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         middleCubePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED;
         middleCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        middleCubePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED;
     }
 
     public static final Setpoint conePickupSetpoint = new Setpoint();
@@ -88,7 +93,7 @@ public class SuperStructureSetpoints {
     public static final Setpoint idleConeSetpoint = new Setpoint();
 
     static {
-        idleConeSetpoint.elevatorPosition = 0.0;
+        idleConeSetpoint.elevatorPosition = 0.02;
         idleConeSetpoint.wristAngle = Constants.EndEffector.WRIST_MID_ANGLE;
         idleConeSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
         idleConeSetpoint.armAngle = Constants.Arm.VERTICAL_ARM_ANGLE;
@@ -97,7 +102,7 @@ public class SuperStructureSetpoints {
     public static final Setpoint idleCubeSetpoint = new Setpoint();
 
     static {
-        idleCubeSetpoint.elevatorPosition = 0.0;
+        idleCubeSetpoint.elevatorPosition = 0.02;
         idleCubeSetpoint.wristAngle = Constants.EndEffector.WRIST_MID_ANGLE;
         idleCubeSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED;
         idleCubeSetpoint.armAngle = Constants.Arm.VERTICAL_ARM_ANGLE;
