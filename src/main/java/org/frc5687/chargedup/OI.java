@@ -60,6 +60,8 @@ public class OI extends OutliersProxy {
         _operatorGamepad
                 .getBackButton()
                 .onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _customController.getChangeModeButton().toggleOnFalse(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _customController.getChangeModeButton().toggleOnTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorGamepad
                 .getStartButton()
                 .onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
@@ -89,8 +91,7 @@ public class OI extends OutliersProxy {
                                         drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
             }
         }
-        _operatorGamepad
-                .getXButton()
+        _customController.getDeployButton()
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
     }
 
