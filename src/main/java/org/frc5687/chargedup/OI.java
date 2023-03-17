@@ -33,12 +33,16 @@ public class OI extends OutliersProxy {
     protected Trigger _driverRightTrigger;
     protected Trigger _buttonLeftTrigger;
     protected Trigger _buttonRightTrigger;
+    protected Trigger _povButtonRight;
+    protected Trigger _povButtonLeft;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
         _operatorGamepad = new Gamepad(1);
         _buttonpad = new Gamepad(2);
         _customController = new CustomController();
+        _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
+        _povButtonRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
         _driverLeftTrigger =
                 new Trigger(
                         new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
@@ -74,8 +78,8 @@ public class OI extends OutliersProxy {
         //                .getXButton()
         //                .onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this));
         _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-               _driverGamepad.getLeftStickButton().onTrue(new Tap(drivetrain, false));
-               _driverGamepad.getRightStickButton().onTrue(new Tap(drivetrain, true));
+               _povButtonLeft.onTrue(new Tap(drivetrain, false));
+               _povButtonRight.onTrue(new Tap(drivetrain, true));
 //        _driverGamepad.getXButton().onTrue(new DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
         _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
         _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
@@ -94,6 +98,8 @@ public class OI extends OutliersProxy {
                                         drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
             }
         }
+        _operatorGamepad.getXButton()
+                .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
         _customController.getDeployButton()
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
     }
@@ -117,7 +123,7 @@ public class OI extends OutliersProxy {
     }
 
     public boolean overrideWrist() {
-        return _operatorGamepad.getLeftBumper().getAsBoolean();
+        return _operatorGamepad.getLeftBumper().getAsBoolean() || _customController.getOverrideButton().getAsBoolean();
     }
 
     public boolean getIntakeIn() {

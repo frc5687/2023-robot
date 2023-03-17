@@ -172,7 +172,7 @@ public class DriveTrain extends OutliersSubsystem {
                         },
                         new Pose2d(0, 0, getHeading()),
                         VecBuilder.fill(0.02, 0.02, Units.degreesToRadians(0.5)),
-                        VecBuilder.fill(0.18, 0.18, Units.degreesToRadians(50)));
+                        VecBuilder.fill(0.18, 0.18, Units.degreesToRadians(70)));
         _swerveSetpointGenerator =
                 new SwerveSetpointGenerator(
                         _kinematics,
@@ -462,8 +462,9 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.heading;
     }
     public void zeroGyroscope() {
-        _yawOffset = _isRedAlliance ? _imu.getYaw().getValue() /*+ 180 */ : _imu.getYaw().getValue();
+        _yawOffset = _imu.getYaw().getValue();
         readIMU();
+        resetRobotPose(_poseEstimator.getEstimatedPosition());
     }
     public void readIMU() {
         _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
@@ -517,10 +518,10 @@ public class DriveTrain extends OutliersSubsystem {
             _modules[module].resetEncoders();
         }
         Translation2d _translation = position.getTranslation();
-        Rotation2d _rotation = getHeading();
+        Rotation2d _rotation = _isRedAlliance ? getHeading().minus(new Rotation2d(Math.PI)) : getHeading();
         Pose2d _reset = new Pose2d(_translation, _rotation);
         _odometry.resetPosition(
-                getHeading(),
+                _rotation,
                 new SwerveModulePosition[] {
                         _modules[NORTH_WEST_IDX].getModulePosition(),
                         _modules[SOUTH_WEST_IDX].getModulePosition(),
@@ -529,7 +530,7 @@ public class DriveTrain extends OutliersSubsystem {
                 },
                 _reset);
         _poseEstimator.resetPosition(
-                getHeading(),
+                _rotation,
                 new SwerveModulePosition[] {
                     _modules[NORTH_WEST_IDX].getModulePosition(),
                     _modules[SOUTH_WEST_IDX].getModulePosition(),

@@ -34,6 +34,7 @@ public class Arm extends OutliersSubsystem {
     private final Encoder _boreQuadEncoder;
     private double _relativeEncoderOffset;
 
+    private boolean _hasZeroed;
     private Matrix<N1, N1> _u;
 
     public Arm(OutliersContainer container) {
@@ -74,6 +75,7 @@ public class Arm extends OutliersSubsystem {
         // we are setting velocity to 0 in the case that the arm was moving when starting up.
         _lastArmState = new TrapezoidProfile.State(getArmAngleRadians(), 0);
         _controlLoop.reset(VecBuilder.fill(getArmAngleRadians(), getArmVelocityRadPerSec()));
+        _hasZeroed = false;
         _u = VecBuilder.fill(0);
     }
 
@@ -86,6 +88,10 @@ public class Arm extends OutliersSubsystem {
     }
 
     public void periodic() {
+        if (!_hasZeroed) {
+            _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
+            _hasZeroed = true;
+        }
         super.periodic();
         calculateNextU();
         //        _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
