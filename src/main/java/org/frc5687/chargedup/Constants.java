@@ -71,8 +71,8 @@ public class Constants {
 
         public static final KinematicLimits TRAJECTORY_FOLLOWING = new KinematicLimits();
         static {
-            TRAJECTORY_FOLLOWING.maxDriveVelocity = 3.0; // m/s
-            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 10; // m/s^2
+            TRAJECTORY_FOLLOWING.maxDriveVelocity = 4.5; // m/s
+            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 20; // m/s^2
             TRAJECTORY_FOLLOWING.maxSteeringVelocity = 20; // rad/s
         }
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
@@ -577,10 +577,10 @@ public class Constants {
 
     public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
-        public static final double GEAR_RATIO = 7.2;
-        public static final double WRIST_ANGLE_TOLERANCE = 0.02;
+        public static final double GEAR_RATIO = 10.5;
+        public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
-        public static final double WRIST_OFFSET = -0.179;
+        public static final double ANKLE_OFFSET = -0.179;
         public static final double IDLE_ANGLE = 0.87; // rotations
         public static final double INTAKE_ANGLE = 2.5; //
 

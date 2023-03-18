@@ -542,6 +542,7 @@ public class DriveTrain extends OutliersSubsystem {
                     _modules[NORTH_EAST_IDX].getModulePosition()
                 },
                 _reset);
+        error("Reset robot position: " + _reset.toString());
     }
 
     public TrackedObjectInfo getClosestCone() {

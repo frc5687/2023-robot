@@ -10,15 +10,15 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.chargedup.subsystems.DriveTrain;
-
 import java.util.function.Consumer;
+import org.frc5687.chargedup.subsystems.DriveTrain;
 
 /** Custom PathPlanner version of SwerveControllerCommand */
 public class DriveTrajectory extends OutliersCommand {
     private final Timer timer = new Timer();
     private final PathPlannerTrajectory trajectory;
     private final boolean useAllianceColor;
+    private final boolean _resetRobotPose;
     private PathPlannerTrajectory transformedTrajectory;
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
 
@@ -27,11 +27,14 @@ public class DriveTrajectory extends OutliersCommand {
     public DriveTrajectory(
             DriveTrain driveTrain,
             PathPlannerTrajectory trajectory,
-            boolean useAllianceColor) {
+            boolean useAllianceColor,
+            boolean resetRobotPose) {
 
         _driveTrain = driveTrain;
         this.trajectory = trajectory;
         this.useAllianceColor = useAllianceColor;
+        _resetRobotPose = resetRobotPose;
+
         addRequirements(driveTrain);
 
         if (useAllianceColor && trajectory.fromGUI && trajectory.getInitialPose().getX() > 8.27) {
@@ -46,11 +49,16 @@ public class DriveTrajectory extends OutliersCommand {
     @Override
     public void initialize() {
         if (useAllianceColor && trajectory.fromGUI) {
+            error(" Transforming Trajectory");
             transformedTrajectory =
                     PathPlannerTrajectory.transformTrajectoryForAlliance(
                             trajectory, DriverStation.getAlliance());
         } else {
             transformedTrajectory = trajectory;
+        }
+
+        if (_resetRobotPose) {
+            _driveTrain.resetRobotPose(transformedTrajectory.getInitialHolonomicPose());
         }
 
         if (logActiveTrajectory != null) {
@@ -74,12 +82,9 @@ public class DriveTrajectory extends OutliersCommand {
     public void end(boolean interrupted) {
         this.timer.stop();
 
-        if (interrupted || Math.abs(transformedTrajectory.getEndState().velocityMetersPerSecond) < 0.1) {
-            _driveTrain.setVelocity(new ChassisSpeeds(
-                    0,
-                    0,
-                    0
-            ));
+        if (interrupted
+                || Math.abs(transformedTrajectory.getEndState().velocityMetersPerSecond) < 0.1) {
+            _driveTrain.setVelocity(new ChassisSpeeds(0, 0, 0));
         }
     }
 
