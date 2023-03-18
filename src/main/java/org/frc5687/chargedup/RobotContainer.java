@@ -90,15 +90,15 @@ public class RobotContainer extends OutliersContainer {
         _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
+
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, identityMode);
 
-     
-        if (identityMode == IdentityMode.competition){   
-        _elevator = new Elevator(this);
-        _arm = new Arm(this);
-        _cubeShooter = new CubeShooter(this);
-        _endEffector = new EndEffector(this);
-        _lights = new Lights(this, _driveTrain, _endEffector, _oi);
+        if (identityMode == IdentityMode.competition){
+            _elevator = new Elevator(this);
+            _arm = new Arm(this);
+            _endEffector = new EndEffector(this);
+            _lights = new Lights(this, _driveTrain, _endEffector, _oi);
+            _cubeShooter = new CubeShooter(this);
         //         This is for auto temporarily, need to fix for both in future.
             _endEffector.setCubeMode();
 
@@ -107,7 +107,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
-        setDefaultCommand(_cubeShooter, new IdleWrist(_cubeShooter, _driveTrain, _endEffector));
+        setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
             error("YOUR IDENTITY MODE IS COMPETITION");
