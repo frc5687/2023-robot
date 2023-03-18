@@ -24,28 +24,30 @@ public class StealCubesAuto extends SequentialCommandGroup {
             CubeShooter _shooter,
             OI _oi,
             Trajectories trajectories) {
-        addCommands(
+        
+        String alliance = drivetrain.isRedAlliance()? "RED_":"BLUE_" ;      
+                addCommands(
                 new Shoot(_shooter, 0.6, 0.21, _oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
-                                drivetrain, trajectories.getTrajectory("BUMP_GOAL_ONE"), true, true),
+                                drivetrain, trajectories.getTrajectory(alliance + "BUMP_GOAL_ONE"), true, true),
                         new AutoIntake(_shooter)),
                 new DriveTrajectory(
-                        drivetrain, trajectories.getTrajectory("GOAL_ONE_CHARGE_TWO"), true, false),
+                        drivetrain, trajectories.getTrajectory(alliance + "GOAL_ONE_CHARGE_TWO"), true, false),
                 new Shoot(_shooter, 0.6, 0.21, _oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
-                                drivetrain, trajectories.getTrajectory("CHARGE_TWO_GOAL_TWO"), true, false),
+                                drivetrain, trajectories.getTrajectory(alliance + "CHARGE_TWO_GOAL_TWO"), true, false),
                         new AutoIntake(_shooter)),
                 new DriveTrajectory(
-                        drivetrain, trajectories.getTrajectory("GOAL_TWO_CHARGE_THREE"), true, false),
+                        drivetrain, trajectories.getTrajectory(alliance + "GOAL_TWO_CHARGE_THREE"), true, false),
                 new Shoot(_shooter, 0.6, 0.21, _oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
-                                drivetrain, trajectories.getTrajectory("CHARGE_THREE_GOAL_THREE"), true, false),
+                                drivetrain, trajectories.getTrajectory(alliance + "CHARGE_THREE_GOAL_THREE"), true, false),
                         new AutoIntake(_shooter)),
                 new DriveTrajectory(
-                        drivetrain, trajectories.getTrajectory("GOAL_THREE_CHARGE_FOUR"), true, false),
+                        drivetrain, trajectories.getTrajectory(alliance + "GOAL_THREE_CHARGE_FOUR"), true, false),
                 new Shoot(_shooter, 0.6, 0.21, _oi));
     }
 }
