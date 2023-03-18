@@ -2,8 +2,6 @@ package org.frc5687.chargedup.commands.Auto;
 
 import static org.frc5687.chargedup.Constants.DriveTrain.DRIVE_POSE_KINEMATIC_LIMITS;
 import static org.frc5687.chargedup.Constants.DriveTrain.KINEMATIC_LIMITS;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -14,7 +12,7 @@ public class HoverToPose extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
     private final CubeShooter _cubeShooter;
-    private Pose2d _destPose;
+
     private final Lights _lights;
 
     public HoverToPose(DriveTrain driveTrain, CubeShooter shooter, Lights lights) {

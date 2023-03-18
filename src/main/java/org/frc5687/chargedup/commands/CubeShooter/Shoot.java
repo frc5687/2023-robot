@@ -5,7 +5,6 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
-import com.pathplanner.lib.PathPlanner;
 
 public class Shoot extends OutliersCommand {
 

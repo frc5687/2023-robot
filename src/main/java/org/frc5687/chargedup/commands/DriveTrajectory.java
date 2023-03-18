@@ -4,17 +4,14 @@ package org.frc5687.chargedup.commands;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.server.PathPlannerServer;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /** Custom PathPlanner version of SwerveControllerCommand */
@@ -24,8 +21,6 @@ public class DriveTrajectory extends OutliersCommand {
     private final boolean useAllianceColor;
     private PathPlannerTrajectory transformedTrajectory;
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
-    private static Consumer<Pose2d> logTargetPose = null;
-    private static Consumer<ChassisSpeeds> logSetpoint = null;
 
     private final DriveTrain _driveTrain;
 
