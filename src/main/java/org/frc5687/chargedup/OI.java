@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Auto.DriveToPose;
@@ -26,7 +27,7 @@ import org.frc5687.lib.oi.Gamepad;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
-    protected Gamepad _operatorGamepad;
+    protected CommandJoystick _operatorJoystick;
     protected Gamepad _buttonpad;
 
     protected CustomController _customController;
@@ -39,7 +40,7 @@ public class OI extends OutliersProxy {
 
     public OI() {
         _driverGamepad = new Gamepad(0);
-        _operatorGamepad = new Gamepad(1);
+        _operatorJoystick = new CommandJoystick(1);
         _buttonpad = new Gamepad(2);
         _customController = new CustomController();
         _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
@@ -63,22 +64,24 @@ public class OI extends OutliersProxy {
             Elevator elevator,
             CubeShooter cubeShooter,
             Lights lights) {
-        _operatorGamepad
-                .getBackButton()
-                .onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _customController.getChangeModeButton().toggleOnFalse(Commands.runOnce(endEffector::setCubeMode, endEffector));
         _customController.getChangeModeButton().toggleOnTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
-        _operatorGamepad
-                .getStartButton()
+        _operatorJoystick
+                .button(6)
+                .onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _operatorJoystick
+                .button(7)
                 .onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+
         _customController.getIntakeButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
-        _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
-        _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
+        _operatorJoystick.button(2).onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+        _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
+        _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
 
-        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-               _povButtonLeft.onTrue(new Tap(drivetrain, false));
-               _povButtonRight.onTrue(new Tap(drivetrain, true));
+        _povButtonLeft.onTrue(new Tap(drivetrain, false));
+        _povButtonRight.onTrue(new Tap(drivetrain, true));
+
 //        _driverGamepad.getXButton().onTrue(new DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
         _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
         _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
@@ -97,7 +100,7 @@ public class OI extends OutliersProxy {
                                         drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
             }
         }
-        _operatorGamepad.getXButton()
+        _operatorJoystick.button(1)
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
         _customController.getDeployButton()
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
@@ -121,16 +124,19 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getStartButton().getAsBoolean();
     }
 
-    public boolean overrideWrist() {
-        return _operatorGamepad.getLeftBumper().getAsBoolean() || _customController.getOverrideButton().getAsBoolean();
+    public boolean stow() {
+        return _operatorJoystick.button(3).getAsBoolean();
+        // return false;
     }
 
     public boolean getIntakeIn() {
-        return _operatorGamepad.getAButton().getAsBoolean();
+        // return _operatorGamepad.getAButton().getAsBoolean();
+        return false;
     }
 
     public boolean getIntakeOut() {
-        return _operatorGamepad.getBButton().getAsBoolean();
+        // return _operatorGamepad.getBButton().getAsBoolean();
+        return false;
     }
 
     // public boolean getTapRight(){
@@ -163,17 +169,17 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-        return speed / 5; // for testing
-        //  return 0;
+        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        // return speed / 5; // for testing
+        return 0;
     }
 
     public double getExtArmY() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-        return speed;
-        //        return 0;
+        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        // return speed;
+        return 0;
     }
 
     public double getCSWrist() {
