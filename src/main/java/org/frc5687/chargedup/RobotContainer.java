@@ -103,11 +103,11 @@ public class RobotContainer extends OutliersContainer {
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
         _driveTrain.startModules();
         startPeriodic();
-        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
-                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_ONE, _driveTrain.getConfig()), "one");
-        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
-                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_TWO, _driveTrain.getConfig()), "Two");
-        _driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL);
+//        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
+//                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_ONE, _driveTrain.getConfig()), "one");
+//        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
+//                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_TWO, _driveTrain.getConfig()), "Two");
+//        _driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL);
 //        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
 //                Constants.Auto.TrajectoryPoints.Node2.RED_NODE_TWO_TRAJECTORY_ONE, _driveTrain.getConfig()));
     }
