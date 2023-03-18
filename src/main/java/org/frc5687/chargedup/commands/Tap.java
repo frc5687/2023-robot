@@ -21,7 +21,6 @@ public class Tap extends OutliersCommand {
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         super.initialize();
         if (_isToTheRight) {
             _driveTrain.incrementHeadingControllerAngle();
@@ -32,7 +31,6 @@ public class Tap extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return true;
     }
 }
