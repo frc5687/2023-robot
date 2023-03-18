@@ -340,28 +340,26 @@ public class Constants {
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
-        //        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
         public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
         public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double LOWER_EXTREME = 0.378;
         public static final double PLACE_ARM_ANGLE = 0.25; // testing
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
         static {
             CLOSED_LOOP_CONFIGURATION.SLOT = 0;
 
-            CLOSED_LOOP_CONFIGURATION.kP = 2.2;
+            CLOSED_LOOP_CONFIGURATION.kP = 1.9;
             CLOSED_LOOP_CONFIGURATION.kI = 0.0;
-            CLOSED_LOOP_CONFIGURATION.kD = 0.09;
-            CLOSED_LOOP_CONFIGURATION.kF = 0.05;
+            CLOSED_LOOP_CONFIGURATION.kD = 0.05;
+            CLOSED_LOOP_CONFIGURATION.kF = 0.01;
 
             CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
-            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 600;
-            CLOSED_LOOP_CONFIGURATION.JERK = 2000;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 300;
+            CLOSED_LOOP_CONFIGURATION.JERK = 1500;
         }
     }
 

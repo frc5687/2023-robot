@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2022 */
 package org.frc5687.chargedup.subsystems;
 
-import static org.frc5687.chargedup.Constants.DifferentialSwerveModule.MAX_MODULE_SPEED_MPS;
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
 import com.ctre.phoenixpro.BaseStatusSignalValue;
@@ -36,7 +35,6 @@ import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
-import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.swerve.SwerveSetpoint;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
@@ -171,8 +169,8 @@ public class DriveTrain extends OutliersSubsystem {
                             _modules[NORTH_EAST_IDX].getModulePosition()
                         },
                         new Pose2d(0, 0, getHeading()),
-                        VecBuilder.fill(0.02, 0.02, Units.degreesToRadians(0.5)),
-                        VecBuilder.fill(0.18, 0.18, Units.degreesToRadians(70)));
+                        VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(1)),
+                        VecBuilder.fill(0.2, 0.2, Units.degreesToRadians(50)));
         _swerveSetpointGenerator =
                 new SwerveSetpointGenerator(
                         _kinematics,
@@ -276,7 +274,7 @@ public class DriveTrain extends OutliersSubsystem {
                 CompletableFuture<Optional<EstimatedRobotPose>> northWestPoseFuture =
                         _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
                 CompletableFuture<Optional<EstimatedRobotPose>> northEastPoseFuture =
-                        _photonProcessor.getNorthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
+                        _photonProcessor.getSouthEastTopCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
                 CompletableFuture<Optional<EstimatedRobotPose>> southWestPoseFuture =
                         _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
                 CompletableFuture<Optional<EstimatedRobotPose>> southEastPoseFuture =
