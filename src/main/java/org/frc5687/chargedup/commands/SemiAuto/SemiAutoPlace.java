@@ -2,14 +2,12 @@ package org.frc5687.chargedup.commands.SemiAuto;
 
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.idleConeSetpoint;
 
-import edu.wpi.first.math.Pair;
+
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
-import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.HoldWristAngle;
 import org.frc5687.chargedup.commands.EndEffector.WaitForPlace;
@@ -21,8 +19,6 @@ public class SemiAutoPlace extends OutliersCommand {
     private final Arm _arm;
     private final EndEffector _endEffector;
     private final Elevator _elevator;
-    private final CubeShooter _cubeShooter;
-    private final DriveTrain _driveTrain;
     private final OI _oi;
 
     public SemiAutoPlace(
@@ -35,8 +31,6 @@ public class SemiAutoPlace extends OutliersCommand {
         _arm = arm;
         _endEffector = endEffector;
         _elevator = elevator;
-        _cubeShooter = shooter;
-        _driveTrain = driveTrain;
         _oi = oi;
     }
 

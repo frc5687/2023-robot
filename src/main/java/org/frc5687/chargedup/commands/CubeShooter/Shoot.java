@@ -5,6 +5,7 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
+
 public class Shoot extends OutliersCommand {
 
     private long _timeout;

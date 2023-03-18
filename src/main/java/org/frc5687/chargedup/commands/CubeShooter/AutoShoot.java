@@ -15,7 +15,7 @@ public class AutoShoot extends OutliersCommand {
     private final CubeShooter _cubeShooter;
     private final DriveTrain _driveTrain;
     private final EndEffector _endEffector;
-    private final OI _oi;
+
     private double _speed;
     private double _angle;
     private boolean _finished;
@@ -26,7 +26,6 @@ public class AutoShoot extends OutliersCommand {
         _endEffector = endEffector;
         _state = ShootingState.INITIALIZE;
         _finished = false;
-        _oi = oi;
         addRequirements(_cubeShooter);
     }
 

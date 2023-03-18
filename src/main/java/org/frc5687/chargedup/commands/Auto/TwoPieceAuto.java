@@ -1,14 +1,8 @@
 package org.frc5687.chargedup.commands.Auto;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
@@ -38,7 +32,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             OI _oi,
             AutoChooser.Node _node,
             Trajectories trajectories) {
-        var config = driveTrain.getConfig();
+        //var config = driveTrain.getConfig();
         _trajectory1 = trajectories.getTrajectory("NODE_ONE_GOAL_ONE");
         _trajectory2 = trajectories.getTrajectory("NODE_ONE_GOAL_ONE");
 
