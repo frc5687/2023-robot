@@ -11,7 +11,7 @@ import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 
 public class AutoPlaceHighCube extends SequentialCommandGroup {
-    public AutoPlaceHighCube(Arm arm, EndEffector endEffector, Elevator elevator) {
+    public AutoPlaceHighCube(Elevator elevator, EndEffector endEffector, Arm arm) {
         Setpoint setpoint = highCubePlaceSetpoint;
         addCommands(
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),

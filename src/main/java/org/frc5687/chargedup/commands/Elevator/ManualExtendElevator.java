@@ -16,19 +16,17 @@ public class ManualExtendElevator extends OutliersCommand {
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
         super.initialize();
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
         super.execute();
         double speed = _oi.getExtArmY();
         if (_elevator.getInHall() && speed < 0) {
             _elevator.setArmSpeed(0);
-        } else if (_elevator.getOutHall() && speed > 0) {
-            _elevator.setArmSpeed(0);
+            // } else if (_elevator.getOutHall() && speed > 0) {
+            //     _elevator.setArmSpeed(0);
         } else {
             _elevator.setArmSpeed(speed);
         }

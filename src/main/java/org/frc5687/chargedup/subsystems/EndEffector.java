@@ -3,6 +3,8 @@ package org.frc5687.chargedup.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
+import org.frc5687.chargedup.util.Helpers;
+import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersContainer;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -10,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import org.frc5687.chargedup.util.SuperStructureSetpoints;
 import org.frc5687.lib.drivers.LazyTalonSRX;
 
 import static org.frc5687.chargedup.Constants.EndEffector.*;
@@ -24,11 +27,14 @@ public class EndEffector extends OutliersSubsystem {
 
     private final PIDController _wristController;
     private final PIDController _gripperController;
-
+    private SuperStructureSetpoints.Setpoint _setpoint;
     private boolean _isConeMode = true;
+    private Nodes.Level _currentLevel;
 
     public EndEffector(OutliersContainer container) {
         super(container);
+
+        _setpoint = SuperStructureSetpoints.idleConeSetpoint;
 
         _wrist = new LazyTalonSRX(RobotMap.CAN.TalonSRX.WRIST);
         _gripper = new LazyTalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
@@ -88,7 +94,7 @@ public class EndEffector extends OutliersSubsystem {
     }
 
     public double getWristAngleRadians(){
-         return _wristEncoder.getDistance() % (2.0 * Math.PI);
+         return Helpers.angleWrap(_wristEncoder.getDistance(), true);
     }
     /*public double getGripperAngleRadians(){
         return _gripperEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.GRIPPER_OFFSET;
@@ -126,5 +132,19 @@ public class EndEffector extends OutliersSubsystem {
 
     public void setCubeMode(){
         _isConeMode = false;
+    }
+    public void setGoalLevel(Nodes.Level level) {
+        _currentLevel = level;
+    }
+    public Nodes.Level getLevelGoal() {
+        return _currentLevel;
+    }
+
+    public void setSuperStructureSetpoint(SuperStructureSetpoints.Setpoint setpoint) {
+        error("Set position");
+        _setpoint = setpoint;
+    }
+    public SuperStructureSetpoints.Setpoint getSuperStructureSetpoint() {
+        return _setpoint;
     }
 }

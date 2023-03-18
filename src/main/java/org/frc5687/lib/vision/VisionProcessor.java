@@ -111,9 +111,9 @@ public class VisionProcessor {
             list.add(
                     new TrackedObjectInfo(
                             TrackedObjectInfo.GameElement.valueOf(id),
-                            buffer.getFloat() - Constants.Vision.Z_CAM_X_OFFSET,
+                            buffer.getFloat() + Constants.Vision.Z_CAM_X_OFFSET,
                             buffer.getFloat() - Constants.Vision.Z_CAM_Y_OFFSET,
-                            buffer.getFloat() - Constants.Vision.Z_CAM_Z_OFFSET,
+                            buffer.getFloat() + Constants.Vision.Z_CAM_Z_OFFSET,
                             buffer.getFloat(),
                             buffer.getFloat(),
                             buffer.getFloat()));
