@@ -25,8 +25,6 @@ import org.frc5687.lib.drivers.OutliersTalon;
 
 public class Arm extends OutliersSubsystem {
     private final OutliersTalon _talon;
-    // private final HallEffect _upperHall;
-    //    private final HallEffect _lowerHall;
     private final DutyCycleEncoder _absAngleEncoder;
     private final LinearSystemLoop<N2, N1, N1> _controlLoop;
     private final TrapezoidProfile.Constraints _contraints;
@@ -41,6 +39,8 @@ public class Arm extends OutliersSubsystem {
         super(container);
         _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
         _talon.configure(Constants.Arm.CONFIG);
+        _talon.configureClosedLoop(CLOSED_LOOP_CONFIGURATION);
+
         _boreQuadEncoder = new Encoder(RobotMap.DIO.ARM_ENCODER_A, RobotMap.DIO.ARM_ENCODER_B, true);
         _boreQuadEncoder.setDistancePerPulse((Math.PI)/2048);
         // _upperHall = new HallEffect(RobotMap.DIO.TOP_HALL_ARM);
@@ -49,9 +49,7 @@ public class Arm extends OutliersSubsystem {
         _absAngleEncoder = new DutyCycleEncoder(RobotMap.DIO.ARM_ENCODER);
         _absAngleEncoder.setDistancePerRotation(Math.PI); // 2:1 from output to encoder
         _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
-        
-
-        
+        setEncoderRadians(getAbsoluteArmEncoderAngle());
 
         LinearSystem<N2, N1, N1> plant =
                 LinearSystemId.createSingleJointedArmSystem(
@@ -90,10 +88,17 @@ public class Arm extends OutliersSubsystem {
     public void periodic() {
         if (!_hasZeroed) {
             _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
+            setEncoderRadians(getAbsoluteArmEncoderAngle());
             _hasZeroed = true;
         }
-        super.periodic();
-        calculateNextU();
+
+        if (Math.abs(getRelativeEncoderAngle() - getArmAngleRadians()) > Units.degreesToRadians(2.5)) {
+            error(" Arm encoder difference is larger than 2.5 degrees, skip has occurred! Setting Falcon encoder to Bore Encoder angle.");
+            setEncoderRadians(getRelativeEncoderAngle());
+        }
+
+//        super.periodic();
+//        calculateNextU();
         //        _controlLoop.correct(VecBuilder.fill(getArmAngleRadians()));
         //        _controlLoop.predict(kDt);
     }
@@ -107,13 +112,12 @@ public class Arm extends OutliersSubsystem {
         _talon.setVoltage(voltage);
     }
 
-    public boolean getUpperHall() {
-        return false;
-    }
-
-    public boolean getLowerHall() {
-        //        return _lowerHall.get();
-        return false;
+    /**
+     * Set the motion magic angle to be the wanted angle in radians
+     * @param angle in radians
+     */
+    public void setArmAngle(double angle) {
+        _talon.setMotionMagic(OutliersTalon.radiansToRotations(angle, GEAR_RATIO));
     }
 
     public double getEncoderRotation() {
@@ -137,10 +141,13 @@ public class Arm extends OutliersSubsystem {
     }
 
     public double getArmAngleRadians() {
-        //        return OutliersTalon.rotationsToRadians(getEncoderRotation(),
-        // Constants.Arm.GEAR_RATIO);
         //return getAbsoluteArmEncoderAngle();
-        return getRelativeEncoderAngle();
+//        return getRelativeEncoderAngle();
+        return getArmAngleFalconRadians();
+    }
+
+    public double getArmAngleFalconRadians() {
+        return OutliersTalon.rotationsToRadians(getEncoderRotation(), GEAR_RATIO);
     }
 
     public double getPredictedArmAngleRadians() {
@@ -194,8 +201,6 @@ public class Arm extends OutliersSubsystem {
         metric("Angle", getArmAngleRadians());
         metric("Next Voltage", getNextVoltage());
         metric("Estimated Angle", getPredictedArmAngleRadians());
-        metric("Reference", _controlLoop.getNextR().get(0, 0));
-        metric("Upper Hall triggered", getUpperHall());
-        metric("Lower Hall triggered", getLowerHall());
+//        metric("Reference", _controlLoop.getNextR().get(0, 0));
     }
 }
