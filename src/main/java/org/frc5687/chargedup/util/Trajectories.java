@@ -30,6 +30,7 @@ public class Trajectories {
             "GOAL_FOUR_NODE_EIGHT",
             "GOAL_FOUR_NODE_NINE",
 
+            "BUMP_GOAL_ONE",
             "GOAL_ONE_CHARGE_TWO", //specifically for steal cubes auto
             "CHARGE_TWO_GOAL_TWO",
             "GOAL_TWO_CHARGE_THREE",
