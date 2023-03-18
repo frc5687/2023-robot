@@ -21,7 +21,7 @@ public class SemiAutoPickupCube extends SequentialCommandGroup {
         Setpoint setpoint = cubePickupSetpoint;
         addCommands(
                 // new DriveUntilInHall(elevator),
-                new AutoExtendElevator(elevator, Constants.ExtendingArm.SHORT_ARM_DISTANCE),
+                new AutoExtendElevator(elevator, Constants.Elevator.SHORT_ARM_DISTANCE),
                 new AutoSetWristAngle(endEffector, Constants.EndEffector.WRIST_SAFE_ANGLE),
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
                 new ParallelDeadlineGroup(

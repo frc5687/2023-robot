@@ -17,7 +17,6 @@ public class ManualDriveArm extends OutliersCommand {
 
     @Override
     public void initialize() {
-        // _arm.setNextReference(_arm.getLastState().position, 0);
     }
 
     @Override

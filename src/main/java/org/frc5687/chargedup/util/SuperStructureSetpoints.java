@@ -58,7 +58,7 @@ public class SuperStructureSetpoints {
         conePickupSetpoint.elevatorPosition = 0.297;
         conePickupSetpoint.wristAngle = Constants.EndEffector.WRIST_PICKUP_ANGLE;
         conePickupSetpoint.gripperSpeed = Constants.EndEffector.GRIPPER_IN_SPEED;
-        conePickupSetpoint.armAngle = 1.86;
+        conePickupSetpoint.armAngle = 1.84; //was 1.86
     }
 
     public static final Setpoint cubePickupSetpoint = new Setpoint();

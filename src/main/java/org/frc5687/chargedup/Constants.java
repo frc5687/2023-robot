@@ -149,7 +149,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 4.0;
+        public static final double MAINTAIN_kP = 4.5;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
@@ -169,7 +169,7 @@ public class Constants {
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
         public static final double HEADING_TOLERANCE = 0.15; // rad
-        public static final double BUMP_DEGREES = 10;
+        public static final double BUMP_DEGREES = 5;
 
         public static final double PITCH_LOOKING_ANGLE =
                 Units.degreesToRadians(15.0); // this is degrees because sad.
@@ -245,7 +245,7 @@ public class Constants {
         public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 2;
     }
 
-    public static class ExtendingArm {
+    public static class Elevator {
         public static final String CAN_BUS = "CANivore";
         public static final double GEAR_RATIO = 25;
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
@@ -290,7 +290,7 @@ public class Constants {
             CONTROLLER_CONFIG.kP = 1.3;
             CONTROLLER_CONFIG.kI = 0;
             CONTROLLER_CONFIG.kD = 0.0;
-            CONTROLLER_CONFIG.kF = 0;
+            CONTROLLER_CONFIG.kF = 0.0;
 
             CONTROLLER_CONFIG.CRUISE_VELOCITY = 100;
             CONTROLLER_CONFIG.ACCELERATION = 600;
@@ -340,15 +340,27 @@ public class Constants {
 
         public static final double CONTROL_EFFORT = 12.0;
         // profile constraints
-        //        public static final double MAX_VELOCITY = Units.degreesToRadians(100);
         public static final double MAX_VELOCITY = MOTOR_MAX_VEL / GEAR_RATIO;
         public static final double MAX_ACCELERATION = Units.degreesToRadians(100);
 
         // Positive is North, Negative is South (North is towards Battery)
-        public static final double ANGLE_TOLERANCE = 0.05; // rads
+        public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double LOWER_EXTREME = 0.378;
         public static final double PLACE_ARM_ANGLE = 0.25; // testing
+
+        public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
+        static {
+            CLOSED_LOOP_CONFIGURATION.SLOT = 0;
+
+            CLOSED_LOOP_CONFIGURATION.kP = 1.9;
+            CLOSED_LOOP_CONFIGURATION.kI = 0.0;
+            CLOSED_LOOP_CONFIGURATION.kD = 0.05;
+            CLOSED_LOOP_CONFIGURATION.kF = 0.01;
+
+            CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 300;
+            CLOSED_LOOP_CONFIGURATION.JERK = 1500;
+        }
     }
 
     public static class Auto {
@@ -558,7 +570,7 @@ public class Constants {
         public static final boolean GRIPPPER_INVERTED = false;
         public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
-        public static final double PLACE_CUBE_ROLLER_SPEED = -1.0;
+        public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
         public static final long GRIPPER_TIMEOUT = 500;
     }
