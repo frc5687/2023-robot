@@ -42,7 +42,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class RobotContainer extends OutliersContainer {
 
-    public static IdentityMode identityMode = IdentityMode.practice;
+    // public static IdentityMode identityMode = IdentityMode.practice;
 
     private RioLogger _dsLogLevel;
     private RioLogger _fileLogLevel;
@@ -62,9 +62,11 @@ public class RobotContainer extends OutliersContainer {
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
     private Trajectories _trajectories;
+    private IdentityMode _identityMode;
 
     public RobotContainer(Robot robot, IdentityMode identityMode) {
         super(identityMode);
+        _identityMode = identityMode;
         _robot = robot;
     }
 
@@ -92,9 +94,9 @@ public class RobotContainer extends OutliersContainer {
         var pigeonConfig = new Pigeon2Configuration();
         _imu.getConfigurator().apply(pigeonConfig);
 
-        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, identityMode);
+        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, _identityMode);
 
-        if (identityMode == IdentityMode.competition){
+        if (_identityMode == IdentityMode.competition){
             _elevator = new Elevator(this);
             _arm = new Arm(this);
             _endEffector = new EndEffector(this);
@@ -112,7 +114,7 @@ public class RobotContainer extends OutliersContainer {
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
             error("YOUR IDENTITY MODE IS COMPETITION");
-        } else if (identityMode == IdentityMode.practice){ 
+        } else if (_identityMode == IdentityMode.practice){ 
             setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
             _oi.initializeButtons(_driveTrain);
             error("YOUR IDENTITY MODE IS PRACTICE");
