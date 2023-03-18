@@ -19,6 +19,7 @@ import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
 import org.frc5687.chargedup.commands.CubeShooter.IdleWrist;
+import org.frc5687.chargedup.commands.CubeShooter.ManualRotateWrist;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
 import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
