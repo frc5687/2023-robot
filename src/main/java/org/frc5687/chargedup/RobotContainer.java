@@ -68,7 +68,7 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
         _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
-        _trajectories = new Trajectories(new PathConstraints(3.0, 2.0));
+        _trajectories = new Trajectories(new PathConstraints(3.5, 3.0));
 
         try {
             _photonProcessor =

@@ -162,9 +162,13 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
 
-        public static final double kP = 4.0;
+        public static final double kP = 2.2;
         public static final double kI = 0.0;
-        public static final double kD = 0.5;
+        public static final double kD = 0.01;
+
+        public static final double ANGLE_TRAJECTORY_kP = 3.0;
+        public static final double ANGLE_TRAJECTORY_kI = 0.0;
+        public static final double ANGLE_TRAJECTORY_kD = 0.01;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -211,7 +215,7 @@ public class Constants {
 
         public static final double FRICTION_STEER = 0.00;
         public static final double FRICTION_WHEEL = 0.00;
-        public static final double WHEEL_RADIUS = 0.04697; // Meters with compression.
+        public static final double WHEEL_RADIUS = 0.0457; // Meters with compression.
         public static final double TICKS_TO_ROTATIONS = 2048.0;
         public static final double VOLTAGE = 12.0;
 

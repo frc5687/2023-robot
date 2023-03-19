@@ -1,5 +1,7 @@
 package org.frc5687.chargedup.commands.Auto;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.OI;
@@ -27,6 +29,7 @@ public class StealCubesAuto extends SequentialCommandGroup {
         
         String alliance = drivetrain.isRedAlliance()? "RED_":"BLUE_" ;      
                 addCommands(
+                        new ResetRobotPose(drivetrain, new Pose2d(12.13, 0.47, new Rotation2d(0))),
                 new Shoot(_shooter, 0.6, 0.21, _oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(

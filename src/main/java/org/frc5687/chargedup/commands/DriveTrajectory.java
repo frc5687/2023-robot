@@ -19,7 +19,6 @@ public class DriveTrajectory extends OutliersCommand {
     private final PathPlannerTrajectory trajectory;
     private final boolean useAllianceColor;
     private final boolean _resetRobotPose;
-    private PathPlannerTrajectory transformedTrajectory;
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
 
     private final DriveTrain _driveTrain;
@@ -48,33 +47,32 @@ public class DriveTrajectory extends OutliersCommand {
 
     @Override
     public void initialize() {
-        if (useAllianceColor && trajectory.fromGUI) {
-            error(" Transforming Trajectory");
-            transformedTrajectory =
-                    PathPlannerTrajectory.transformTrajectoryForAlliance(
-                            trajectory, DriverStation.getAlliance());
-        } else {
-            transformedTrajectory = trajectory;
-        }
-
+//        if (useAllianceColor && trajectory.fromGUI) {
+//            error(" Transforming Trajectory");
+//            transformedTrajectory =
+//                    PathPlannerTrajectory.transformTrajectoryForAlliance(
+//                            trajectory, DriverStation.getAlliance());
+//        } else {
+//            transformedTrajectory = trajectory;
+//        }
         if (_resetRobotPose) {
-            _driveTrain.resetRobotPose(transformedTrajectory.getInitialHolonomicPose());
+            _driveTrain.resetRobotPose(trajectory.getInitialHolonomicPose());
         }
 
         if (logActiveTrajectory != null) {
-            logActiveTrajectory.accept(transformedTrajectory);
+            logActiveTrajectory.accept(trajectory);
         }
 
         timer.reset();
         timer.start();
 
-        PathPlannerServer.sendActivePath(transformedTrajectory.getStates());
+        PathPlannerServer.sendActivePath(trajectory.getStates());
     }
 
     @Override
     public void execute() {
         double currentTime = this.timer.get();
-        PathPlannerState desiredState = (PathPlannerState) transformedTrajectory.sample(currentTime);
+        PathPlannerState desiredState = (PathPlannerState) trajectory.sample(currentTime);
         _driveTrain.followTrajectory(desiredState);
     }
 
@@ -83,14 +81,14 @@ public class DriveTrajectory extends OutliersCommand {
         this.timer.stop();
 
         if (interrupted
-                || Math.abs(transformedTrajectory.getEndState().velocityMetersPerSecond) < 0.1) {
+                || Math.abs(trajectory.getEndState().velocityMetersPerSecond) < 0.1) {
             _driveTrain.setVelocity(new ChassisSpeeds(0, 0, 0));
         }
     }
 
     @Override
     public boolean isFinished() {
-        return this.timer.hasElapsed(transformedTrajectory.getTotalTimeSeconds());
+        return this.timer.hasElapsed(trajectory.getTotalTimeSeconds());
     }
 
     private static void defaultLogError(Translation2d translationError, Rotation2d rotationError) {
