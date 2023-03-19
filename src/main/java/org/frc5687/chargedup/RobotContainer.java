@@ -25,12 +25,9 @@ import org.frc5687.chargedup.commands.Elevator.ManualExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.IdleGripper;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.*;
-import org.frc5687.chargedup.util.AutoChooser;
+import org.frc5687.chargedup.util.*;
 import org.frc5687.chargedup.util.AutoChooser.AutoType;
 import org.frc5687.chargedup.util.AutoChooser.Node;
-import org.frc5687.chargedup.util.OutliersContainer;
-import org.frc5687.chargedup.util.PhotonProcessor;
-import org.frc5687.chargedup.util.Trajectories;
 import org.frc5687.lib.vision.VisionProcessor;
 
 public class RobotContainer extends OutliersContainer {
@@ -72,7 +69,8 @@ public class RobotContainer extends OutliersContainer {
 
         try {
             _photonProcessor =
-                    new PhotonProcessor(AprilTagFieldLayout.loadFromResource("2023-chargedup.json"));
+//                    new PhotonProcessor(AprilTagFieldLayout.loadFromResource("2023-chargedup.json"));
+            new PhotonProcessor(FieldConstants.aprilTags);
         } catch (Exception e) {
             e.getMessage();
         }

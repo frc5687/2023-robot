@@ -13,10 +13,7 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -45,6 +42,7 @@ import org.photonvision.EstimatedRobotPose;
 
 public class DriveTrain extends OutliersSubsystem {
     // Order we define swerve modules in kinematics
+    public static final Transform2d offset = new Transform2d(new Translation2d(-0.0, 0), new Rotation2d());
     private static final int NORTH_WEST_IDX = 0;
     private static final int SOUTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
@@ -247,6 +245,8 @@ public class DriveTrain extends OutliersSubsystem {
 
         Rotation2d heading = new Rotation2d(0.0);
         double pitch = 0.0;
+
+        Pose2d estimatedPose = new Pose2d();
         // outputs
         SwerveSetpoint setpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[4]);
     }
@@ -305,8 +305,9 @@ public class DriveTrain extends OutliersSubsystem {
                 EstimatedRobotPose camSE = southEastPose.get();
                 _poseEstimator.addVisionMeasurement(camSE.estimatedPose.toPose2d(), camSE.timestampSeconds);
             }
-            _field.setRobotPose(_poseEstimator.getEstimatedPosition());
         }
+        _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
+        _field.setRobotPose(_systemIO.estimatedPose);
     }
 
     // Heading controller functions
@@ -435,25 +436,16 @@ public class DriveTrain extends OutliersSubsystem {
     public void setVelocityPose(Pose2d pose, boolean isShooter) {
         ChassisSpeeds speeds =
                 _poseController.calculate(
-                        _poseEstimator.getEstimatedPosition(), pose, 0.0, _systemIO.heading);
+                        _systemIO.estimatedPose, pose, 0.0, _systemIO.heading);
         _headingController.setMaintainHeading(isShooter ? new Rotation2d(Math.PI) : new Rotation2d());
         speeds.omegaRadiansPerSecond = _headingController.getRotationCorrection(getHeading());
         _systemIO.desiredChassisSpeeds = speeds;
     }
 
 
-    public void followTrajectory(Trajectory.State goal, Rotation2d heading) {
-        ChassisSpeeds speeds =
-                _poseController.calculate(
-                        getOdometryPose(), goal, _systemIO.heading);
-        _headingController.setMaintainHeading(heading);
-        speeds.omegaRadiansPerSecond = _headingController.getRotationCorrection(getHeading());
-        _systemIO.desiredChassisSpeeds = speeds;
-    }
-
     public void followTrajectory(PathPlannerTrajectory.PathPlannerState desiredState) {
         ChassisSpeeds speeds = _trajectoryController.calculate(getEstimatedPose(), desiredState);
-        speeds.omegaRadiansPerSecond = 0.0;
+//        speeds.omegaRadiansPerSecond = 0.0;
         _systemIO.desiredChassisSpeeds = speeds;
     }
 
@@ -472,7 +464,7 @@ public class DriveTrain extends OutliersSubsystem {
     public void zeroGyroscope() {
         _yawOffset = _imu.getYaw().getValue();
         readIMU();
-        resetRobotPose(_poseEstimator.getEstimatedPosition());
+        resetRobotPose(_systemIO.estimatedPose);
     }
 
     public void setGyroscopeAngle(Rotation2d rotation) {
@@ -515,7 +507,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public Pose2d getEstimatedPose() {
-        return _poseEstimator.getEstimatedPosition();
+        return _systemIO.estimatedPose;
     }
 
     /**
@@ -600,8 +592,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public double getDistanceToGoal() {
-        return _poseEstimator
-                .getEstimatedPosition()
+        return _systemIO.estimatedPose
                 .getTranslation()
                 .getDistance(_hoverGoal.getTranslation());
     }
@@ -618,12 +609,11 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Heading State", _headingController.getHeadingState().name());
         metric("Rotation State", getYaw());
         metric("Pitch Angle", getPitch());
-        metric("Estimated X", _poseEstimator.getEstimatedPosition().getX());
-        metric("Estimated Y", _poseEstimator.getEstimatedPosition().getY());
+        metric("Estimated X", _systemIO.estimatedPose.getX());
+        metric("Estimated Y", _systemIO.estimatedPose.getY());
         metric(
                 "Distance to goal node",
-                _poseEstimator
-                        .getEstimatedPosition()
+                _systemIO.estimatedPose
                         .getTranslation()
                         .getDistance(_hoverGoal.getTranslation()));
         SmartDashboard.putData(_field);
