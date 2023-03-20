@@ -45,7 +45,7 @@ public class ThreePieceLevel extends SequentialCommandGroup {
                         new AutoIntake(shooter)),
                 new DriveTrajectory(
                         drivetrain, trajectories.getTrajectory(alliance + "GOAL_TWO_CHARGE_THREE"), true, false),
-                new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),
+                
                 new QuickLevel(drivetrain)
             );
     }  
