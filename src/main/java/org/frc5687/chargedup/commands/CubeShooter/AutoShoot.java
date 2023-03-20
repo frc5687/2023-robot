@@ -39,7 +39,9 @@ public class AutoShoot extends OutliersCommand {
 
     @Override
     public void execute() {
-        Pair<Double, Double> params = _cubeShooter.getShootingParameters(_driveTrain.getDistanceToGoal(),_endEffector.getLevelGoal());
+        Pair<Double, Double> params =
+                _cubeShooter.getShootingParameters(
+                        _driveTrain.getDistanceToGoal(), _endEffector.getLevelGoal());
         _speed = params.getFirst();
         _angle = params.getSecond();
         switch (_state) {
@@ -47,7 +49,7 @@ public class AutoShoot extends OutliersCommand {
                 metric("wrist angle", _cubeShooter.getWristAngleRadians());
                 metric("Wanted Angle", _angle);
                 if (Math.abs(_cubeShooter.getWristAngleRadians() - _angle)
-                        < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE) {
+                        < Constants.CubeShooter.ANKLE_ANGLE_TOLERANCE) {
                     _timeout = System.currentTimeMillis() + 750;
                     _state = ShootingState.WRIST_AT_ANGLE;
                 }

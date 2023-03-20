@@ -71,8 +71,8 @@ public class Constants {
 
         public static final KinematicLimits TRAJECTORY_FOLLOWING = new KinematicLimits();
         static {
-            TRAJECTORY_FOLLOWING.maxDriveVelocity = 3.0; // m/s
-            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 10; // m/s^2
+            TRAJECTORY_FOLLOWING.maxDriveVelocity = 4.5; // m/s
+            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 20; // m/s^2
             TRAJECTORY_FOLLOWING.maxSteeringVelocity = 20; // rad/s
         }
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
@@ -149,7 +149,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 4.5;
+        public static final double MAINTAIN_kP = 4.8;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
@@ -162,14 +162,18 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
 
-        public static final double kP = 4.0;
+        public static final double kP = 3.5;
         public static final double kI = 0.0;
-        public static final double kD = 0.5;
+        public static final double kD = 0.01;
+
+        public static final double ANGLE_TRAJECTORY_kP = 0.7;
+        public static final double ANGLE_TRAJECTORY_kI = 0.0;
+        public static final double ANGLE_TRAJECTORY_kD = 0.1;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
         public static final double HEADING_TOLERANCE = 0.15; // rad
-        public static final double BUMP_DEGREES = 5;
+        public static final double BUMP_DEGREES = 7;
 
         public static final double PITCH_LOOKING_ANGLE =
                 Units.degreesToRadians(15.0); // this is degrees because sad.
@@ -211,7 +215,7 @@ public class Constants {
 
         public static final double FRICTION_STEER = 0.00;
         public static final double FRICTION_WHEEL = 0.00;
-        public static final double WHEEL_RADIUS = 0.04697; // Meters with compression.
+        public static final double WHEEL_RADIUS = 0.0457; // Meters with compression.
         public static final double TICKS_TO_ROTATIONS = 2048.0;
         public static final double VOLTAGE = 12.0;
 
@@ -577,10 +581,10 @@ public class Constants {
 
     public static class CubeShooter {
         public static final String CAN_BUS = "CANivore";
-        public static final double GEAR_RATIO = 7.2;
-        public static final double WRIST_ANGLE_TOLERANCE = 0.02;
+        public static final double GEAR_RATIO = 10.5;
+        public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
-        public static final double WRIST_OFFSET = -0.179;
+        public static final double ANKLE_OFFSET = -0.179;
         public static final double IDLE_ANGLE = 0.87; // rotations
         public static final double INTAKE_ANGLE = 2.5; //
 

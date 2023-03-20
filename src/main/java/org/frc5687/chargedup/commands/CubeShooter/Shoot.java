@@ -5,7 +5,6 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
-
 public class Shoot extends OutliersCommand {
 
     private long _timeout;
@@ -42,8 +41,9 @@ public class Shoot extends OutliersCommand {
                 metric("wrist angle", _cubeShooter.getWristAngleRadians());
                 metric("Wanted Angle", _angle);
                 if (Math.abs(_cubeShooter.getWristAngleRadians() - _angle)
-                                < Constants.CubeShooter.WRIST_ANGLE_TOLERANCE
-                        && _oi.releaseRoller()) {
+                        < Constants.CubeShooter.ANKLE_ANGLE_TOLERANCE
+                // && _oi.releaseRoller()
+                ) {
                     _timeout = System.currentTimeMillis() + 750;
                     _state = ShootingState.WRIST_AT_ANGLE;
                 }

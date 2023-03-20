@@ -22,10 +22,10 @@ public class CustomController {
                 _buttons[row][col] = new CustomButton(row, col, _table);
             }
         }
-        _override = new CustomButton("override", _table);
+        _override = new CustomButton("controlButton", _table);
         _changeMode = new CustomButton("changeMode", _table);
-        _deploy = new CustomButton("deploy", _table);
-        _intake = new CustomButton("intake", _table);
+        _deploy = new CustomButton("controlButton_3", _table);
+        _intake = new CustomButton("controlButton_1", _table);
     }
 
     public void pollButtons() {
