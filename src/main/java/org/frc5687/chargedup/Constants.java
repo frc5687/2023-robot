@@ -166,9 +166,17 @@ public class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.01;
 
-        public static final double ANGLE_TRAJECTORY_kP = 0.7;
+        public static final double ANGLE_TRAJECTORY_kP = 0.5;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.1;
+        public static final double ANGLE_TRAJECTORY_kD = 0.15;
+
+        public static final double X_VELOCITY_TRAJECTORY_kP = 3.0;
+        public static final double X_VELOCITY_TRAJECTORY_kI = 0.0;
+        public static final double X_VELOCITY_TRAJECTORY_kD = 0.01;
+
+        public static final double Y_VELOCITY_TRAJECTORY_kP = 3.0;
+        public static final double Y_VELOCITY_TRAJECTORY_kI = 0.0;
+        public static final double Y_VELOCITY_TRAJECTORY_kD = 0.01;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
