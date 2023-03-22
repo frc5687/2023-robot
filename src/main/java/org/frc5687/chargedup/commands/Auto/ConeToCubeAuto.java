@@ -37,17 +37,17 @@ public class ConeToCubeAuto extends SequentialCommandGroup{
                     new AutoPlaceHighCone(elevator, endEffector, arm),
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(
-                            drivetrain, trajectories.getTrajectory(alliance + "RED_NODE_NINE_GOAL_FOUR"), true, false),
+                            drivetrain, trajectories.getTrajectory(alliance + "NODE_NINE_GOAL_FOUR"), true, false),
                         new AutoIntake(_shooter)),
                     new DriveTrajectory(
-                        drivetrain, trajectories.getTrajectory(alliance + "RED_GOAL_FOUR_CHARGE_THREE"), true, false),
+                        drivetrain, trajectories.getTrajectory(alliance + "GOAL_FOUR_CHARGE_THREE"), true, false),
                     new Shoot(_shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, _oi),
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(
-                            drivetrain, trajectories.getTrajectory(alliance + "RED_CHARGE_FOUR_GOAL_THREE"), true, true),
+                            drivetrain, trajectories.getTrajectory(alliance + "CHARGE_FOUR_GOAL_THREE"), true, true),
                             new AutoIntake(_shooter)),
                     new DriveTrajectory(
-                        drivetrain, trajectories.getTrajectory(alliance + "RED_GOAL_THREE_CHARGE_FOUR"),true, true),
+                        drivetrain, trajectories.getTrajectory(alliance + "GOAL_THREE_CHARGE_FOUR"),true, true),
                     new DriveUntilLevel(drivetrain)
                     );
 
