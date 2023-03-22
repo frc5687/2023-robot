@@ -112,11 +112,11 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
         setDefaultCommand(_cubeShooter, new ManualRotateWrist(_cubeShooter, _oi));
 
-        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
+        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights, _identityMode);
             error("YOUR IDENTITY MODE IS COMPETITION");
         } else if (_identityMode == IdentityMode.practice){ 
             setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
-            _oi.initializeButtons(_driveTrain);
+            _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights, _identityMode);
             error("YOUR IDENTITY MODE IS PRACTICE");
         }
 

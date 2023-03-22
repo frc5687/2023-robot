@@ -90,7 +90,7 @@ public class Drive extends OutliersCommand {
             vy = vec.y() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
             rot = rot * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxSteeringVelocity;
             TrackedObjectInfo closestGameElement;
-            if (_endEffector.getConeMode()) {
+            if (_endEffector != null && _endEffector.getConeMode()) {
                 closestGameElement = _driveTrain.getClosestCone();
             } else {
                 closestGameElement = _driveTrain.getClosestCube();
