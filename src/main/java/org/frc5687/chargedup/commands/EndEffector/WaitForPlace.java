@@ -27,7 +27,7 @@ public class WaitForPlace extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return (_isPlace ? _oi.releaseRoller() : _oi.overrideWrist()) || _endEffector.isRollerStalled();
+        return (_isPlace ? _oi.releaseRoller() : _oi.stow()) || _endEffector.isRollerStalled();
     }
 
     @Override

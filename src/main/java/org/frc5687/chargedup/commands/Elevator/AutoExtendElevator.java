@@ -34,7 +34,7 @@ public class AutoExtendElevator extends OutliersCommand {
         // error("Value is: " + (Math.abs(_extDistance - _extArm.getExtArmMeters()) <
         // Constants.ExtendingArm.EXT_ARM_TOLERANCE));
         return Math.abs(_extDistance - _extArm.getExtArmMeters())
-                < Constants.ExtendingArm.EXT_ARM_TOLERANCE;
+                < Constants.Elevator.EXT_ARM_TOLERANCE;
     }
 
     public void end(boolean interrupted) {

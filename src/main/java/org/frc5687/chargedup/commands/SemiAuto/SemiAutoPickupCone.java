@@ -21,7 +21,7 @@ public class SemiAutoPickupCone extends SequentialCommandGroup {
         Setpoint setpoint = conePickupSetpoint;
         addCommands(
                 // new DriveUntilInHall(elevator),
-                new AutoExtendElevator(elevator, Constants.ExtendingArm.SHORT_ARM_DISTANCE),
+                new AutoExtendElevator(elevator, Constants.Elevator.SHORT_ARM_DISTANCE),
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
                 new ParallelDeadlineGroup(
                         new WaitForPlace(endEffector, oi, false),
