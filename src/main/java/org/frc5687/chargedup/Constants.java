@@ -101,6 +101,18 @@ public class Constants {
             NORTH_WEST_CONFIG.encoderInverted = false;
             NORTH_WEST_CONFIG.encoderOffset = -0.055;
         }
+        
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_WEST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_NORTH_WEST_CONFIG.moduleName = "North West";
+            PRACTICE_NORTH_WEST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
+
+            PRACTICE_NORTH_WEST_CONFIG.encoderInverted = false;
+            PRACTICE_NORTH_WEST_CONFIG.encoderOffset = -0.053722;
+        }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
@@ -112,6 +124,18 @@ public class Constants {
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
             SOUTH_WEST_CONFIG.encoderOffset = -0.16;
+        }
+
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_WEST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_SOUTH_WEST_CONFIG.moduleName = "South West";
+            PRACTICE_SOUTH_WEST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
+
+            PRACTICE_SOUTH_WEST_CONFIG.encoderInverted = false;
+            PRACTICE_SOUTH_WEST_CONFIG.encoderOffset = 0.895165;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -126,6 +150,18 @@ public class Constants {
             SOUTH_EAST_CONFIG.encoderOffset = -0.062;
         }
 
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_EAST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_SOUTH_EAST_CONFIG.moduleName = "South East";
+            PRACTICE_SOUTH_EAST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
+
+            PRACTICE_SOUTH_EAST_CONFIG.encoderInverted = false;
+            PRACTICE_SOUTH_EAST_CONFIG.encoderOffset = -0.089557;
+        }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -138,6 +174,17 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderOffset = -0.079;
         }
 
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_EAST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_NORTH_EAST_CONFIG.moduleName = "North East";
+            PRACTICE_NORTH_EAST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
+
+            PRACTICE_NORTH_EAST_CONFIG.encoderInverted = false;
+            PRACTICE_NORTH_EAST_CONFIG.encoderOffset = -0.139070;
+        }
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final double ROTATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final long DISABLE_TIME = 500; // ms
