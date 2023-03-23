@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
-import org.frc5687.chargedup.commands.Auto.DriveToPose;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
@@ -65,16 +63,19 @@ public class OI extends OutliersProxy {
             Elevator elevator,
             CubeShooter cubeShooter,
             Lights lights, IdentityMode identityMode) {
+        _customController
+                .getChangeModeButton()
+                .toggleOnTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _customController
+                .getChangeModeButton()
+                .toggleOnFalse(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
 
         if (identityMode == IdentityMode.competition){ // Enables all other commands
-            _customController.getChangeModeButton().toggleOnFalse(Commands.runOnce(endEffector::setCubeMode, endEffector));
-            _customController.getChangeModeButton().toggleOnTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
-            _operatorJoystick
-                    .button(6)
-                    .onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
-            _operatorJoystick
-                    .button(7)
-                    .onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _customController
+                .getIntakeButton()
+                .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
             _customController.getIntakeButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
@@ -82,11 +83,15 @@ public class OI extends OutliersProxy {
             _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
             _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
 
-
-    //        _driverGamepad.getXButton().onTrue(new DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
-            _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
-            _driverGamepad.getRightBumper().onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this).unless(() -> !cubeShooter.isCubeDetected()));
-            _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
+        //        _driverGamepad.getXButton().onTrue(new
+        // DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
+        _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
+        _driverGamepad
+                .getRightBumper()
+                .onTrue(
+                        new AutoShoot(cubeShooter, drivetrain, endEffector, this)
+                                .unless(() -> !cubeShooter.isCubeDetected()));
+        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
 
             _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
             for (int row = 0; row < 3; row++) {
@@ -114,7 +119,7 @@ public class OI extends OutliersProxy {
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-        return _driverGamepad.getAButton().getAsBoolean();
+        return _driverGamepad.getXButton().getAsBoolean();
         // return false;
     }
 
@@ -122,7 +127,7 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getRightBumper().getAsBoolean();
     }
 
-    public boolean getSlowMode()    {
+    public boolean getSlowMode() {
         return _driverGamepad.getLeftBumper().getAsBoolean();
     }
 

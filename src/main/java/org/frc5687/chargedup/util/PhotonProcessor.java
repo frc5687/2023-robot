@@ -43,18 +43,26 @@ public class PhotonProcessor {
                 new Transform3d(new Translation3d(-0.2, .14, 0.73), new Rotation3d(0, 0, 0));
 
         Transform3d robotToSouthEastTopCam =
-                new Transform3d(new Translation3d(-0.25, -0.142, 0.655), new Rotation3d(0, 0, Units.degreesToRadians(170)));
+                new Transform3d(new Translation3d(-0.025, -0.144, 0.7), new Rotation3d(0, 0, Units.degreesToRadians(0)));
 
+//        Transform3d robotToSouthWestCam =
+//                new Transform3d(
+//                        new Translation3d(-.21, .24, .442),
+//                        new Rotation3d(0, 0, Units.degreesToRadians(150)));
+//
+//        Transform3d robotToSouthEastCam =
+//                new Transform3d(
+//                        new Translation3d(-.21, -.24, .442),
+//                        new Rotation3d(0, 0, Units.degreesToRadians(-150)));
         Transform3d robotToSouthWestCam =
                 new Transform3d(
-                        new Translation3d(-.21, .24, .442),
-                        new Rotation3d(0, 0, Units.degreesToRadians(150)));
+                        new Translation3d(-.243, .249, .442),
+                        new Rotation3d(0, 0, Units.degreesToRadians(-140)));
 
         Transform3d robotToSouthEastCam =
                 new Transform3d(
-                        new Translation3d(-.21, -.24, .442),
-                        new Rotation3d(0, 0, Units.degreesToRadians(-150)));
-
+                        new Translation3d(-.243, -.249, .442),
+                        new Rotation3d(0, 0, Units.degreesToRadians(140)));
         _northWestCameraEstimator =
                 new PhotonPoseEstimator(
                         layout,

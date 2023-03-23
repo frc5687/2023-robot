@@ -77,7 +77,7 @@ public class CubeShooter extends OutliersSubsystem {
     }
 
     public double getBoreEncoderRotation() {
-        return _wristEncoder.getDistance() + Constants.CubeShooter.WRIST_OFFSET;
+        return _wristEncoder.getDistance() + Constants.CubeShooter.ANKLE_OFFSET;
     }
 
     public double getWristAngleRadians() {

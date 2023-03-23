@@ -10,8 +10,6 @@ public class AutoChooser extends OutliersProxy {
     private AutoType _autoType;
     private SendableChooser<AutoType> _autoTypeChooser;
 
-
-
     public AutoChooser() {
         _firstNodeChooser = new SendableChooser<>();
         _firstNodeChooser.setDefaultOption("One", Node.OneCone);
@@ -29,6 +27,7 @@ public class AutoChooser extends OutliersProxy {
         _autoTypeChooser.setDefaultOption("Drive For Time", AutoType.DriveForTime);
         _autoTypeChooser.addOption("DriveToLevel", AutoType.DrivetoLevel);
         _autoTypeChooser.addOption("Two Piece", AutoType.TwoPiece);
+        _autoTypeChooser.addOption("Steal Cubes", AutoType.StealCubes);
         SmartDashboard.putData("Auto Type", _autoTypeChooser);
     }
 
@@ -42,10 +41,10 @@ public class AutoChooser extends OutliersProxy {
     public Node getFirstNode() {
         return _firstNode;
     }
-    public AutoType getAutoType(){
+
+    public AutoType getAutoType() {
         return _autoType;
     }
-    
 
     @Override
     public void updateDashboard() {}
@@ -93,17 +92,17 @@ public class AutoChooser extends OutliersProxy {
         Unknown(-1),
         DriveForTime(0),
         DrivetoLevel(1),
-        TwoPiece(2);
-        
+        TwoPiece(2),
+        StealCubes(3);
+
         private int _value;
 
-        AutoType(int value){
+        AutoType(int value) {
             value = _value;
         }
 
         public int getValue() {
-           return _value; 
-        } 
-
+            return _value;
+        }
     }
 }

@@ -4,39 +4,36 @@ package org.frc5687.chargedup.commands;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.server.PathPlannerServer;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.chargedup.subsystems.DriveTrain;
-
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import org.frc5687.chargedup.subsystems.DriveTrain;
 
 /** Custom PathPlanner version of SwerveControllerCommand */
 public class DriveTrajectory extends OutliersCommand {
     private final Timer timer = new Timer();
     private final PathPlannerTrajectory trajectory;
     private final boolean useAllianceColor;
-    private PathPlannerTrajectory transformedTrajectory;
+    private final boolean _resetRobotPose;
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
-    private static Consumer<Pose2d> logTargetPose = null;
-    private static Consumer<ChassisSpeeds> logSetpoint = null;
 
     private final DriveTrain _driveTrain;
 
     public DriveTrajectory(
             DriveTrain driveTrain,
             PathPlannerTrajectory trajectory,
-            boolean useAllianceColor) {
+            boolean useAllianceColor,
+            boolean resetRobotPose) {
 
         _driveTrain = driveTrain;
         this.trajectory = trajectory;
         this.useAllianceColor = useAllianceColor;
+        _resetRobotPose = resetRobotPose;
+
         addRequirements(driveTrain);
 
         if (useAllianceColor && trajectory.fromGUI && trajectory.getInitialPose().getX() > 8.27) {
@@ -50,28 +47,32 @@ public class DriveTrajectory extends OutliersCommand {
 
     @Override
     public void initialize() {
-        if (useAllianceColor && trajectory.fromGUI) {
-            transformedTrajectory =
-                    PathPlannerTrajectory.transformTrajectoryForAlliance(
-                            trajectory, DriverStation.getAlliance());
-        } else {
-            transformedTrajectory = trajectory;
+//        if (useAllianceColor && trajectory.fromGUI) {
+//            error(" Transforming Trajectory");
+//            transformedTrajectory =
+//                    PathPlannerTrajectory.transformTrajectoryForAlliance(
+//                            trajectory, DriverStation.getAlliance());
+//        } else {
+//            transformedTrajectory = trajectory;
+//        }
+        if (_resetRobotPose) {
+            _driveTrain.resetRobotPose(trajectory.getInitialHolonomicPose());
         }
 
         if (logActiveTrajectory != null) {
-            logActiveTrajectory.accept(transformedTrajectory);
+            logActiveTrajectory.accept(trajectory);
         }
 
         timer.reset();
         timer.start();
 
-        PathPlannerServer.sendActivePath(transformedTrajectory.getStates());
+        PathPlannerServer.sendActivePath(trajectory.getStates());
     }
 
     @Override
     public void execute() {
         double currentTime = this.timer.get();
-        PathPlannerState desiredState = (PathPlannerState) transformedTrajectory.sample(currentTime);
+        PathPlannerState desiredState = (PathPlannerState) trajectory.sample(currentTime);
         _driveTrain.followTrajectory(desiredState);
     }
 
@@ -79,18 +80,15 @@ public class DriveTrajectory extends OutliersCommand {
     public void end(boolean interrupted) {
         this.timer.stop();
 
-        if (interrupted || Math.abs(transformedTrajectory.getEndState().velocityMetersPerSecond) < 0.1) {
-            _driveTrain.setVelocity(new ChassisSpeeds(
-                    0,
-                    0,
-                    0
-            ));
+        if (interrupted
+                || Math.abs(trajectory.getEndState().velocityMetersPerSecond) < 0.1) {
+            _driveTrain.setVelocity(new ChassisSpeeds(0, 0, 0));
         }
     }
 
     @Override
     public boolean isFinished() {
-        return this.timer.hasElapsed(transformedTrajectory.getTotalTimeSeconds());
+        return this.timer.hasElapsed(trajectory.getTotalTimeSeconds());
     }
 
     private static void defaultLogError(Translation2d translationError, Rotation2d rotationError) {
