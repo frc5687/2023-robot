@@ -118,6 +118,9 @@ public class OI extends OutliersProxy {
             _povButtonLeft.onTrue(new Tap(drivetrain, false));
             _povButtonRight.onTrue(new Tap(drivetrain, true));
 
+            _driverLeftTrigger.whileTrue(new SelectModuleForEvasion(drivetrain, false));
+            _driverRightTrigger.whileTrue(new SelectModuleForEvasion(drivetrain, true));
+
             _driverGamepad
                     .getYButton()
                     .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));

@@ -7,12 +7,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 public class SelectModuleForEvasion extends OutliersCommand{
     private final DriveTrain _driveTrain;
-    private final OI _oi;
     private boolean _clockwise;
 
-    public SelectModuleForEvasion(DriveTrain driveTrain, boolean clockwise, OI oi){
+    public SelectModuleForEvasion(DriveTrain driveTrain, boolean clockwise){
         _driveTrain = driveTrain;
-        _oi = oi;
         _clockwise = clockwise;
     }
 
