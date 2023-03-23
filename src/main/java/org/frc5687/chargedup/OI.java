@@ -63,6 +63,7 @@ public class OI extends OutliersProxy {
             Elevator elevator,
             CubeShooter cubeShooter,
             Lights lights, IdentityMode identityMode) {
+        if (identityMode == IdentityMode.competition){ // Enables all other commands
         _customController
                 .getChangeModeButton()
                 .toggleOnTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
@@ -72,7 +73,6 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
 
-        if (identityMode == IdentityMode.competition){ // Enables all other commands
         _customController
                 .getIntakeButton()
                 .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
