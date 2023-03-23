@@ -7,6 +7,8 @@ public class AutoChooser extends OutliersProxy {
 
     private SendableChooser<Node> _firstNodeChooser;
     private Node _firstNode;
+    private AutoType _autoType;
+    private SendableChooser<AutoType> _autoTypeChooser;
 
     public AutoChooser() {
         _firstNodeChooser = new SendableChooser<>();
@@ -20,15 +22,28 @@ public class AutoChooser extends OutliersProxy {
         _firstNodeChooser.addOption("Eight", Node.EightCube);
         _firstNodeChooser.addOption("Nine", Node.NineCone);
         SmartDashboard.putData("First Node", _firstNodeChooser);
+
+        _autoTypeChooser = new SendableChooser<>();
+        _autoTypeChooser.setDefaultOption("Drive For Time", AutoType.DriveForTime);
+        _autoTypeChooser.addOption("DriveToLevel", AutoType.DrivetoLevel);
+        _autoTypeChooser.addOption("Two Piece", AutoType.TwoPiece);
+        _autoTypeChooser.addOption("Steal Cubes", AutoType.StealCubes);
+        SmartDashboard.putData("Auto Type", _autoTypeChooser);
     }
 
     public void updateChooser() {
         _firstNode = _firstNodeChooser.getSelected();
+        _autoType = _autoTypeChooser.getSelected();
         metric("First Piece", _firstNode.name());
+        metric("Auto Type", _autoType.name());
     }
 
     public Node getFirstNode() {
         return _firstNode;
+    }
+
+    public AutoType getAutoType() {
+        return _autoType;
     }
 
     @Override
@@ -66,6 +81,24 @@ public class AutoChooser extends OutliersProxy {
 
         Node(int value) {
             _value = value;
+        }
+
+        public int getValue() {
+            return _value;
+        }
+    }
+
+    public enum AutoType {
+        Unknown(-1),
+        DriveForTime(0),
+        DrivetoLevel(1),
+        TwoPiece(2),
+        StealCubes(3);
+
+        private int _value;
+
+        AutoType(int value) {
+            value = _value;
         }
 
         public int getValue() {

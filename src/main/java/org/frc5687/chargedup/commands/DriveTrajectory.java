@@ -1,58 +1,100 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup.commands;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.server.PathPlannerServer;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.function.Consumer;
 import org.frc5687.chargedup.subsystems.DriveTrain;
-import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
-import org.frc5687.lib.math.Vector2d;
 
+/** Custom PathPlanner version of SwerveControllerCommand */
 public class DriveTrajectory extends OutliersCommand {
+    private final Timer timer = new Timer();
+    private final PathPlannerTrajectory trajectory;
+    private final boolean useAllianceColor;
+    private final boolean _resetRobotPose;
+    private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
 
     private final DriveTrain _driveTrain;
-    private Trajectory _trajectory;
-    private final Timer _timer;
-    private Translation2d _cor;
-    private double _rotfrompos;
 
-    public DriveTrajectory(DriveTrain driveTrain, Trajectory trajectory, double rotfrompos) {
+    public DriveTrajectory(
+            DriveTrain driveTrain,
+            PathPlannerTrajectory trajectory,
+            boolean useAllianceColor,
+            boolean resetRobotPose) {
+
         _driveTrain = driveTrain;
-        _timer = new Timer();
-        _trajectory = trajectory;
-        _rotfrompos = rotfrompos;
-        addRequirements(_driveTrain);
+        this.trajectory = trajectory;
+        this.useAllianceColor = useAllianceColor;
+        _resetRobotPose = resetRobotPose;
+
+        addRequirements(driveTrain);
+
+        if (useAllianceColor && trajectory.fromGUI && trajectory.getInitialPose().getX() > 8.27) {
+            DriverStation.reportWarning(
+                    "You have constructed a path following command that will automatically transform path states depending"
+                            + " on the alliance color, however, it appears this path was created on the red side of the field"
+                            + " instead of the blue side. This is likely an error.",
+                    false);
+        }
     }
 
     @Override
     public void initialize() {
-        super.initialize();
-        _driveTrain.setControlState(ControlState.TRAJECTORY);
-        _timer.reset();
-        _timer.start();
+//        if (useAllianceColor && trajectory.fromGUI) {
+//            error(" Transforming Trajectory");
+//            transformedTrajectory =
+//                    PathPlannerTrajectory.transformTrajectoryForAlliance(
+//                            trajectory, DriverStation.getAlliance());
+//        } else {
+//            transformedTrajectory = trajectory;
+//        }
+        if (_resetRobotPose) {
+            _driveTrain.resetRobotPose(trajectory.getInitialHolonomicPose());
+        }
+
+        if (logActiveTrajectory != null) {
+            logActiveTrajectory.accept(trajectory);
+        }
+
+        timer.reset();
+        timer.start();
+
+        PathPlannerServer.sendActivePath(trajectory.getStates());
     }
 
     @Override
     public void execute() {
-        super.execute();
-        // double
-        Trajectory.State goal = _trajectory.sample(_timer.get());
-        Translation2d cor = new Translation2d(0, 1);
-        _driveTrain.updateSwerve(goal, new Rotation2d(0.0), cor);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return _timer.get() >= _trajectory.getTotalTimeSeconds();
+        double currentTime = this.timer.get();
+        PathPlannerState desiredState = (PathPlannerState) trajectory.sample(currentTime);
+        _driveTrain.followTrajectory(desiredState);
     }
 
     @Override
     public void end(boolean interrupted) {
-        super.end(interrupted);
-        _driveTrain.setControlState(ControlState.MANUAL);
-        _driveTrain.updateSwerve(Vector2d.identity(), 0, new Translation2d());
-        _timer.reset();
+        this.timer.stop();
+
+        if (interrupted
+                || Math.abs(trajectory.getEndState().velocityMetersPerSecond) < 0.1) {
+            _driveTrain.setVelocity(new ChassisSpeeds(0, 0, 0));
+        }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return this.timer.hasElapsed(trajectory.getTotalTimeSeconds());
+    }
+
+    private static void defaultLogError(Translation2d translationError, Rotation2d rotationError) {
+        SmartDashboard.putNumber("PPSwerveControllerCommand/xErrorMeters", translationError.getX());
+        SmartDashboard.putNumber("PPSwerveControllerCommand/yErrorMeters", translationError.getY());
+        SmartDashboard.putNumber(
+                "PPSwerveControllerCommand/rotationErrorDegrees", rotationError.getDegrees());
     }
 }

@@ -24,8 +24,7 @@ public class SwerveHeadingController {
                         Constants.DriveTrain.MAINTAIN_kD,
                         new TrapezoidProfile.Constraints(
                                 Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
-                                Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL
-                        ),
+                                Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL),
                         kDt);
         _PIDController.enableContinuousInput(-Math.PI, Math.PI);
         _headingState = HeadingState.OFF;

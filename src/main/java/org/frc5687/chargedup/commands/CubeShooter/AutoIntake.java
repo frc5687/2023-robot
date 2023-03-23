@@ -1,16 +1,14 @@
 package org.frc5687.chargedup.commands.CubeShooter;
 
 import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
 public class AutoIntake extends OutliersCommand {
     private CubeShooter _cubeShooter;
-    private OI _oi;
-    public AutoIntake(CubeShooter shooter, OI oi) {
+
+    public AutoIntake(CubeShooter shooter) {
         _cubeShooter = shooter;
-        _oi = oi;
         addRequirements(_cubeShooter);
     }
 
@@ -26,7 +24,7 @@ public class AutoIntake extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return !_oi.getCubeIntake() || _cubeShooter.isCubeDetected();
+        return _cubeShooter.isCubeDetected();
     }
 
     @Override

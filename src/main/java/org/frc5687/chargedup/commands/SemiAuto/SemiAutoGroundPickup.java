@@ -31,13 +31,11 @@ public class SemiAutoGroundPickup extends OutliersCommand {
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
         super.execute();
     }
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
         return true;
     }
 }

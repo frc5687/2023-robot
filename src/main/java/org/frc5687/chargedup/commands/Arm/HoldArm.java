@@ -3,6 +3,8 @@ package org.frc5687.chargedup.commands.Arm;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 /* This is to hold the last arm state sent to the controller. */
 public class HoldArm extends OutliersCommand {
     private final Arm _arm;
@@ -17,13 +19,14 @@ public class HoldArm extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        _arm.setNextReference(_angle, 0);
+//        _arm.setNextReference(_angle, 0);
+        _arm.setArmAngle(_angle);
     }
 
     @Override
     public void execute() {
         super.execute();
-        _arm.setArmVoltage(_arm.getNextVoltage() + _arm.armFeedForward());
+//        _arm.setArmVoltage(_arm.getNextVoltage() + _arm.armFeedForward());
     }
 
     @Override

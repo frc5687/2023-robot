@@ -1,26 +1,23 @@
 package org.frc5687.chargedup.commands.Auto;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.OI;
+import static org.frc5687.chargedup.Constants.DriveTrain.DRIVE_POSE_KINEMATIC_LIMITS;
+import static org.frc5687.chargedup.Constants.DriveTrain.KINEMATIC_LIMITS;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.subsystems.CubeShooter;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.subsystems.Lights.AnimationType;
 
-import static org.frc5687.chargedup.Constants.DriveTrain.DRIVE_POSE_KINEMATIC_LIMITS;
-import static org.frc5687.chargedup.Constants.DriveTrain.KINEMATIC_LIMITS;
-
 public class HoverToPose extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
-    private Pose2d _destPose;
-    private final OI _oi;
+    private final CubeShooter _cubeShooter;
+
     private final Lights _lights;
 
-    public HoverToPose(DriveTrain driveTrain, Lights lights, OI oi) {
+    public HoverToPose(DriveTrain driveTrain, CubeShooter shooter, Lights lights) {
         _driveTrain = driveTrain;
-        _oi = oi;
+        _cubeShooter = shooter;
         _lights = lights;
         addRequirements(_driveTrain, _lights);
     }
@@ -34,12 +31,13 @@ public class HoverToPose extends OutliersCommand {
 
     @Override
     public void execute() {
-        _driveTrain.setVelocityPose(_driveTrain.getHoverGoal());
+        _driveTrain.setVelocityPose(_driveTrain.getHoverGoal(), _cubeShooter.isCubeDetected());
     }
 
     @Override
     public void end(boolean interrupted) {
         _driveTrain.setKinematicLimits(KINEMATIC_LIMITS);
+        _driveTrain.setMaintainHeading(_driveTrain.getHeading());
         super.end(interrupted);
     }
 }

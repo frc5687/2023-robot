@@ -9,22 +9,21 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import org.frc5687.chargedup.commands.Auto.DriveToPose;
-import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
-import org.frc5687.chargedup.commands.CubeShooter.AutoRotateWrist;
-import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoGroundPickup;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPickup;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceHigh;
-import org.frc5687.chargedup.commands.SemiAuto.SemiAutoPlaceMiddle;
+import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
+import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
+import org.frc5687.chargedup.commands.SemiAuto.*;
+import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SelectModuleForEvasion;
-import org.frc5687.chargedup.commands.SetHoverGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.subsystems.*;
+import org.frc5687.chargedup.util.CustomController;
+import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
+import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.logging.RioLogger;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.oi.AxisButton;
@@ -33,81 +32,100 @@ import org.frc5687.lib.oi.Gamepad.Axes;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
-    protected Gamepad _operatorGamepad;
+    protected CommandJoystick _operatorJoystick;
     protected Gamepad _buttonpad;
+
+    protected CustomController _customController;
     protected Trigger _driverLeftTrigger;
     protected Trigger _driverRightTrigger;
     protected Trigger _buttonLeftTrigger;
     protected Trigger _buttonRightTrigger;
+    protected Trigger _povButtonRight;
+    protected Trigger _povButtonLeft;
 
     public OI() {
         _driverGamepad = new Gamepad(0);
-        _operatorGamepad = new Gamepad(1);
+        _operatorJoystick = new CommandJoystick(1);
         _buttonpad = new Gamepad(2);
+        _customController = new CustomController();
+        _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
+        _povButtonRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
         _driverLeftTrigger =
                 new Trigger(
                         new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
         _driverRightTrigger =
-                    new Trigger(
-                            new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
-        _buttonLeftTrigger  =
                 new Trigger(
-                        new AxisButton(_buttonpad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
+                        new AxisButton(_driverGamepad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
+        _buttonLeftTrigger =
+                new Trigger(new AxisButton(_buttonpad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
         _buttonRightTrigger =
-                new Trigger(
-                        new AxisButton(_buttonpad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
+                new Trigger(new AxisButton(_buttonpad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
     }
 
     public void initializeButtons(
-            DriveTrain drivetrain, EndEffector endEffector, Arm arm, Elevator elevator, CubeShooter cubeShooter, Lights lights) {
-        _operatorGamepad
-                .getBackButton()
-                .onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
-        _operatorGamepad
-                .getStartButton()
-                .onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
-        _operatorGamepad.getAButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
-        _operatorGamepad.getBButton().onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
-        _operatorGamepad
-                .getXButton()
-                .onTrue(new SemiAutoGroundPickup(arm, endEffector, elevator, this));
-        _operatorGamepad.getYButton().onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
-//        _driverLeftTrigger.onTrue(new Tap(drivetrain, false));
-        //        _driverRightTrigger.onTrue(new Tap(drivetrain, true));
-        // _driverRightTrigger.onTrue(new Shoot(cubeShooter));
-        // _driverLeftTrigger.onTrue(new AutoIntake(cubeShooter, this));
+            DriveTrain drivetrain,
+            EndEffector endEffector,
+            Arm arm,
+            Elevator elevator,
+            CubeShooter cubeShooter,
+            Lights lights, IdentityMode identityMode) {
+        if (identityMode == IdentityMode.competition){ // Enables all other commands
+        _customController
+                .getChangeModeButton()
+                .toggleOnTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+        _customController
+                .getChangeModeButton()
+                .toggleOnFalse(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
+        _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
 
-        _driverLeftTrigger.onTrue(new SelectModuleForEvasion(drivetrain, false, this));
-        _driverRightTrigger.onTrue(new SelectModuleForEvasion(drivetrain, true, this));
+        _customController
+                .getIntakeButton()
+                .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
+            _customController.getIntakeButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+
+            _operatorJoystick.button(2).onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+            _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
+            _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+
+        //        _driverGamepad.getXButton().onTrue(new
+        // DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
+        _driverRightTrigger.onTrue(new AutoShoot(cubeShooter, drivetrain, endEffector, this));
         _driverGamepad
-                .getYButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, lights, this));
-        // _buttonpad.getLeftBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIRST_GOAL, this));
-        // _buttonpad.getXButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SECOND_GOAL, this));
-        // _buttonpad.getYButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_THIRD_GOAL, this));
-        // _buttonpad.getRightBumper().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FOURTH_GOAL, this));
-        // _buttonLeftTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_FIFTH_GOAL, this));
-        // _buttonpad.getAButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SIXTH_GOAL, this));
-        // _buttonpad.getBButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_SEVENTH_GOAL, this));
-        // _buttonRightTrigger.onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_EIGHTH_GOAL, this));
-        // _buttonpad.getRightStickButton().onTrue(new DriveToPose(drivetrain, Constants.Auto.RED_NINTH_GOAL, this));
-        _buttonpad.getLeftBumper().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FIRST_GOAL));
-        _buttonpad.getXButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SECOND_GOAL));
-        _buttonpad.getYButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_THIRD_GOAL));
-        _buttonpad.getRightBumper().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FOURTH_GOAL));
-        _buttonLeftTrigger.onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_FIFTH_GOAL));
-        _buttonpad.getAButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SIXTH_GOAL));
-        _buttonpad.getBButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_SEVENTH_GOAL));
-        _buttonRightTrigger.onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_EIGHTH_GOAL));
-        _buttonpad.getRightStickButton().onTrue(new SetHoverGoal(drivetrain, Constants.Auto.RED_NINTH_GOAL));
-        
+                .getRightBumper()
+                .onTrue(
+                        new AutoShoot(cubeShooter, drivetrain, endEffector, this)
+                                .unless(() -> !cubeShooter.isCubeDetected()));
+        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
+
+            _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 9; col++) {
+                    _customController
+                            .getButton(row, col)
+                            .onTrue(
+                                    new SetRobotGoal(
+                                            drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
+                }
+            }
+            _operatorJoystick.button(1)
+                    .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
+            _customController.getDeployButton()
+                    .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
+            }
+            // Enables only DriveTrain commands
+            _povButtonLeft.onTrue(new Tap(drivetrain, false));
+            _povButtonRight.onTrue(new Tap(drivetrain, true));
+
+            _driverGamepad
+                    .getYButton()
+                    .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
-        return _driverGamepad.getAButton().getAsBoolean();
+        return _driverGamepad.getXButton().getAsBoolean();
         // return false;
     }
 
@@ -123,16 +141,19 @@ public class OI extends OutliersProxy {
         return _driverGamepad.getStartButton().getAsBoolean();
     }
 
-    public boolean manualGrip() {
-        return _operatorGamepad.getLeftBumper().getAsBoolean();
+    public boolean stow() {
+        return _operatorJoystick.button(3).getAsBoolean();
+        // return false;
     }
 
     public boolean getIntakeIn() {
-        return _operatorGamepad.getAButton().getAsBoolean();
+        // return _operatorGamepad.getAButton().getAsBoolean();
+        return false;
     }
 
     public boolean getIntakeOut() {
-        return _operatorGamepad.getBButton().getAsBoolean();
+        // return _operatorGamepad.getBButton().getAsBoolean();
+        return false;
     }
 
     // public boolean getTapRight(){
@@ -144,7 +165,7 @@ public class OI extends OutliersProxy {
     // }
     public boolean getCubeIntake() {
         return _driverLeftTrigger.getAsBoolean();
-    }    
+    }
 
     public double getDriveY() {
         double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.LEFT_Y.getNumber());
@@ -170,23 +191,23 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
-        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-        return speed / 5; // for testing
-        //  return 0;
+        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        // return speed / 5; // for testing
+        return 0;
     }
 
     public double getExtArmY() {
-         double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-         speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-         return speed;
-//        return 0;
+        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        // return speed;
+        return 0;
     }
 
     public double getCSWrist() {
-//        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
-//        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
-//        return speed;
+        //        double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
+        //        speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
+        //        return speed;
         return 0;
     }
 

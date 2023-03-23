@@ -4,13 +4,13 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.EndEffector;
 
-public class WaitForManualGripper extends OutliersCommand {
+public class WaitForPlace extends OutliersCommand {
 
     private final OI _oi;
     private final EndEffector _endEffector;
     private final boolean _isPlace;
 
-    public WaitForManualGripper(EndEffector endEffector, OI oi, boolean isPlace) {
+    public WaitForPlace(EndEffector endEffector, OI oi, boolean isPlace) {
         _oi = oi;
         _endEffector = endEffector;
         _isPlace = isPlace;
@@ -27,7 +27,7 @@ public class WaitForManualGripper extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return (_isPlace ? _oi.releaseRoller() : _oi.manualGrip()) || _endEffector.isRollerStalled();
+        return (_isPlace ? _oi.releaseRoller() : _oi.stow()) || _endEffector.isRollerStalled();
     }
 
     @Override
