@@ -77,7 +77,9 @@ public class DriveTrain extends OutliersSubsystem {
     private boolean _isRedAlliance = false;
     // IMU (Pigeon)
     private final Pigeon2 _imu;
+    private Rotation2d _headingOffset;
     private double _yawOffset;
+    private double _pitchOffset;
     private Translation2d _centerOfRotation;
 
     private Translation2d _clockwiseCenter;
@@ -102,7 +104,6 @@ public class DriveTrain extends OutliersSubsystem {
     private Translation2d _counterclockwise;
     private Vector2d _prevControlVector;
 
-    private final SwerveDrivePoseEstimator _poseEstimator;
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
     private Pose2d _hoverGoal;
@@ -559,6 +560,8 @@ public class DriveTrain extends OutliersSubsystem {
         ChassisSpeeds speeds = _trajectoryController.calculate(getEstimatedPose(), desiredState);
 //        speeds.omegaRadiansPerSecond = 0.0;
         _systemIO.desiredChassisSpeeds = speeds;
+    }
+    
     public void determineCORForEvasion(){
        Translation2d currentLocation =  _prevControlVector.toTranslation().rotateBy(GeometryUtil.inverse(getHeading()));
        _clockwiseCenter = _modules[0].getModuleLocation(); 
