@@ -94,7 +94,7 @@ public class EndEffector extends OutliersSubsystem {
     }
 
     public double getWristAngleRadians(){
-         return Helpers.angleWrap(_wristEncoder.getDistance(), true);
+        return Helpers.angleWrap(_wristEncoder.getDistance(), true);
     }
     /*public double getGripperAngleRadians(){
         return _gripperEncoder.getDistance() % (2.0 * Math.PI); // - Constants.EndEffector.GRIPPER_OFFSET;

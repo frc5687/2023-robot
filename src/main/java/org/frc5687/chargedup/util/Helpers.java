@@ -123,10 +123,10 @@ public class Helpers {
      */
     public static double angleWrap(double angle, boolean radians) {
         angle = radians ? angle : Units.degreesToRadians(angle);
+        angle = angle % (2.0 * Math.PI);
         if (angle < 0) {
             angle += (2.0 * Math.PI);
         }
-        angle = angle % (2.0 * Math.PI);
         return radians ? angle : Units.radiansToDegrees(angle);
     }
 

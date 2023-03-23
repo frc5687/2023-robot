@@ -362,12 +362,16 @@ public class Constants {
             CLOSED_LOOP_CONFIGURATION.kF = 0.01;
 
             CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
-            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 300;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 200;
             CLOSED_LOOP_CONFIGURATION.JERK = 1500;
         }
     }
 
     public static class Auto {
+        // public static final double RED_X_COORDINATE = 14.75;
+        public static final double RED_X_COORDINATE = 14.7;
+        public static final double BLUE_X_COORDINATE = 1.795;
+
         public static class FieldPoses {
             public static final Pose2d BLUE_NODE_ONE_GOAL = new Pose2d(BLUE_X_COORDINATE, 0.519, new Rotation2d());
             public static final Pose2d BLUE_NODE_TWO_GOAL = new Pose2d(BLUE_X_COORDINATE, 1.080, new Rotation2d());
@@ -406,8 +410,6 @@ public class Constants {
             public static final Pose2d RED_TARGET_ONE = new Pose2d(9.562, 0.92, new Rotation2d(Math.PI)); // mechies give us magic units.
         }
 
-        public static final double RED_X_COORDINATE = 14.75;
-        public static final double BLUE_X_COORDINATE = 1.795;
 
         public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
         public static final Pose2d STARTING_CHARGING_STATION =
