@@ -169,7 +169,7 @@ public class DriveTrain extends OutliersSubsystem {
                         },
                         new Pose2d(0, 0, getHeading()),
                         VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(1)),
-                        VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(70)));
+                        VecBuilder.fill(0.4, 0.4, Units.degreesToRadians(70)));
         _swerveSetpointGenerator =
                 new SwerveSetpointGenerator(
                         _kinematics,
