@@ -71,7 +71,7 @@ public class Constants {
 
         public static final KinematicLimits TRAJECTORY_FOLLOWING = new KinematicLimits();
         static {
-            TRAJECTORY_FOLLOWING.maxDriveVelocity = 4.5; // m/s
+            TRAJECTORY_FOLLOWING.maxDriveVelocity = 5.0; // m/s
             TRAJECTORY_FOLLOWING.maxDriveAcceleration = 20; // m/s^2
             TRAJECTORY_FOLLOWING.maxSteeringVelocity = 20; // rad/s
         }
@@ -164,11 +164,11 @@ public class Constants {
 
         public static final double kP = 3.5;
         public static final double kI = 0.0;
-        public static final double kD = 0.01;
+        public static final double kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 0.7;
+        public static final double ANGLE_TRAJECTORY_kP = 0.8;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.1;
+        public static final double ANGLE_TRAJECTORY_kD = 0.005;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
