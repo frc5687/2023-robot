@@ -183,7 +183,7 @@ public class Constants {
         public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
         public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
 
-        public static final double AUTO_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double AUTO_LEVEL_KP = 4.0; //PID controller for leveling
         public static final double AUTO_LEVEL_KI = 0.0;
         public static final double AUTO_LEVEL_KD = 0.5;
         
@@ -370,7 +370,7 @@ public class Constants {
             CLOSED_LOOP_CONFIGURATION.kF = 0.01;
 
             CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
-            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 300;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 200;
             CLOSED_LOOP_CONFIGURATION.JERK = 1500;
         }
     }
@@ -595,7 +595,7 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.87; // rotations
+        public static final double IDLE_ANGLE = 0.85; // rotations
         public static final double INTAKE_ANGLE = 2.5; //
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
