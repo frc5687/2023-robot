@@ -5,7 +5,6 @@ package org.frc5687.chargedup;
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
 import com.pathplanner.lib.PathConstraints;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -17,6 +16,7 @@ import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.StealCubesAuto;
+import org.frc5687.chargedup.commands.Auto.ThreePieceLevel;
 import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
 import org.frc5687.chargedup.commands.CubeShooter.IdleWrist;
 import org.frc5687.chargedup.commands.Drive;
@@ -65,7 +65,7 @@ public class RobotContainer extends OutliersContainer {
         _visionProcessor = new VisionProcessor();
         // subscribe to a vision topic for the correct data
         _visionProcessor.createSubscriber("vision", "tcp://10.56.87.20:5557");
-        _trajectories = new Trajectories(new PathConstraints(3.5, 3.0));
+        _trajectories = new Trajectories(new PathConstraints(3.0, 2.0));
 
         try {
             _photonProcessor =
@@ -308,7 +308,9 @@ public class RobotContainer extends OutliersContainer {
             case StealCubes:
                 return new StealCubesAuto(
                         _driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, _trajectories);
-
+            case ThreeCubeLevel:
+                return new ThreePieceLevel(
+                        _driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);
             default:
                 error("big uh oh");
                 return new WaitCommand(15);

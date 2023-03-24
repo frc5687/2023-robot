@@ -1,5 +1,7 @@
 package org.frc5687.chargedup.util;
 
+import org.frc5687.chargedup.commands.Auto.ThreePieceLevel;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,6 +30,7 @@ public class AutoChooser extends OutliersProxy {
         _autoTypeChooser.addOption("DriveToLevel", AutoType.DrivetoLevel);
         _autoTypeChooser.addOption("Two Piece", AutoType.TwoPiece);
         _autoTypeChooser.addOption("Steal Cubes", AutoType.StealCubes);
+        _autoTypeChooser.addOption("Three Cube Level", AutoType.ThreeCubeLevel);
         SmartDashboard.putData("Auto Type", _autoTypeChooser);
     }
 
@@ -93,7 +96,8 @@ public class AutoChooser extends OutliersProxy {
         DriveForTime(0),
         DrivetoLevel(1),
         TwoPiece(2),
-        StealCubes(3);
+        StealCubes(3),
+        ThreeCubeLevel(4);
 
         private int _value;
 
