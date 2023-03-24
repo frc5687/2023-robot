@@ -192,14 +192,14 @@ public class DriveTrain extends OutliersSubsystem {
                         new ProfiledPIDController(
                                 MAINTAIN_kP,
                                 MAINTAIN_kI,
-                                MAINTAIN_kP,
+                                MAINTAIN_kD,
                                 new TrapezoidProfile.Constraints(
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
 
         _trajectoryController = new PPHolonomicDriveController(
-                new PIDController(kP, kI, kD),
-                new PIDController(kP, kI, kD),
+                new PIDController(Constants.DriveTrain.TRAJECTORY_kP, Constants.DriveTrain.TRAJECTORY_kI, Constants.DriveTrain.TRAJECTORY_kD),
+                new PIDController(Constants.DriveTrain.TRAJECTORY_kP, Constants.DriveTrain.TRAJECTORY_kI, Constants.DriveTrain.TRAJECTORY_kD),
                 new PIDController(ANGLE_TRAJECTORY_kP, ANGLE_TRAJECTORY_kI, ANGLE_TRAJECTORY_kD)
         );
 

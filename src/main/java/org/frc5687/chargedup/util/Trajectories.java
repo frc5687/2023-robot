@@ -19,7 +19,7 @@ public class Trajectories {
             "RED_NODE_NINE_GOAL_FOUR",
             "RED_GOAL_ONE_NODE_ONE",
             "RED_GOAL_ONE_NODE_TWO",
-            "RED_RED_GOAL_TWO_NODE_ONE",
+            "RED_GOAL_TWO_NODE_ONE",
             "RED_GOAL_TWO_NODE_TWO",
             "RED_GOAL_THREE_NODE_EIGHT",
             "RED_GOAL_THREE_NODE_NINE",
@@ -32,7 +32,7 @@ public class Trajectories {
             "RED_GOAL_TWO_CHARGE_THREE",
             "RED_CHARGE_THREE_GOAL_THREE",
             "RED_GOAL_THREE_CHARGE_FOUR",
-
+            "RED_NOBUMP_GOAL_FOUR",
 
             "BLUE_NODE_ONE_GOAL_ONE", // to and from top and bottom two nodes and top and bottom two goals
             "BLUE_NODE_ONE_GOAL_TWO",

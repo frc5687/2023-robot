@@ -2,13 +2,38 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 11.4,
-        "y": 2.08
+        "x": 9.50352669936109,
+        "y": 4.579086423130112
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.045257635342857,
-        "y": 2.4117071461729136
+        "x": 10.051646769960206,
+        "y": 4.510571414305222
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 10.554090168009395,
+        "y": 3.8825171667437353
+      },
+      "prevControl": {
+        "x": 10.119070618675456,
+        "y": 4.076887603680175
+      },
+      "nextControl": {
+        "x": 11.09079107047103,
+        "y": 3.642714635856623
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -24,58 +49,15 @@
     },
     {
       "anchorPoint": {
-        "x": 10.131580946922579,
-        "y": 3.014660388295136
+        "x": 11.501881123420368,
+        "y": 3.4714271137943995
       },
       "prevControl": {
-<<<<<<< HEAD
-        "x": 10.88974177948356,
-        "y": 2.4238128476256966
-      },
-      "nextControl": {
-        "x": 10.095739620868112,
-        "y": 3.0189003486325023
-=======
-        "x": 10.485575159184505,
-        "y": 2.7520195211330596
-      },
-      "nextControl": {
-        "x": 9.839122948269715,
-        "y": 3.2316453550375854
->>>>>>> origin/Auto/#120-HybridAutos
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-<<<<<<< HEAD
-        "x": 9.494786989573978,
-        "y": 3.3706147412294833
-      },
-      "prevControl": {
-        "x": 9.826494135746891,
-        "y": 3.213975255536719
-=======
-        "x": 9.560622540048499,
-        "y": 3.380073768694546
-      },
-      "prevControl": {
-        "x": 9.406188135099523,
-        "y": 3.4469743434034466
->>>>>>> origin/Auto/#120-HybridAutos
+        "x": 10.953761052821251,
+        "y": 3.5741996270317333
       },
       "nextControl": null,
-      "holonomicAngle": 180.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
