@@ -40,7 +40,7 @@ public class QuickLevel extends OutliersCommand {
             case LOOKING_FOR_PITCH:
                 _drivetrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                        Constants.DriveTrain.DRIVING_UP_RAMP_SPEEDS_VX,
+                        -Constants.DriveTrain.DRIVING_UP_RAMP_SPEEDS_VX,
                         0.0,
                         0.0,
                         _drivetrain.getHeading()));
@@ -51,7 +51,7 @@ public class QuickLevel extends OutliersCommand {
             case LEVELING:
                 double pow  = _pitchController.calculate(_drivetrain.getPitch());
                 _drivetrain.setVelocity(
-                    ChassisSpeeds.fromFieldRelativeSpeeds(pow, 0.0, 0.0, _drivetrain.getHeading()));
+                    ChassisSpeeds.fromFieldRelativeSpeeds(-pow, 0.0, 0.0, _drivetrain.getHeading()));
                 if (Math.abs(_drivetrain.getPitch()) < Constants.DriveTrain.PITCH_LEVELED_ANGLE) {
                     _drivetrain.setVelocity(
                         ChassisSpeeds.fromFieldRelativeSpeeds(0.0, 0.0, 0.0, _drivetrain.getHeading()));    
