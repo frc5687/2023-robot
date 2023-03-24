@@ -10,8 +10,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import org.frc5687.chargedup.util.*;
-import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
-import org.frc5687.lib.logging.ILoggingSource;
 import org.frc5687.lib.logging.MetricTracker;
 import org.frc5687.lib.logging.RioLogger;
 
@@ -61,11 +59,6 @@ public class Robot extends OutliersRobot {
         _robotContainer.init();
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
-        if (_identityMode == IdentityMode.competition){
-            _autoCommand = _robotContainer.getAutoCommand();
-        } else if (_identityMode == IdentityMode.practice){
-            
-        }
         _time = _timer.get();
         //        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
     }
