@@ -28,7 +28,7 @@ public class StealCubesAuto extends SequentialCommandGroup {
             OI _oi,
             Trajectories trajectories) {
         
-        String alliance = drivetrain.isRedAlliance()? "RED_":"BLUE_" ;      
+        String alliance = drivetrain.isRedAlliance() ? "RED_" : "BLUE_";
                 addCommands(
                         new ResetRobotPose(drivetrain, new Pose2d(12.13, 0.47, new Rotation2d(0))),
                 new Shoot(_shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, _oi),

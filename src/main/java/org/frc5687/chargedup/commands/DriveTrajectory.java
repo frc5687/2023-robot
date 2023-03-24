@@ -37,6 +37,9 @@ public class DriveTrajectory extends OutliersCommand {
         _resetRobotPose = resetRobotPose;
 
         addRequirements(driveTrain);
+        if (trajectory == null) {
+            error("Trajectory is null");
+        }
 
         if (useAllianceColor && trajectory.fromGUI && trajectory.getInitialPose().getX() > 8.27) {
             DriverStation.reportWarning(
