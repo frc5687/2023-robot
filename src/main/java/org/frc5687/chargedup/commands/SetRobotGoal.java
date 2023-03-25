@@ -1,6 +1,7 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
@@ -31,7 +32,7 @@ public class SetRobotGoal extends OutliersCommand {
         _endEffector.setGoalLevel(_goalLevel);
         super.initialize();
         error("Setting to position " + _goalLevel.name() + "on node " + _node.name());
-        boolean isRedAlliance = _driveTrain.isRedAlliance();
+        boolean isRedAlliance = DriverStation.getAlliance() == DriverStation.Alliance.Red;
         Pose2d pose =
                 isRedAlliance
                         ? Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL
