@@ -19,7 +19,7 @@ public class ZeroSuperStructure extends SequentialCommandGroup {
     addCommands(
         new AutoSetArmSetpoint(arm, Constants.Arm.VERTICAL_ARM_ANGLE),
         new DriveUntilInHall(elevator),
-        new AutoSetWristAngle(endEffector, 0.0)
+        new AutoSetWristAngle(endEffector, Constants.EndEffector.WRIST_MID_ANGLE)
     );
    }
 }

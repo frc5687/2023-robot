@@ -19,7 +19,7 @@ public class DriveUntilInHall extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-        _elevator.setArmSpeed(-0.8);
+        _elevator.setArmSpeed(-0.3);
     }
 
     @Override
