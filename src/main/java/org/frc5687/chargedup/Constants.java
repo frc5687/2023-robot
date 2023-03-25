@@ -582,7 +582,7 @@ public class Constants {
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.2;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
