@@ -17,6 +17,7 @@ import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.StealCubesAuto;
 import org.frc5687.chargedup.commands.Auto.ThreePieceLevel;
+import org.frc5687.chargedup.commands.Auto.ThreePieceNoLevel;
 import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
 import org.frc5687.chargedup.commands.CubeShooter.IdleWrist;
 import org.frc5687.chargedup.commands.Drive;
@@ -311,6 +312,8 @@ public class RobotContainer extends OutliersContainer {
             case ThreeCubeLevel:
                 return new ThreePieceLevel(
                         _driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);
+            case ThreeCubeNoLevel:
+                return new ThreePieceNoLevel(_driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);            
             default:
                 error("big uh oh");
                 return new WaitCommand(15);
