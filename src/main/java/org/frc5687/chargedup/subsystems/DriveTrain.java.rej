@@ -1,0 +1,9 @@
+diff a/src/main/java/org/frc5687/chargedup/subsystems/DriveTrain.java b/src/main/java/org/frc5687/chargedup/subsystems/DriveTrain.java	(rejected hunks)
+@@ -202,7 +202,6 @@
+                         },
+                         new Pose2d(0, 0, getHeading()),
+                         VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(1)),
+-                        VecBuilder.fill(0.35, 0.35, Units.degreesToRadians(70)));
+                         VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(70)));
+         _swerveSetpointGenerator =
+                 new SwerveSetpointGenerator(

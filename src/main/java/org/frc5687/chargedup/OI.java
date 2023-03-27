@@ -93,7 +93,11 @@ public class OI extends OutliersProxy {
                                 .unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
 
-            _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
+        _driverGamepad
+                .getYButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 9; col++) {
                     _customController
@@ -103,6 +107,13 @@ public class OI extends OutliersProxy {
                                             drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
                 }
             }
+        
+        _operatorJoystick
+                .button(1)
+                .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
+        _customController
+                .getDeployButton()
+                .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
             _operatorJoystick.button(1)
                     .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
             _customController.getDeployButton()
@@ -116,6 +127,7 @@ public class OI extends OutliersProxy {
                     .getYButton()
                     .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
     }
+
 
     // TODO: Need to update the gamepad class for 2023 new stuff
     public boolean autoAim() {
