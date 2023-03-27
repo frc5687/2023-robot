@@ -10,7 +10,11 @@
         "x": 10.470979626695344,
         "y": 3.373460099273978
       },
+<<<<<<< HEAD
       "holonomicAngle": 180.0,
+=======
+      "holonomicAngle": 160.0,
+>>>>>>> GBD
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,12 +28,21 @@
     },
     {
       "anchorPoint": {
+<<<<<<< HEAD
         "x": 11.4,
         "y": 2.4555542904189256
       },
       "prevControl": {
         "x": 10.4,
         "y": 2.4555542904189256
+=======
+        "x": 11.46,
+        "y": 2.4616849233698486
+      },
+      "prevControl": {
+        "x": 10.46,
+        "y": 2.4616849233698486
+>>>>>>> GBD
       },
       "nextControl": null,
       "holonomicAngle": 0,

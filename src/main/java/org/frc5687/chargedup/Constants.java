@@ -71,9 +71,9 @@ public class Constants {
 
         public static final KinematicLimits TRAJECTORY_FOLLOWING = new KinematicLimits();
         static {
-            TRAJECTORY_FOLLOWING.maxDriveVelocity = 4.0; // m/s
-            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 10; // m/s^2
-            TRAJECTORY_FOLLOWING.maxSteeringVelocity = 15; // rad/s
+            TRAJECTORY_FOLLOWING.maxDriveVelocity = 5.0; // m/s
+            TRAJECTORY_FOLLOWING.maxDriveAcceleration = 20; // m/s^2
+            TRAJECTORY_FOLLOWING.maxSteeringVelocity = 20; // rad/s
         }
         public static final KinematicLimits SLOW_KINEMATIC_LIMITS = new KinematicLimits();
 
@@ -164,11 +164,7 @@ public class Constants {
 
         public static final double kP = 3.5;
         public static final double kI = 0.0;
-        public static final double kD = 0.01;
-
-        public static final double ANGLE_TRAJECTORY_kP = 0.4;
-        public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.17;
+        public static final double kD = 0.02;
 
         public static final double X_POSE_TRAJECTORY_kP = 3.0; 
         public static final double X_POSE_TRAJECTORY_kI = 0.0;
@@ -177,6 +173,10 @@ public class Constants {
         public static final double Y_POSE_TRAJECTORY_kP = 3.2;
         public static final double Y_POSE_TRAJECTORY_kI = 0.0;
         public static final double Y_POSE_TRAJECTORY_kD = 0.07;
+
+        public static final double ANGLE_TRAJECTORY_kP = 0.8;
+        public static final double ANGLE_TRAJECTORY_kI = 0.0;
+        public static final double ANGLE_TRAJECTORY_kD = 0.005;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -190,6 +190,14 @@ public class Constants {
 
         public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
         public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
+
+        public static final double AUTO_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double AUTO_LEVEL_KI = 0.0;
+        public static final double AUTO_LEVEL_KD = 0.5;
+        
+        public static final double QUICK_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double QUICK_LEVEL_KI = 0.0;
+        public static final double QUICK_LEVEL_KD = 0.5;
     }
 
 
@@ -370,12 +378,14 @@ public class Constants {
             CLOSED_LOOP_CONFIGURATION.kF = 0.01;
 
             CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
-            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 300;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 200;
             CLOSED_LOOP_CONFIGURATION.JERK = 1500;
         }
     }
 
     public static class Auto {
+
+        
         public static class FieldPoses {
             public static final Pose2d BLUE_NODE_ONE_GOAL = new Pose2d(BLUE_X_COORDINATE, 0.519, new Rotation2d());
             public static final Pose2d BLUE_NODE_TWO_GOAL = new Pose2d(BLUE_X_COORDINATE, 1.080, new Rotation2d());
@@ -580,7 +590,7 @@ public class Constants {
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.165;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
@@ -593,7 +603,7 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.87; // rotations
+        public static final double IDLE_ANGLE = 0.85; // rotations
         public static final double INTAKE_ANGLE = 2.5; //
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
