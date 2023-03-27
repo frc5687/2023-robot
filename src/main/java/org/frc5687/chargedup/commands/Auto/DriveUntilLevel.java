@@ -16,7 +16,7 @@ public class DriveUntilLevel extends OutliersCommand {
 
     public DriveUntilLevel(DriveTrain driveTrain) {
         _drivetrain = driveTrain;
-        _pitchController = new PIDController(3.0, 0.0, 0.5);
+        _pitchController = new PIDController(Constants.DriveTrain.AUTO_LEVEL_KP, Constants.DriveTrain.AUTO_LEVEL_KI, Constants.DriveTrain.AUTO_LEVEL_KD); // kp = 3.0 ki = 0.0 kd  = 0.5
         _finished = false;
         _state = LevelingState.INITIAL;
         _timeout = System.currentTimeMillis();

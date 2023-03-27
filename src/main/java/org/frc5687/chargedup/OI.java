@@ -16,11 +16,11 @@ import org.frc5687.chargedup.commands.SemiAuto.*;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
+import org.frc5687.chargedup.commands.ZeroSuperStructure;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
-import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
 
@@ -62,8 +62,7 @@ public class OI extends OutliersProxy {
             Arm arm,
             Elevator elevator,
             CubeShooter cubeShooter,
-            Lights lights, IdentityMode identityMode) {
-        if (identityMode == IdentityMode.competition){ // Enables all other commands
+            Lights lights) {
         _customController
                 .getChangeModeButton()
                 .toggleOnTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
@@ -73,15 +72,18 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
 
+        _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
+
         _customController
                 .getIntakeButton()
                 .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
-            _customController.getIntakeButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+        _operatorJoystick.button(2).onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
+        _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
+        _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
 
-            _operatorJoystick.button(2).onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
-            _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
-            _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+        _povButtonLeft.onTrue(new Tap(drivetrain, false));
+        _povButtonRight.onTrue(new Tap(drivetrain, true));
 
         //        _driverGamepad.getXButton().onTrue(new
         // DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))
@@ -93,28 +95,26 @@ public class OI extends OutliersProxy {
                                 .unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
 
-            _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
-            for (int row = 0; row < 3; row++) {
-                for (int col = 0; col < 9; col++) {
-                    _customController
-                            .getButton(row, col)
-                            .onTrue(
-                                    new SetRobotGoal(
-                                            drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
-                }
+        _driverGamepad
+                .getYButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                _customController
+                        .getButton(row, col)
+                        .onTrue(
+                                new SetRobotGoal(
+                                        drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
             }
-            _operatorJoystick.button(1)
-                    .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
-            _customController.getDeployButton()
-                    .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
-            }
-            // Enables only DriveTrain commands
-            _povButtonLeft.onTrue(new Tap(drivetrain, false));
-            _povButtonRight.onTrue(new Tap(drivetrain, true));
-
-            _driverGamepad
-                    .getYButton()
-                    .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        }
+        _operatorJoystick
+                .button(1)
+                .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
+        _customController
+                .getDeployButton()
+                .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
     }
 
     // TODO: Need to update the gamepad class for 2023 new stuff
