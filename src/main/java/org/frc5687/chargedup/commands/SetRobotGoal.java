@@ -1,7 +1,6 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
@@ -32,7 +31,7 @@ public class SetRobotGoal extends OutliersCommand {
         _endEffector.setGoalLevel(_goalLevel);
         super.initialize();
         error("Setting to position " + _goalLevel.name() + "on node " + _node.name());
-        boolean isRedAlliance = DriverStation.getAlliance() == DriverStation.Alliance.Red;
+        boolean isRedAlliance = _driveTrain.isRedAlliance();
         Pose2d pose =
                 isRedAlliance
                         ? Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL
@@ -54,7 +53,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_NINE_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL;
                 break;
             case TWO:
                 switch (_goalLevel) {
@@ -71,7 +70,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
                 break;
             case THREE:
                 switch (_goalLevel) {
@@ -88,7 +87,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_THREE_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_SEVEN_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_THREE_GOAL;
                 break;
             case FOUR:
                 switch (_goalLevel) {
@@ -105,7 +104,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_FOUR_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_SIX_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_FOUR_GOAL;
                 break;
             case FIVE:
                 switch (_goalLevel) {
@@ -138,7 +137,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_SIX_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_FOUR_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_SIX_GOAL;
                 break;
             case SEVEN:
                 switch (_goalLevel) {
@@ -155,7 +154,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_SEVEN_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_THREE_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_SEVEN_GOAL;
                 break;
             case EIGHT:
                 switch (_goalLevel) {
@@ -172,7 +171,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
                 break;
             case NINE:
                 switch (_goalLevel) {
@@ -189,7 +188,7 @@ public class SetRobotGoal extends OutliersCommand {
                 pose =
                         isRedAlliance
                                 ? Constants.Auto.FieldPoses.RED_NODE_NINE_GOAL
-                                : Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL;
+                                : Constants.Auto.FieldPoses.BLUE_NODE_NINE_GOAL;
                 break;
         }
         _endEffector.setSuperStructureSetpoint(setpoint);

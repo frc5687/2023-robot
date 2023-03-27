@@ -28,6 +28,17 @@ public class RobotMap {
             public static final int CUBESHOOTER_SHOOTER = 14;
         }
 
+        public static class PRACTICETALONFX {
+            public static final int NORTH_WEST_OUTER = 1;
+            public static final int NORTH_WEST_INNER = 2;
+            public static final int NORTH_EAST_INNER = 3;
+            public static final int NORTH_EAST_OUTER = 4;
+            public static final int SOUTH_EAST_INNER = 5;
+            public static final int SOUTH_EAST_OUTER = 6;
+            public static final int SOUTH_WEST_INNER = 7;
+            public static final int SOUTH_WEST_OUTER = 8;
+        }
+
         public static class PIGEON {
             public static final int PIGEON = 0;
         }
@@ -87,5 +98,12 @@ public class RobotMap {
         public static final int ENCODER_CUBESHOOTER_WRIST = 9;
         public static final int ARM_ENCODER_A = 19;
         public static final int ARM_ENCODER_B = 20;
+    }
+
+    public static class PRACTICEDIO {
+        public static final int ENCODER_NW = 0;
+        public static final int ENCODER_NE = 3;
+        public static final int ENCODER_SE = 6;
+        public static final int ENCODER_SW = 10;
     }
 }
