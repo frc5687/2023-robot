@@ -16,6 +16,7 @@ import org.frc5687.chargedup.commands.SemiAuto.*;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
+import org.frc5687.chargedup.commands.ZeroSuperStructure;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
@@ -70,6 +71,8 @@ public class OI extends OutliersProxy {
                 .toggleOnFalse(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
         _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+
+        _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
 
         _customController
                 .getIntakeButton()

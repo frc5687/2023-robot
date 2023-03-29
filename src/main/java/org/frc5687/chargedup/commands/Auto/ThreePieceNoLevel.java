@@ -18,8 +18,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class ThreePieceLevel extends SequentialCommandGroup {
-    public ThreePieceLevel(
+public class ThreePieceNoLevel extends SequentialCommandGroup {
+    public ThreePieceNoLevel(
         DriveTrain drivetrain,
         Arm arm,
         Elevator elevator,
@@ -46,7 +46,9 @@ public class ThreePieceLevel extends SequentialCommandGroup {
                 new DriveTrajectory(
                         drivetrain, trajectories.getTrajectory(alliance + "GOAL_TWO_CHARGE_THREE"), true, false),
                 new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),
-                new QuickLevel(drivetrain) 
+                new ParallelDeadlineGroup(
+                    new DriveTrajectory(drivetrain, trajectories.getTrajectory(alliance + "CHARGE_THREE_GOAL_THREE"), true, false)),
+                    new AutoIntake(shooter)
             );
     }  
 }
