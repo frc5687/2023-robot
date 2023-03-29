@@ -202,110 +202,16 @@ public class RobotContainer extends OutliersContainer {
                         return new WaitCommand(15);
                 }
             case TwoPiece:
-                switch (_autoFirstNode) {
-                    case OneCone:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.OneCone,
-                                _trajectories);
-                    case TwoCube:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.TwoCube,
-                                _trajectories);
-                    case ThreeCone:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.ThreeCone,
-                                _trajectories);
-                    case FourCone:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.FourCone,
-                                _trajectories);
-                    case FiveCube:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.FiveCube,
-                                _trajectories);
-                    case SixCone:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.SixCone,
-                                _trajectories);
-                    case SevenCone:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.SevenCone,
-                                _trajectories);
-                    case EightCube:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.EightCube,
-                                _trajectories);
-                    case NineCone:
-                        return new TwoPieceAuto(
-                                _driveTrain,
-                                _endEffector,
-                                _elevator,
-                                _arm,
-                                _lights,
-                                _cubeShooter,
-                                _oi,
-                                Node.NineCone,
-                                _trajectories);
-                    default:
-                        error("uh oh");
-                        return new WaitCommand(15);
-                }
+                return new TwoPieceAuto(
+                    _driveTrain,
+                    _endEffector,
+                    _elevator,
+                    _arm,
+                    _lights,
+                    _cubeShooter,
+                    _oi,
+                    _autoFirstNode,
+                    _trajectories);
             case StealCubes:
                 return new StealCubesAuto(
                         _driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, _trajectories);
