@@ -118,5 +118,6 @@ public class CubeShooter extends OutliersSubsystem {
         metric("Shooter RPS", getShooterRPS());
         metric("Wrist Encoder rotations", getWristEncoderRotation());
         metric("Bore Encoder rotations", getBoreEncoderRotation());
+        metric("Cube in Shooter", isCubeDetected());
     }
 }

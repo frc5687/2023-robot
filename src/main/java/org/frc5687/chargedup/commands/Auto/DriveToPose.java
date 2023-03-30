@@ -12,12 +12,12 @@ public class DriveToPose extends OutliersCommand {
 
     private final DriveTrain _driveTrain;
     private Pose2d _destPose;
-    private final OI _oi;
+    private boolean _isShooter;
 
-    public DriveToPose(DriveTrain driveTrain, Pose2d pose, OI oi) {
+    public DriveToPose(DriveTrain driveTrain, Pose2d pose, boolean isShooter) {
         _driveTrain = driveTrain;
         _destPose = pose;
-        _oi = oi;
+        _isShooter = isShooter;
         addRequirements(_driveTrain);
     }
 
@@ -30,16 +30,14 @@ public class DriveToPose extends OutliersCommand {
 
     @Override
     public void execute() {
-        _driveTrain.setVelocityPose(_destPose, false);
+        _driveTrain.setVelocityPose(_destPose, _isShooter);
     }
 
     @Override
     public boolean isFinished() {
         double xDiff = _destPose.getX() - _driveTrain.getEstimatedPose().getX();
         double yDiff = _destPose.getY() - _driveTrain.getEstimatedPose().getY();
-        return (Math.abs(xDiff) < 0.03 && Math.abs(yDiff) < 0.03)
-         || (_oi.getDriveX() > 0 || _oi.getDriveY() > 0) /* || 
-         (_oi.getTapRight() || _oi.getTapLeft()) */;
+        return (Math.abs(xDiff) < 0.03 && Math.abs(yDiff) < 0.03);
     }
 
     @Override

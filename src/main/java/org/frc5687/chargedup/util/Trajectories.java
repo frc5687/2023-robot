@@ -19,7 +19,7 @@ public class Trajectories {
             "RED_NODE_NINE_GOAL_FOUR",
             "RED_GOAL_ONE_NODE_ONE",
             "RED_GOAL_ONE_NODE_TWO",
-            "RED_RED_GOAL_TWO_NODE_ONE",
+            "RED_GOAL_TWO_NODE_ONE",
             "RED_GOAL_TWO_NODE_TWO",
             "RED_GOAL_THREE_NODE_EIGHT",
             "RED_GOAL_THREE_NODE_NINE",

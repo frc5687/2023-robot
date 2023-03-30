@@ -3,6 +3,7 @@ package org.frc5687.chargedup.commands.Auto;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -14,6 +15,9 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.DriveTrajectory;
+import org.frc5687.chargedup.commands.SetHoverGoal;
+import org.frc5687.chargedup.commands.SetRobotGoal;
+import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -21,7 +25,10 @@ import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.util.AutoChooser;
+import org.frc5687.chargedup.util.FieldConstants;
 import org.frc5687.chargedup.util.Trajectories;
+import org.frc5687.chargedup.util.Nodes.Level;
+import org.frc5687.chargedup.util.Nodes.Node;
 
 public class TwoPieceAuto extends SequentialCommandGroup {
     private PathPlannerTrajectory _trajectory1;
@@ -102,11 +109,15 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                 addCommands(
                     new SequentialCommandGroup(
                         new AutoPlaceHighCone(elevator, endEffector, arm),
+                        // new DriveForTime(driveTrain, 100),
                         new ParallelDeadlineGroup(
                             new DriveTrajectory(driveTrain, _trajectory1, true, true),
-                            new AutoIntake(_shooter)
+                            new SequentialCommandGroup(
+                                new WaitCommand(1), 
+                                new AutoIntake(_shooter))
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
+                        new DriveToPose(driveTrain, new Pose2d(Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL.getTranslation(), new Rotation2d(Math.PI)), true),
                         new Shoot(_shooter, 0.6, 0.21, _oi)
                     )
                 );
@@ -119,6 +130,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                             new AutoIntake(_shooter)
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
+                        new SnapTo(driveTrain, new Rotation2d(195)),
                         new Shoot(_shooter, 0.6, 0.21, _oi)
                     )
                 );
