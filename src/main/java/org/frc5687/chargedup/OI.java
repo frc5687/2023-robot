@@ -99,7 +99,7 @@ public class OI extends OutliersProxy {
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
         _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights, false));
+        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 _customController
