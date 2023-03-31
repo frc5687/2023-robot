@@ -6,9 +6,11 @@ import org.frc5687.chargedup.subsystems.CubeShooter;
 
 public class AutoIntake extends OutliersCommand {
     private CubeShooter _cubeShooter;
+    private boolean _override;
 
-    public AutoIntake(CubeShooter shooter) {
+    public AutoIntake(CubeShooter shooter, boolean override) {
         _cubeShooter = shooter;
+        _override = override;
         addRequirements(_cubeShooter);
     }
 
@@ -24,7 +26,7 @@ public class AutoIntake extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        return _cubeShooter.isCubeDetected();
+        return _override ? false : _cubeShooter.isCubeDetected();
     }
 
     @Override

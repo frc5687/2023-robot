@@ -33,6 +33,7 @@ import org.frc5687.chargedup.util.Nodes.Node;
 public class TwoPieceAuto extends SequentialCommandGroup {
     private PathPlannerTrajectory _trajectory1;
     private PathPlannerTrajectory _trajectory2;
+    private Pose2d pose;
     // private Rotation2d rotation1;
     // private Rotation2d rotation2;
 
@@ -55,11 +56,13 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             case OneCone:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_ONE_GOAL_ONE");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_ONE_NODE_TWO");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
                 placeCone = true;
                 break;
             case TwoCube:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_TWO_GOAL_ONE");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_ONE_NODE_TWO");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
                 placeCone = false;
                 break;
             case ThreeCone:
@@ -85,11 +88,13 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             case EightCube:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_EIGHT_GOAL_FOUR");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_FOUR_NODE_EIGHT");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
                 placeCone = false;
                 break;
             case NineCone:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_NINE_GOAL_FOUR");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_FOUR_NODE_EIGHT");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
                 placeCone = true;
                 break;
             case Unknown:
@@ -114,10 +119,11 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                             new DriveTrajectory(driveTrain, _trajectory1, true, false),
                             // new SequentialCommandGroup(
                             //     new WaitCommand(1), 
-                                new AutoIntake(_shooter)
+                                new AutoIntake(_shooter, true)
                             // )
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
+                        new DriveToPose(driveTrain, pose, driveTrain.isRedAlliance()),
                         new Shoot(_shooter, 1.0, 0.21, _oi)
                     )
                 );
@@ -128,7 +134,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                         new AutoPlaceHighCube(elevator, endEffector, arm),
                         new ParallelDeadlineGroup(
                             new DriveTrajectory(driveTrain, _trajectory1, true, false),
-                            new AutoIntake(_shooter)
+                            new AutoIntake(_shooter, true)
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
                         // new SnapTo(driveTrain, new Rotation2d(195)),

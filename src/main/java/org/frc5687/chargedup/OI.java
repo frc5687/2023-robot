@@ -93,7 +93,7 @@ public class OI extends OutliersProxy {
                 .onTrue(
                         new AutoShoot(cubeShooter, drivetrain, endEffector, this)
                                 .unless(() -> !cubeShooter.isCubeDetected()));
-        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter));
+        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter, false));
 
         _driverGamepad
                 .getYButton()
