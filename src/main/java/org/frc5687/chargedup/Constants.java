@@ -316,8 +316,9 @@ public class Constants {
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static double MOTOR_MAX_VEL =
                 Units.rotationsPerMinuteToRadiansPerSecond(6080); // foc enabled rpm
+        public static double MOTOR_MAX_VEL_RPS = MOTOR_MAX_VEL / 60.0;
         public static final String CAN_BUS = "CANivore";
-        public static final double GEAR_RATIO = 240;
+        public static final double GEAR_RATIO = 5.0*5.0*3.0 * (150.0/35.0); //gear ratio times pulley reduction (approx 321.4285714285715)
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
 
         static {
@@ -369,9 +370,9 @@ public class Constants {
             CLOSED_LOOP_CONFIGURATION.kD = 0.05;
             CLOSED_LOOP_CONFIGURATION.kF = 0.01;
 
-            CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
-            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 200;
-            CLOSED_LOOP_CONFIGURATION.JERK = 1500;
+            CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 101;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 400;
+            CLOSED_LOOP_CONFIGURATION.JERK = 2500;
         }
     }
 

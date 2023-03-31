@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
+import org.frc5687.chargedup.commands.AutoExtendSuperStructurePosition;
+import org.frc5687.chargedup.commands.AutoRetractSuperStructurePosition;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.HoldWristAngle;
@@ -40,7 +42,7 @@ public class SemiAutoPlace extends OutliersCommand {
             SuperStructureSetpoints.Setpoint setpoint = _endEffector.getSuperStructureSetpoint();
             SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-                    new AutoSetSuperStructurePosition(_elevator, _endEffector, _arm, setpoint),
+                    new AutoExtendSuperStructurePosition(_elevator, _endEffector, _arm, setpoint),
                     new ParallelDeadlineGroup(
                             new WaitForPlace(_endEffector, _oi, true),
                             new HoldWristAngle(_endEffector, setpoint.wristAngle),

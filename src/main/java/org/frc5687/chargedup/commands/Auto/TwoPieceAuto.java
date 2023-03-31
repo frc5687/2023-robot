@@ -108,30 +108,31 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             if (placeCone) {
                 addCommands(
                     new SequentialCommandGroup(
+                        new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
                         new AutoPlaceHighCone(elevator, endEffector, arm),
-                        // new DriveForTime(driveTrain, 100),
                         new ParallelDeadlineGroup(
-                            new DriveTrajectory(driveTrain, _trajectory1, true, true),
-                            new SequentialCommandGroup(
-                                new WaitCommand(1), 
-                                new AutoIntake(_shooter))
+                            new DriveTrajectory(driveTrain, _trajectory1, true, false),
+                            // new SequentialCommandGroup(
+                            //     new WaitCommand(1), 
+                                new AutoIntake(_shooter)
+                            // )
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        new DriveToPose(driveTrain, new Pose2d(Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL.getTranslation(), new Rotation2d(Math.PI)), true),
-                        new Shoot(_shooter, 0.6, 0.21, _oi)
+                        new Shoot(_shooter, 1.0, 0.21, _oi)
                     )
                 );
             } else {
                 addCommands(
                     new SequentialCommandGroup(
+                        new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
                         new AutoPlaceHighCube(elevator, endEffector, arm),
                         new ParallelDeadlineGroup(
-                            new DriveTrajectory(driveTrain, _trajectory1, true, true),
+                            new DriveTrajectory(driveTrain, _trajectory1, true, false),
                             new AutoIntake(_shooter)
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        new SnapTo(driveTrain, new Rotation2d(195)),
-                        new Shoot(_shooter, 0.6, 0.21, _oi)
+                        // new SnapTo(driveTrain, new Rotation2d(195)),
+                        new Shoot(_shooter, 1.0, 0.21, _oi)
                     )
                 );
             }
