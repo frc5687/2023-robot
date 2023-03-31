@@ -7,6 +7,8 @@ import org.frc5687.chargedup.subsystems.CubeShooter;
 public class AutoIntake extends OutliersCommand {
     private CubeShooter _cubeShooter;
     private boolean _override;
+    private long _timer;
+    private boolean _timerStarted;
 
     public AutoIntake(CubeShooter shooter, boolean override) {
         _cubeShooter = shooter;
@@ -19,14 +21,26 @@ public class AutoIntake extends OutliersCommand {
         super.initialize();
         _cubeShooter.setShooterSpeed(-.5);
         _cubeShooter.setWristAngle(Constants.CubeShooter.INTAKE_ANGLE);
+        _timer = System.currentTimeMillis() + 250;
     }
 
     @Override
-    public void execute() {}
+    public void execute() {
+        if (_cubeShooter.isCubeDetected() && !_timerStarted){
+            _timerStarted = true;
+            _timer = System.currentTimeMillis() + 250;
+        } else if (_timerStarted && !_cubeShooter.isCubeDetected()){
+            _timerStarted = false;
+        }
+    }
 
     @Override
     public boolean isFinished() {
-        return _override ? false : _cubeShooter.isCubeDetected();
+        if (_timer < System.currentTimeMillis() && _cubeShooter.isCubeDetected() && _timerStarted){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

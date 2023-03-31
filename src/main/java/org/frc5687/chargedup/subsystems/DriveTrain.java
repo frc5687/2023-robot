@@ -198,8 +198,8 @@ public class DriveTrain extends OutliersSubsystem {
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
 
         _trajectoryController = new PPHolonomicDriveController(
-                new PIDController(kP, kI, kD),
-                new PIDController(kP, kI, kD),
+                new PIDController(X_TRAJECTORY_kP, X_TRAJECTORY_kI, X_TRAJECTORY_kD),
+                new PIDController(Y_TRAJECTORY_kP, Y_TRAJECTORY_kI, Y_TRAJECTORY_kD),
                 new PIDController(ANGLE_TRAJECTORY_kP, ANGLE_TRAJECTORY_kI, ANGLE_TRAJECTORY_kD)
         );
 
@@ -272,6 +272,7 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void dataPeriodic(double timestamp) {
         _poseEstimator.update(getHeading(), _systemIO.measuredPositions);
+        if (getPitch() < Units.degreesToRadians(0.05)){
         Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
             CompletableFuture<Optional<EstimatedRobotPose>> northWestPoseFuture =
                     _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
@@ -304,12 +305,11 @@ public class DriveTrain extends OutliersSubsystem {
                 EstimatedRobotPose camSE = southEastPose.get();
                 _poseEstimator.addVisionMeasurement(camSE.estimatedPose.toPose2d(), camSE.timestampSeconds);
             }
-        
+        }
         _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
 
-        if (_imu.getPitch().getValue() < .05){
         _field.setRobotPose(_systemIO.estimatedPose);
-    }
+    
 }
 
     // Heading controller functions

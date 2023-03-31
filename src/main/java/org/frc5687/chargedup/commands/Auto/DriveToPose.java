@@ -44,5 +44,6 @@ public class DriveToPose extends OutliersCommand {
     public void end(boolean interrupted) {
         _driveTrain.setKinematicLimits(KINEMATIC_LIMITS);
         super.end(interrupted);
+        error("Drive to Pose Ended!");
     }
 }
