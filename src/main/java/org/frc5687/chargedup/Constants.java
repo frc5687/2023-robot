@@ -604,7 +604,7 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.85; // rotations
+        public static final double IDLE_ANGLE = 0.21; // rotations
         public static final double INTAKE_ANGLE = 2.5; //
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
