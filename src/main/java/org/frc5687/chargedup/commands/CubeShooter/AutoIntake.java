@@ -19,16 +19,16 @@ public class AutoIntake extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        _cubeShooter.setShooterSpeed(-.5);
+        _cubeShooter.setShooterSpeed(-.4);
         _cubeShooter.setWristAngle(Constants.CubeShooter.INTAKE_ANGLE);
-        _timer = System.currentTimeMillis() + 250;
+        _timer = System.currentTimeMillis() + 50;
     }
 
     @Override
     public void execute() {
         if (_cubeShooter.isCubeDetected() && !_timerStarted){
             _timerStarted = true;
-            _timer = System.currentTimeMillis() + 250;
+            _timer = System.currentTimeMillis() + 90;
         } else if (_timerStarted && !_cubeShooter.isCubeDetected()){
             _timerStarted = false;
         }

@@ -4,6 +4,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
@@ -123,8 +125,8 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                             // )
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        new DriveToPose(driveTrain, pose, driveTrain.isRedAlliance()),
-                        new Shoot(_shooter, 1.0, 0.21, _oi)
+                        new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.2, 0), new Rotation2d())), driveTrain.isRedAlliance()),
+                        new Shoot(_shooter, 1.0, 0.18, _oi)
                     )
                 );
             } else {
