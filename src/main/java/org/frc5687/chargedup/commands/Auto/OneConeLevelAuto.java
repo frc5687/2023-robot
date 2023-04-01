@@ -15,7 +15,7 @@ public class OneConeLevelAuto extends SequentialCommandGroup {
         addCommands(
                 new SequentialCommandGroup(
                         Commands.runOnce(endEffector::setConeMode, endEffector),
-                        new AutoPlaceHighCone(elevator, endEffector, arm),
+                        new AutoPlaceAndStowHighCone(elevator, endEffector, arm),
                         new DriveUntilLevel(driveTrain)));
     }
 }

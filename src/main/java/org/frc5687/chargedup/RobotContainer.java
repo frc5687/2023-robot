@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
-import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCone;
-import org.frc5687.chargedup.commands.Auto.AutoPlaceHighCube;
+import org.frc5687.chargedup.commands.Auto.AutoPlaceAndStowHighCone;
+import org.frc5687.chargedup.commands.Auto.AutoPlaceAndStowHighCube;
 import org.frc5687.chargedup.commands.Auto.OneConeAuto;
 import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
@@ -160,15 +160,15 @@ public class RobotContainer extends OutliersContainer {
                     case TwoCube:
                         return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case ThreeCone:
-                        return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
                     case FourCone:
-                        return new AutoPlaceHighCube(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
                     case FiveCube:
-                        return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
                     case SixCone:
-                        return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
                     case SevenCone:
-                        return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
                     case EightCube:
                         return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case NineCone:
@@ -184,7 +184,7 @@ public class RobotContainer extends OutliersContainer {
                     case TwoCube:
                         return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case ThreeCone:
-                        return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCone(_elevator, _endEffector, _arm);
                     case FourCone:
                         return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case FiveCube:
@@ -192,7 +192,7 @@ public class RobotContainer extends OutliersContainer {
                     case SixCone:
                         return new OneConeLevelAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case SevenCone:
-                        return new AutoPlaceHighCone(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCone(_elevator, _endEffector, _arm);
                     case EightCube:
                         return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case NineCone:
