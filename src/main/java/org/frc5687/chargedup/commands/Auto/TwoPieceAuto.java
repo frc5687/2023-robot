@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -17,6 +18,7 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.DriveTrajectory;
+import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.SetHoverGoal;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
@@ -108,42 +110,26 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                 waitInstead = true;
                 break;
         }
-
+        Command placeCommand = placeCone ? new AutoPlaceHighCone(elevator, endEffector, arm) : new AutoPlaceHighCube(elevator, endEffector, arm);
         if (waitInstead) {
             addCommands(new WaitCommand(15));
         } else {
-            if (placeCone) {
-                addCommands(
-                    new SequentialCommandGroup(
-                        new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
-                        new AutoPlaceHighCone(elevator, endEffector, arm),
-                        new ParallelDeadlineGroup(
-                            new DriveTrajectory(driveTrain, _trajectory1, true, false),
-                            // new SequentialCommandGroup(
-                            //     new WaitCommand(1), 
-                                new AutoIntake(_shooter, true)
-                            // )
-                        ),
-                        new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), driveTrain.isRedAlliance()),
-                        new Shoot(_shooter, 1.0, 0.2, _oi)
-                    )
-                );
-            } else {
-                addCommands(
-                    new SequentialCommandGroup(
-                        new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
-                        new AutoPlaceHighCube(elevator, endEffector, arm),
-                        new ParallelDeadlineGroup(
-                            new DriveTrajectory(driveTrain, _trajectory1, true, false),
+            addCommands(
+                new SequentialCommandGroup(
+                    new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
+                    placeCommand,
+                    new ParallelDeadlineGroup(
+                        new DriveTrajectory(driveTrain, _trajectory1, true, false),
+                        // new SequentialCommandGroup(
+                        //     new WaitCommand(1), 
                             new AutoIntake(_shooter, true)
-                        ),
-                        new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        // new SnapTo(driveTrain, new Rotation2d(195)),
-                        new Shoot(_shooter, 1.0, 0.21, _oi)
-                    )
-                );
-            }
+                        // )
+                    ),
+                    new DriveTrajectory(driveTrain, _trajectory2, true, false),
+                    new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), true),
+                    new Shoot(_shooter, 1.0, 0.2, _oi)
+                )
+            );
         }
     }
 }

@@ -39,7 +39,7 @@ public class Trajectories {
             new Pair<>("RED_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 2.0)),
 
             
-            new Pair<>("BLUE_NODE_ONE_GOAL_ONE", new PathConstraints(3.0, 2.0)),  // to and from top and bottom two nodes and top and bottom two goals
+            new Pair<>("BLUE_NODE_ONE_GOAL_ONE", new PathConstraints(2.5, 2.0)),  // to and from top and bottom two nodes and top and bottom two goals
             new Pair<>("BLUE_NODE_ONE_GOAL_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_NODE_TWO_GOAL_ONE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_NODE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),

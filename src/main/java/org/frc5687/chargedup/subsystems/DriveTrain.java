@@ -64,7 +64,6 @@ public class DriveTrain extends OutliersSubsystem {
     private final HolonomicDriveController _poseController;
     private final PPHolonomicDriveController _trajectoryController;
 
-    private boolean _isRedAlliance = false;
     // IMU (Pigeon)
     private final Pigeon2 _imu;
     private double _yawOffset;
@@ -98,7 +97,6 @@ public class DriveTrain extends OutliersSubsystem {
         // configure our system IO and pigeon;
         _imu = imu;
         _systemIO = new SystemIO();
-        _isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
         // This should set the Pigeon to 0.
         // set update frequency to 200hz
@@ -457,7 +455,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void updateOdometry() {
         _odometry.update(
-                _isRedAlliance ? getHeading().minus(new Rotation2d(Math.PI)) : getHeading(),
+                isRedAlliance() ? getHeading().minus(new Rotation2d(Math.PI)) : getHeading(),
                 new SwerveModulePosition[] {
                     _modules[NORTH_WEST_IDX].getModulePosition(),
                     _modules[SOUTH_WEST_IDX].getModulePosition(),
@@ -578,7 +576,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public boolean isRedAlliance() {
-        return _isRedAlliance;
+        return DriverStation.getAlliance() == Alliance.Red;
     }
 
     public Pose2d getHoverGoal() {
@@ -613,6 +611,7 @@ public class DriveTrain extends OutliersSubsystem {
                     .collect(Collectors.toList());
 
             validPoses.forEach(cameraPose -> {
+                dynamicallyChangeDeviations(cameraPose.estimatedPose, prevEstimatedPose);
                 _poseEstimator.addVisionMeasurement(cameraPose.estimatedPose.toPose2d(), cameraPose.timestampSeconds);
             });
         }
