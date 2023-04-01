@@ -625,10 +625,9 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.estimatedPose;
     }
     public boolean isValidMeasurement(Pose3d measurement) {
-        if (measurement.getZ() < Units.inchesToMeters(30)) {
+        boolean isTargetWithinHeight = measurement.getZ() < Units.inchesToMeters(30);
 
-        }
-        return isMeasurementInField(measurement);
+        return isMeasurementInField(measurement) && isTargetWithinHeight;
     }
     public boolean isMeasurementInField(Pose3d measurement) {
         return (measurement.getX() >= 0.0 && measurement.getX() <= FieldConstants.fieldLength)
