@@ -10,7 +10,6 @@ public class Shoot extends OutliersCommand {
     private long _timeout;
     private ShootingState _state;
     private final CubeShooter _cubeShooter;
-    private final OI _oi;
     private final double _speed;
     private final double _angle;
     private boolean _finished;
@@ -21,7 +20,6 @@ public class Shoot extends OutliersCommand {
         _angle = angle;
         _state = ShootingState.INITIALIZE;
         _finished = false;
-        _oi = oi;
         addRequirements(_cubeShooter);
     }
 

@@ -96,6 +96,8 @@ public class SwerveHeadingController {
                         Constants.DriveTrain.SNAP_kD);
                 power = _PIDController.calculate(heading.getRadians(), _targetHeading.getRadians());
                 break;
+            default:
+                break;
         }
         if (Math.abs(heading.getRadians() - _targetHeading.getRadians())
                 < Units.degreesToRadians(1.0)) {

@@ -117,7 +117,7 @@ public class OI extends OutliersProxy {
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
     }
 
-    // TODO: Need to update the gamepad class for 2023 new stuff
+   
     public boolean autoAim() {
         return _driverGamepad.getXButton().getAsBoolean();
         // return false;

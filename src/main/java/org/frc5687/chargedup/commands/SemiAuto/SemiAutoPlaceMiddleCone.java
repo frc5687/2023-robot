@@ -8,7 +8,6 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
 import org.frc5687.chargedup.commands.AutoExtendSuperStructurePosition;
-import org.frc5687.chargedup.commands.AutoRetractSuperStructurePosition;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.commands.EndEffector.HoldWristAngle;
