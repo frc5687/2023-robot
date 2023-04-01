@@ -9,12 +9,14 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -25,8 +27,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
@@ -269,46 +274,6 @@ public class DriveTrain extends OutliersSubsystem {
         setModuleStates(_systemIO.setpoint.moduleStates);
     }
 
-    @Override
-    public void dataPeriodic(double timestamp) {
-        _poseEstimator.update(getHeading(), _systemIO.measuredPositions);
-        if (_imu.getPitch().getValue() < 5){
-        Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
-            CompletableFuture<Optional<EstimatedRobotPose>> northWestPoseFuture =
-                    _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
-            CompletableFuture<Optional<EstimatedRobotPose>> northEastPoseFuture =
-                    _photonProcessor.getSouthEastTopCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
-            CompletableFuture<Optional<EstimatedRobotPose>> southWestPoseFuture =
-                    _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
-            CompletableFuture<Optional<EstimatedRobotPose>> southEastPoseFuture =
-                    _photonProcessor.getSouthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose);
-
-            Optional<EstimatedRobotPose> northWestPose = northWestPoseFuture.join();
-            Optional<EstimatedRobotPose> northEastPose = northEastPoseFuture.join();
-            Optional<EstimatedRobotPose> southWestPose = southWestPoseFuture.join();
-            Optional<EstimatedRobotPose> southEastPose = southEastPoseFuture.join();
-            if (northWestPose.isPresent()) {
-                EstimatedRobotPose camNorthWestPose = northWestPose.get();
-                _poseEstimator.addVisionMeasurement(
-                        camNorthWestPose.estimatedPose.toPose2d(), camNorthWestPose.timestampSeconds);
-            }
-            if (northEastPose.isPresent()) {
-                EstimatedRobotPose camNorthEastPose = northEastPose.get();
-                _poseEstimator.addVisionMeasurement(
-                        camNorthEastPose.estimatedPose.toPose2d(), camNorthEastPose.timestampSeconds);
-            }
-            if (southWestPose.isPresent()) {
-                EstimatedRobotPose camSW = southWestPose.get();
-                _poseEstimator.addVisionMeasurement(camSW.estimatedPose.toPose2d(), camSW.timestampSeconds);
-            }
-            if (southEastPose.isPresent()) {
-                EstimatedRobotPose camSE = southEastPose.get();
-                _poseEstimator.addVisionMeasurement(camSE.estimatedPose.toPose2d(), camSE.timestampSeconds);
-            }
-        }
-        _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
-        _field.setRobotPose(_systemIO.estimatedPose);
-    }
 
     // Heading controller functions
     public HeadingState getHeadingControllerState() {
@@ -506,10 +471,6 @@ public class DriveTrain extends OutliersSubsystem {
         return _odometry.getPoseMeters();
     }
 
-    public Pose2d getEstimatedPose() {
-        return _systemIO.estimatedPose;
-    }
-
     /**
      * Reset position and gyroOffset of odometry
      *
@@ -537,52 +498,6 @@ public class DriveTrain extends OutliersSubsystem {
                 },
                 position);
         error("Reset robot position: " + position.toString());
-    }
-
-    public TrackedObjectInfo getClosestCone() {
-        TrackedObjectInfo closest = null;
-        double minDistance = Double.MAX_VALUE;
-        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
-        if (_objectCopy.size() > 0) {
-            for (TrackedObjectInfo info : _objectCopy) {
-                if (info.getElement() == TrackedObjectInfo.GameElement.CONE) {
-                    double distance = info.getDistance();
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closest = info;
-                    }
-                }
-            }
-        }
-        return closest;
-    }
-
-    public TrackedObjectInfo getClosestCube() {
-        TrackedObjectInfo closest = null;
-        double minDistance = Double.MAX_VALUE;
-        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
-        if (_objectCopy.size() > 0) {
-            for (TrackedObjectInfo info : _objectCopy) {
-                if (info.getElement() == TrackedObjectInfo.GameElement.CUBE) {
-                    double distance = info.getDistance();
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closest = info;
-                    }
-                }
-            }
-        }
-        return closest;
-    }
-
-    public boolean isConeDetected() {
-        TrackedObjectInfo obj = getClosestCone();
-        return obj != null;
-    }
-
-    public boolean isCubeDetected() {
-        TrackedObjectInfo obj = getClosestCube();
-        return obj != null;
     }
 
     public void moduleMetrics() {
@@ -673,5 +588,124 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void setHoverGoal(Pose2d pose) {
         _hoverGoal = pose;
+    }
+
+
+   /* Vision Stuff */
+    @Override
+    public void dataPeriodic(double timestamp) {
+        _poseEstimator.update(getHeading(), _systemIO.measuredPositions);
+
+        if (getPitch() < Units.degreesToRadians(5.0)) {
+            Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
+            List<CompletableFuture<Optional<EstimatedRobotPose>>> cameraFutures = Stream.of(
+                            _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose),
+                            _photonProcessor.getSouthEastTopCameraEstimatedGlobalPoseAsync(prevEstimatedPose),
+                            _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose),
+                            _photonProcessor.getSouthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose)
+                    )
+                    .collect(Collectors.toList());
+
+            List<EstimatedRobotPose> validPoses = cameraFutures.stream()
+                    .map(CompletableFuture::join)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .filter(cameraPose -> isValidMeasurement(cameraPose.estimatedPose))
+                    .collect(Collectors.toList());
+
+            validPoses.forEach(cameraPose -> {
+                _poseEstimator.addVisionMeasurement(cameraPose.estimatedPose.toPose2d(), cameraPose.timestampSeconds);
+            });
+        }
+        _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
+        _field.setRobotPose(_systemIO.estimatedPose);
+    }
+
+    public Pose2d getEstimatedPose() {
+        return _systemIO.estimatedPose;
+    }
+    public boolean isValidMeasurement(Pose3d measurement) {
+        if (measurement.getZ() < Units.inchesToMeters(30)) {
+
+        }
+        return isMeasurementInField(measurement);
+    }
+    public boolean isMeasurementInField(Pose3d measurement) {
+        return (measurement.getX() >= 0.0 && measurement.getX() <= FieldConstants.fieldLength)
+                && (measurement.getY() >= 0.0 && measurement.getY() <= FieldConstants.fieldWidth);
+    }
+
+    /**
+     * This changes the standard deviations to trust vision measurements less the farther the machine is.
+     * the linear line y = 0.1x + 0.3
+     * @param measurement the measurement from an AprilTag
+     */
+    public void dynamicallyChangeDeviations(Pose3d measurement, Pose2d currentEstimatedPose) {
+        double dist = measurement.toPose2d().getTranslation().getDistance(currentEstimatedPose.getTranslation());
+        double positionDev = Math.abs(0.1 * dist + 0.3);
+        _poseEstimator.setVisionMeasurementStdDevs(createVisionStandardDeviations(positionDev, positionDev, Units.degreesToRadians(70)));
+    }
+    protected Vector<N3> createStandardDeviations(double x, double y, double z) {
+        return VecBuilder.fill(x, y, z);
+    }
+
+    /**
+     * @param x in meters of how much we trust x component
+     * @param y in meters of how much we trust x component
+     * @param angle in radians of how much we trust the IMU;
+     * @return Standard Deivation of the pose;
+     */
+    protected Vector<N3> createStateStandardDeviations(double x, double y, double angle) {
+        return createStandardDeviations(x, y, angle);
+    }
+
+    protected Vector<N3> createVisionStandardDeviations(double x, double y, double angle) {
+        return createStandardDeviations(x, y, angle);
+    }
+
+    public TrackedObjectInfo getClosestCone() {
+        TrackedObjectInfo closest = null;
+        double minDistance = Double.MAX_VALUE;
+        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
+        if (_objectCopy.size() > 0) {
+            for (TrackedObjectInfo info : _objectCopy) {
+                if (info.getElement() == TrackedObjectInfo.GameElement.CONE) {
+                    double distance = info.getDistance();
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closest = info;
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    public TrackedObjectInfo getClosestCube() {
+        TrackedObjectInfo closest = null;
+        double minDistance = Double.MAX_VALUE;
+        ArrayList<TrackedObjectInfo> _objectCopy = _visionProcessor.getTrackedObjects();
+        if (_objectCopy.size() > 0) {
+            for (TrackedObjectInfo info : _objectCopy) {
+                if (info.getElement() == TrackedObjectInfo.GameElement.CUBE) {
+                    double distance = info.getDistance();
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closest = info;
+                    }
+                }
+            }
+        }
+        return closest;
+    }
+
+    public boolean isConeDetected() {
+        TrackedObjectInfo obj = getClosestCone();
+        return obj != null;
+    }
+
+    public boolean isCubeDetected() {
+        TrackedObjectInfo obj = getClosestCube();
+        return obj != null;
     }
 }

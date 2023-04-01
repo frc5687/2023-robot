@@ -376,8 +376,6 @@ public class Constants {
     }
 
     public static class Auto {
-
-        
         public static class FieldPoses {
             public static final Pose2d BLUE_NODE_ONE_GOAL = new Pose2d(BLUE_X_COORDINATE, 0.519, new Rotation2d());
             public static final Pose2d BLUE_NODE_TWO_GOAL = new Pose2d(BLUE_X_COORDINATE, 1.080, new Rotation2d());
@@ -686,5 +684,15 @@ public class Constants {
 
         public static int[] ORANGE_RED = {255, 69, 0};
         public static int[] MAROON = {128, 0, 0};
+    }
+
+    public static class VisionConfig {
+        public static double STATE_STD_DEV_X = 0.01;
+        public static double STATE_STD_DEV_Y = 0.01;
+        public static double STATE_STD_DEV_ANGLE = Units.degreesToRadians(0.5); // imu deviations lower number to trust more;
+
+        public static double VISION_STD_DEV_X = 0.35;
+        public static double VISION_STD_DEV_Y = 0.35;
+        public static double VISION_STD_DEV_ANGLE = Units.degreesToRadians(70); // imu deviations lower number to trust more;
     }
 }
