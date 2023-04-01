@@ -33,7 +33,7 @@ public class Trajectories {
             
             new Pair<>("RED_BUMP_GOAL_ONE", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_GOAL_ONE_CHARGE_TWO", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_CHARGE_TWO_GOAL_ONE", new PathConstraints(3.0, 2.0)),
+            new Pair<>("RED_CHARGE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_GOAL_TWO_CHARGE_THREE", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_CHARGE_THREE_GOAL_THREE", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 2.0)),
@@ -57,7 +57,7 @@ public class Trajectories {
             
             new Pair<>("BLUE_BUMP_GOAL_ONE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_GOAL_ONE_CHARGE_TWO", new PathConstraints(3.0, 2.0)),
-            new Pair<>("BLUE_CHARGE_TWO_GOAL_ONE", new PathConstraints(3.0, 2.0)),
+            new Pair<>("BLUE_CHARGE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_GOAL_TWO_CHARGE_THREE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_CHARGE_THREE_GOAL_THREE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 2.0))
