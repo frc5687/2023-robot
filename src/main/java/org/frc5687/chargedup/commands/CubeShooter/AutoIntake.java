@@ -1,7 +1,9 @@
 package org.frc5687.chargedup.commands.CubeShooter;
 
 import org.frc5687.chargedup.Constants;
+import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
+import org.frc5687.chargedup.commands.RumbleGamepad;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 
 public class AutoIntake extends OutliersCommand {
@@ -9,10 +11,12 @@ public class AutoIntake extends OutliersCommand {
     private boolean _override;
     private long _timer;
     private boolean _timerStarted;
+    private OI _oi;
 
-    public AutoIntake(CubeShooter shooter, boolean override) {
+    public AutoIntake(CubeShooter shooter, boolean override, OI oi) {
         _cubeShooter = shooter;
         _override = override;
+        _oi = oi;
         addRequirements(_cubeShooter);
     }
 
@@ -48,5 +52,10 @@ public class AutoIntake extends OutliersCommand {
         super.end(interrupted);
         _cubeShooter.setShooterSpeed(0);
         _cubeShooter.setWristAngle(Constants.CubeShooter.IDLE_ANGLE);
+        (new RumbleGamepad(_oi)).schedule();
+
+       
+
+        
     }
 }

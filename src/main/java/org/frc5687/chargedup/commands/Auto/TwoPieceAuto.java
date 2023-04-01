@@ -117,7 +117,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                         new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
                         // new SequentialCommandGroup(
                         //     new WaitCommand(1), 
-                            new AutoIntake(_shooter, true)
+                            new AutoIntake(_shooter, true, _oi)
                         // )
                     ),
                     new DriveTrajectory(driveTrain, _trajectory2, true, false),
