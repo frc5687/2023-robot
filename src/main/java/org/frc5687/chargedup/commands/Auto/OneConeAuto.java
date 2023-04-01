@@ -14,7 +14,7 @@ public class OneConeAuto extends SequentialCommandGroup {
         addCommands(
                 new SequentialCommandGroup(
                         Commands.runOnce(endEffector::setConeState, endEffector),
-                        new AutoPlaceHighCone(elevator, endEffector, arm),
+                        new AutoPlaceAndStowHighCone(elevator, endEffector, arm),
                         new DriveForTime(driveTrain, 2500)));
     }
 }

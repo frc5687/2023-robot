@@ -15,7 +15,7 @@ public class OneCubeLevelAuto extends SequentialCommandGroup {
         addCommands(
                 new SequentialCommandGroup(
                         Commands.runOnce(endEffector::setCubeState, endEffector),
-                        new AutoPlaceHighCube(elevator, endEffector, arm),
+                        new AutoPlaceAndStowHighCube(elevator, endEffector, arm),
                         new DriveUntilLevel(driveTrain)));
     }
 }
