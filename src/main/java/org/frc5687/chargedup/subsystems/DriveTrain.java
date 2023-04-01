@@ -639,7 +639,7 @@ public class DriveTrain extends OutliersSubsystem {
      */
     public void dynamicallyChangeDeviations(Pose3d measurement, Pose2d currentEstimatedPose) {
         double dist = measurement.toPose2d().getTranslation().getDistance(currentEstimatedPose.getTranslation());
-        double positionDev = Math.abs(0.1 * dist + 0.3);
+        double positionDev = Math.abs(0.11 * dist + 0.3);
         _poseEstimator.setVisionMeasurementStdDevs(createVisionStandardDeviations(positionDev, positionDev, Units.degreesToRadians(70)));
     }
     protected Vector<N3> createStandardDeviations(double x, double y, double z) {
