@@ -125,8 +125,8 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                             // )
                         ),
                         new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.2, 0), new Rotation2d())), driveTrain.isRedAlliance()),
-                        new Shoot(_shooter, 1.0, 0.18, _oi)
+                        new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), driveTrain.isRedAlliance()),
+                        new Shoot(_shooter, 1.0, 0.2, _oi)
                     )
                 );
             } else {
