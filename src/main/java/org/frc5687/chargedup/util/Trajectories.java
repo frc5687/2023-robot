@@ -3,7 +3,6 @@ package org.frc5687.chargedup.util;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-
 import edu.wpi.first.math.Pair;
 
 import java.util.ArrayList;
