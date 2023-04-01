@@ -26,6 +26,7 @@ public class RobotMap {
             public static final int EXT_ARM = 12;
             public static final int CUBESHOOTER_WRIST = 15;
             public static final int CUBESHOOTER_SHOOTER = 14;
+            public static final int GRIPPER = 11;
         }
 
         public static class PIGEON {
@@ -37,7 +38,7 @@ public class RobotMap {
         }
 
         public static class TalonSRX {
-            public static final int GRIPPER = 11;
+            
             public static final int WRIST = 10;
         }
     }

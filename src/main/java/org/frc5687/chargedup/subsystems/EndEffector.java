@@ -14,13 +14,14 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import org.frc5687.chargedup.util.SuperStructureSetpoints;
 import org.frc5687.lib.drivers.LazyTalonSRX;
+import org.frc5687.lib.drivers.OutliersTalon;
 
 import static org.frc5687.chargedup.Constants.EndEffector.*;
 
 public class EndEffector extends OutliersSubsystem {
    
     private final LazyTalonSRX _wrist;
-    private final LazyTalonSRX _gripper;
+    private final OutliersTalon _gripper;
     
     private final DutyCycleEncoder _wristEncoder;
     private final DutyCycleEncoder _gripperEncoder;
@@ -37,7 +38,7 @@ public class EndEffector extends OutliersSubsystem {
         _setpoint = SuperStructureSetpoints.idleConeSetpoint;
 
         _wrist = new LazyTalonSRX(RobotMap.CAN.TalonSRX.WRIST);
-        _gripper = new LazyTalonSRX(RobotMap.CAN.TalonSRX.GRIPPER);
+        _gripper = new OutliersTalon(RobotMap.CAN.TALONFX.GRIPPER, Constants.Elevator.CAN_BUS, "Gripper");
         _wrist.setInverted(Constants.EndEffector.WRIST_INVERTED);
         _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
         _wrist.setNeutralMode(NeutralMode.Brake);
@@ -72,8 +73,6 @@ public class EndEffector extends OutliersSubsystem {
         // metric("wrist setpoint", _wristController.getGoal().position);
         metric("position error", _wristController.getPositionError());
         metric("Is Roller Stalled", isRollerStalled());
-        metric("Roller Voltage", _gripper.getMotorOutputVoltage());
-        metric("Roller Current", _gripper.getStatorCurrent());
         metric("Is In Cone Mode", _isConeMode);
         metric("Is In Cube Mode", !_isConeMode);
     }
@@ -83,14 +82,14 @@ public class EndEffector extends OutliersSubsystem {
     
     public void setRollerSpeed(double demand){
         if (!isRollerStalled()) {
-            _gripper.set(ControlMode.PercentOutput, demand);
+            _gripper.setPercentOutput(demand);
         } else {
-            _gripper.set(ControlMode.PercentOutput, 0);
+            _gripper.setPercentOutput(demand);
         }
     }
 
     public boolean isRollerStalled(){ 
-        return Math.abs(_gripper.getStatorCurrent()) > Constants.EndEffector.GRIPPER_STALL_CURRENT;
+        return Math.abs(_gripper.getStatorCurrent().getValue()) > Constants.EndEffector.GRIPPER_STALL_CURRENT;
     }
 
     public double getWristAngleRadians(){
