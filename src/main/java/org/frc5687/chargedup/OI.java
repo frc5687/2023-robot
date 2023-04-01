@@ -18,7 +18,6 @@ import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.commands.ZeroSuperStructure;
 import org.frc5687.chargedup.subsystems.*;
-import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;

@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
-import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
+import org.frc5687.chargedup.subsystems.EndEffector.EndEffectorState;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.SuperStructureSetpoints;
 
@@ -44,15 +44,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                 }
                 pose =
@@ -64,15 +64,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleCubeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleCubePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CUBE);
+                        _endEffector.setState(EndEffectorState.CUBE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CUBE);
+                        _endEffector.setState(EndEffectorState.CUBE);
                         break;
                 }
                 pose =
@@ -84,15 +84,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                 }
                 pose =
@@ -104,15 +104,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                 }
                 pose =
@@ -124,15 +124,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleCubeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleCubePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CUBE);
+                        _endEffector.setState(EndEffectorState.CUBE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CUBE);
+                        _endEffector.setState(EndEffectorState.CUBE);
                         break;
                 }
                 pose =
@@ -144,15 +144,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                 }
                 pose =
@@ -164,15 +164,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                 }
                 pose =
@@ -184,15 +184,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleCubeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleCubePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CUBE);
+                        _endEffector.setState(EndEffectorState.CUBE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CUBE);
+                        _endEffector.setState(EndEffectorState.CUBE);
                         break;
                 }
                 pose =
@@ -204,15 +204,15 @@ public class SetRobotGoal extends OutliersCommand {
                 switch (_goalLevel) {
                     case LOW:
                         setpoint = SuperStructureSetpoints.idleConeSetpoint;
-                        _endEffector.setState(IntakeState.GROUND);
+                        _endEffector.setState(EndEffectorState.GROUND);
                         break;
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
-                        _endEffector.setState(IntakeState.CONE);
+                        _endEffector.setState(EndEffectorState.CONE);
                         break;
                 }
                 pose =

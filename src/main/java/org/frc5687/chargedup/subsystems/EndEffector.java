@@ -32,7 +32,7 @@ public class EndEffector extends OutliersSubsystem {
     private boolean _isConeMode = true;
     private Nodes.Level _currentLevel;
 
-    private IntakeState _intakeState = IntakeState.CUBE;
+    private EndEffectorState _endEffectorState = EndEffectorState.CUBE;
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -151,13 +151,13 @@ public class EndEffector extends OutliersSubsystem {
         return _setpoint;
     }
     
-    public enum IntakeState{
+    public enum EndEffectorState{
         CONE(0),
         CUBE(1),
         GROUND(2);
         private final int _value;
         
-        IntakeState(int value){
+        EndEffectorState(int value){
             _value = value;
         }
 
@@ -166,23 +166,27 @@ public class EndEffector extends OutliersSubsystem {
         }
     }
 
-    public IntakeState getState(){
-        return _intakeState;
+    public EndEffectorState getState(){
+        return _endEffectorState;
     }
 
-    public void setState(IntakeState state){
-        _intakeState = state;
+    public void setState(EndEffectorState state){
+        _endEffectorState = state;
     }
 
     public void setConeState(){
-        _intakeState = IntakeState.CONE;
+        _endEffectorState = EndEffectorState.CONE;
     }
 
     public void setCubeState(){
-        _intakeState = IntakeState.CUBE;
+        _endEffectorState = EndEffectorState.CUBE;
     }
 
     public void setGroundState(){
-        _intakeState = IntakeState.GROUND;
+        _endEffectorState = EndEffectorState.GROUND;
+    }
+
+    public boolean getConeMode(){
+        return getState() == EndEffectorState.CONE;
     }
 }

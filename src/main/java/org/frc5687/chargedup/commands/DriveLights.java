@@ -6,7 +6,7 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
-import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
+import org.frc5687.chargedup.subsystems.EndEffector.EndEffectorState;
 import org.frc5687.chargedup.subsystems.Lights.AnimationType;
 
 public class DriveLights extends OutliersCommand {
@@ -32,7 +32,7 @@ public class DriveLights extends OutliersCommand {
         super.execute();
         if (DriverStation.isDisabled()) {
             _lights.switchAnimation(AnimationType.RAINBOW);
-        } else if (_endEffector.getState() == IntakeState.CONE) {
+        } else if (_endEffector.getState() == EndEffectorState.CONE) {
             _lights.setColor(Constants.CANdle.YELLOW);
             switch (_driveTrain.getMode()) {
                 case VISION:
@@ -52,7 +52,7 @@ public class DriveLights extends OutliersCommand {
                     _lights.switchAnimation(AnimationType.STATIC);
                     break;
             }
-        } else if (_endEffector.getState() == IntakeState.CUBE){
+        } else if (_endEffector.getState() == EndEffectorState.CUBE){
             _lights.setColor(Constants.CANdle.PURPLE);
             switch (_driveTrain.getMode()) {
                 case VISION:

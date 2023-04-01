@@ -5,7 +5,6 @@ import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
-import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
 
 public class SemiAutoGroundPickup extends OutliersCommand {
     private EndEffector _endEffector;
@@ -23,7 +22,7 @@ public class SemiAutoGroundPickup extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        if (_endEffector.getState() == IntakeState.CONE) {
+        if (_endEffector.getConeMode()){
             (new SemiAutoGroundPickupCone(_arm, _endEffector, _elevator, _oi)).schedule();
         } else {
             (new SemiAutoGroundPickupCube(_arm, _endEffector, _elevator, _oi)).schedule();
