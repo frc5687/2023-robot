@@ -26,14 +26,15 @@ import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.Trajectories;
 
-public class TwoPieceAuto extends SequentialCommandGroup {
+public class TwoAndAHalfPieceAuto extends SequentialCommandGroup {
     private PathPlannerTrajectory _trajectory1;
     private PathPlannerTrajectory _trajectory2;
+    private PathPlannerTrajectory _trajectory3;
     private Pose2d pose;
     // private Rotation2d rotation1;
     // private Rotation2d rotation2;
 
-    public TwoPieceAuto(
+    public TwoAndAHalfPieceAuto(
         DriveTrain driveTrain,
         EndEffector endEffector,
         Elevator elevator,
@@ -52,12 +53,14 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             case OneCone:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_ONE_GOAL_ONE");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_ONE_NODE_TWO");
+                _trajectory3 = trajectories.getTrajectory(alliance + "NODE_TWO_SHOOT_GOAL_TWO");
                 pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
                 placeCone = true;
                 break;
             case TwoCube:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_TWO_GOAL_ONE");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_ONE_NODE_TWO");
+                _trajectory3 = trajectories.getTrajectory(alliance + "NODE_TWO_SHOOT_GOAL_TWO");
                 pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
                 placeCone = false;
                 break;
@@ -84,12 +87,14 @@ public class TwoPieceAuto extends SequentialCommandGroup {
             case EightCube:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_EIGHT_GOAL_FOUR");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_FOUR_NODE_EIGHT");
+                _trajectory3 = trajectories.getTrajectory(alliance + "NODE_EIGHT_SHOOT_GOAL_THREE");
                 pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
                 placeCone = false;
                 break;
             case NineCone:
                 _trajectory1 = trajectories.getTrajectory(alliance + "NODE_NINE_GOAL_FOUR");
                 _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_FOUR_NODE_EIGHT");
+                _trajectory3 = trajectories.getTrajectory(alliance + "NODE_EIGHT_SHOOT_GOAL_THREE");
                 pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
                 placeCone = true;
                 break;
@@ -119,7 +124,8 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     ),
                     new DriveTrajectory(driveTrain, _trajectory2, true, false),
                     new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), true),
-                    new Shoot(_shooter, 1.0, 0.2, _oi)
+                    new Shoot(_shooter, 1.0, 0.2, _oi),
+                    new DriveTrajectory(driveTrain, _trajectory3, true, false)
                 )
             );
         }
