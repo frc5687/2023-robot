@@ -13,6 +13,7 @@ import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
 import org.frc5687.chargedup.commands.SemiAuto.*;
+import org.frc5687.chargedup.commands.Rickroll;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
@@ -81,6 +82,10 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(2).onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
         _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
         _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+        
+
+        _operatorJoystick.button(9).onTrue(new Rickroll());
+
 
         _povButtonLeft.onTrue(new Tap(drivetrain, false));
         _povButtonRight.onTrue(new Tap(drivetrain, true));

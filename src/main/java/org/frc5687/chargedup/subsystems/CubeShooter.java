@@ -10,11 +10,14 @@ import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.sensors.ProximitySensor;
 
+
+
 public class CubeShooter extends OutliersSubsystem {
     private final OutliersTalon _wrist;
     private final OutliersTalon _shooter;
     private final DutyCycleEncoder _wristEncoder;
     private final ProximitySensor _proximitySensor;
+  
 
     public CubeShooter(OutliersContainer container) {
         super(container);
@@ -33,6 +36,9 @@ public class CubeShooter extends OutliersSubsystem {
         _wrist.configure(Constants.CubeShooter.WRIST_CONFIG);
         _wrist.configureClosedLoop(Constants.CubeShooter.CONTROLLER_CONFIG_WRIST);
         _wrist.setRotorPosition(getBoreEncoderRotation() * Constants.CubeShooter.GEAR_RATIO);
+
+
+        
 
         _shooter.configure(Constants.CubeShooter.SHOOTER_CONFIG);
         _shooter.configureClosedLoop(Constants.CubeShooter.CONTROLLER_CONFIG_SHOOTER);

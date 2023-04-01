@@ -6,8 +6,14 @@ import org.frc5687.chargedup.util.OutliersContainer;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.sensors.HallEffect;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.music.Orchestra;
+
 public class Elevator extends OutliersSubsystem {
     private OutliersTalon _talon;
+    private TalonFX _musicFx;
+    private Orchestra _orchestra;
+
     private final HallEffect _inHall;
     private boolean _hasZeroed;
 
@@ -21,6 +27,12 @@ public class Elevator extends OutliersSubsystem {
 
         _inHall = new HallEffect(RobotMap.DIO.IN_EXT_HALL);
         _hasZeroed = false;
+        _musicFx = new TalonFX(RobotMap.CAN.TALONFX.EXT_ARM, "ExtendingArm");
+        _orchestra = new Orchestra();
+        _orchestra.addInstrument(_musicFx);
+        _orchestra.loadMusic("NeverGonnaGiveYouUp");
+        
+
     }
 
     @Override
@@ -80,7 +92,9 @@ public class Elevator extends OutliersSubsystem {
         return OutliersTalon.rotationsToRadians(
                 getEncoderPositionRotations(), Constants.Elevator.GEAR_RATIO);
     }
-
+    public void Rickroll() {
+        _orchestra.play();
+    }
     public void updateDashboard() {
         metric("Encoder Position", getEncoderPositionRotations());
         metric("Encoder Radians", getEncoderRotationRadians());
