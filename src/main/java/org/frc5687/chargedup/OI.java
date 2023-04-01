@@ -18,6 +18,7 @@ import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
 import org.frc5687.chargedup.commands.ZeroSuperStructure;
 import org.frc5687.chargedup.subsystems.*;
+import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
@@ -65,12 +66,12 @@ public class OI extends OutliersProxy {
             Lights lights) {
         _customController
                 .getChangeModeButton()
-                .toggleOnTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+                .toggleOnTrue(Commands.runOnce(endEffector::setConeState, endEffector));
         _customController
                 .getChangeModeButton()
-                .toggleOnFalse(Commands.runOnce(endEffector::setConeMode, endEffector));
-        _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode, endEffector));
-        _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode, endEffector));
+                .toggleOnFalse(Commands.runOnce(endEffector::setCubeState, endEffector));
+        _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeState, endEffector));
+        _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeState, endEffector));
 
         _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
 
@@ -100,15 +101,6 @@ public class OI extends OutliersProxy {
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
         _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
         _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 9; col++) {
-                _customController
-                        .getButton(row, col)
-                        .onTrue(
-                                new SetRobotGoal(
-                                        drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
-            }
-        }
         _operatorJoystick
                 .button(1)
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));

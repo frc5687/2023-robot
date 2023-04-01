@@ -3,6 +3,7 @@ package org.frc5687.chargedup.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
+import org.frc5687.chargedup.commands.CubeShooter.Intake;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -30,6 +31,8 @@ public class EndEffector extends OutliersSubsystem {
     private SuperStructureSetpoints.Setpoint _setpoint;
     private boolean _isConeMode = true;
     private Nodes.Level _currentLevel;
+
+    private IntakeState _intakeState = IntakeState.CUBE;
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -122,17 +125,17 @@ public class EndEffector extends OutliersSubsystem {
         return _gripperController.calculate(getGripperAngleRadians());
     }*/
 
-    public boolean getConeMode(){
-        return _isConeMode;
-    }
+    // public boolean getConeMode(){
+    //     return _isConeMode;
+    // }
 
-    public void setConeMode(){
-        _isConeMode = true;
-    }
+    // public void setConeMode(){
+    //     _isConeMode = true;
+    // }
 
-    public void setCubeMode(){
-        _isConeMode = false;
-    }
+    // public void setCubeMode(){
+    //     _isConeMode = false;
+    // }
     public void setGoalLevel(Nodes.Level level) {
         _currentLevel = level;
     }
@@ -146,5 +149,40 @@ public class EndEffector extends OutliersSubsystem {
     }
     public SuperStructureSetpoints.Setpoint getSuperStructureSetpoint() {
         return _setpoint;
+    }
+    
+    public enum IntakeState{
+        CONE(0),
+        CUBE(1),
+        GROUND(2);
+        private final int _value;
+        
+        IntakeState(int value){
+            _value = value;
+        }
+
+        public int getValue(){
+            return _value;
+        }
+    }
+
+    public IntakeState getState(){
+        return _intakeState;
+    }
+
+    public void setState(IntakeState state){
+        _intakeState = state;
+    }
+
+    public void setConeState(){
+        _intakeState = IntakeState.CONE;
+    }
+
+    public void setCubeState(){
+        _intakeState = IntakeState.CUBE;
+    }
+
+    public void setGroundState(){
+        _intakeState = IntakeState.GROUND;
     }
 }

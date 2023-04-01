@@ -9,6 +9,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.DriveTrain.Mode;
+import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.control.SwerveHeadingController;
@@ -88,7 +89,7 @@ public class Drive extends OutliersCommand {
             vy = vec.y() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
             rot = rot * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxSteeringVelocity;
             TrackedObjectInfo closestGameElement;
-            if (_endEffector.getConeMode()) {
+            if (_endEffector.getState() == IntakeState.CONE) {
                 closestGameElement = _driveTrain.getClosestCone();
             } else {
                 closestGameElement = _driveTrain.getClosestCube();

@@ -87,7 +87,7 @@ public class RobotContainer extends OutliersContainer {
         _endEffector = new EndEffector(this);
         _lights = new Lights(this, _driveTrain, _endEffector, _oi);
         //         This is for auto temporarily, need to fix for both in future.
-        _endEffector.setCubeMode();
+        _endEffector.setCubeState();
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
         setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));

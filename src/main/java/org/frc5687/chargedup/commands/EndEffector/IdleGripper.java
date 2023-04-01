@@ -4,6 +4,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
 
 public class IdleGripper extends OutliersCommand {
     private EndEffector _endEffector;
@@ -20,7 +21,7 @@ public class IdleGripper extends OutliersCommand {
     @Override
     public void execute() {
         super.execute();
-        if (_endEffector.getConeMode()) {
+        if (_endEffector.getState() == IntakeState.CONE) {
             _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);
             /* if (_timeoutOut > System.currentTimeMillis()) {
                 _endEffector.setRollerSpeed(Constants.EndEffector.ROLLER_CONE_IDLE_SPEED);

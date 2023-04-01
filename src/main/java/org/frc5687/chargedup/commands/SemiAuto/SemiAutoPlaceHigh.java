@@ -5,6 +5,7 @@ import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.EndEffector.IntakeState;
 
 public class SemiAutoPlaceHigh extends OutliersCommand {
     private EndEffector _endEffector;
@@ -22,7 +23,7 @@ public class SemiAutoPlaceHigh extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        if (_endEffector.getConeMode()) {
+        if (_endEffector.getState() == IntakeState.CONE) {
             (new SemiAutoPlaceHighCone(_arm, _endEffector, _elevator, _oi)).schedule();
         } else {
             (new SemiAutoPlaceHighCube(_arm, _endEffector, _elevator, _oi)).schedule();
