@@ -101,6 +101,15 @@ public class OI extends OutliersProxy {
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
         _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
         _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                _customController
+                        .getButton(row, col)
+                        .onTrue(
+                                new SetRobotGoal(
+                                        drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
+            }
+        }
         _operatorJoystick
                 .button(1)
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
