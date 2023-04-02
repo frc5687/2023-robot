@@ -14,7 +14,7 @@ public class OneCubeLevelAuto extends SequentialCommandGroup {
         DriverStation.reportError("Starting cube and level auto", false);
         addCommands(
                 new SequentialCommandGroup(
-                        Commands.runOnce(endEffector::setCubeMode, endEffector),
+                        Commands.runOnce(endEffector::setCubeState, endEffector),
                         new AutoPlaceAndStowHighCube(elevator, endEffector, arm),
                         new DriveUntilLevel(driveTrain)));
     }
