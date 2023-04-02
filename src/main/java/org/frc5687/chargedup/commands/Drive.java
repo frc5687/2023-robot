@@ -72,17 +72,6 @@ public class Drive extends OutliersCommand {
          && !_oi.getTranslationVector().equals(new Vector2d(0, 0))){
             _driveTrain.setPrevVector2d(_oi.getTranslationVector().x(), _oi.getTranslationVector().y());
         }
-        // if (_oi.setCORLeft() || _oi.setCORRight())
-        // _driveTrain.determineCORForEvasion();
-
-        // if (_oi.setCORLeft()){
-        //     _driveTrain.setCenterOfRotation(_driveTrain.getCounterClockwiseCOR());
-        // }
-        // if (_oi.setCORRight()){
-        //     _driveTrain.setCenterOfRotation(_driveTrain.getClockwiseCOR());
-        // } else {
-        //     _driveTrain.setCenterOfRotation(new Translation2d());
-        // }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
                 Helpers.axisToSegmentedUnitCircleRadians(
