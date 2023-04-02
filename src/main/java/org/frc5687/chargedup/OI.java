@@ -74,12 +74,12 @@ public class OI extends OutliersProxy {
             Lights lights) {
         _customController
                 .getChangeModeButton()
-                .toggleOnTrue(Commands.runOnce(endEffector::setCubeMode));
+                .toggleOnTrue(Commands.runOnce(endEffector::setConeState));
         _customController
                 .getChangeModeButton()
-                .toggleOnFalse(Commands.runOnce(endEffector::setConeMode));
-        _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeMode));
-        _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeMode));
+                .toggleOnFalse(Commands.runOnce(endEffector::setCubeState));
+        _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeState));
+        _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeState));
 
         _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
 

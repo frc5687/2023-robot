@@ -5,6 +5,7 @@ import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
+import org.frc5687.chargedup.subsystems.EndEffector.EndEffectorState;
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 
 import org.frc5687.chargedup.Constants;
@@ -39,6 +40,8 @@ public class SemiAutoPickup extends OutliersCommand {
     public void initialize() {
         super.initialize();
         _state = IntakeState.INITIALIZE;
+        _setpoint = _endEffector.getConeMode() ? conePickupSetpoint : cubePickupSetpoint;
+        _stowSetpoint = _endEffector.getConeMode() ? idleConeSetpoint : idleCubeSetpoint;
         _isFinished = false;
         _isConeMode = _endEffector.getConeMode();
         error("Picking up");
@@ -47,6 +50,7 @@ public class SemiAutoPickup extends OutliersCommand {
     @Override
     public void execute() {
         error("Executinng semiauto pickup");
+        updateDashboard();
         super.execute();
         if (_isConeMode != _endEffector.getConeMode()) {
             _setpoint = _endEffector.getConeMode() ? conePickupSetpoint : cubePickupSetpoint;
@@ -79,6 +83,7 @@ public class SemiAutoPickup extends OutliersCommand {
                 }
                 break;
             case WAITING_FOR_STOW:
+                _endEffector.setWristSpeed(_endEffector.getWristControllerOutput());
                 if (_endEffector.isRollerStalled() || _oi.stow()) {
                     _state = IntakeState.STOW_WRIST;
                 }
@@ -115,6 +120,12 @@ public class SemiAutoPickup extends OutliersCommand {
         return _isFinished;
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        _endEffector.setWristSpeed(0);
+    }
+
     public enum IntakeState {
         INITIALIZE(0),
         CLEAR_ELEVATOR(1),
@@ -133,5 +144,8 @@ public class SemiAutoPickup extends OutliersCommand {
         public int getValue() {
             return _value;
         }
+    }
+    public void updateDashboard(){
+        metric("Current State of Pickup: ", _state.toString());
     }
 }

@@ -14,7 +14,7 @@ public class OneConeLevelAuto extends SequentialCommandGroup {
         DriverStation.reportError("Starting cone and level auto", false);
         addCommands(
                 new SequentialCommandGroup(
-                        Commands.runOnce(endEffector::setConeMode, endEffector),
+                        Commands.runOnce(endEffector::setConeState, endEffector),
                         new AutoPlaceAndStowHighCone(elevator, endEffector, arm),
                         new DriveUntilLevel(driveTrain)));
     }
