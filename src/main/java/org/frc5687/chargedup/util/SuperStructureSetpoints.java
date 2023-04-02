@@ -66,7 +66,7 @@ public class SuperStructureSetpoints {
     static {
         cubePickupSetpoint.elevatorPosition = 0.28;
         cubePickupSetpoint.wristAngle = Units.degreesToRadians(295);
-        cubePickupSetpoint.gripperSpeed = -Constants.EndEffector.GRIPPER_IN_SPEED;
+        cubePickupSetpoint.gripperSpeed = 0.5;
         cubePickupSetpoint.armAngle = 1.86;
     }
 

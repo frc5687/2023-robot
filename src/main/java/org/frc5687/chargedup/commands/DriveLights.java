@@ -6,6 +6,7 @@ import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
+import org.frc5687.chargedup.subsystems.EndEffector.EndEffectorState;
 import org.frc5687.chargedup.subsystems.Lights.AnimationType;
 
 public class DriveLights extends OutliersCommand {
@@ -31,7 +32,7 @@ public class DriveLights extends OutliersCommand {
         super.execute();
         if (DriverStation.isDisabled()) {
             _lights.switchAnimation(AnimationType.RAINBOW);
-        } else if (_endEffector.getConeMode()) {
+        } else if (_endEffector.getState() == EndEffectorState.CONE) {
             _lights.setColor(Constants.CANdle.YELLOW);
             switch (_driveTrain.getMode()) {
                 case VISION:
@@ -51,7 +52,7 @@ public class DriveLights extends OutliersCommand {
                     _lights.switchAnimation(AnimationType.STATIC);
                     break;
             }
-        } else {
+        } else if (_endEffector.getState() == EndEffectorState.CUBE){
             _lights.setColor(Constants.CANdle.PURPLE);
             switch (_driveTrain.getMode()) {
                 case VISION:
@@ -61,6 +62,19 @@ public class DriveLights extends OutliersCommand {
                         _lights.switchAnimation(AnimationType.STATIC);
                     }
                     break;
+                case SLOW:
+                    _lights.switchAnimation(AnimationType.SINGLE_FADE);
+                    break;
+                case NORMAL:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
+                default:
+                    _lights.switchAnimation(AnimationType.STATIC);
+                    break;
+            }
+        } else {
+            _lights.setColor(Constants.CANdle.GREEN);
+            switch (_driveTrain.getMode()) {
                 case SLOW:
                     _lights.switchAnimation(AnimationType.SINGLE_FADE);
                     break;

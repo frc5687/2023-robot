@@ -71,7 +71,7 @@ public class Constants {
 
         public static final KinematicLimits TRAJECTORY_FOLLOWING = new KinematicLimits();
         static {
-            TRAJECTORY_FOLLOWING.maxDriveVelocity = 4.5; // m/s
+            TRAJECTORY_FOLLOWING.maxDriveVelocity = 5.0; // m/s
             TRAJECTORY_FOLLOWING.maxDriveAcceleration = 20; // m/s^2
             TRAJECTORY_FOLLOWING.maxSteeringVelocity = 20; // rad/s
         }
@@ -101,18 +101,6 @@ public class Constants {
             NORTH_WEST_CONFIG.encoderInverted = false;
             NORTH_WEST_CONFIG.encoderOffset = -0.055;
         }
-        
-        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_WEST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
-
-        static {
-            PRACTICE_NORTH_WEST_CONFIG.moduleName = "North West";
-            PRACTICE_NORTH_WEST_CONFIG.canBus = CAN_BUS;
-            PRACTICE_NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
-
-            PRACTICE_NORTH_WEST_CONFIG.encoderInverted = false;
-            PRACTICE_NORTH_WEST_CONFIG.encoderOffset = -0.053722;
-        }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
@@ -124,18 +112,6 @@ public class Constants {
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
             SOUTH_WEST_CONFIG.encoderOffset = -0.16;
-        }
-
-        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_WEST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
-
-        static {
-            PRACTICE_SOUTH_WEST_CONFIG.moduleName = "South West";
-            PRACTICE_SOUTH_WEST_CONFIG.canBus = CAN_BUS;
-            PRACTICE_SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
-
-            PRACTICE_SOUTH_WEST_CONFIG.encoderInverted = false;
-            PRACTICE_SOUTH_WEST_CONFIG.encoderOffset = 0.895165;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -150,18 +126,6 @@ public class Constants {
             SOUTH_EAST_CONFIG.encoderOffset = -0.062;
         }
 
-        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_EAST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
-
-        static {
-            PRACTICE_SOUTH_EAST_CONFIG.moduleName = "South East";
-            PRACTICE_SOUTH_EAST_CONFIG.canBus = CAN_BUS;
-            PRACTICE_SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
-
-            PRACTICE_SOUTH_EAST_CONFIG.encoderInverted = false;
-            PRACTICE_SOUTH_EAST_CONFIG.encoderOffset = -0.089557;
-        }
-
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -174,17 +138,6 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderOffset = -0.079;
         }
 
-        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_EAST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
-
-        static {
-            PRACTICE_NORTH_EAST_CONFIG.moduleName = "North East";
-            PRACTICE_NORTH_EAST_CONFIG.canBus = CAN_BUS;
-            PRACTICE_NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
-
-            PRACTICE_NORTH_EAST_CONFIG.encoderInverted = false;
-            PRACTICE_NORTH_EAST_CONFIG.encoderOffset = -0.139070;
-        }
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final double ROTATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final long DISABLE_TIME = 500; // ms
@@ -211,11 +164,19 @@ public class Constants {
 
         public static final double kP = 3.5;
         public static final double kI = 0.0;
-        public static final double kD = 0.01;
+        public static final double kD = 0.02;
+        
+        public static final double X_TRAJECTORY_kP = 3.5;
+        public static final double X_TRAJECTORY_kI = 0.0;
+        public static final double X_TRAJECTORY_kD = 0.02;
+        
+        public static final double Y_TRAJECTORY_kP = 3.5;
+        public static final double Y_TRAJECTORY_kI = 0.0;
+        public static final double Y_TRAJECTORY_kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 0.7;
+        public static final double ANGLE_TRAJECTORY_kP = 0.8;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.1;
+        public static final double ANGLE_TRAJECTORY_kD = 0.005;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -228,10 +189,17 @@ public class Constants {
                 Units.degreesToRadians(5.0); // this is degrees because sad.
 
         public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
-        public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 2.0;
-
         public static final double PREV_VECTOR_CHANGE_X = 0.05;
         public static final double PREV_VECTOR_CHANGE_Y = 0.05;
+        public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
+
+        public static final double AUTO_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double AUTO_LEVEL_KI = 0.0;
+        public static final double AUTO_LEVEL_KD = 0.5;
+        
+        public static final double QUICK_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double QUICK_LEVEL_KI = 0.0;
+        public static final double QUICK_LEVEL_KD = 0.5;
     }
 
 
@@ -358,8 +326,9 @@ public class Constants {
         public static double MOTOR_R = DCMotor.getFalcon500(1).rOhms;
         public static double MOTOR_MAX_VEL =
                 Units.rotationsPerMinuteToRadiansPerSecond(6080); // foc enabled rpm
+        public static double MOTOR_MAX_VEL_RPS = MOTOR_MAX_VEL / 60.0;
         public static final String CAN_BUS = "CANivore";
-        public static final double GEAR_RATIO = 240;
+        public static final double GEAR_RATIO = 5.0*5.0*3.0 * (150.0/35.0); //gear ratio times pulley reduction (approx 321.4285714285715)
         public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
 
         static {
@@ -411,9 +380,9 @@ public class Constants {
             CLOSED_LOOP_CONFIGURATION.kD = 0.05;
             CLOSED_LOOP_CONFIGURATION.kF = 0.01;
 
-            CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 90;
-            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 300;
-            CLOSED_LOOP_CONFIGURATION.JERK = 1500;
+            CLOSED_LOOP_CONFIGURATION.CRUISE_VELOCITY = 101;
+            CLOSED_LOOP_CONFIGURATION.ACCELERATION = 400;
+            CLOSED_LOOP_CONFIGURATION.JERK = 2500;
         }
     }
 
@@ -617,12 +586,12 @@ public class Constants {
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         // fully closed angle
-        public static final double GRIPPER_IN_SPEED = -0.5;
+        public static final double GRIPPER_IN_SPEED = -0.8;
         // fully open angle
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.15;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.165;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
@@ -635,7 +604,7 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.87; // rotations
+        public static final double IDLE_ANGLE = 0.16; // rotations
         public static final double INTAKE_ANGLE = 2.5; //
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
@@ -726,5 +695,15 @@ public class Constants {
 
         public static int[] ORANGE_RED = {255, 69, 0};
         public static int[] MAROON = {128, 0, 0};
+    }
+
+    public static class VisionConfig {
+        public static double STATE_STD_DEV_X = 0.01;
+        public static double STATE_STD_DEV_Y = 0.01;
+        public static double STATE_STD_DEV_ANGLE = Units.degreesToRadians(0.5); // imu deviations lower number to trust more;
+
+        public static double VISION_STD_DEV_X = 0.35;
+        public static double VISION_STD_DEV_Y = 0.35;
+        public static double VISION_STD_DEV_ANGLE = Units.degreesToRadians(70); // imu deviations lower number to trust more;
     }
 }

@@ -22,7 +22,7 @@ public class SemiAutoGroundPickup extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        if (_endEffector.getConeMode()) {
+        if (_endEffector.getConeMode()){
             (new SemiAutoGroundPickupCone(_arm, _endEffector, _elevator, _oi)).schedule();
         } else {
             (new SemiAutoGroundPickupCube(_arm, _endEffector, _elevator, _oi)).schedule();

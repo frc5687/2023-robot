@@ -88,6 +88,8 @@ public class Elevator extends OutliersSubsystem {
         metric("Elevator Length", getExtArmMeters());
         metric("In Hall", getInHall());
         metric("Motor Output", _talon.get());
+        metric("Has Zeroed", _hasZeroed); 
+        
     }
 
 }

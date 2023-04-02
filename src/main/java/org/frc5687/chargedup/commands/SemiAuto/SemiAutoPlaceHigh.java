@@ -22,7 +22,7 @@ public class SemiAutoPlaceHigh extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
-        if (_endEffector.getConeMode()) {
+        if (_endEffector.getConeMode()){
             (new SemiAutoPlaceHighCone(_arm, _endEffector, _elevator, _oi)).schedule();
         } else {
             (new SemiAutoPlaceHighCube(_arm, _endEffector, _elevator, _oi)).schedule();
