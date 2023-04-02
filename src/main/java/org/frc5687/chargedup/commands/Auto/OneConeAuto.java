@@ -13,8 +13,8 @@ public class OneConeAuto extends SequentialCommandGroup {
         DriverStation.reportError("Starting cone and drive auto", false);
         addCommands(
                 new SequentialCommandGroup(
-                        Commands.runOnce(endEffector::setConeMode, endEffector),
-                        new AutoPlaceHighCone(elevator, endEffector, arm),
+                        Commands.runOnce(endEffector::setConeState, endEffector),
+                        new AutoPlaceAndStowHighCone(elevator, endEffector, arm),
                         new DriveForTime(driveTrain, 2500)));
     }
 }

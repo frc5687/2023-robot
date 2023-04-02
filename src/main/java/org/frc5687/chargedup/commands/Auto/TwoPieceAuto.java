@@ -12,10 +12,12 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
+import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.CubeShooter;
@@ -112,6 +114,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     placeCommand,
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory1, true, false),
+                        new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
                         // new SequentialCommandGroup(
                         //     new WaitCommand(1), 
                             new AutoIntake(_shooter, true)

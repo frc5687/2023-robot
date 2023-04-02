@@ -13,8 +13,8 @@ public class OneCubeAuto extends SequentialCommandGroup {
         DriverStation.reportError("Starting cube and drive auto", false);
         addCommands(
                 new SequentialCommandGroup(
-                        Commands.runOnce(endEffector::setCubeMode, endEffector),
-                        new AutoPlaceHighCube(elevator, endEffector, arm),
+                        Commands.runOnce(endEffector::setCubeState, endEffector),
+                        new AutoPlaceAndStowHighCube(elevator, endEffector, arm),
                         new DriveForTime(driveTrain, 2500)));
     }
 }
