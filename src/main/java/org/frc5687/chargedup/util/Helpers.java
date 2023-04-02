@@ -3,6 +3,7 @@ package org.frc5687.chargedup.util;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.math.util.Units;
@@ -151,4 +152,29 @@ public class Helpers {
     public static boolean epsilonEquals(double a, double b, double epsilon) {
         return (a - epsilon <= b) && (a + epsilon >= b);
     }
+        
+    public Pose2d transformToPose(Transform2d transform){
+        return new Pose2d(transform.getTranslation(), transform.getRotation());
+    }
+
+    public Transform2d poseToTransform(Pose2d pose){
+        return new Transform2d(pose.getTranslation(), pose.getRotation());
+    }
+
+    public Translation2d poseToTranslation(Pose2d pose){
+        return new Translation2d(pose.getX(), pose.getY());
+    }
+
+    public Pose2d translationToPose(Translation2d translation){
+        return new Pose2d(translation.getX(), translation.getY(), translation.getAngle());
+    }
+
+    public Transform2d translationToTransform(Translation2d translation){
+        return new Transform2d(translation, translation.getAngle());
+    }
+
+    public Translation2d transformToTranslation(Transform2d transform){
+        return new Translation2d(transformToPose(transform).getX(), transformToPose(transform).getY());
+    }
+
 }
