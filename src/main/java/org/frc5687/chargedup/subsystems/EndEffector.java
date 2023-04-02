@@ -38,9 +38,10 @@ public class EndEffector extends OutliersSubsystem {
         _setpoint = SuperStructureSetpoints.idleConeSetpoint;
 
         _wrist = new LazyTalonSRX(RobotMap.CAN.TalonSRX.WRIST);
-        _gripper = new OutliersTalon(RobotMap.CAN.TALONFX.GRIPPER, Constants.Elevator.CAN_BUS, "Gripper");
+        _gripper = new OutliersTalon(RobotMap.CAN.TALONFX.GRIPPER, Constants.EndEffector.CAN_BUS, "Gripper");
         _wrist.setInverted(Constants.EndEffector.WRIST_INVERTED);
-        _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
+//        _gripper.setInverted(Constants.EndEffector.GRIPPPER_INVERTED);
+        _gripper.configure(GRIPPER_CONFIG);
         _wrist.setNeutralMode(NeutralMode.Brake);
         
         _wristEncoder = new DutyCycleEncoder(RobotMap.DIO.ENCODER_WRIST);
@@ -84,7 +85,7 @@ public class EndEffector extends OutliersSubsystem {
         if (!isRollerStalled()) {
             _gripper.setPercentOutput(demand);
         } else {
-            _gripper.setPercentOutput(demand);
+            _gripper.setPercentOutput(0);
         }
     }
 

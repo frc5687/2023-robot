@@ -545,6 +545,7 @@ public class Constants {
     }
 
     public static class EndEffector {
+        public static final String CAN_BUS = "CANivore";
         public static final double WRIST_OFFSET = 0;
         public static final double GRIPPER_OFFSET = 0;
 
@@ -568,7 +569,7 @@ public class Constants {
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
 
-        public static final double GRIPPER_STALL_CURRENT = 15.1; // was 10
+        public static final double GRIPPER_STALL_CURRENT = 20.0; // was 10
 
         public static final double GRIPPER_I_ZONE = 1;
 
@@ -577,16 +578,33 @@ public class Constants {
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         // fully closed angle
-        public static final double GRIPPER_IN_SPEED = -0.5;
+        public static final double GRIPPER_IN_SPEED = -0.5; // was -0.5 for bag
         // fully open angle
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.165;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.165; // was .165 for bag.
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
         public static final long GRIPPER_TIMEOUT = 500;
+
+        public static final OutliersTalon.Configuration GRIPPER_CONFIG =
+                new OutliersTalon.Configuration();
+
+        static {
+            GRIPPER_CONFIG.TIME_OUT = 0.1;
+
+            GRIPPER_CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+            GRIPPER_CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
+
+            GRIPPER_CONFIG.MAX_VOLTAGE = 12.0;
+
+            GRIPPER_CONFIG.MAX_CURRENT = 20;
+            GRIPPER_CONFIG.MAX_STATOR_CURRENT = 20;
+            GRIPPER_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+            GRIPPER_CONFIG.USE_FOC = true;
+        }
     }
 
     public static class CubeShooter {
