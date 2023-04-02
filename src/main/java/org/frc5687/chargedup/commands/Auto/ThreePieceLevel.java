@@ -28,21 +28,21 @@ public class ThreePieceLevel extends SequentialCommandGroup {
         OI oi,
         CubeShooter shooter,
         Trajectories trajectories){
-        String alliance = drivetrain.isRedAlliance()? "RED_":"BLUE_" ;  
+        String alliance = drivetrain.isRedAlliance()? "RED_":"BLUE_" ;
             addCommands(
-                new ResetRobotPose(drivetrain, new Pose2d(12.13, 0.47, new Rotation2d(0))),
+                new ResetRobotPose(drivetrain, trajectories.getTrajectory(alliance + "BUMP_GOAL_ONE").getInitialHolonomicPose()),
                 new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
-                                drivetrain, trajectories.getTrajectory(alliance + "BUMP_GOAL_ONE"), true, true),
-                        new AutoIntake(shooter)),
+                                drivetrain, trajectories.getTrajectory(alliance + "BUMP_GOAL_ONE"), true, false),
+                        new AutoIntake(shooter, false)),
                 new DriveTrajectory(
                         drivetrain, trajectories.getTrajectory(alliance + "GOAL_ONE_CHARGE_TWO"), true, false),
                 new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
                                 drivetrain, trajectories.getTrajectory(alliance + "CHARGE_TWO_GOAL_TWO"), true, false),
-                        new AutoIntake(shooter)),
+                        new AutoIntake(shooter, false)),
                 new DriveTrajectory(
                         drivetrain, trajectories.getTrajectory(alliance + "GOAL_TWO_CHARGE_THREE"), true, false),
                 new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),

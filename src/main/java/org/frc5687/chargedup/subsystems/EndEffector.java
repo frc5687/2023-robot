@@ -3,6 +3,7 @@ package org.frc5687.chargedup.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
+import org.frc5687.chargedup.commands.CubeShooter.Intake;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersContainer;
@@ -31,6 +32,8 @@ public class EndEffector extends OutliersSubsystem {
     private SuperStructureSetpoints.Setpoint _setpoint;
     private boolean _isConeMode = true;
     private Nodes.Level _currentLevel;
+
+    private EndEffectorState _endEffectorState = EndEffectorState.CUBE;
 
     public EndEffector(OutliersContainer container) {
         super(container);
@@ -122,17 +125,17 @@ public class EndEffector extends OutliersSubsystem {
         return _gripperController.calculate(getGripperAngleRadians());
     }*/
 
-    public boolean getConeMode(){
-        return _isConeMode;
-    }
+    // public boolean getConeMode(){
+    //     return _isConeMode;
+    // }
 
-    public void setConeMode(){
-        _isConeMode = true;
-    }
+    // public void setConeMode(){
+    //     _isConeMode = true;
+    // }
 
-    public void setCubeMode(){
-        _isConeMode = false;
-    }
+    // public void setCubeMode(){
+    //     _isConeMode = false;
+    // }
     public void setGoalLevel(Nodes.Level level) {
         _currentLevel = level;
     }
@@ -146,5 +149,44 @@ public class EndEffector extends OutliersSubsystem {
     }
     public SuperStructureSetpoints.Setpoint getSuperStructureSetpoint() {
         return _setpoint;
+    }
+    
+    public enum EndEffectorState{
+        CONE(0),
+        CUBE(1),
+        GROUND(2);
+        private final int _value;
+        
+        EndEffectorState(int value){
+            _value = value;
+        }
+
+        public int getValue(){
+            return _value;
+        }
+    }
+
+    public EndEffectorState getState(){
+        return _endEffectorState;
+    }
+
+    public void setState(EndEffectorState state){
+        _endEffectorState = state;
+    }
+
+    public void setConeState(){
+        _endEffectorState = EndEffectorState.CONE;
+    }
+
+    public void setCubeState(){
+        _endEffectorState = EndEffectorState.CUBE;
+    }
+
+    public void setGroundState(){
+        _endEffectorState = EndEffectorState.GROUND;
+    }
+
+    public boolean getConeMode(){
+        return getState() == EndEffectorState.CONE;
     }
 }

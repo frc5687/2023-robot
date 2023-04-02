@@ -41,19 +41,9 @@ public class PhotonProcessor {
         // dummy values
         Transform3d robotToNorthWestCam =
                 new Transform3d(new Translation3d(-0.2, .14, 0.73), new Rotation3d(0, 0, 0));
-
         Transform3d robotToSouthEastTopCam =
                 new Transform3d(new Translation3d(-0.025, -0.144, 0.7), new Rotation3d(0, 0, Units.degreesToRadians(0)));
 
-//        Transform3d robotToSouthWestCam =
-//                new Transform3d(
-//                        new Translation3d(-.21, .24, .442),
-//                        new Rotation3d(0, 0, Units.degreesToRadians(150)));
-//
-//        Transform3d robotToSouthEastCam =
-//                new Transform3d(
-//                        new Translation3d(-.21, -.24, .442),
-//                        new Rotation3d(0, 0, Units.degreesToRadians(-150)));
         Transform3d robotToSouthWestCam =
                 new Transform3d(
                         new Translation3d(-.243, .249, .442),
@@ -63,6 +53,7 @@ public class PhotonProcessor {
                 new Transform3d(
                         new Translation3d(-.243, -.249, .442),
                         new Rotation3d(0, 0, Units.degreesToRadians(140)));
+
         _northWestCameraEstimator =
                 new PhotonPoseEstimator(
                         layout,
@@ -99,7 +90,6 @@ public class PhotonProcessor {
                 PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
         _southEastCameraEstimator.setMultiTagFallbackStrategy(
                 PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
-//        setLowestAmbiguity();
     }
 
     public void setPipeline(Pipeline pipeline) {
@@ -137,7 +127,7 @@ public class PhotonProcessor {
         return _northWestCameraEstimator.update();
     }
 
-    public Optional<EstimatedRobotPose> getSouthEastTopCameraEstimatedGloablPose(
+    public Optional<EstimatedRobotPose> getSouthEastTopCameraEstimatedGlobalPose(
             Pose2d prevEstimatedPose) {
         _southEastTopCameraEstimator.setReferencePose(prevEstimatedPose);
         return _southEastTopCameraEstimator.update();
@@ -164,7 +154,7 @@ public class PhotonProcessor {
     public CompletableFuture<Optional<EstimatedRobotPose>> getSouthEastTopCameraEstimatedGlobalPoseAsync(
             Pose2d prevEstimatedPose) {
         return CompletableFuture.supplyAsync(
-                () -> getSouthEastTopCameraEstimatedGloablPose(prevEstimatedPose));
+                () -> getSouthEastTopCameraEstimatedGlobalPose(prevEstimatedPose));
     }
 
     public CompletableFuture<Optional<EstimatedRobotPose>> getSouthWestCameraEstimatedGlobalPoseAsync(
@@ -179,29 +169,6 @@ public class PhotonProcessor {
                 () -> getSouthEastCameraEstimatedGlobalPose(prevEstimatedPose));
     }
 
-    public void updatePoseEstimator(SwerveDrivePoseEstimator estimator, Rotation2d imuHeading) {
-
-        // Call the camera pose estimation methods asynchronously and in parallel
-        Pose2d estimatedRobotPose = estimator.getEstimatedPosition();
-        List<CompletableFuture<Optional<EstimatedRobotPose>>> poseFutures = new ArrayList<>();
-        poseFutures.add(getNorthWestCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
-        poseFutures.add(getSouthEastTopCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
-        poseFutures.add(getSouthWestCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
-        poseFutures.add(getSouthEastCameraEstimatedGlobalPoseAsync(estimatedRobotPose));
-        CompletableFuture.allOf(poseFutures.toArray(new CompletableFuture[0]))
-                .thenRunAsync(() -> {
-                    // Once all pose estimation methods have completed, process the results
-                    for (CompletableFuture<Optional<EstimatedRobotPose>> poseFuture : poseFutures) {
-                        Optional<EstimatedRobotPose> pose = poseFuture.join();
-                        if (pose.isPresent()) {
-                            EstimatedRobotPose estimatedPose = pose.get();
-//                            Pose2d correctedPose = estimatedPose.estimatedPose.toPose2d().se;
-                            estimator.addVisionMeasurement(estimatedRobotPose, estimatedPose.timestampSeconds);
-                        }
-                    }
-                }, _executorService);
-
-    }
 
     public enum Pipeline {
         FAR(0),

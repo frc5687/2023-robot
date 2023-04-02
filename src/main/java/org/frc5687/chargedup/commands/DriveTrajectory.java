@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.Consumer;
+
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
 
 /** Custom PathPlanner version of SwerveControllerCommand */
 public class DriveTrajectory extends OutliersCommand {
@@ -67,6 +70,8 @@ public class DriveTrajectory extends OutliersCommand {
         timer.start();
 
         PathPlannerServer.sendActivePath(trajectory.getStates());
+
+        _driveTrain.setKinematicLimits(Constants.DriveTrain.TRAJECTORY_FOLLOWING);
     }
 
     @Override
@@ -83,6 +88,7 @@ public class DriveTrajectory extends OutliersCommand {
         if (interrupted
                 || Math.abs(trajectory.getEndState().velocityMetersPerSecond) < 0.1) {
             _driveTrain.setVelocity(new ChassisSpeeds(0, 0, 0));
+            _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
         }
     }
 
