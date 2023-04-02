@@ -15,7 +15,7 @@ public class AutoPlaceHighCube extends SequentialCommandGroup {
         Setpoint setpoint = highCubePlaceSetpoint;
         addCommands(
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, setpoint),
-                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true),
-                new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleCubeSetpoint));
+                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true)
+        );
     }
 }

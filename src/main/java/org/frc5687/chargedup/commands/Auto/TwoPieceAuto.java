@@ -7,21 +7,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
+import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
-import org.frc5687.chargedup.commands.OutliersCommand;
-import org.frc5687.chargedup.commands.SetHoverGoal;
-import org.frc5687.chargedup.commands.SetRobotGoal;
-import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.CubeShooter;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -29,10 +26,7 @@ import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.util.AutoChooser;
-import org.frc5687.chargedup.util.FieldConstants;
 import org.frc5687.chargedup.util.Trajectories;
-import org.frc5687.chargedup.util.Nodes.Level;
-import org.frc5687.chargedup.util.Nodes.Node;
 
 public class TwoPieceAuto extends SequentialCommandGroup {
     private PathPlannerTrajectory _trajectory1;
@@ -120,6 +114,7 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                     placeCommand,
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory1, true, false),
+                        new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
                         // new SequentialCommandGroup(
                         //     new WaitCommand(1), 
                             new AutoIntake(_shooter, true)
