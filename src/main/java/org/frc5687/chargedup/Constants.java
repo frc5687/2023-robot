@@ -584,7 +584,7 @@ public class Constants {
 
         public static final double GRIPPER_TOLERENCE = Units.degreesToRadians(1);
         // fully closed angle
-        public static final double GRIPPER_IN_SPEED = -0.5;
+        public static final double GRIPPER_IN_SPEED = -0.8;
         // fully open angle
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);

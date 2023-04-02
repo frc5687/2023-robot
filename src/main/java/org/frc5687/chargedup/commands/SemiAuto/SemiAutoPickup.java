@@ -40,6 +40,8 @@ public class SemiAutoPickup extends OutliersCommand {
     public void initialize() {
         super.initialize();
         _state = IntakeState.INITIALIZE;
+        _setpoint = _endEffector.getConeMode() ? conePickupSetpoint : cubePickupSetpoint;
+        _stowSetpoint = _endEffector.getConeMode() ? idleConeSetpoint : idleCubeSetpoint;
         _isFinished = false;
         _isConeMode = _endEffector.getConeMode();
         error("Picking up");
