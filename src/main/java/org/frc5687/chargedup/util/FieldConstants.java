@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import java.util.List;
 public final class FieldConstants {
-    public static final boolean isRealField = true; // Red alliance
+    public static final boolean isRealField = false; // Red alliance
     public static final double fieldLength = 16.54175;
     public static final double fieldWidth = 8.0137;
 

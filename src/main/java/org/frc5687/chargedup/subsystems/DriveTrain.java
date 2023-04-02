@@ -64,7 +64,6 @@ public class DriveTrain extends OutliersSubsystem {
     private final HolonomicDriveController _poseController;
     private final PPHolonomicDriveController _trajectoryController;
 
-    private boolean _isRedAlliance = false;
     // IMU (Pigeon)
     private final Pigeon2 _imu;
     private double _yawOffset;
@@ -98,7 +97,6 @@ public class DriveTrain extends OutliersSubsystem {
         // configure our system IO and pigeon;
         _imu = imu;
         _systemIO = new SystemIO();
-        _isRedAlliance = DriverStation.getAlliance() == Alliance.Red;
 
         // This should set the Pigeon to 0.
         // set update frequency to 200hz
@@ -203,8 +201,8 @@ public class DriveTrain extends OutliersSubsystem {
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
 
         _trajectoryController = new PPHolonomicDriveController(
-                new PIDController(kP, kI, kD),
-                new PIDController(kP, kI, kD),
+                new PIDController(X_TRAJECTORY_kP, X_TRAJECTORY_kI, X_TRAJECTORY_kD),
+                new PIDController(Y_TRAJECTORY_kP, Y_TRAJECTORY_kI, Y_TRAJECTORY_kD),
                 new PIDController(ANGLE_TRAJECTORY_kP, ANGLE_TRAJECTORY_kI, ANGLE_TRAJECTORY_kD)
         );
 
@@ -273,7 +271,6 @@ public class DriveTrain extends OutliersSubsystem {
         updateDesiredStates();
         setModuleStates(_systemIO.setpoint.moduleStates);
     }
-
 
     // Heading controller functions
     public HeadingState getHeadingControllerState() {
@@ -458,7 +455,7 @@ public class DriveTrain extends OutliersSubsystem {
 
     public void updateOdometry() {
         _odometry.update(
-                _isRedAlliance ? getHeading().minus(new Rotation2d(Math.PI)) : getHeading(),
+                isRedAlliance() ? getHeading().minus(new Rotation2d(Math.PI)) : getHeading(),
                 new SwerveModulePosition[] {
                     _modules[NORTH_WEST_IDX].getModulePosition(),
                     _modules[SOUTH_WEST_IDX].getModulePosition(),
@@ -579,7 +576,7 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public boolean isRedAlliance() {
-        return _isRedAlliance;
+        return DriverStation.getAlliance() == Alliance.Red;
     }
 
     public Pose2d getHoverGoal() {
@@ -614,6 +611,7 @@ public class DriveTrain extends OutliersSubsystem {
                     .collect(Collectors.toList());
 
             validPoses.forEach(cameraPose -> {
+                dynamicallyChangeDeviations(cameraPose.estimatedPose, prevEstimatedPose);
                 _poseEstimator.addVisionMeasurement(cameraPose.estimatedPose.toPose2d(), cameraPose.timestampSeconds);
             });
         }
@@ -641,7 +639,7 @@ public class DriveTrain extends OutliersSubsystem {
      */
     public void dynamicallyChangeDeviations(Pose3d measurement, Pose2d currentEstimatedPose) {
         double dist = measurement.toPose2d().getTranslation().getDistance(currentEstimatedPose.getTranslation());
-        double positionDev = Math.abs(0.1 * dist + 0.3);
+        double positionDev = Math.abs(0.11 * dist + 0.3);
         _poseEstimator.setVisionMeasurementStdDevs(createVisionStandardDeviations(positionDev, positionDev, Units.degreesToRadians(70)));
     }
     protected Vector<N3> createStandardDeviations(double x, double y, double z) {

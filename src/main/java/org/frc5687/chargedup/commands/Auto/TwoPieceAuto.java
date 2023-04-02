@@ -1,11 +1,23 @@
 package org.frc5687.chargedup.commands.Auto;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
+import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
+import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.DriveTrajectory;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.CubeShooter;
@@ -17,240 +29,102 @@ import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.Trajectories;
 
 public class TwoPieceAuto extends SequentialCommandGroup {
-    private final PathPlannerTrajectory _trajectory1;
-    private final PathPlannerTrajectory _trajectory2;
+    private PathPlannerTrajectory _trajectory1;
+    private PathPlannerTrajectory _trajectory2;
+    private Pose2d pose;
     // private Rotation2d rotation1;
     // private Rotation2d rotation2;
 
     public TwoPieceAuto(
-            DriveTrain driveTrain,
-            EndEffector endEffector,
-            Elevator elevator,
-            Arm arm,
-            Lights lights,
-            CubeShooter _shooter,
-            OI _oi,
-            AutoChooser.Node _node,
-            Trajectories trajectories) {
-        // var config = driveTrain.getConfig();
-        _trajectory1 = trajectories.getTrajectory("NODE_ONE_GOAL_ONE");
-        _trajectory2 = trajectories.getTrajectory("NODE_ONE_GOAL_ONE");
+        DriveTrain driveTrain,
+        EndEffector endEffector,
+        Elevator elevator,
+        Arm arm,
+        Lights lights,
+        CubeShooter _shooter,
+        OI _oi,
+        AutoChooser.Node _node,
+        Trajectories trajectories
+        ) {
+        String alliance = driveTrain.isRedAlliance() ? "RED_" : "BLUE_";
+        boolean waitInstead = false;
+        boolean placeCone = false;
 
-        //        switch (_node) {
-        //            case OneCone:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_ONE_GOAL);
-        //                    _trajectory1 = trajectories.getTrajectory("NODE_ONE_GOAL_ONE");
-        //                    _trajectory2 = trajectories.getTrajectory("NODE_ONE_GOAL_ONE");
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_ONE_GOAL);
-        ////                    _trajectory1 =
-        ////                            TrajectoryGenerator.generateTrajectory(
-        ////
-        // Constants.Auto.TrajectoryPoints.Node1.BLUE_NODE_ONE_TRAJECTORY_ONE, config);
-        ////                    _trajectory2 =
-        ////                            TrajectoryGenerator.generateTrajectory(
-        ////
-        // Constants.Auto.TrajectoryPoints.Node1.BLUE_NODE_ONE_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case TwoCube:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node2.RED_NODE_TWO_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node2.RED_NODE_TWO_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node2.BLUE_NODE_TWO_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node2.BLUE_NODE_TWO_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case ThreeCone:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_THREE_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node3.RED_NODE_THREE_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node3.RED_NODE_THREE_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_THREE_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node3.BLUE_NODE_THREE_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node3.BLUE_NODE_THREE_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case FourCone:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_FOUR_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node4.RED_NODE_FOUR_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node4.RED_NODE_FOUR_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_FOUR_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node4.BLUE_NODE_FOUR_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node4.BLUE_NODE_FOUR_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case FiveCube:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_FIVE_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node5.RED_NODE_FIVE_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node5.RED_NODE_FIVE_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_FIVE_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node5.BLUE_NODE_FIVE_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node5.BLUE_NODE_FIVE_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case SixCone:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_SIX_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node6.RED_NODE_SIX_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node6.RED_NODE_SIX_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_SIX_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node6.BLUE_NODE_SIX_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node6.BLUE_NODE_SIX_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case SevenCone:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_SEVEN_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node7.RED_NODE_SEVEN_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node7.RED_NODE_SEVEN_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_SEVEN_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node7.BLUE_NODE_SEVEN_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node7.BLUE_NODE_SEVEN_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case EightCube:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node8.BLUE_NODE_EIGHT_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node8.BLUE_NODE_EIGHT_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case NineCone:
-        //                if (DriverStation.getAlliance() == Alliance.Red) {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.RED_NODE_NINE_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node9.RED_NODE_NINE_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node9.RED_NODE_NINE_TRAJECTORY_TWO, config);
-        //                } else {
-        //                    driveTrain.resetRobotPose(Constants.Auto.FieldPoses.BLUE_NODE_NINE_GOAL);
-        //                    _trajectory1 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_ONE, config);
-        //                    _trajectory2 =
-        //                            TrajectoryGenerator.generateTrajectory(
-        //
-        // Constants.Auto.TrajectoryPoints.Node9.BLUE_NODE_NINE_TRAJECTORY_TWO, config);
-        //                }
-        //                break;
-        //            case Unknown:
-        //                throw new UnsupportedOperationException("Unimplemented case: " + _node);
-        //            default:
-        //                throw new IllegalArgumentException("Unexpected value: " + _node);
-        //        }
-
-        addCommands(
+        switch (_node) {
+            case OneCone:
+                _trajectory1 = trajectories.getTrajectory(alliance + "NODE_ONE_GOAL_ONE");
+                _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_ONE_NODE_TWO");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
+                placeCone = true;
+                break;
+            case TwoCube:
+                _trajectory1 = trajectories.getTrajectory(alliance + "NODE_TWO_GOAL_ONE");
+                _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_ONE_NODE_TWO");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_TWO_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_TWO_GOAL;
+                placeCone = false;
+                break;
+            case ThreeCone:
+                DriverStation.reportError("Unimplemented case: " + _node, false);
+                waitInstead = true;
+                break;
+            case FourCone:
+                DriverStation.reportError("Unimplemented case: " + _node, false);
+                waitInstead = true;
+                break;
+            case FiveCube:
+                DriverStation.reportError("Unimplemented case: " + _node, false);
+                waitInstead = true;
+                break;
+            case SixCone:
+                DriverStation.reportError("Unimplemented case: " + _node, false);
+                waitInstead = true;
+                break;
+            case SevenCone:
+                DriverStation.reportError("Unimplemented case: " + _node, false);
+                waitInstead = true;
+                break;
+            case EightCube:
+                _trajectory1 = trajectories.getTrajectory(alliance + "NODE_EIGHT_GOAL_FOUR");
+                _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_FOUR_NODE_EIGHT");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
+                placeCone = false;
+                break;
+            case NineCone:
+                _trajectory1 = trajectories.getTrajectory(alliance + "NODE_NINE_GOAL_FOUR");
+                _trajectory2 = trajectories.getTrajectory(alliance + "GOAL_FOUR_NODE_EIGHT");
+                pose = driveTrain.isRedAlliance() ? Constants.Auto.FieldPoses.RED_NODE_EIGHT_GOAL : Constants.Auto.FieldPoses.BLUE_NODE_EIGHT_GOAL;
+                placeCone = true;
+                break;
+            case Unknown:
+                DriverStation.reportError("Unimplemented case: " + _node, false);
+                waitInstead = true;
+                break;
+            default:
+                DriverStation.reportError("Unexpected value: " + _node, false);
+                waitInstead = true;
+                break;
+        }
+        Command placeCommand = placeCone ? new AutoPlaceHighCone(elevator, endEffector, arm) : new AutoPlaceHighCube(elevator, endEffector, arm);
+        if (waitInstead) {
+            addCommands(new WaitCommand(15));
+        } else {
+            addCommands(
                 new SequentialCommandGroup(
-                        new AutoPlaceHighCube(elevator, endEffector, arm),
-                        new ParallelDeadlineGroup(
-                                new DriveTrajectory(driveTrain, _trajectory1, true, true),
-                                new AutoIntake(_shooter)),
-                        new DriveTrajectory(driveTrain, _trajectory2, true, false),
-                        new Shoot(_shooter, 0.6, 0.21, _oi)));
+                    new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
+                    placeCommand,
+                    new ParallelDeadlineGroup(
+                        new DriveTrajectory(driveTrain, _trajectory1, true, false),
+                        new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
+                        // new SequentialCommandGroup(
+                        //     new WaitCommand(1), 
+                            new AutoIntake(_shooter, true)
+                        // )
+                    ),
+                    new DriveTrajectory(driveTrain, _trajectory2, true, false),
+                    new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), true),
+                    new Shoot(_shooter, 1.0, 0.2, _oi)
+                )
+            );
+        }
     }
 }
