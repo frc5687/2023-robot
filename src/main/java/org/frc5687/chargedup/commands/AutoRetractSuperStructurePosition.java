@@ -11,13 +11,15 @@ import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.SuperStructureSetpoints.Setpoint;
 
-public class AutoSetSuperStructurePosition extends ParallelCommandGroup {
-    public AutoSetSuperStructurePosition(
+public class AutoRetractSuperStructurePosition extends SequentialCommandGroup {
+    public AutoRetractSuperStructurePosition(
             Elevator elevator, EndEffector endEffector, Arm arm, Setpoint setpoint) {
         addCommands(
             new AutoExtendElevator(elevator, setpoint.elevatorPosition),
-            new SetEndEffectorPosition(endEffector, setpoint.wristAngle, setpoint.gripperSpeed),
-            new AutoSetArmSetpoint(arm, setpoint.armAngle)
+            new ParallelCommandGroup(
+                new SetEndEffectorPosition(endEffector, setpoint.wristAngle, setpoint.gripperSpeed),
+                new AutoSetArmSetpoint(arm, setpoint.armAngle)
+            )
         );
     }
 }
