@@ -18,6 +18,8 @@ import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
 import org.frc5687.chargedup.commands.Auto.StealCubesAuto;
 import org.frc5687.chargedup.commands.Auto.ThreePieceLevel;
 import org.frc5687.chargedup.commands.Auto.ThreePieceNoLevel;
+import org.frc5687.chargedup.commands.Auto.TwoAndAHalfPieceAuto;
+import org.frc5687.chargedup.commands.Auto.TwoAndAHalfPieceLevelAuto;
 import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
 import org.frc5687.chargedup.commands.CubeShooter.IdleWrist;
 import org.frc5687.chargedup.commands.Drive;
@@ -211,6 +213,28 @@ public class RobotContainer extends OutliersContainer {
                     _cubeShooter,
                     _oi,
                     _autoFirstNode,
+                    _trajectories);
+            case TwoAndAHalfPieceAuto:
+                return new TwoAndAHalfPieceAuto(
+                    _driveTrain, 
+                    _endEffector, 
+                    _elevator, 
+                    _arm, 
+                    _lights, 
+                    _cubeShooter, 
+                    _oi, 
+                    _autoFirstNode, 
+                    _trajectories);
+            case TwoAndAHalfPieceLevelAuto:
+                return new TwoAndAHalfPieceLevelAuto(
+                    _driveTrain, 
+                    _endEffector, 
+                    _elevator, 
+                    _arm, 
+                    _lights,
+                    _cubeShooter, 
+                    _oi, 
+                    _autoFirstNode, 
                     _trajectories);
             case StealCubes:
                 return new StealCubesAuto(
