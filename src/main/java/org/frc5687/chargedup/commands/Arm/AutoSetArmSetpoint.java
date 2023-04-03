@@ -1,6 +1,5 @@
 package org.frc5687.chargedup.commands.Arm;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
