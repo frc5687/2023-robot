@@ -149,18 +149,18 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.CAN.PRACTICETALONFX.SOUTH_WEST_OUTER,
                         RobotMap.CAN.PRACTICETALONFX.SOUTH_WEST_INNER,
                         RobotMap.PRACTICEDIO.ENCODER_SW);
-        // _modules[SOUTH_EAST_IDX] =
-        //         new DiffSwerveModule(
-        //                 PRACTICE_SOUTH_EAST_CONFIG,
-        //                 RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_INNER,
-        //                 RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_OUTER,
-        //                 RobotMap.PRACTICEDIO.ENCODER_SE);
-        // _modules[NORTH_EAST_IDX] =
-        //         new DiffSwerveModule(
-        //                 PRACTICE_NORTH_EAST_CONFIG,
-        //                 RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_INNER,
-        //                 RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_OUTER,
-        //                 RobotMap.PRACTICEDIO.ENCODER_NE);
+        _modules[SOUTH_EAST_IDX] =
+                new DiffSwerveModule(
+                        PRACTICE_SOUTH_EAST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_INNER,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_OUTER,
+                        RobotMap.PRACTICEDIO.ENCODER_SE);
+        _modules[NORTH_EAST_IDX] =
+                new DiffSwerveModule(
+                        PRACTICE_NORTH_EAST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_INNER,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_OUTER,
+                        RobotMap.PRACTICEDIO.ENCODER_NE);
             
         }
 
