@@ -14,13 +14,11 @@ import java.util.function.Consumer;
 
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
-import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
 
 /** Custom PathPlanner version of SwerveControllerCommand */
 public class DriveTrajectory extends OutliersCommand {
     private final Timer timer = new Timer();
     private final PathPlannerTrajectory trajectory;
-    private final boolean useAllianceColor;
     private final boolean _resetRobotPose;
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
 
@@ -34,7 +32,7 @@ public class DriveTrajectory extends OutliersCommand {
 
         _driveTrain = driveTrain;
         this.trajectory = trajectory;
-        this.useAllianceColor = useAllianceColor;
+    
         _resetRobotPose = resetRobotPose;
 
         addRequirements(driveTrain);
@@ -59,7 +57,7 @@ public class DriveTrajectory extends OutliersCommand {
 //            transformedTrajectory = trajectory;
 //        }
         if (_resetRobotPose) {
-            _driveTrain.resetRobotPose(trajectory.getInitialHolonomicPose());
+            _driveTrain.wantsToResetPose(trajectory.getInitialHolonomicPose());
         }
 
         if (logActiveTrajectory != null) {

@@ -174,9 +174,9 @@ public class Constants {
         public static final double Y_TRAJECTORY_kI = 0.0;
         public static final double Y_TRAJECTORY_kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 0.8;
+        public static final double ANGLE_TRAJECTORY_kP = 3.5;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.005;
+        public static final double ANGLE_TRAJECTORY_kD = 0.1;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -680,19 +680,20 @@ public class Constants {
         public static TwinklePercent TWINKLEPERCENT = TwinklePercent.Percent42;
         public static TwinkleOffPercent TWINKLEOFFPERCENT = TwinkleOffPercent.Percent42;
 
-        public static int[] YELLOW = {255, 65, 0};
         public static int[] RED = {255, 0, 0};
+        public static int[] ORANGE = {255, 165, 0};
+        public static int[] YELLOW = {255, 65, 0};
         public static int[] GREEN = {0, 255, 0};
-        public static int[] BLUE = {0, 0, 255};
         public static int[] CYAN = {0, 255, 255};
-        public static int[] WHITE = {0, 0, 0};
-        public static int[] PINK = {255, 105, 18};
-        public static int[] GOLD = {212, 175, 55};
+        public static int[] BLUE = {0, 0, 255};
         public static int[] PURPLE = {128, 0, 128};
-        public static int[] RUFOUS = {168, 28, 7};
+        public static int[] PINK = {255, 105, 18};
+        public static int[] WHITE = {0, 0, 0};
 
+        public static int[] RUFOUS = {168, 28, 7};
         public static int[] ORANGE_RED = {255, 69, 0};
         public static int[] MAROON = {128, 0, 0};
+        public static int[] GOLD = {212, 175, 55};
     }
 
     public static class VisionConfig {

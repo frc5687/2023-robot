@@ -31,12 +31,12 @@ public class Trajectories {
             new Pair<>("RED_GOAL_THREE_NODE_NINE", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_GOAL_FOUR_NODE_EIGHT", new PathConstraints(3.0, 2.0)),
             
-            new Pair<>("RED_BUMP_GOAL_ONE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_GOAL_ONE_CHARGE_TWO", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_CHARGE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_GOAL_TWO_CHARGE_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_CHARGE_THREE_GOAL_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 2.0)),
+            new Pair<>("RED_BUMP_GOAL_ONE", new PathConstraints(2.5, 2.0)),
+            new Pair<>("RED_GOAL_ONE_CHARGE_TWO", new PathConstraints(2.5, 2.0)),
+            new Pair<>("RED_CHARGE_TWO_GOAL_TWO", new PathConstraints(3.0, 3.0)),
+            new Pair<>("RED_GOAL_TWO_CHARGE_THREE", new PathConstraints(3.0, 3.0)),
+            new Pair<>("RED_CHARGE_THREE_GOAL_THREE", new PathConstraints(3.0, 3.0)),
+            new Pair<>("RED_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0)),
 
             
             new Pair<>("BLUE_NODE_ONE_GOAL_ONE", new PathConstraints(2.5, 2.0)),  // to and from top and bottom two nodes and top and bottom two goals
@@ -60,7 +60,14 @@ public class Trajectories {
             new Pair<>("BLUE_CHARGE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_GOAL_TWO_CHARGE_THREE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_CHARGE_THREE_GOAL_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("BLUE_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 2.0))
+            new Pair<>("BLUE_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 2.0)),
+
+            new Pair<>("BLUE_NODE_TWO_SHOOT_GOAL_TWO", new PathConstraints(3.0, 3.0)),
+            new Pair<>("RED_NODE_TWO_SHOOT_GOAL_TWO", new PathConstraints(3.0, 3.0)),   
+            new Pair<>("BLUE_NODE_EIGHT_SHOOT_GOAL_THREE", new PathConstraints(3.0, 3.0)),
+            new Pair<>("RED_NODE_EIGHT_SHOOT_GOAL_THREE", new PathConstraints(3.0, 3.0)),
+            new Pair<>("BLUE_NOBUMP_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0)),
+            new Pair<>("RED_NOBUMP_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0))
     ));
 
     public Trajectories(PathConstraints constraints) {

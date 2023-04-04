@@ -1,7 +1,6 @@
 /* Team 5687 (C)2020-2021 */
 package org.frc5687.chargedup;
 
-import edu.wpi.first.wpilibj.DigitalSource;
 
 public class RobotMap {
 

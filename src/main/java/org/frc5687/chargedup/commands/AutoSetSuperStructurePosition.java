@@ -1,8 +1,6 @@
 package org.frc5687.chargedup.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
 import org.frc5687.chargedup.commands.Arm.AutoSetArmSetpoint;
 import org.frc5687.chargedup.commands.Elevator.AutoExtendElevator;
 import org.frc5687.chargedup.commands.EndEffector.SetEndEffectorPosition;

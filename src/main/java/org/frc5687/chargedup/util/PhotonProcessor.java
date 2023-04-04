@@ -1,16 +1,13 @@
 package org.frc5687.chargedup.util;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.Executors;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -18,7 +15,7 @@ import org.photonvision.PhotonPoseEstimator;
 
 public class PhotonProcessor {
 
-    private static final int NUM_CAMERAS = 4;
+    //private static final int NUM_CAMERAS = 4;
     private final PhotonCamera _northWestCamera;
     private final PhotonCamera _southEastTopCamera;
     private final PhotonCamera _southWestCamera;
@@ -28,13 +25,13 @@ public class PhotonProcessor {
     private final PhotonPoseEstimator _southWestCameraEstimator;
     private final PhotonPoseEstimator _southEastCameraEstimator;
 
-    private final ExecutorService _executorService;
+    //private final ExecutorService _executorService;
     public PhotonProcessor(AprilTagFieldLayout layout) {
         _northWestCamera = new PhotonCamera("North_East_Camera"); // name is wrong, really west camera.
         _southEastTopCamera = new PhotonCamera("South_East_Top_Camera");
         _southWestCamera = new PhotonCamera("South_West_Camera");
         _southEastCamera = new PhotonCamera("South_East_Camera");
-        _executorService = Executors.newFixedThreadPool(NUM_CAMERAS);
+        //_executorService = Executors.newFixedThreadPool(NUM_CAMERAS);
 
         setPipeline(Pipeline.FAR);
 
