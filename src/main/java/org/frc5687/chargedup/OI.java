@@ -5,7 +5,10 @@ import static org.frc5687.chargedup.util.Helpers.*;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -13,6 +16,7 @@ import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
 import org.frc5687.chargedup.commands.SemiAuto.*;
+import org.frc5687.chargedup.commands.RumbleGamepad;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
 import org.frc5687.chargedup.commands.Tap;
@@ -23,6 +27,7 @@ import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
+import org.frc5687.lib.sensors.ProximitySensor;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -36,8 +41,10 @@ public class OI extends OutliersProxy {
     protected Trigger _buttonRightTrigger;
     protected Trigger _povButtonRight;
     protected Trigger _povButtonLeft;
+ 
 
     public OI() {
+    
         _driverGamepad = new Gamepad(0);
         _operatorJoystick = new CommandJoystick(1);
         _buttonpad = new Gamepad(2);
@@ -54,6 +61,8 @@ public class OI extends OutliersProxy {
                 new Trigger(new AxisButton(_buttonpad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
         _buttonRightTrigger =
                 new Trigger(new AxisButton(_buttonpad, Gamepad.Axes.RIGHT_TRIGGER.getNumber(), 0.05)::get);
+               
+
     }
 
     public void initializeButtons(
@@ -93,7 +102,7 @@ public class OI extends OutliersProxy {
                 .onTrue(
                         new AutoShoot(cubeShooter, drivetrain, endEffector, this)
                                 .unless(() -> !cubeShooter.isCubeDetected()));
-        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter, false));
+        _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter, false, this));
 
         _driverGamepad
                 .getYButton()
@@ -115,6 +124,7 @@ public class OI extends OutliersProxy {
         _customController
                 .getDeployButton()
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
+    
     }
 
    
@@ -222,5 +232,12 @@ public class OI extends OutliersProxy {
         //        speed = applyDeadband(speed, ROTATION_DEADBAND);
         //        return speed; //for testing
         return 0;
+    }
+    public void RumbleDriver() {
+        _driverGamepad.setRumble(GenericHID.RumbleType.kBothRumble, 1);
+    }
+    public void stopRumbleDriver() {
+        _driverGamepad.setRumble(GenericHID.RumbleType.kBothRumble, 0);
+
     }
 }

@@ -33,14 +33,14 @@ public class ThreePieceLevel extends SequentialCommandGroup {
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
                                 drivetrain, trajectories.getTrajectory(alliance + "BUMP_GOAL_ONE"), true, false),
-                        new AutoIntake(shooter, false)),
+                        new AutoIntake(shooter, false, oi)),
                 new DriveTrajectory(
                         drivetrain, trajectories.getTrajectory(alliance + "GOAL_ONE_CHARGE_TWO"), true, false),
                 new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),
                 new ParallelDeadlineGroup(
                         new DriveTrajectory(
                                 drivetrain, trajectories.getTrajectory(alliance + "CHARGE_TWO_GOAL_TWO"), true, false),
-                        new AutoIntake(shooter, false)),
+                        new AutoIntake(shooter, false, oi)),
                 new DriveTrajectory(
                         drivetrain, trajectories.getTrajectory(alliance + "GOAL_TWO_CHARGE_THREE"), true, false),
                 new Shoot(shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, oi),
