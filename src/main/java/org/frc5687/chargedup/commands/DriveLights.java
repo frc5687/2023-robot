@@ -53,7 +53,7 @@ public class DriveLights extends OutliersCommand {
                     break;
             }
         } else if (_endEffector.getState() == EndEffectorState.CUBE){
-            _lights.setColor(Constants.CANdle.PURPLE);
+            _lights.setColor(Constants.CANdle.BLUE);
             switch (_driveTrain.getMode()) {
                 case VISION:
                     if (_driveTrain.isCubeDetected()) {

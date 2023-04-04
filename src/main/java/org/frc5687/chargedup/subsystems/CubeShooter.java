@@ -94,7 +94,7 @@ public class CubeShooter extends OutliersSubsystem {
         }
         switch (level) {
             case HIGH:
-                return new Pair<>(1.0, 0.21);
+                return new Pair<>(1.0, Constants.CubeShooter.IDLE_ANGLE);
             case MIDDLE:
                 if (distance < 0.5) {
                     return new Pair<>(0.5, 0.21);
