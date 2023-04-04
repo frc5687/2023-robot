@@ -14,7 +14,7 @@ public class Shoot extends OutliersCommand {
     private final double _angle;
     private boolean _finished;
 
-    public Shoot(CubeShooter shooter, double speed, double angle, OI oi) {
+    public Shoot(CubeShooter shooter, double speed, double angle) {
         _cubeShooter = shooter;
         _speed = speed;
         _angle = angle;

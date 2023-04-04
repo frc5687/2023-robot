@@ -125,7 +125,7 @@ public class TwoAndAHalfPieceAuto extends SequentialCommandGroup {
                     ),
                     new DriveTrajectory(driveTrain, _trajectory2, true, false),
                     new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.02, 0), new Rotation2d())), true),
-                    new Shoot(_shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, _oi),
+                    new Shoot(_shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE),
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory3, true, false),
                         new AutoIntake(_shooter, true, _oi)

@@ -118,6 +118,7 @@ public class LevelingAndIntake extends OutliersCommand {
                 if (Math.abs(_drivetrain.getPitch()) < Constants.DriveTrain.PITCH_LEVELED_ANGLE) {
                     _drivetrain.setVelocity(
                             ChassisSpeeds.fromFieldRelativeSpeeds(0, 0.0, 0.0, _drivetrain.getHeading()));
+                    _state = LevelingPickupState.LEVELED_AGAIN;
                 }
                 break;
             case LEVELED_AGAIN:
