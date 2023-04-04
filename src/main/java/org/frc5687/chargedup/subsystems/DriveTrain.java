@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,6 +83,9 @@ public class DriveTrain extends OutliersSubsystem {
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
     private Pose2d _hoverGoal;
+
+    private Pose2d _wantedRestPose;
+    private boolean _wantsToSetPose = false;
 
     public DriveTrain(
             OutliersContainer container,
@@ -171,8 +174,15 @@ public class DriveTrain extends OutliersSubsystem {
                             _modules[NORTH_EAST_IDX].getModulePosition()
                         },
                         new Pose2d(0, 0, getHeading()),
-                        VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(1)),
-                        VecBuilder.fill(0.35, 0.35, Units.degreesToRadians(70)));
+                        createStateStandardDeviations(
+                                Constants.VisionConfig.STATE_STD_DEV_X,
+                                Constants.VisionConfig.STATE_STD_DEV_Y,
+                                Constants.VisionConfig.STATE_STD_DEV_ANGLE),
+                        createVisionStandardDeviations(
+                                Constants.VisionConfig.VISION_STD_DEV_X,
+                                Constants.VisionConfig.VISION_STD_DEV_Y,
+                                Constants.VisionConfig.VISION_STD_DEV_ANGLE
+                        ));
         _swerveSetpointGenerator =
                 new SwerveSetpointGenerator(
                         _kinematics,
@@ -497,6 +507,11 @@ public class DriveTrain extends OutliersSubsystem {
         error("Reset robot position: " + position.toString());
     }
 
+    public void wantsToResetPose(Pose2d pose) {
+        _wantedRestPose = pose;
+        _wantsToSetPose = true;
+    }
+
     public void moduleMetrics() {
         for (var module : _modules) {
             module.updateDashboard();
@@ -591,31 +606,32 @@ public class DriveTrain extends OutliersSubsystem {
    /* Vision Stuff */
     @Override
     public void dataPeriodic(double timestamp) {
-        _poseEstimator.update(getHeading(), _systemIO.measuredPositions);
 
-        if (getPitch() < Units.degreesToRadians(5.0)) {
+        // current assumption is that because this is in a different thread a data race is occurring where a reset doesn't occur until after a measurement(or during)
+        // which is causing the estimated pose to be wrong.
+        if (_wantsToSetPose) {
+            resetRobotPose(_wantedRestPose);
+            _wantsToSetPose = false;
+        } else {
+            _poseEstimator.update(getHeading(), _systemIO.measuredPositions);
             Pose2d prevEstimatedPose = _poseEstimator.getEstimatedPosition();
-            List<CompletableFuture<Optional<EstimatedRobotPose>>> cameraFutures = Stream.of(
-                            _photonProcessor.getNorthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose),
-                            _photonProcessor.getSouthEastTopCameraEstimatedGlobalPoseAsync(prevEstimatedPose),
-                            _photonProcessor.getSouthWestCameraEstimatedGlobalPoseAsync(prevEstimatedPose),
-                            _photonProcessor.getSouthEastCameraEstimatedGlobalPoseAsync(prevEstimatedPose)
+            List<EstimatedRobotPose> cameraPoses = Stream.of(
+                            _photonProcessor.getNorthWestCameraEstimatedGlobalPose(prevEstimatedPose),
+                            _photonProcessor.getSouthEastTopCameraEstimatedGlobalPose(prevEstimatedPose),
+                            _photonProcessor.getSouthWestCameraEstimatedGlobalPose(prevEstimatedPose),
+                            _photonProcessor.getSouthEastCameraEstimatedGlobalPose(prevEstimatedPose)
                     )
-                    .collect(Collectors.toList());
-
-            List<EstimatedRobotPose> validPoses = cameraFutures.stream()
-                    .map(CompletableFuture::join)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+                    .flatMap(Optional::stream)
                     .filter(cameraPose -> isValidMeasurement(cameraPose.estimatedPose))
                     .collect(Collectors.toList());
 
-            validPoses.forEach(cameraPose -> {
+            cameraPoses.forEach(cameraPose -> {
                 dynamicallyChangeDeviations(cameraPose.estimatedPose, prevEstimatedPose);
                 _poseEstimator.addVisionMeasurement(cameraPose.estimatedPose.toPose2d(), cameraPose.timestampSeconds);
             });
+
+            _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
         }
-        _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
         _field.setRobotPose(_systemIO.estimatedPose);
     }
 
@@ -623,23 +639,23 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.estimatedPose;
     }
     public boolean isValidMeasurement(Pose3d measurement) {
-        boolean isTargetWithinHeight = measurement.getZ() < Units.inchesToMeters(30);
+        final double heightThreshold = Units.inchesToMeters(30);
+        final double fieldBuffer = Units.inchesToMeters(6); // add a 6 inch buffer to the field boundaries
 
-        return isMeasurementInField(measurement) && isTargetWithinHeight;
-    }
-    public boolean isMeasurementInField(Pose3d measurement) {
-        return (measurement.getX() >= 0.0 && measurement.getX() <= FieldConstants.fieldLength)
-                && (measurement.getY() >= 0.0 && measurement.getY() <= FieldConstants.fieldWidth);
+        boolean isTargetWithinHeight = measurement.getZ() < (heightThreshold + heightThreshold * 0.1); // allow for a 10% error in height measurement
+        boolean isMeasurementInField = (measurement.getX() >= -fieldBuffer && measurement.getX() <= FieldConstants.fieldLength + fieldBuffer)
+                && (measurement.getY() >= -fieldBuffer && measurement.getY() <= FieldConstants.fieldWidth + fieldBuffer);
+        return isTargetWithinHeight && isMeasurementInField;
     }
 
     /**
      * This changes the standard deviations to trust vision measurements less the farther the machine is.
-     * the linear line y = 0.1x + 0.3
+     * the linear line y = 0.13x + 0.3
      * @param measurement the measurement from an AprilTag
      */
     public void dynamicallyChangeDeviations(Pose3d measurement, Pose2d currentEstimatedPose) {
         double dist = measurement.toPose2d().getTranslation().getDistance(currentEstimatedPose.getTranslation());
-        double positionDev = Math.abs(0.11 * dist + 0.3);
+        double positionDev = Math.abs(0.2 * dist + 0.3);
         _poseEstimator.setVisionMeasurementStdDevs(createVisionStandardDeviations(positionDev, positionDev, Units.degreesToRadians(70)));
     }
     protected Vector<N3> createStandardDeviations(double x, double y, double z) {

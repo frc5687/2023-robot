@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.Shoot;
 import org.frc5687.chargedup.commands.DriveTrajectory;
@@ -25,6 +26,8 @@ import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.util.AutoChooser;
 import org.frc5687.chargedup.util.Trajectories;
+
+import static org.frc5687.chargedup.util.SuperStructureSetpoints.idleConeSetpoint;
 
 public class TwoAndAHalfPieceAuto extends SequentialCommandGroup {
     private PathPlannerTrajectory _trajectory1;
@@ -117,15 +120,16 @@ public class TwoAndAHalfPieceAuto extends SequentialCommandGroup {
                     placeCommand,
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory1, true, false),
-                        // new SequentialCommandGroup(
-                        //     new WaitCommand(1), 
-                            new AutoIntake(_shooter, true)
-                        // )
+                        new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
+                        new AutoIntake(_shooter, true)
                     ),
                     new DriveTrajectory(driveTrain, _trajectory2, true, false),
                     new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), true),
-                    new Shoot(_shooter, 1.0, 0.2, _oi),
-                    new DriveTrajectory(driveTrain, _trajectory3, true, false)
+                    new Shoot(_shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, _oi),
+                    new ParallelDeadlineGroup(
+                        new DriveTrajectory(driveTrain, _trajectory3, true, false),
+                        new AutoIntake(_shooter, true)
+                    )
                 )
             );
         }

@@ -174,9 +174,9 @@ public class Constants {
         public static final double Y_TRAJECTORY_kI = 0.0;
         public static final double Y_TRAJECTORY_kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 0.8;
+        public static final double ANGLE_TRAJECTORY_kP = 3.5;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.005;
+        public static final double ANGLE_TRAJECTORY_kD = 0.1;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;

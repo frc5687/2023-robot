@@ -57,7 +57,7 @@ public class DriveTrajectory extends OutliersCommand {
 //            transformedTrajectory = trajectory;
 //        }
         if (_resetRobotPose) {
-            _driveTrain.resetRobotPose(trajectory.getInitialHolonomicPose());
+            _driveTrain.wantsToResetPose(trajectory.getInitialHolonomicPose());
         }
 
         if (logActiveTrajectory != null) {

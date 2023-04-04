@@ -31,7 +31,10 @@ public class AutoChooser extends OutliersProxy {
         _autoTypeChooser = new SendableChooser<>();
         _autoTypeChooser.setDefaultOption("Drive For Time", AutoType.DriveForTime);
         _autoTypeChooser.addOption("DriveToLevel", AutoType.DrivetoLevel);
+        _autoTypeChooser.addOption("One And A Half Level", AutoType.OneAndAHalfLevel);
         _autoTypeChooser.addOption("Two Piece", AutoType.TwoPiece);
+        _autoTypeChooser.addOption("Two and A Half Piece", AutoType.TwoAndAHalfPieceAuto);
+        _autoTypeChooser.addOption("Two and A Half Piece Level", AutoType.TwoAndAHalfPieceLevelAuto);
         _autoTypeChooser.addOption("Steal Cubes", AutoType.StealCubes);
         _autoTypeChooser.addOption("Three Cube Level", AutoType.ThreeCubeLevel);
         _autoTypeChooser.addOption("Three Cube No Level", AutoType.ThreeCubeNoLevel);
@@ -104,7 +107,8 @@ public class AutoChooser extends OutliersProxy {
         TwoAndAHalfPieceLevelAuto(4),
         StealCubes(5),
         ThreeCubeLevel(6),
-        ThreeCubeNoLevel(7);
+        ThreeCubeNoLevel(7),
+        OneAndAHalfLevel(8);
 
         private int _value;
 
