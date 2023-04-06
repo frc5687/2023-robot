@@ -49,7 +49,7 @@ public class SemiAutoPickup extends OutliersCommand {
 
     @Override
     public void execute() {
-        error("Executinng semiauto pickup");
+        // error("Executinng semiauto pickup");
         updateDashboard();
         super.execute();
         if (_isConeMode != _endEffector.getConeMode()) {
