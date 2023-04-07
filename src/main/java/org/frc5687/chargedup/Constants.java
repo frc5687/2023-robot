@@ -571,6 +571,8 @@ public class Constants {
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
+        public static final long WRIST_TIMEOUT = 500;
+
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
         public static final double GRIPPER_kD = 0;
@@ -602,8 +604,9 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.08;// rotations was .08
+        public static final double IDLE_ANGLE = 0.12;// rotations was .08
         public static final double INTAKE_ANGLE = 2.5; //
+
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
