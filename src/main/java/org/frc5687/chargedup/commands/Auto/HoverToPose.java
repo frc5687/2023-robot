@@ -35,14 +35,14 @@ public class HoverToPose extends OutliersCommand {
         super.initialize();
         _driveTrain.setKinematicLimits(DRIVE_POSE_KINEMATIC_LIMITS);
         _lights.switchAnimation(AnimationType.LARSON);
-        _offset = new Transform2d(new Translation2d(0.3, 0), new Rotation2d());
+        _offset = new Transform2d(new Translation2d(0.5, 0), new Rotation2d());
         _offsetPose = _driveTrain.getHoverGoal().transformBy(_offset);
     }
 
     @Override
     public void execute() {
-    if(_driveTrain.getEstimatedPose().getX() - _offsetPose.getX() > 0.05 && 
-        _driveTrain.getEstimatedPose().getY() - _offsetPose.getY() > 0.05){
+    if(Math.abs(_driveTrain.getEstimatedPose().getX() - _offsetPose.getX()) > 0.05 && 
+        Math.abs(_driveTrain.getEstimatedPose().getY() - _offsetPose.getY()) > 0.05){
         _driveTrain.setVelocityPose(_offsetPose, _cubeShooter.isCubeDetected());
     }else{
         _driveTrain.setVelocityPose(_driveTrain.getHoverGoal(), _cubeShooter.isCubeDetected());
