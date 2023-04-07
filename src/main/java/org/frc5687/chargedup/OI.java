@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
+import org.frc5687.chargedup.commands.EndEffector.EjectStow;
 import org.frc5687.chargedup.commands.SemiAuto.*;
 import org.frc5687.chargedup.commands.DriveWithSpeeds;
 import org.frc5687.chargedup.commands.RumbleGamepad;
@@ -86,6 +87,7 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeState));
 
         _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
+        _operatorJoystick.button(10).and(_operatorJoystick.button(11)).onTrue(new EjectStow(endEffector, elevator, arm));
 
         _customController
                 .getIntakeButton()

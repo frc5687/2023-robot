@@ -38,6 +38,7 @@ public class AutoChooser extends OutliersProxy {
         _autoTypeChooser.addOption("Steal Cubes", AutoType.StealCubes);
         _autoTypeChooser.addOption("Three Cube Level", AutoType.ThreeCubeLevel);
         _autoTypeChooser.addOption("Three Cube No Level", AutoType.ThreeCubeNoLevel);
+        _autoTypeChooser.addOption("Three Piece", AutoType.ThreePiece);
         SmartDashboard.putData("Auto Type", _autoTypeChooser);
     }
 
@@ -108,7 +109,8 @@ public class AutoChooser extends OutliersProxy {
         StealCubes(5),
         ThreeCubeLevel(6),
         ThreeCubeNoLevel(7),
-        OneAndAHalfLevel(8);
+        OneAndAHalfLevel(8),
+        ThreePiece(9);
 
         private int _value;
 

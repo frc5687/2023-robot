@@ -235,6 +235,17 @@ public class RobotContainer extends OutliersContainer {
                 return new ThreePieceNoLevel(_driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);
             case OneAndAHalfLevel:
                 return new OneAndAHalfLevel(_driveTrain, _arm, _elevator, _endEffector, _cubeShooter);
+            case ThreePiece:
+                return new ThreePieceAuto(
+                    _driveTrain, 
+                    _endEffector, 
+                    _elevator, 
+                    _arm, 
+                    _lights, 
+                    _cubeShooter, 
+                    _oi, 
+                    _autoFirstNode, 
+                    _trajectories); 
             default:
                 error("big uh oh");
                 return new WaitCommand(15);
