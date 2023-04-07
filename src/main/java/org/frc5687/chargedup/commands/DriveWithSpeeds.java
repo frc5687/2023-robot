@@ -22,11 +22,17 @@ public class DriveWithSpeeds extends OutliersCommand{
     public void execute() {
         super.execute();    
         _driveTrain.setMode(Mode.NORMAL);
-        _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
+        _driveTrain.setKinematicLimits(Constants.DriveTrain.POV_KINEMATIC_LIMITS);
         _driveTrain.setVelocity(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                 _vx, _vy, 0, _driveTrain.getHeading()
             )
         );
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
     }
 }
