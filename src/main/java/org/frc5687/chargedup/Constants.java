@@ -580,7 +580,7 @@ public class Constants {
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
 
-        public static final long WRIST_TIMEOUT = 500;
+        public static final long WRIST_TIMEOUT = 1000;
 
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
