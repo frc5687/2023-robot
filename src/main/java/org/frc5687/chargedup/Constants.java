@@ -376,7 +376,7 @@ public class Constants {
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double PLACE_ARM_ANGLE = 0.25; // testing
+        public static final double PLACE_ARM_ANGLE = 0.2; // testing
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
         static {
@@ -574,7 +574,7 @@ public class Constants {
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(3.0);
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(132.0);
 
         public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(240);
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);

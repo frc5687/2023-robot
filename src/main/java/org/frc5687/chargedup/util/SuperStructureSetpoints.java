@@ -15,7 +15,7 @@ public class SuperStructureSetpoints {
     public static final Setpoint highConePlaceSetpoint = new Setpoint();
 
     static {
-        highConePlaceSetpoint.elevatorPosition = 0.55;
+        highConePlaceSetpoint.elevatorPosition = 0.49;
         highConePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         highConePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
         highConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
@@ -35,7 +35,7 @@ public class SuperStructureSetpoints {
     public static final Setpoint highCubePlaceSetpoint = new Setpoint();
 
     static {
-        highCubePlaceSetpoint.elevatorPosition = 0.55;
+        highCubePlaceSetpoint.elevatorPosition = 0.49;
         highCubePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         highCubePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED;
         highCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
