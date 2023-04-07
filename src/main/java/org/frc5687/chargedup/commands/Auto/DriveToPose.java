@@ -29,8 +29,7 @@ public class DriveToPose extends OutliersCommand {
 
     @Override
     public void execute() {
-        _driveTrain.setVelocityPose(new Pose2d(_driveTrain.getEstimatedPose().getX(), _destPose.getY(), _destPose.getRotation()), _isShooter);
-        _driveTrain.setVelocityPose(new Pose2d( _destPose.getX(), _driveTrain.getEstimatedPose().getY(), _destPose.getRotation()), _isShooter);
+        _driveTrain.setVelocityPose(_destPose, _isShooter);
     }
 
     @Override
