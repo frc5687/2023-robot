@@ -16,6 +16,7 @@ import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
 import org.frc5687.chargedup.commands.SemiAuto.*;
+import org.frc5687.chargedup.commands.DriveWithSpeeds;
 import org.frc5687.chargedup.commands.RumbleGamepad;
 import org.frc5687.chargedup.commands.SetRobotGoal;
 import org.frc5687.chargedup.commands.SnapTo;
@@ -39,10 +40,11 @@ public class OI extends OutliersProxy {
     protected Trigger _driverRightTrigger;
     protected Trigger _buttonLeftTrigger;
     protected Trigger _buttonRightTrigger;
-    protected Trigger _povButtonRight;
     protected Trigger _povButtonLeft;
- 
-
+    protected Trigger _povButtonRight;
+    protected Trigger _povButtonUp;
+    protected Trigger _povButtonDown;
+    
     public OI() {
     
         _driverGamepad = new Gamepad(0);
@@ -51,6 +53,8 @@ public class OI extends OutliersProxy {
         _customController = new CustomController();
         _povButtonLeft = new Trigger(() -> _driverGamepad.getPOV() == 270);
         _povButtonRight = new Trigger(() -> _driverGamepad.getPOV() == 90);
+        _povButtonUp = new Trigger(() -> _driverGamepad.getPOV() == 0);
+        _povButtonDown = new Trigger(() -> _driverGamepad.getPOV() == 180);
         _driverLeftTrigger =
                 new Trigger(
                         new AxisButton(_driverGamepad, Gamepad.Axes.LEFT_TRIGGER.getNumber(), 0.05)::get);
@@ -91,8 +95,14 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
         _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
 
-        _povButtonLeft.onTrue(new Tap(drivetrain, false));
-        _povButtonRight.onTrue(new Tap(drivetrain, true));
+        // _povButtonLeft.onTrue(new Tap(drivetrain, false));
+        // _povButtonRight.onTrue(new Tap(drivetrain, true));
+
+        _povButtonLeft.whileTrue(new DriveWithSpeeds(drivetrain, 0, 1));
+        _povButtonRight.whileTrue(new DriveWithSpeeds(drivetrain, 0, -1));
+        _povButtonUp.whileTrue(new DriveWithSpeeds(drivetrain, 1, 0));
+        _povButtonDown.whileTrue(new DriveWithSpeeds(drivetrain, -1, 0));
+
 
         //        _driverGamepad.getXButton().onTrue(new
         // DriveToPose(Constants.Auto.FieldPoses.RED_TARGET_FOUR))

@@ -90,6 +90,15 @@ public class Constants {
             VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
+
+        public static final KinematicLimits POV_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            POV_KINEMATIC_LIMITS.maxDriveVelocity = 1; // m/s
+            POV_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            POV_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
