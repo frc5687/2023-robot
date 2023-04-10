@@ -21,6 +21,7 @@ public class SemiAutoPickup extends OutliersCommand {
     private Setpoint _stowSetpoint;
     private boolean _isFinished;
     private boolean _isConeMode;
+    private long _timeout;
 
     public SemiAutoPickup(Arm arm, EndEffector endEffector, Elevator elevator, OI oi) {
         _endEffector = endEffector;
@@ -49,7 +50,7 @@ public class SemiAutoPickup extends OutliersCommand {
 
     @Override
     public void execute() {
-        error("Executinng semiauto pickup");
+        // error("Executinng semiauto pickup");
         updateDashboard();
         super.execute();
         if (_isConeMode != _endEffector.getConeMode()) {
@@ -85,9 +86,17 @@ public class SemiAutoPickup extends OutliersCommand {
             case WAITING_FOR_STOW:
                 _endEffector.setWristSpeed(_endEffector.getWristControllerOutput());
                 if (_endEffector.isRollerStalled() || _oi.stow()) {
-                    _state = IntakeState.STOW_WRIST;
+                    _timeout = System.currentTimeMillis() + Constants.EndEffector.WRIST_TIMEOUT;
+                    _state = IntakeState.WAIT_WRIST;
                 }
                 break;
+            case WAIT_WRIST:
+                _endEffector.setWristSpeed(_endEffector.getWristControllerOutput());
+                _endEffector.setRollerSpeed(_setpoint.gripperSpeed / 2);
+                if (_timeout < System.currentTimeMillis()){
+                    _state = IntakeState.STOW_WRIST;
+                }
+            break;
             case STOW_WRIST:
                 _endEffector.setWristSetpointRadians(Constants.EndEffector.WRIST_SAFE_ANGLE);
                 _endEffector.setRollerSpeed(_stowSetpoint.gripperSpeed);
@@ -131,9 +140,10 @@ public class SemiAutoPickup extends OutliersCommand {
         CLEAR_ELEVATOR(1),
         DEPLOY(2),
         WAITING_FOR_STOW(3),
-        STOW_WRIST(4),
-        STOWING(5),
-        FINISHED(6);
+        WAIT_WRIST(4),
+        STOW_WRIST(5),
+        STOWING(6),
+        FINISHED(7);
 
         private int _value;
 

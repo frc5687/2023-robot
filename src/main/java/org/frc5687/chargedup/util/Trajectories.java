@@ -18,10 +18,10 @@ public class Trajectories {
             new Pair<>("RED_NODE_ONE_GOAL_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_NODE_TWO_GOAL_ONE", new PathConstraints(3.0, 2.0)),
             new Pair<>("RED_NODE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_NODE_EIGHT_GOAL_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_NODE_EIGHT_GOAL_FOUR", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_NODE_NINE_GOAL_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("RED_NODE_NINE_GOAL_FOUR", new PathConstraints(3.0, 2.0)),
+            new Pair<>("RED_NODE_EIGHT_GOAL_THREE", new PathConstraints(2.5, 2.0)),
+            new Pair<>("RED_NODE_EIGHT_GOAL_FOUR", new PathConstraints(2.5, 2.0)),
+            new Pair<>("RED_NODE_NINE_GOAL_THREE", new PathConstraints(2.5, 2.0)),
+            new Pair<>("RED_NODE_NINE_GOAL_FOUR", new PathConstraints(2.5, 2.0)),
 
             new Pair<>("RED_GOAL_ONE_NODE_ONE", new PathConstraints(2.5, 2.0)),
             new Pair<>("RED_GOAL_ONE_NODE_TWO", new PathConstraints(2.5, 2.0)),
@@ -43,10 +43,11 @@ public class Trajectories {
             new Pair<>("BLUE_NODE_ONE_GOAL_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_NODE_TWO_GOAL_ONE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_NODE_TWO_GOAL_TWO", new PathConstraints(3.0, 2.0)),
-            new Pair<>("BLUE_NODE_EIGHT_GOAL_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("BLUE_NODE_EIGHT_GOAL_FOUR", new PathConstraints(3.0, 2.0)),
-            new Pair<>("BLUE_NODE_NINE_GOAL_THREE", new PathConstraints(3.0, 2.0)),
-            new Pair<>("BLUE_NODE_NINE_GOAL_FOUR", new PathConstraints(3.0, 2.0)),
+            new Pair<>("BLUE_NODE_EIGHT_GOAL_THREE", new PathConstraints(2.5, 2.0)),
+            new Pair<>("BLUE_NODE_EIGHT_GOAL_FOUR", new PathConstraints(2.5, 2.0)),
+            new Pair<>("BLUE_NODE_NINE_GOAL_THREE", new PathConstraints(2.5, 2.0)),
+            new Pair<>("BLUE_NODE_NINE_GOAL_FOUR", new PathConstraints(2.5, 2.0)),
+
             new Pair<>("BLUE_GOAL_ONE_NODE_ONE", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_GOAL_ONE_NODE_TWO", new PathConstraints(3.0, 2.0)),
             new Pair<>("BLUE_GOAL_TWO_NODE_ONE", new PathConstraints(3.0, 2.0)),
@@ -67,7 +68,10 @@ public class Trajectories {
             new Pair<>("BLUE_NODE_EIGHT_SHOOT_GOAL_THREE", new PathConstraints(3.0, 3.0)),
             new Pair<>("RED_NODE_EIGHT_SHOOT_GOAL_THREE", new PathConstraints(3.0, 3.0)),
             new Pair<>("BLUE_NOBUMP_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0)),
-            new Pair<>("RED_NOBUMP_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0))
+            new Pair<>("RED_NOBUMP_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0)),
+            
+            new Pair<>("RED_NODE_ONE_GOAL_ONE_SHOOT", new PathConstraints(2.5, 2.0)),
+            new Pair<>("RED_NODE_TWO_GOAL_TWO_LINE", new PathConstraints(2.5, 2.0))
     ));
 
     public Trajectories(PathConstraints constraints) {

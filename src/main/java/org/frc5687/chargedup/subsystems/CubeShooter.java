@@ -96,19 +96,9 @@ public class CubeShooter extends OutliersSubsystem {
             case HIGH:
                 return new Pair<>(1.0, Constants.CubeShooter.IDLE_ANGLE);
             case MIDDLE:
-                if (distance < 0.5) {
                     return new Pair<>(0.5, 0.21);
-                } else {
-                    return new Pair<>(1.0, Constants.CubeShooter.IDLE_ANGLE);
-                }
             case LOW:
-                if (distance < 0.5) {
-                    error("using low goal close");
                     return new Pair<>(0.2, Constants.CubeShooter.IDLE_ANGLE);
-                } else {
-                    error("using low goal far");
-                    return new Pair<>(1.0, Constants.CubeShooter.IDLE_ANGLE);
-                }
         }
         return new Pair<>(0.3, Constants.CubeShooter.IDLE_ANGLE);
     }

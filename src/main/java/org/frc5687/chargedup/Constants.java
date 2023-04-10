@@ -90,6 +90,15 @@ public class Constants {
             VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
             VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
         }
+
+        public static final KinematicLimits POV_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            POV_KINEMATIC_LIMITS.maxDriveVelocity = 1; // m/s
+            POV_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            POV_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -367,7 +376,7 @@ public class Constants {
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double PLACE_ARM_ANGLE = 0.25; // testing
+        public static final double PLACE_ARM_ANGLE = 0.2; // testing
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
         static {
@@ -565,11 +574,13 @@ public class Constants {
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(3.0);
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(132.0);
 
         public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(240);
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
+
+        public static final long WRIST_TIMEOUT = 1000;
 
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
@@ -589,7 +600,7 @@ public class Constants {
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.165;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.18;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
@@ -602,8 +613,9 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.16; // rotations
+        public static final double IDLE_ANGLE = 0.12;// rotations was .08
         public static final double INTAKE_ANGLE = 2.5; //
+
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
