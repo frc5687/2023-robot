@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.Arm.HoldArm;
+import org.frc5687.chargedup.commands.Elevator.DriveUntilInHall;
 import org.frc5687.chargedup.commands.AutoExtendSuperStructurePosition;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
@@ -27,6 +28,8 @@ public class SemiAutoPlaceMiddleCube extends SequentialCommandGroup {
                         new HoldWristAngle(endEffector, setpoint.wristAngle),
                         new HoldArm(arm, setpoint.armAngle)),
                 new AutoSetRollerSpeed(endEffector, Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED, true),
+                new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleCubeSetpoint),
+                new DriveUntilInHall(elevator),
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleCubeSetpoint));
     }
 }
