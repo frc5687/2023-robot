@@ -93,7 +93,7 @@ public class SuperStructureSetpoints {
     public static final Setpoint idleConeSetpoint = new Setpoint();
 
     static {
-        idleConeSetpoint.elevatorPosition = 0.02;
+        idleConeSetpoint.elevatorPosition = 0.05;
         idleConeSetpoint.wristAngle = Constants.EndEffector.WRIST_MID_ANGLE;
         idleConeSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
         idleConeSetpoint.armAngle = Constants.Arm.VERTICAL_ARM_ANGLE;

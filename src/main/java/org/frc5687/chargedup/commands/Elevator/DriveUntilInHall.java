@@ -21,6 +21,7 @@ public class DriveUntilInHall extends OutliersCommand {
     public void execute() {
         super.execute();
         _elevator.setArmSpeed(-0.3);
+        error("Elevator Driving In!");
     }
 
     @Override
@@ -32,5 +33,6 @@ public class DriveUntilInHall extends OutliersCommand {
     public void end(boolean interrupted) {
         super.end(interrupted);
         _elevator.setArmSpeed(0);
+        error("Elevator is now In!");
     }
 }

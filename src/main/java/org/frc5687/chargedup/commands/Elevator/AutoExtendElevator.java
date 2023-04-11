@@ -17,6 +17,7 @@ public class AutoExtendElevator extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
+        error("Elevator Extending!");
         // Setpoint in Radians
     }
 
@@ -24,6 +25,7 @@ public class AutoExtendElevator extends OutliersCommand {
     public void execute() {
         super.execute();
         _extArm.setExtArmLengthMeters(_extDistance);
+        error("Elevator rolling!");
     }
 
     @Override
