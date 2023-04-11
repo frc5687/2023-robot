@@ -105,6 +105,7 @@ public class OutliersTalon extends TalonFX {
         _motionMagicVoltage.EnableFOC = config.USE_FOC;
         _percentOutput.EnableFOC = config.USE_FOC;
         _velocityVoltage.EnableFOC = config.USE_FOC;
+        _torqueCurrentFOC.Deadband = config.CURRENT_DEADBAND;
 
         _configurator.apply(_motorConfigs, config.TIME_OUT);
         _configurator.apply(_torqueCurrentConfigs, config.TIME_OUT);

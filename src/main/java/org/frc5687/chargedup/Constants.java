@@ -86,9 +86,9 @@ public class Constants {
         public static final KinematicLimits VISION_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
-            VISION_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
-            VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
-            VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
+            VISION_KINEMATIC_LIMITS.maxDriveVelocity = 3.0; // m/s
+            VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 15; // m/s^2
+            VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
 
         public static final KinematicLimits POV_KINEMATIC_LIMITS = new KinematicLimits();
@@ -108,7 +108,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.055;
+            NORTH_WEST_CONFIG.encoderOffset = -0.07617;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
@@ -120,7 +120,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = -0.16;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.1624;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -132,7 +132,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.062;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.05523;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
@@ -144,7 +144,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.079;
+            NORTH_EAST_CONFIG.encoderOffset = -0.0575;
         }
 
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
@@ -221,10 +221,11 @@ public class Constants {
 
             CONFIG.MAX_VOLTAGE = 12.0;
 
-            CONFIG.MAX_STATOR_CURRENT = 80;
-            CONFIG.MAX_CURRENT = 80;
+            CONFIG.MAX_STATOR_CURRENT = 120;
+            CONFIG.MAX_CURRENT = 120;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-            //            CONFIG.USE_FOC = true;
+            CONFIG.CURRENT_DEADBAND = 0.1; // amps
+//                        CONFIG.USE_FOC = true;
         }
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION =
@@ -245,13 +246,13 @@ public class Constants {
         public static final double VOLTAGE = 12.0;
 
         // Create Parameters for DiffSwerve State Space
-        public static final double INERTIA_STEER = 0.005;
-        public static final double INERTIA_WHEEL = 0.003;
+        public static final double INERTIA_STEER = 0.001;
+        public static final double INERTIA_WHEEL = 0.001;
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.065; // radians
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
+        public static final double Q_AZIMUTH = 0.05; // radians
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 1.5; // radians per sec
         public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
 
         public static final double CONTROL_EFFORT = 4.0;
@@ -376,7 +377,7 @@ public class Constants {
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double PLACE_ARM_ANGLE = 0.2; // testing
+        public static final double PLACE_ARM_ANGLE = 0.233; // testing
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
         static {
@@ -683,6 +684,10 @@ public class Constants {
         public static final float Z_CAM_Z_OFFSET = 0.78111f;
         public static final float Z_CAM_Y_OFFSET = 0.17653f;
         public static final float Z_CAM_X_OFFSET = 0.03566f;
+
+        public static final double VISION_kP = 3.0;
+        public static final double VISION_kI = 0.0;
+        public static final double VISION_kD = 0.2;
     }
 
     public static class CANdle {
