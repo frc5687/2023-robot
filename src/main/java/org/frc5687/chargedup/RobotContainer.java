@@ -90,7 +90,7 @@ public class RobotContainer extends OutliersContainer {
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
 
         _visionProcessor.start();
-        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
+        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.00);
         _driveTrain.startModules();
         startPeriodic();
         //        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
