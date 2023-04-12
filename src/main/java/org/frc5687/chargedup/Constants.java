@@ -59,8 +59,8 @@ public class Constants {
 
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 22; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
         }
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
         static {
@@ -158,7 +158,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 4.8;
+        public static final double MAINTAIN_kP = 4.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
@@ -185,7 +185,7 @@ public class Constants {
 
         public static final double ANGLE_TRAJECTORY_kP = 3.5;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.1;
+        public static final double ANGLE_TRAJECTORY_kD = 0.08;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -251,9 +251,9 @@ public class Constants {
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.05; // radians
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 1.5; // radians per sec
-        public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
+        public static final double Q_AZIMUTH = 0.06; // radians
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 2.0; // radians per sec
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.8; // radians per sec
 
         public static final double CONTROL_EFFORT = 4.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.

@@ -119,7 +119,7 @@ public class ThreePieceAuto extends SequentialCommandGroup {
                         new DriveTrajectory(driveTrain, _trajectory3, true, false),
                         new AutoIntake(_shooter, true, _oi)
                     ),
-                    new Shoot(_shooter, 1.0, 0.21, _oi)
+                    new Shoot(_shooter, 1.0, 0.5, _oi)
                 )
             );
         }
