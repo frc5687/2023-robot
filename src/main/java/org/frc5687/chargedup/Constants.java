@@ -65,7 +65,7 @@ public class Constants {
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
         static {
             DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
-            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 20; // m/s^2
             DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
 
@@ -170,10 +170,10 @@ public class Constants {
 
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
-
-        public static final double kP = 3.5;
+ 
+        public static final double kP = 3.0;
         public static final double kI = 0.0;
-        public static final double kD = 0.02;
+        public static final double kD = 0.05;
         
         public static final double X_TRAJECTORY_kP = 3.5;
         public static final double X_TRAJECTORY_kI = 0.0;
@@ -183,7 +183,7 @@ public class Constants {
         public static final double Y_TRAJECTORY_kI = 0.0;
         public static final double Y_TRAJECTORY_kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 3.5;
+        public static final double ANGLE_TRAJECTORY_kP = 4.5;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
         public static final double ANGLE_TRAJECTORY_kD = 0.08;
 

@@ -113,7 +113,7 @@ public class Drive extends OutliersCommand {
             _driveTrain.setMaintainHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                            vx * coneDist / 2.5,
+                            vx * coneDist / 2,
                             power,
                             _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()));
