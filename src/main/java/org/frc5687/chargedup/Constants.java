@@ -436,6 +436,9 @@ public class Constants {
         public static final double RED_X_COORDINATE = 14.75;
         public static final double BLUE_X_COORDINATE = 1.795;
 
+        public static final double RED_X_TRAJ_END_COORDINATE = 13.5;
+        public static final double BLUE_X_TRAJ_END_COORDINATE = 3;
+
         public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
         public static final Pose2d STARTING_CHARGING_STATION =
                 new Pose2d(1.820, 4.025, new Rotation2d());
