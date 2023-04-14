@@ -171,21 +171,21 @@ public class Constants {
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
  
-        public static final double kP = 3.0;
+        public static final double kP = 3.3;
         public static final double kI = 0.0;
         public static final double kD = 0.05;
         
-        public static final double X_TRAJECTORY_kP = 3.5;
+        public static final double X_TRAJECTORY_kP = 3.8;
         public static final double X_TRAJECTORY_kI = 0.0;
         public static final double X_TRAJECTORY_kD = 0.02;
         
-        public static final double Y_TRAJECTORY_kP = 3.5;
+        public static final double Y_TRAJECTORY_kP = 3.8;
         public static final double Y_TRAJECTORY_kI = 0.0;
         public static final double Y_TRAJECTORY_kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 4.5;
+        public static final double ANGLE_TRAJECTORY_kP = 3.2;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.08;
+        public static final double ANGLE_TRAJECTORY_kD = 0.05;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;

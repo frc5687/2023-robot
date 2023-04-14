@@ -42,7 +42,7 @@ public class Shoot extends OutliersCommand {
                         < Constants.CubeShooter.ANKLE_ANGLE_TOLERANCE
                 // && _oi.releaseRoller()
                 ) {
-                    _timeout = System.currentTimeMillis() + 750;
+                    _timeout = System.currentTimeMillis() + 250;
                     _state = ShootingState.WRIST_AT_ANGLE;
                 }
                 // _state = ShootingState.REVVING_UP;
