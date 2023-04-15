@@ -123,7 +123,7 @@ public class TwoAndAHalfPieceAuto extends SequentialCommandGroup {
                         new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
                         new AutoIntake(_shooter, true, _oi)
                     ),
-                    new DriveTrajePose(driveTrain, _trajectory2, true, false, pose.transformBy(new Transform2d(new Translation2d(0.02, 0), new Rotation2d())), true),
+                    new DriveTrajePose(driveTrain, _trajectory2, true, false, pose.transformBy(new Transform2d(new Translation2d(0.02, 0), new Rotation2d())), true, false),
                     new Shoot(_shooter, 0.5, .21, _oi),
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory3, true, false),

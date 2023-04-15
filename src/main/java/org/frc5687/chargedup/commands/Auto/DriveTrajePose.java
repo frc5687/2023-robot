@@ -22,6 +22,7 @@ public class DriveTrajePose extends OutliersCommand{
     private PathPlannerTrajectory _trajectory;
     private boolean _isShooter;
     private boolean _resetRobotPose;
+    private boolean _invertPose; // If false, will drive to pose when closer to driver station. If true, will drive to pose when farther to driver station.
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
 
 
@@ -30,12 +31,13 @@ public class DriveTrajePose extends OutliersCommand{
             boolean useAllianceColor, 
             boolean resetRobotPose,
             Pose2d destPose,
-            boolean isShooter){
+            boolean isShooter, boolean invertPose){
         _driveTrain = driveTrain;
         _trajectory = trajectory;
         _resetRobotPose = resetRobotPose;
         _destPose = destPose;
         _isShooter = isShooter;
+        _invertPose = invertPose;
         addRequirements(driveTrain);
                 
         if (useAllianceColor && trajectory.fromGUI && trajectory.getInitialPose().getX() > 8.27) {
@@ -68,8 +70,8 @@ public class DriveTrajePose extends OutliersCommand{
     @Override
     public void execute() {
         if (_driveTrain.isRedAlliance() 
-        ? _driveTrain.getEstimatedPose().getX() < Constants.Auto.RED_X_TRAJ_END_COORDINATE 
-        : _driveTrain.getEstimatedPose().getX() > Constants.Auto.BLUE_X_TRAJ_END_COORDINATE){
+        ? (_invertPose ? _driveTrain.getEstimatedPose().getX() > Constants.Auto.RED_X_TRAJ_END_COORDINATE : _driveTrain.getEstimatedPose().getX() < Constants.Auto.RED_X_TRAJ_END_COORDINATE)
+        : (_invertPose ? _driveTrain.getEstimatedPose().getX() < Constants.Auto.BLUE_X_TRAJ_END_COORDINATE : _driveTrain.getEstimatedPose().getX() > Constants.Auto.BLUE_X_TRAJ_END_COORDINATE)){
         double currentTime = this.timer.get();
         PathPlannerState desiredState = (PathPlannerState) _trajectory.sample(currentTime);
         _driveTrain.followTrajectory(desiredState);
