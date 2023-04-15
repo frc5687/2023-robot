@@ -514,6 +514,7 @@ public class DriveTrain extends OutliersSubsystem {
                 },
                 position);
         error("Reset robot position: " + position.toString());
+        _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition();
     }
 
     public void wantsToResetPose(Pose2d pose) {
