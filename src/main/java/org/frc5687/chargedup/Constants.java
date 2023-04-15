@@ -377,7 +377,7 @@ public class Constants {
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double PLACE_ARM_ANGLE = 0.233; // testing
+        public static final double PLACE_ARM_ANGLE = 0.25; // testing
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
         static {
