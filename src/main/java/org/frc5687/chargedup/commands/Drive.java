@@ -58,6 +58,7 @@ public class Drive extends OutliersCommand {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
             _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
+            _lockHeading = false;
         }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
@@ -112,7 +113,7 @@ public class Drive extends OutliersCommand {
             _driveTrain.setMaintainHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                            vx * coneDist / 2.0,
+                            vx * coneDist / 2,
                             power,
                             _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()));

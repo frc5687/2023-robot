@@ -74,7 +74,7 @@ public class LevelingAndIntake extends OutliersCommand {
                                 0.0,
                                 0.0,
                                 _drivetrain.getHeading()));
-                if (_drivetrain.getPitch() > Constants.DriveTrain.PITCH_LOOKING_ANGLE) {
+                if (Math.abs(_drivetrain.getPitch()) > Constants.DriveTrain.PITCH_LOOKING_ANGLE) {
                     _timeout = System.currentTimeMillis() + 1500;
                     _state = LevelingPickupState.DRIVE_FORWARD_AND_GRAB;
                 }
@@ -82,7 +82,7 @@ public class LevelingAndIntake extends OutliersCommand {
             case DRIVE_FORWARD_AND_GRAB:
                 if (!_cubeShooter.isCubeDetected()) {
                     _cubeShooter.setWristAngle(Constants.CubeShooter.INTAKE_ANGLE);
-                    _cubeShooter.setShooterSpeed(-0.4);
+                    _cubeShooter.setShooterSpeed(-1.0); //-0.4
                 } else {
                     _cubeShooter.setShooterSpeed(0.0);
                     _cubeShooter.setWristAngle(Constants.CubeShooter.IDLE_ANGLE);
@@ -118,6 +118,7 @@ public class LevelingAndIntake extends OutliersCommand {
                 if (Math.abs(_drivetrain.getPitch()) < Constants.DriveTrain.PITCH_LEVELED_ANGLE) {
                     _drivetrain.setVelocity(
                             ChassisSpeeds.fromFieldRelativeSpeeds(0, 0.0, 0.0, _drivetrain.getHeading()));
+                    _state = LevelingPickupState.LEVELED_AGAIN;
                 }
                 break;
             case LEVELED_AGAIN:

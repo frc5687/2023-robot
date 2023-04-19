@@ -22,6 +22,8 @@ public class HoverToPose extends OutliersCommand {
     private Transform2d _offset;
 
     private final Lights _lights;
+    
+    private boolean _completeFirst;
 
     public HoverToPose(DriveTrain driveTrain, CubeShooter shooter, Lights lights) {
         _driveTrain = driveTrain;
@@ -37,16 +39,19 @@ public class HoverToPose extends OutliersCommand {
         _lights.switchAnimation(AnimationType.LARSON);
         _offset = new Transform2d(new Translation2d(0.5, 0), new Rotation2d());
         _offsetPose = _driveTrain.getHoverGoal().transformBy(_offset);
+        _completeFirst = false;
     }
 
     @Override
     public void execute() {
-    if(Math.abs(_driveTrain.getEstimatedPose().getX() - _offsetPose.getX()) > 0.05 && 
-        Math.abs(_driveTrain.getEstimatedPose().getY() - _offsetPose.getY()) > 0.05){
-        _driveTrain.setVelocityPose(_offsetPose, _cubeShooter.isCubeDetected());
-    }else{
-        _driveTrain.setVelocityPose(_driveTrain.getHoverGoal(), _cubeShooter.isCubeDetected());
-    }
+        if(Math.abs(_driveTrain.getEstimatedPose().getX() - _offsetPose.getX()) > 0.05 && 
+            Math.abs(_driveTrain.getEstimatedPose().getY() - _offsetPose.getY()) > 0.05 && !_completeFirst
+        ){
+            _driveTrain.setVelocityPose(_offsetPose, _cubeShooter.isCubeDetected());
+        }else{
+            _completeFirst = true;
+            _driveTrain.setVelocityPose(_driveTrain.getHoverGoal(), _cubeShooter.isCubeDetected());
+        }
     }
 
     @Override

@@ -22,6 +22,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -44,6 +46,8 @@ import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
 import org.photonvision.EstimatedRobotPose;
+
+import javax.swing.text.StyleContext;
 
 public class DriveTrain extends OutliersSubsystem {
     // Order we define swerve modules in kinematics
@@ -340,6 +344,11 @@ public class DriveTrain extends OutliersSubsystem {
             _systemIO.measuredPositions[module] = _modules[module].getModulePosition();
         }
     }
+    public void resetModuleEncoders() {
+        for (var module : _modules) {
+            module.resetEncoders();
+        }
+    }
 
     public void setModuleStates(SwerveModuleState[] states) {
         for (int module = 0; module < _modules.length; module++) {
@@ -505,6 +514,7 @@ public class DriveTrain extends OutliersSubsystem {
                 },
                 position);
         error("Reset robot position: " + position.toString());
+        _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition();
     }
 
     public void wantsToResetPose(Pose2d pose) {
@@ -526,6 +536,17 @@ public class DriveTrain extends OutliersSubsystem {
 
     public boolean isTopSpeed() {
         return Math.abs(_modules[0].getWheelVelocity()) >= (Constants.DriveTrain.MAX_MPS - 0.2);
+    }
+    public void characterizeModules(int module) {
+        _modules[module].characterizeModule();
+    }
+    public void setModulesToCharacterization() {
+        for (var module : _modules) {
+            module.setCharacterizationState();
+        }
+    }
+    public DiffSwerveModule.CharacterizeModule getCharacterizationState(int module) {
+        return _modules[module].getCharacterizationState();
     }
 
     @Override
@@ -655,8 +676,8 @@ public class DriveTrain extends OutliersSubsystem {
      */
     public void dynamicallyChangeDeviations(Pose3d measurement, Pose2d currentEstimatedPose) {
         double dist = measurement.toPose2d().getTranslation().getDistance(currentEstimatedPose.getTranslation());
-        double positionDev = Math.abs(0.2 * dist + 0.3);
-        _poseEstimator.setVisionMeasurementStdDevs(createVisionStandardDeviations(positionDev, positionDev, Units.degreesToRadians(70)));
+        double positionDev = Math.abs(0.2 * dist + 0.2);
+        _poseEstimator.setVisionMeasurementStdDevs(createVisionStandardDeviations(positionDev, positionDev, Units.degreesToRadians(400)));
     }
     protected Vector<N3> createStandardDeviations(double x, double y, double z) {
         return VecBuilder.fill(x, y, z);

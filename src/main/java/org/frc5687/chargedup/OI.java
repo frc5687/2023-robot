@@ -12,17 +12,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import org.frc5687.chargedup.commands.*;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
 import org.frc5687.chargedup.commands.EndEffector.EjectStow;
 import org.frc5687.chargedup.commands.SemiAuto.*;
-import org.frc5687.chargedup.commands.DriveWithSpeeds;
-import org.frc5687.chargedup.commands.RumbleGamepad;
-import org.frc5687.chargedup.commands.SetRobotGoal;
-import org.frc5687.chargedup.commands.SnapTo;
-import org.frc5687.chargedup.commands.Tap;
-import org.frc5687.chargedup.commands.ZeroSuperStructure;
 import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
@@ -119,6 +114,9 @@ public class OI extends OutliersProxy {
         _driverGamepad
                 .getYButton()
                 .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+//        _driverGamepad
+//                .getYButton()
+//                .onTrue(new CharacterizeModule(drivetrain));
         _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
         _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
         for (int row = 0; row < 3; row++) {

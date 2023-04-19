@@ -114,12 +114,12 @@ public class ThreePieceAuto extends SequentialCommandGroup {
                         new AutoIntake(_shooter, true, _oi)
                     ),
                     new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.02, 0), new Rotation2d())), true),
-                    new Shoot(_shooter, 0.5, .21, _oi),
+                    new Shoot(_shooter, 0.45, 0.21, _oi),
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory3, true, false),
                         new AutoIntake(_shooter, true, _oi)
                     ),
-                    new Shoot(_shooter, 1.0, 0.21, _oi)
+                    new Shoot(_shooter, 1.0, 0.5, _oi)
                 )
             );
         }

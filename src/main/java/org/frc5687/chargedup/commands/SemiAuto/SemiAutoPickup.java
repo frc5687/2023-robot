@@ -92,7 +92,7 @@ public class SemiAutoPickup extends OutliersCommand {
                 break;
             case WAIT_WRIST:
                 _endEffector.setWristSpeed(_endEffector.getWristControllerOutput());
-                _endEffector.setRollerSpeed(_setpoint.gripperSpeed / 2);
+                _endEffector.setRollerSpeed(_setpoint.gripperSpeed  * (_isConeMode ? 1.0 : 0.5));
                 if (_timeout < System.currentTimeMillis()){
                     _state = IntakeState.STOW_WRIST;
                 }
