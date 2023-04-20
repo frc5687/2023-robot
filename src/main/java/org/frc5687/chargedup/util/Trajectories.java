@@ -71,7 +71,9 @@ public class Trajectories {
             new Pair<>("RED_NOBUMP_GOAL_THREE_CHARGE_FOUR", new PathConstraints(3.0, 3.0)),
             
             new Pair<>("RED_NODE_ONE_GOAL_ONE_SHOOT", new PathConstraints(3.5, 2.5)),
-            new Pair<>("RED_NODE_TWO_GOAL_TWO_LINE", new PathConstraints(3.5, 2.5))
+            new Pair<>("RED_NODE_TWO_GOAL_TWO_LINE", new PathConstraints(3.5, 2.5)),
+            new Pair<>("BLUE_NODE_ONE_GOAL_ONE_SHOOT", new PathConstraints(3.5, 2.5)),
+            new Pair<>("BLUE_NODE_TWO_GOAL_TWO_LINE", new PathConstraints(3.5, 2.5))
     ));
 
     public Trajectories(PathConstraints constraints) {
