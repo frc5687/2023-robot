@@ -200,9 +200,9 @@ public class Constants {
         public static final double DRIVING_UP_RAMP_SPEEDS_VX = 2.0;
         public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
 
-        public static final double AUTO_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double AUTO_LEVEL_KP = 4.5; //PID controller for leveling
         public static final double AUTO_LEVEL_KI = 0.0;
-        public static final double AUTO_LEVEL_KD = 0.5;
+        public static final double AUTO_LEVEL_KD = 1.0;
         
         public static final double QUICK_LEVEL_KP = 3.0; //PID controller for leveling
         public static final double QUICK_LEVEL_KI = 0.0;

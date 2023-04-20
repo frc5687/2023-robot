@@ -90,7 +90,7 @@ public class LevelingAndIntake extends OutliersCommand {
                 if (_timeout > System.currentTimeMillis()) {
                     _drivetrain.setVelocity(
                             ChassisSpeeds.fromFieldRelativeSpeeds(
-                                    2.0, // this is the intaking pickup speed
+                                    1.5, // this is the intaking pickup speed
                                     0.0,
                                     0.0,
                                     _drivetrain.getHeading()));
@@ -118,11 +118,11 @@ public class LevelingAndIntake extends OutliersCommand {
                 if (Math.abs(_drivetrain.getPitch()) < Constants.DriveTrain.PITCH_LEVELED_ANGLE) {
                     _drivetrain.setVelocity(
                             ChassisSpeeds.fromFieldRelativeSpeeds(0, 0.0, 0.0, _drivetrain.getHeading()));
-                    _state = LevelingPickupState.LEVELED_AGAIN;
+//                    _state = LevelingPickupState.LEVELED_AGAIN;
                 }
                 break;
             case LEVELED_AGAIN:
-                _finished = true;
+//                _finished = false;
                 break;
         }
     }
