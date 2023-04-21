@@ -19,7 +19,7 @@ public class HoverToPose extends OutliersCommand {
     private final CubeShooter _cubeShooter;
 
     private Pose2d _offsetPose;
-    private Transform2d _offset;
+    private Translation2d _offset;
 
     private final Lights _lights;
     
@@ -37,9 +37,11 @@ public class HoverToPose extends OutliersCommand {
         super.initialize();
         _driveTrain.setKinematicLimits(DRIVE_POSE_KINEMATIC_LIMITS);
         _lights.switchAnimation(AnimationType.LARSON);
-        _offset = new Transform2d(new Translation2d(0.5, 0), new Rotation2d());
-        _offsetPose = _driveTrain.getHoverGoal().transformBy(_offset);
+        _offset = new Translation2d(0.5, 0);
+        _offset = _offset.times(_driveTrain.isRedAlliance() ? -1.0 : 1.0);
+        _offsetPose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(_offset), _driveTrain.getHoverGoal().getRotation());
         _completeFirst = false;
+        error("Driving to Pose : " + _offsetPose);
     }
 
     @Override

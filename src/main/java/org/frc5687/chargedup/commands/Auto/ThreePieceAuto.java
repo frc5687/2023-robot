@@ -106,7 +106,6 @@ public class ThreePieceAuto extends SequentialCommandGroup {
         } else {
             addCommands(
                 new SequentialCommandGroup(
-                    new ResetRobotPose(driveTrain, _trajectory1.getInitialHolonomicPose()),
                     placeCommand,
                     new ParallelDeadlineGroup(
                         new DriveTrajectory(driveTrain, _trajectory1, true, false),
