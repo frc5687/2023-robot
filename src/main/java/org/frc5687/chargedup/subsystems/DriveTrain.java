@@ -742,4 +742,8 @@ public class DriveTrain extends OutliersSubsystem {
         TrackedObjectInfo obj = getClosestCube();
         return obj != null;
     }
+    public boolean isObjectInTolerance(TrackedObjectInfo closestGameElement){
+        return (closestGameElement.getZ() > Units.inchesToMeters(30)
+                     && closestGameElement.getZ() < Units.inchesToMeters(65));
+    }
 }
