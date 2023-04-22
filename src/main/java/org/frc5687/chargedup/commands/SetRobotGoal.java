@@ -23,8 +23,8 @@ public class SetRobotGoal extends OutliersCommand {
     private final EndEffector _endEffector;
     private final Nodes.Node _node;
     private final Nodes.Level _goalLevel;
-    private final Translation2d _redOffset = new Translation2d(0.15, 0).times(-1.0);
-    private final Translation2d _blueOffset = new Translation2d(0.15, 0);
+    private final Translation2d _redOffset = new Translation2d(0.05, 0).times(-1.0);
+    private final Translation2d _blueOffset = new Translation2d(0.05,  0);
 
     public SetRobotGoal(
             DriveTrain driveTrain, EndEffector endEffector, Nodes.Node node, Nodes.Level position) {
@@ -60,8 +60,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
@@ -82,8 +82,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleCubePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CUBE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
@@ -104,8 +104,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
@@ -126,8 +126,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
@@ -148,8 +148,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleCubePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CUBE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
@@ -170,8 +170,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
@@ -192,9 +192,10 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
-                         HIGH:
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
+                        break;
+                    case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
                         break;
@@ -213,8 +214,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleCubePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CUBE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highCubePlaceSetpoint;
@@ -235,8 +236,8 @@ public class SetRobotGoal extends OutliersCommand {
                     case MIDDLE:
                         setpoint = SuperStructureSetpoints.middleConePlaceSetpoint;
                         _endEffector.setState(EndEffectorState.CONE);
-                        pose = new Pose2d(_driveTrain.getHoverGoal().getTranslation().plus(offset), 
-                            _driveTrain.getHoverGoal().getRotation());
+                        pose = new Pose2d(pose.getTranslation().plus(offset), 
+                            pose.getRotation());
                         break;
                     case HIGH:
                         setpoint = SuperStructureSetpoints.highConePlaceSetpoint;

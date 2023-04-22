@@ -743,7 +743,11 @@ public class DriveTrain extends OutliersSubsystem {
         return obj != null;
     }
     public boolean isObjectInTolerance(TrackedObjectInfo closestGameElement){
+        if (closestGameElement == null){
+            return false;
+        } else {
         return (closestGameElement.getZ() > Units.inchesToMeters(30)
                      && closestGameElement.getZ() < Units.inchesToMeters(65));
+        }
     }
 }

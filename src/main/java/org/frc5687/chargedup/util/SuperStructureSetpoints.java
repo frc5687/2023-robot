@@ -28,7 +28,7 @@ public class SuperStructureSetpoints {
         middleConePlaceSetpoint.elevatorPosition = 0.0;
         middleConePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         middleConePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
-        middleConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        middleConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE - 0.02;
         middleConePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CONE_ROLLER_SPEED;
     }
 
