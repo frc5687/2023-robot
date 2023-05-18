@@ -31,7 +31,6 @@ import static org.frc5687.chargedup.util.SuperStructureSetpoints.idleConeSetpoin
 
 public class ThreePieceAuto extends SequentialCommandGroup {
     private PathPlannerTrajectory _trajectory1;
-    private PathPlannerTrajectory _trajectory2;
     private PathPlannerTrajectory _trajectory3;
     private Pose2d pose;
     // private Rotation2d rotation1;

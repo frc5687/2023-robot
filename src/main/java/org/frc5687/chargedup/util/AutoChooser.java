@@ -1,10 +1,5 @@
 package org.frc5687.chargedup.util;
 
-
-
-import org.frc5687.chargedup.commands.Auto.TwoAndAHalfPieceAuto;
-import org.frc5687.chargedup.commands.Auto.TwoAndAHalfPieceLevelAuto;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

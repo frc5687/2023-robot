@@ -22,12 +22,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.chargedup.Constants;
+
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.LinearSystems;
 
-import java.sql.Driver;
+
 
 /**
  * Created 10/11/2020 by Dennis Slobodzian.
@@ -59,7 +59,7 @@ public class DiffSwerveModule {
     private final StatusSignalValue<Double> _rightVelocityRotationsPerSec;
     private final StatusSignalValue<Double> _rightPositionRotations;
     private final BaseStatusSignalValue[] _signals;
-    private double _prevAngle;
+   
 
     private boolean _hasZeroed;
 

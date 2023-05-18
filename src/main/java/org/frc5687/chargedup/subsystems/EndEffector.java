@@ -3,7 +3,6 @@ package org.frc5687.chargedup.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
-import org.frc5687.chargedup.commands.CubeShooter.Intake;
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersContainer;

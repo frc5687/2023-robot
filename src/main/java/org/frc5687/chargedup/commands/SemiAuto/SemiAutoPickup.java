@@ -5,7 +5,6 @@ import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
-import org.frc5687.chargedup.subsystems.EndEffector.EndEffectorState;
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 
 import org.frc5687.chargedup.Constants;
