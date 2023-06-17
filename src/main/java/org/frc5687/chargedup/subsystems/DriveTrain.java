@@ -5,6 +5,8 @@ import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
 import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.vmx.AHRSJNI;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -66,7 +68,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final PPHolonomicDriveController _trajectoryController;
 
     // IMU (Pigeon)
-    private final Pigeon2 _imu;
+    private final AHRS _imu;
     private double _yawOffset;
 
 
@@ -92,7 +94,7 @@ public class DriveTrain extends OutliersSubsystem {
             OutliersContainer container,
             VisionProcessor processor,
             PhotonProcessor photonProcessor,
-            Pigeon2 imu) {
+            AHRS imu) {
         super(container);
 
         _visionProcessor = processor;
@@ -104,9 +106,9 @@ public class DriveTrain extends OutliersSubsystem {
 
         // This should set the Pigeon to 0.
         // set update frequency to 200hz
-        _imu.getYaw().setUpdateFrequency(200);
-        _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _imu.getYaw().getValue();
+        // _imu.getYaw().setUpdateFrequency(200);
+        // _imu.getPitch().setUpdateFrequency(200);
+        _yawOffset = _imu.getYaw()/*.getValue()*/;
         readIMU();
 
         _controlState = ControlState.NEUTRAL;
@@ -139,9 +141,9 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.DIO.ENCODER_NE);
 
         // This should set the Pigeon to 0.
-        _imu.getYaw().setUpdateFrequency(200);
-        _imu.getPitch().setUpdateFrequency(200);
-        _yawOffset = _imu.getYaw().getValue();
+        // _imu.getYaw().setUpdateFrequency(200);
+        // _imu.getPitch().setUpdateFrequency(200);
+        _yawOffset = _imu.getYaw()/*.getValue()*/;
         readIMU();
 
         _controlState = ControlState.MANUAL;
@@ -440,18 +442,18 @@ public class DriveTrain extends OutliersSubsystem {
         return _systemIO.heading;
     }
     public void zeroGyroscope() {
-        _yawOffset = _imu.getYaw().getValue();
+        _yawOffset = _imu.getYaw()/*.getValue()*/;
         readIMU();
         resetRobotPose(_systemIO.estimatedPose);
     }
 
     public void setGyroscopeAngle(Rotation2d rotation) {
-        _yawOffset = _imu.getYaw().getValue() + rotation.getDegrees();
+        _yawOffset = _imu.getYaw()/*.getValue()*/ + rotation.getDegrees();
         readIMU();
     }
     public void readIMU() {
-        _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw().getValue() - _yawOffset));
-        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch().getValue());
+        _systemIO.heading = Rotation2d.fromDegrees((_imu.getYaw()/*.getValue()*/ - _yawOffset));
+        _systemIO.pitch = Units.degreesToRadians(_imu.getPitch()/*.getValue()*/);
     }
 
 

@@ -4,7 +4,10 @@ package org.frc5687.chargedup;
 
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathConstraints;
+
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -29,7 +32,8 @@ public class RobotContainer extends OutliersContainer {
     private Node _autoFirstNode;
     private AutoType _autoType;
     private VisionProcessor _visionProcessor;
-    private Pigeon2 _imu;
+    // private Pigeon2 _imu;
+    private AHRS _imu;
     private Robot _robot;
     private Lights _lights;
     // private LightsExample _lights;
@@ -67,9 +71,10 @@ public class RobotContainer extends OutliersContainer {
             e.getMessage();
         }
         // configure pigeon
-        _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
-        var pigeonConfig = new Pigeon2Configuration();
-        _imu.getConfigurator().apply(pigeonConfig);
+        // _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
+        _imu = new AHRS(SPI.Port.kMXP, (byte) 200);
+        // var pigeonConfig = new Pigeon2Configuration();
+        // _imu.getConfigurator().apply(pigeonConfig);
 
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
         _elevator = new Elevator(this);
