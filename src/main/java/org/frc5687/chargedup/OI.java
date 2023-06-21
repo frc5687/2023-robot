@@ -5,10 +5,8 @@ import static org.frc5687.chargedup.util.Helpers.*;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,7 +22,6 @@ import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
-import org.frc5687.lib.sensors.ProximitySensor;
 
 public class OI extends OutliersProxy {
     protected Gamepad _driverGamepad;
@@ -81,9 +78,9 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeState));
         _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeState));
 
-        _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
+        _operatorJoystick.button(8).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
         _operatorJoystick.button(10).and(_operatorJoystick.button(11)).onTrue(new EjectStow(endEffector, elevator, arm));
-
+        _operatorJoystick.button(9).onTrue(new AutoGroundIntake(arm, endEffector, elevator, cubeShooter, this));
         _customController
                 .getIntakeButton()
                 .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
@@ -249,5 +246,8 @@ public class OI extends OutliersProxy {
     public void stopRumbleDriver() {
         _driverGamepad.setRumble(GenericHID.RumbleType.kBothRumble, 0);
 
+    }
+    public boolean getButtonNine(){
+        return _operatorJoystick.button(9).getAsBoolean();
     }
 }

@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -25,10 +24,7 @@ import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.subsystems.Lights;
 import org.frc5687.chargedup.util.AutoChooser;
-import org.frc5687.chargedup.util.FieldConstants;
 import org.frc5687.chargedup.util.Trajectories;
-import org.frc5687.chargedup.util.Nodes.Level;
-import org.frc5687.chargedup.util.Nodes.Node;
 
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.idleConeSetpoint;
 

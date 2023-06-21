@@ -11,19 +11,21 @@ public class SemiAutoGroundPickup extends OutliersCommand {
     private Elevator _elevator;
     private Arm _arm;
     private OI _oi;
+    private org.frc5687.chargedup.subsystems.CubeShooter _cubeShooter;
 
-    public SemiAutoGroundPickup(Arm arm, EndEffector endEffector, Elevator elevator, OI oi) {
+    public SemiAutoGroundPickup(Arm arm, EndEffector endEffector, Elevator elevator, OI oi, org.frc5687.chargedup.subsystems.CubeShooter cubeShooter) {
         _endEffector = endEffector;
         _elevator = elevator;
         _arm = arm;
         _oi = oi;
+        _cubeShooter = cubeShooter;
     }
 
     @Override
     public void initialize() {
         super.initialize();
         if (_endEffector.getConeMode()){
-            (new SemiAutoGroundPickupCone(_arm, _endEffector, _elevator, _oi)).schedule();
+            (new SemiAutoGroundPickupCone(_arm, _endEffector, _elevator, _oi, _cubeShooter)).schedule();
         } else {
             (new SemiAutoGroundPickupCube(_arm, _endEffector, _elevator, _oi)).schedule();
         }

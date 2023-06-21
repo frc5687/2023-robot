@@ -1,14 +1,10 @@
 package org.frc5687.chargedup.commands.EndEffector;
-
-import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
-import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.Arm;
 import org.frc5687.chargedup.subsystems.Elevator;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.SuperStructureSetpoints;
 
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class EjectStow extends SequentialCommandGroup{

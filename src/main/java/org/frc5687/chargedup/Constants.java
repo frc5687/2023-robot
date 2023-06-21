@@ -377,7 +377,8 @@ public class Constants {
         // Positive is North, Negative is South (North is towards Battery)
         public static final double ANGLE_TOLERANCE = Units.degreesToRadians(1.0); // rads
         public static final double VERTICAL_ARM_ANGLE = 1.2; // rads
-        public static final double PLACE_ARM_ANGLE = 0.25; // testing
+        public static final double PLACE_ARM_ANGLE = 0.06; // testing
+        public static final double PLACE_ARM_ANGLE_HIGH = 0.12; // testing
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION = new OutliersTalon.ClosedLoopConfiguration();
         static {
@@ -578,10 +579,10 @@ public class Constants {
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(3.0);
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(132.0);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(266.0);
 
         public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(240);
-        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
+        public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(22.4);
         public static final boolean WRIST_INVERTED = true;
 
         public static final long WRIST_TIMEOUT = 1000;
@@ -605,9 +606,9 @@ public class Constants {
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
         public static final double ROLLER_CUBE_IDLE_SPEED = 0.18;
-        public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
+        public static final double ROLLER_CONE_IDLE_SPEED = -0.35;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
-        public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
+        public static final double PLACE_CONE_ROLLER_SPEED = 0.9;
         public static final long GRIPPER_TIMEOUT = 500;
     }
 
