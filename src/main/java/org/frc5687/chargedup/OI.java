@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.*;
+import org.frc5687.chargedup.commands.Auto.AutoGroundPickupCone;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
@@ -80,7 +81,7 @@ public class OI extends OutliersProxy {
 
         _operatorJoystick.button(8).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
         _operatorJoystick.button(10).and(_operatorJoystick.button(11)).onTrue(new EjectStow(endEffector, elevator, arm));
-        _operatorJoystick.button(9).onTrue(new AutoGroundIntake(arm, endEffector, elevator, cubeShooter, this));
+        _operatorJoystick.button(9).onTrue(new AutoGroundPickupCone(elevator, arm, endEffector, cubeShooter, this));
         _customController
                 .getIntakeButton()
                 .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));

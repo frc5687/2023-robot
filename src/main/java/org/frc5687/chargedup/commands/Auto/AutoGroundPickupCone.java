@@ -2,11 +2,12 @@ package org.frc5687.chargedup.commands.Auto;
 
 import static org.frc5687.chargedup.util.SuperStructureSetpoints.*;
 
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.commands.AutoSetSuperStructurePosition;
+import org.frc5687.chargedup.commands.WaitforPickup;
 import org.frc5687.chargedup.commands.CubeShooter.AutoRotateWrist;
 import org.frc5687.chargedup.commands.EndEffector.AutoSetRollerSpeed;
 import org.frc5687.chargedup.subsystems.Arm;
@@ -19,12 +20,18 @@ import org.frc5687.chargedup.util.SuperStructureSetpoints.Setpoint;
 public class AutoGroundPickupCone extends SequentialCommandGroup {
     public AutoGroundPickupCone(Elevator elevator, Arm arm, EndEffector endEffector, CubeShooter cubeShooter, OI oi) {
         Setpoint groundSetpoint = coneGroundPickupSetpoint;
-      
+        Setpoint idleSetpoint = idleConeSetpoint;
 
         addCommands(
+
                 new AutoRotateWrist(cubeShooter, Constants.CubeShooter.INTAKE_ANGLE),
+                
                 new AutoSetSuperStructurePosition(elevator, endEffector, arm, groundSetpoint),
-                new AutoSetRollerSpeed(endEffector, Constants.EndEffector.GRIPPER_IN_SPEED, true)
-                );
+                new AutoSetRollerSpeed(endEffector, -1.0, true),
+                new WaitforPickup(oi),
+                new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleSetpoint),
+                new AutoRotateWrist(cubeShooter, Constants.CubeShooter.IDLE_ANGLE)
+                )
+                ;
     }
 }
