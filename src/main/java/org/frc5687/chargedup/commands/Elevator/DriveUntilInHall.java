@@ -14,6 +14,7 @@ public class DriveUntilInHall extends OutliersCommand {
     @Override
     public void initialize() {
         super.initialize();
+        _elevator.setHasZeroed(false);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class DriveLights extends OutliersCommand {
             _lights.setColor(Constants.CANdle.YELLOW);
             switch (_driveTrain.getMode()) {
                 case VISION:
-                    if (_driveTrain.isConeDetected()) {
+                    if (_driveTrain.isObjectInTolerance(_driveTrain.getClosestCone())) {
                         _lights.switchAnimation(AnimationType.STROBE);
                     } else {
                         _lights.switchAnimation(AnimationType.STATIC);
@@ -53,10 +53,10 @@ public class DriveLights extends OutliersCommand {
                     break;
             }
         } else if (_endEffector.getState() == EndEffectorState.CUBE){
-            _lights.setColor(Constants.CANdle.PURPLE);
+            _lights.setColor(Constants.CANdle.BLUE);
             switch (_driveTrain.getMode()) {
                 case VISION:
-                    if (_driveTrain.isCubeDetected()) {
+                    if (_driveTrain.isObjectInTolerance(_driveTrain.getClosestCube())) {
                         _lights.switchAnimation(AnimationType.STROBE);
                     } else {
                         _lights.switchAnimation(AnimationType.STATIC);

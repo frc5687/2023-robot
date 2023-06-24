@@ -16,7 +16,7 @@ public class ResetRobotPose extends OutliersCommand {
 
     @Override
     public void initialize() {
-        _driveTrain.resetRobotPose(_pose);
+        _driveTrain.wantsToResetPose(_pose);
     }
 
     @Override

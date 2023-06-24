@@ -64,6 +64,14 @@ public class Elevator extends OutliersSubsystem {
         return _inHall.get();
     }
 
+    public void setHasZeroed(boolean hasZeroed){
+        _hasZeroed = hasZeroed;
+    }
+
+    public boolean getHasZeroed(){
+        return _hasZeroed;
+    }
+
     public void zeroEncoder() {
         _talon.setRotorPosition(Constants.Elevator.ZERO_ENCODER);
     }

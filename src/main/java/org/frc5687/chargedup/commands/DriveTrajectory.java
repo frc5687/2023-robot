@@ -4,23 +4,18 @@ package org.frc5687.chargedup.commands;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.server.PathPlannerServer;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.function.Consumer;
 
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.subsystems.DriveTrain;
-import org.frc5687.chargedup.subsystems.DriveTrain.ControlState;
 
 /** Custom PathPlanner version of SwerveControllerCommand */
 public class DriveTrajectory extends OutliersCommand {
     private final Timer timer = new Timer();
     private final PathPlannerTrajectory trajectory;
-    private final boolean useAllianceColor;
     private final boolean _resetRobotPose;
     private static Consumer<PathPlannerTrajectory> logActiveTrajectory = null;
 
@@ -34,7 +29,7 @@ public class DriveTrajectory extends OutliersCommand {
 
         _driveTrain = driveTrain;
         this.trajectory = trajectory;
-        this.useAllianceColor = useAllianceColor;
+    
         _resetRobotPose = resetRobotPose;
 
         addRequirements(driveTrain);
@@ -59,7 +54,7 @@ public class DriveTrajectory extends OutliersCommand {
 //            transformedTrajectory = trajectory;
 //        }
         if (_resetRobotPose) {
-            _driveTrain.resetRobotPose(trajectory.getInitialHolonomicPose());
+            _driveTrain.wantsToResetPose(trajectory.getInitialHolonomicPose());
         }
 
         if (logActiveTrajectory != null) {
@@ -97,10 +92,10 @@ public class DriveTrajectory extends OutliersCommand {
         return this.timer.hasElapsed(trajectory.getTotalTimeSeconds());
     }
 
-    private static void defaultLogError(Translation2d translationError, Rotation2d rotationError) {
+   /*  private static void defaultLogError(Translation2d translationError, Rotation2d rotationError) {
         SmartDashboard.putNumber("PPSwerveControllerCommand/xErrorMeters", translationError.getX());
         SmartDashboard.putNumber("PPSwerveControllerCommand/yErrorMeters", translationError.getY());
         SmartDashboard.putNumber(
                 "PPSwerveControllerCommand/rotationErrorDegrees", rotationError.getDegrees());
-    }
+    } */
 }

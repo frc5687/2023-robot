@@ -105,7 +105,7 @@ public class DriveUntilLevel extends OutliersCommand {
                 }
                 break;
             case LEVELED_AGAIN:
-                _finished = true;
+//                _finished = true;
                 break;
         }
     }

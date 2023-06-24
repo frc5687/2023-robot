@@ -18,12 +18,16 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.LinearSystemLoop;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.LinearSystems;
+
+
 
 /**
  * Created 10/11/2020 by Dennis Slobodzian.
@@ -55,8 +59,17 @@ public class DiffSwerveModule {
     private final StatusSignalValue<Double> _rightVelocityRotationsPerSec;
     private final StatusSignalValue<Double> _rightPositionRotations;
     private final BaseStatusSignalValue[] _signals;
+   
 
     private boolean _hasZeroed;
+
+
+    // values for characterization
+    private double _characterizationCurrent = 0;
+    private CharacterizeModule _characterizationState = CharacterizeModule.LEFT_MOTOR_CHARACTERIZATION;
+    private double _characterizationVelocity = 0;
+    private long _characterizationTimeout = 0;
+
 
     public DiffSwerveModule(
             DiffSwerveModule.ModuleConfiguration config,
@@ -140,11 +153,6 @@ public class DiffSwerveModule {
 
         _moduleControlLoop.reset(VecBuilder.fill(0, 0, 0));
 
-        //        _leftFalcon.getVelocity().setUpdateFrequency(1 / kDt);
-        //        _leftFalcon.getPosition().setUpdateFrequency(1 / kDt);
-        //        _rightFalcon.getVelocity().setUpdateFrequency(1 / kDt);
-        //        _rightFalcon.getPosition().setUpdateFrequency(1 / kDt);
-
         _u = VecBuilder.fill(0, 0);
         // boolean for if we want the modules to be running as we set voltage in the periodic loop.
         _systemIO = new SystemIO();
@@ -214,6 +222,8 @@ public class DiffSwerveModule {
                 setLeftFalconCurrent(getLeftNextCurrent());
                 setRightFalconCurrent(getRightNextCurrent());
                 break;
+            case CHARACTERIZATION:
+                break;
         }
     }
     /**
@@ -252,12 +262,22 @@ public class DiffSwerveModule {
     } */
 
     private void calculateNextU() {
+        Matrix<N3, N1> wrap = wrapAngle(_moduleControlLoop.getNextR(), _moduleControlLoop.getXHat());
         _u =
                 _moduleControlLoop.clampInput(
                         _moduleControlLoop
                                 .getController()
                                 .getK()
                                 .times(wrapAngle(_moduleControlLoop.getNextR(), _moduleControlLoop.getXHat())));
+//        if (Math.abs(getLeftNextCurrent()) < 0.3 && Math.abs(getWheelVelocity()) > 2.0) {
+//            DriverStation.reportError(_name + " Module wrap is: " + wrap, false);
+//            DriverStation.reportError(_name + " Module output is: " + _u, false);
+//            DriverStation.reportError("Left Motor Module " + _name + "sent current of less than 0.3Amps with Velocity 1.0mps", false);
+//        }
+    }
+
+    private Matrix<N2, N1> getModuleFeedForward(Matrix<N3, N1> reference) {
+        return VecBuilder.fill(1.0, -1.0);
     }
 
     public void start() {
@@ -474,9 +494,92 @@ public class DiffSwerveModule {
         //        SmartDashboard.putString(_name + "/refernce", _reference.toString());
     }
 
+    public void setCharacterizationState() {
+        _controlState = ControlState.CHARACTERIZATION;
+    }
+    public void characterizeModule() {
+        switch(_characterizationState) {
+            case LEFT_MOTOR_CHARACTERIZATION:
+                setLeftFalconCurrent(_characterizationCurrent);
+                _characterizationCurrent += 0.01;
+                if (Math.abs(getAzimuthAngularVelocity()) > Units.rotationsPerMinuteToRadiansPerSecond(5)) {
+                    DriverStation.reportError(_name + " Left motor characterization finished",false);
+                    SmartDashboard.putNumber(_name + "/LeftCurrentFric", _characterizationCurrent);
+                    _characterizationCurrent= 0;
+                    setLeftFalconCurrent(0);
+                    _characterizationTimeout = System.currentTimeMillis() + 1000;
+                    _characterizationState = CharacterizeModule.DELAY_LEFT;
+
+                }
+                break;
+            case DELAY_LEFT:
+                if (_characterizationTimeout < System.currentTimeMillis()) {
+                    _characterizationState = CharacterizeModule.RIGHT_MOTOR_CHARACTERIZATION;
+                }
+                break;
+            case RIGHT_MOTOR_CHARACTERIZATION:
+                setRightFalconCurrent(_characterizationCurrent);
+                _characterizationCurrent += 0.01;
+                if (Math.abs(getAzimuthAngularVelocity()) > Units.rotationsPerMinuteToRadiansPerSecond(5)) {
+                    DriverStation.reportError(_name + " Right motor characterization finished",false);
+                    SmartDashboard.putNumber(_name + "/RightCurrentFric", _characterizationCurrent);
+                    _characterizationCurrent = 0;
+                    setRightFalconCurrent(0);
+                    _characterizationTimeout = System.currentTimeMillis() + 1000;
+                    _characterizationState = CharacterizeModule.MODULE_VELOCITY_CHARACTERIZATION;
+                }
+                break;
+            case DELAY_RIGHT:
+                if (_characterizationTimeout < System.currentTimeMillis()) {
+                    _characterizationState = CharacterizeModule.MODULE_VELOCITY_CHARACTERIZATION;
+                }
+                break;
+            case MODULE_VELOCITY_CHARACTERIZATION:
+                setIdealState(new SwerveModuleState(_characterizationVelocity, new Rotation2d(getModuleAngle())));
+                _characterizationVelocity += 0.001;
+                _moduleControlLoop.setNextR(_reference);
+                calculateNextU();
+                setLeftFalconCurrent(getLeftNextCurrent());
+                setRightFalconCurrent(getRightNextCurrent());
+                if (Math.abs(getWheelVelocity()) > 0.3) { // 0.3 mps
+                    DriverStation.reportError(_name + " velocity characterization finished",false);
+                    SmartDashboard.putNumber(_name + "/VelocityLeftCurrentFric", getLeftCurrent());
+                    SmartDashboard.putNumber(_name + "/VelocityRightCurrentFric", getRightCurrent());
+                    setLeftFalconCurrent(0);
+                    setRightFalconCurrent(0);
+                    _characterizationState = CharacterizeModule.FINISHED;
+                }
+                break;
+            case FINISHED:
+                DriverStation.reportError(_name + " has finished characterization", false);
+                setLeftFalconCurrent(0);
+                setRightFalconCurrent(0);
+                break;
+        }
+    }
+    public CharacterizeModule getCharacterizationState() {
+        return _characterizationState;
+    }
+    public enum CharacterizeModule {
+        LEFT_MOTOR_CHARACTERIZATION(0),
+        DELAY_LEFT(1),
+        RIGHT_MOTOR_CHARACTERIZATION(2),
+        DELAY_RIGHT(3),
+        MODULE_VELOCITY_CHARACTERIZATION(4),
+        FINISHED(5);
+        private final int _value;
+        CharacterizeModule(int value) {
+            _value = value;
+        }
+        public int getValue() {
+            return _value;
+        }
+    }
+
     public enum ControlState {
         OFF(0),
-        STATE_CONTROL(1);
+        STATE_CONTROL(1),
+        CHARACTERIZATION(2);
         private final int _value;
 
         ControlState(int value) {

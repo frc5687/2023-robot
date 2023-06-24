@@ -31,8 +31,8 @@ public class CustomController {
     public void pollButtons() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                String buttonName = "button_" + row + "_" + col;
-                boolean state = _table.getEntry(buttonName).getBoolean(false);
+                //String buttonName = "button_" + row + "_" + col;
+                //boolean state = _table.getEntry(buttonName).getBoolean(false);
             }
         }
     }

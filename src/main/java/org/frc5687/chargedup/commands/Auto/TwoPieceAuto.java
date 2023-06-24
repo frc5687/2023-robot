@@ -117,12 +117,12 @@ public class TwoPieceAuto extends SequentialCommandGroup {
                         new AutoSetSuperStructurePosition(elevator, endEffector, arm, idleConeSetpoint),
                         // new SequentialCommandGroup(
                         //     new WaitCommand(1), 
-                            new AutoIntake(_shooter, true)
+                            new AutoIntake(_shooter, true, _oi)
                         // )
                     ),
                     new DriveTrajectory(driveTrain, _trajectory2, true, false),
                     new DriveToPose(driveTrain, pose.transformBy(new Transform2d(new Translation2d(0.1, 0), new Rotation2d())), true),
-                    new Shoot(_shooter, 1.0, 0.2, _oi)
+                    new Shoot(_shooter, 1.0, Constants.CubeShooter.IDLE_ANGLE, _oi)
                 )
             );
         }

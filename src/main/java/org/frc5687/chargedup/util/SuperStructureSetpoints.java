@@ -15,7 +15,7 @@ public class SuperStructureSetpoints {
     public static final Setpoint highConePlaceSetpoint = new Setpoint();
 
     static {
-        highConePlaceSetpoint.elevatorPosition = 0.55;
+        highConePlaceSetpoint.elevatorPosition = 0.49;
         highConePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         highConePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
         highConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
@@ -28,17 +28,17 @@ public class SuperStructureSetpoints {
         middleConePlaceSetpoint.elevatorPosition = 0.0;
         middleConePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         middleConePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CONE_IDLE_SPEED;
-        middleConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        middleConePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE - 0.02;
         middleConePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CONE_ROLLER_SPEED;
     }
 
     public static final Setpoint highCubePlaceSetpoint = new Setpoint();
 
     static {
-        highCubePlaceSetpoint.elevatorPosition = 0.55;
+        highCubePlaceSetpoint.elevatorPosition = 0.49;
         highCubePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         highCubePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED;
-        highCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        highCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE - 0.033;
         highCubePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED;
     }
 
@@ -48,7 +48,7 @@ public class SuperStructureSetpoints {
         middleCubePlaceSetpoint.elevatorPosition = 0.0;
         middleCubePlaceSetpoint.wristAngle = Constants.EndEffector.WRIST_MIN_ANGLE;
         middleCubePlaceSetpoint.gripperSpeed = Constants.EndEffector.ROLLER_CUBE_IDLE_SPEED;
-        middleCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE;
+        middleCubePlaceSetpoint.armAngle = Constants.Arm.PLACE_ARM_ANGLE - 0.033;
         middleCubePlaceSetpoint.placeSpeed = Constants.EndEffector.PLACE_CUBE_ROLLER_SPEED;
     }
 

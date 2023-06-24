@@ -16,13 +16,13 @@ public class ManualRotateWrist extends OutliersCommand {
 
     @Override
     public void initialize() {
-        // TODO Auto-generated method stub
+       
         super.initialize();
     }
 
     @Override
     public void execute() {
-        // TODO Auto-generated method stub
+      
         super.execute();
         double speed = _oi.getCSWrist();
         _cubeShooter.setWristSpeed(speed);
@@ -31,7 +31,7 @@ public class ManualRotateWrist extends OutliersCommand {
 
     @Override
     public boolean isFinished() {
-        // TODO Auto-generated method stub
+      
         return false;
     }
 }

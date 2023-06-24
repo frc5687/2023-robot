@@ -9,16 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import org.frc5687.chargedup.commands.Arm.ManualDriveArm;
-import org.frc5687.chargedup.commands.Auto.AutoPlaceAndStowHighCone;
-import org.frc5687.chargedup.commands.Auto.AutoPlaceAndStowHighCube;
-import org.frc5687.chargedup.commands.Auto.OneConeAuto;
-import org.frc5687.chargedup.commands.Auto.OneConeLevelAuto;
-import org.frc5687.chargedup.commands.Auto.OneCubeAuto;
-import org.frc5687.chargedup.commands.Auto.OneCubeLevelAuto;
-import org.frc5687.chargedup.commands.Auto.StealCubesAuto;
-import org.frc5687.chargedup.commands.Auto.ThreePieceLevel;
-import org.frc5687.chargedup.commands.Auto.ThreePieceNoLevel;
-import org.frc5687.chargedup.commands.Auto.TwoPieceAuto;
+import org.frc5687.chargedup.commands.Auto.*;
 import org.frc5687.chargedup.commands.CubeShooter.IdleWrist;
 import org.frc5687.chargedup.commands.Drive;
 import org.frc5687.chargedup.commands.DriveLights;
@@ -102,7 +93,7 @@ public class RobotContainer extends OutliersContainer {
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
 
         _visionProcessor.start();
-        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.000);
+        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.00);
         _driveTrain.startModules();
         startPeriodic();
         //        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
@@ -215,6 +206,28 @@ public class RobotContainer extends OutliersContainer {
                     _oi,
                     _autoFirstNode,
                     _trajectories);
+            case TwoAndAHalfPieceAuto:
+                return new TwoAndAHalfPieceAuto(
+                    _driveTrain, 
+                    _endEffector, 
+                    _elevator, 
+                    _arm, 
+                    _lights, 
+                    _cubeShooter, 
+                    _oi, 
+                    _autoFirstNode, 
+                    _trajectories);
+            case TwoAndAHalfPieceLevelAuto:
+                return new TwoAndAHalfPieceLevelAuto(
+                    _driveTrain, 
+                    _endEffector, 
+                    _elevator, 
+                    _arm, 
+                    _lights,
+                    _cubeShooter, 
+                    _oi, 
+                    _autoFirstNode, 
+                    _trajectories);
             case StealCubes:
                 return new StealCubesAuto(
                         _driveTrain, _endEffector, _elevator, _arm, _lights, _cubeShooter, _oi, _trajectories);
@@ -222,7 +235,20 @@ public class RobotContainer extends OutliersContainer {
                 return new ThreePieceLevel(
                         _driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);
             case ThreeCubeNoLevel:
-                return new ThreePieceNoLevel(_driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);            
+                return new ThreePieceNoLevel(_driveTrain, _arm, _elevator, _endEffector, _lights, _oi, _cubeShooter, _trajectories);
+            case OneAndAHalfLevel:
+                return new OneAndAHalfLevel(_driveTrain, _arm, _elevator, _endEffector, _cubeShooter);
+            case ThreePiece:
+                return new ThreePieceAuto(
+                    _driveTrain, 
+                    _endEffector, 
+                    _elevator, 
+                    _arm, 
+                    _lights, 
+                    _cubeShooter, 
+                    _oi, 
+                    _autoFirstNode, 
+                    _trajectories); 
             default:
                 error("big uh oh");
                 return new WaitCommand(15);

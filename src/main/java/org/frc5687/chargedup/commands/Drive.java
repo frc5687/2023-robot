@@ -65,6 +65,7 @@ public class Drive extends OutliersCommand {
         if (_oi.zeroIMU()) {
             _driveTrain.zeroGyroscope();
             _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
+            _lockHeading = false;
         }
 
         if ((_oi.getTranslationVector().x() - _driveTrain.getPrevVector2d().x() > Constants.DriveTrain.PREV_VECTOR_CHANGE_X 
@@ -115,7 +116,7 @@ public class Drive extends OutliersCommand {
                 metric("Closest Game Element", closestGameElement.toString());
                 coneDist = closestGameElement.getDistance();
                 targetInTolerance =
-                        (closestGameElement.getZ() > Units.inchesToMeters(37)
+                        (closestGameElement.getZ() > Units.inchesToMeters(30)
                                 && closestGameElement.getZ() < Units.inchesToMeters(65));
                 if (targetInTolerance) {
                     power = -_yCoordinateElementController.calculate(closestGameElement.getY());
@@ -125,7 +126,7 @@ public class Drive extends OutliersCommand {
             _driveTrain.setMaintainHeading(new Rotation2d(0));
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
-                            vx * coneDist / 2.0,
+                            vx * coneDist / 2,
                             power,
                             _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()));

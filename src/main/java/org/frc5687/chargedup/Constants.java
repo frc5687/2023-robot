@@ -59,13 +59,13 @@ public class Constants {
 
         static {
             KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 22; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
+            KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
         }
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
         static {
             DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
-            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            DRIVE_POSE_KINEMATIC_LIMITS.maxDriveAcceleration = 20; // m/s^2
             DRIVE_POSE_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
 
@@ -86,10 +86,19 @@ public class Constants {
         public static final KinematicLimits VISION_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
-            VISION_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
-            VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
-            VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 15; // rad/s
+            VISION_KINEMATIC_LIMITS.maxDriveVelocity = 3.0; // m/s
+            VISION_KINEMATIC_LIMITS.maxDriveAcceleration = 15; // m/s^2
+            VISION_KINEMATIC_LIMITS.maxSteeringVelocity = 20; // rad/s
         }
+
+        public static final KinematicLimits POV_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            POV_KINEMATIC_LIMITS.maxDriveVelocity = 1; // m/s
+            POV_KINEMATIC_LIMITS.maxDriveAcceleration = 10; // m/s^2
+            POV_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
+        }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -99,7 +108,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.055;
+            NORTH_WEST_CONFIG.encoderOffset = -0.07617;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
@@ -111,7 +120,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = -0.16;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.1624;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -123,7 +132,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.062;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.05523;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
@@ -135,7 +144,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.079;
+            NORTH_EAST_CONFIG.encoderOffset = -0.0575;
         }
 
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
@@ -149,7 +158,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 4.8;
+        public static final double MAINTAIN_kP = 4.0;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.1;
 
@@ -161,22 +170,22 @@ public class Constants {
 
         public static final double PROFILE_CONSTRAINT_VEL = Math.PI * 4.0;
         public static final double PROFILE_CONSTRAINT_ACCEL = Math.PI * 8.0;
-
-        public static final double kP = 3.5;
+ 
+        public static final double kP = 3.3;
         public static final double kI = 0.0;
-        public static final double kD = 0.02;
+        public static final double kD = 0.05;
         
-        public static final double X_TRAJECTORY_kP = 3.5;
+        public static final double X_TRAJECTORY_kP = 3.8;
         public static final double X_TRAJECTORY_kI = 0.0;
         public static final double X_TRAJECTORY_kD = 0.02;
         
-        public static final double Y_TRAJECTORY_kP = 3.5;
+        public static final double Y_TRAJECTORY_kP = 3.8;
         public static final double Y_TRAJECTORY_kI = 0.0;
         public static final double Y_TRAJECTORY_kD = 0.02;
 
-        public static final double ANGLE_TRAJECTORY_kP = 0.8;
+        public static final double ANGLE_TRAJECTORY_kP = 3.2;
         public static final double ANGLE_TRAJECTORY_kI = 0.0;
-        public static final double ANGLE_TRAJECTORY_kD = 0.005;
+        public static final double ANGLE_TRAJECTORY_kD = 0.05;
 
         public static final double POSITION_TOLERANCE = 0.01;
         public static final double LEVEL_TOLERANCE = 0.5;
@@ -193,9 +202,9 @@ public class Constants {
         public static final double PREV_VECTOR_CHANGE_Y = 0.05;
         public static final double DRIVING_DOWN_RAMP_SPEEDS_VX = 1.0;
 
-        public static final double AUTO_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double AUTO_LEVEL_KP = 4.5; //PID controller for leveling
         public static final double AUTO_LEVEL_KI = 0.0;
-        public static final double AUTO_LEVEL_KD = 0.5;
+        public static final double AUTO_LEVEL_KD = 1.0;
         
         public static final double QUICK_LEVEL_KP = 3.0; //PID controller for leveling
         public static final double QUICK_LEVEL_KI = 0.0;
@@ -214,10 +223,11 @@ public class Constants {
 
             CONFIG.MAX_VOLTAGE = 12.0;
 
-            CONFIG.MAX_STATOR_CURRENT = 80;
-            CONFIG.MAX_CURRENT = 80;
+            CONFIG.MAX_STATOR_CURRENT = 120;
+            CONFIG.MAX_CURRENT = 120;
             CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-            //            CONFIG.USE_FOC = true;
+            CONFIG.CURRENT_DEADBAND = 0.1; // amps
+//                        CONFIG.USE_FOC = true;
         }
 
         public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION =
@@ -238,14 +248,14 @@ public class Constants {
         public static final double VOLTAGE = 12.0;
 
         // Create Parameters for DiffSwerve State Space
-        public static final double INERTIA_STEER = 0.005;
-        public static final double INERTIA_WHEEL = 0.003;
+        public static final double INERTIA_STEER = 0.001;
+        public static final double INERTIA_WHEEL = 0.001;
         // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
         // angle more aggressively than the wheel angular velocity.
 
-        public static final double Q_AZIMUTH = 0.065; // radians
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 10.0; // radians per sec
-        public static final double Q_WHEEL_ANG_VELOCITY = 1.0; // radians per sec
+        public static final double Q_AZIMUTH = 0.06; // radians
+        public static final double Q_AZIMUTH_ANG_VELOCITY = 2.0; // radians per sec
+        public static final double Q_WHEEL_ANG_VELOCITY = 0.8; // radians per sec
 
         public static final double CONTROL_EFFORT = 4.0;
         // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
@@ -428,6 +438,9 @@ public class Constants {
         public static final double RED_X_COORDINATE = 14.75;
         public static final double BLUE_X_COORDINATE = 1.795;
 
+        public static final double RED_X_TRAJ_END_COORDINATE = 13.5;
+        public static final double BLUE_X_TRAJ_END_COORDINATE = 3;
+
         public static final Pose2d STARTING_ONE = new Pose2d(1.820, 3.04, new Rotation2d());
         public static final Pose2d STARTING_CHARGING_STATION =
                 new Pose2d(1.820, 4.025, new Rotation2d());
@@ -567,11 +580,13 @@ public class Constants {
         public static final double WRIST_TOLERENCE = Units.degreesToRadians(3.0);
         public static final double WRIST_MAX_ANGLE = Units.degreesToRadians(320.0);
         public static final double WRIST_MID_ANGLE = Units.degreesToRadians(220);
-        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(120.5);
+        public static final double WRIST_MIN_ANGLE = Units.degreesToRadians(132.0);
 
         public static final double WRIST_SAFE_ANGLE = Units.degreesToRadians(240);
         public static final double WRIST_PICKUP_ANGLE = Units.degreesToRadians(320);
         public static final boolean WRIST_INVERTED = true;
+
+        public static final long WRIST_TIMEOUT = 1000;
 
         public static final double GRIPPER_kP = 3.2;
         public static final double GRIPPER_kI = 0;
@@ -591,7 +606,7 @@ public class Constants {
         public static final double GRIPPER_OUT_SPEED = 1.0;
         // public static final double GRIPPER_CUBE_ANGLE = Units.degreesToRadians(186.0);
         public static final boolean GRIPPPER_INVERTED = false;
-        public static final double ROLLER_CUBE_IDLE_SPEED = 0.165;
+        public static final double ROLLER_CUBE_IDLE_SPEED = 0.18;
         public static final double ROLLER_CONE_IDLE_SPEED = -0.25;
         public static final double PLACE_CUBE_ROLLER_SPEED = -0.8;
         public static final double PLACE_CONE_ROLLER_SPEED = 0.8;
@@ -604,8 +619,9 @@ public class Constants {
         public static final double ANKLE_ANGLE_TOLERANCE = 0.02;
         public static final double SHOOT_RPS = 90;
         public static final double ANKLE_OFFSET = -0.179;
-        public static final double IDLE_ANGLE = 0.16; // rotations
+        public static final double IDLE_ANGLE = 0.12;// rotations was .08
         public static final double INTAKE_ANGLE = 2.5; //
+
 
         public static final OutliersTalon.Configuration WRIST_CONFIG =
                 new OutliersTalon.Configuration();
@@ -673,6 +689,10 @@ public class Constants {
         public static final float Z_CAM_Z_OFFSET = 0.78111f;
         public static final float Z_CAM_Y_OFFSET = 0.17653f;
         public static final float Z_CAM_X_OFFSET = 0.03566f;
+
+        public static final double VISION_kP = 3.0;
+        public static final double VISION_kI = 0.0;
+        public static final double VISION_kD = 0.2;
     }
 
     public static class CANdle {
@@ -682,19 +702,20 @@ public class Constants {
         public static TwinklePercent TWINKLEPERCENT = TwinklePercent.Percent42;
         public static TwinkleOffPercent TWINKLEOFFPERCENT = TwinkleOffPercent.Percent42;
 
-        public static int[] YELLOW = {255, 65, 0};
         public static int[] RED = {255, 0, 0};
+        public static int[] ORANGE = {255, 165, 0};
+        public static int[] YELLOW = {255, 65, 0};
         public static int[] GREEN = {0, 255, 0};
-        public static int[] BLUE = {0, 0, 255};
         public static int[] CYAN = {0, 255, 255};
-        public static int[] WHITE = {0, 0, 0};
-        public static int[] PINK = {255, 105, 18};
-        public static int[] GOLD = {212, 175, 55};
+        public static int[] BLUE = {0, 0, 255};
         public static int[] PURPLE = {128, 0, 128};
-        public static int[] RUFOUS = {168, 28, 7};
+        public static int[] PINK = {255, 105, 18};
+        public static int[] WHITE = {0, 0, 0};
 
+        public static int[] RUFOUS = {168, 28, 7};
         public static int[] ORANGE_RED = {255, 69, 0};
         public static int[] MAROON = {128, 0, 0};
+        public static int[] GOLD = {212, 175, 55};
     }
 
     public static class VisionConfig {
