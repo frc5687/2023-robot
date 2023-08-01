@@ -112,6 +112,18 @@ public class Constants {
             NORTH_WEST_CONFIG.encoderInverted = false;
             NORTH_WEST_CONFIG.encoderOffset = -0.07617;
         }
+        
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_WEST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_NORTH_WEST_CONFIG.moduleName = "North West";
+            PRACTICE_NORTH_WEST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
+
+            PRACTICE_NORTH_WEST_CONFIG.encoderInverted = false;
+            PRACTICE_NORTH_WEST_CONFIG.encoderOffset = -0.053722;
+        }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
@@ -123,6 +135,18 @@ public class Constants {
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
             SOUTH_WEST_CONFIG.encoderOffset = -0.1624;
+        }
+
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_WEST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_SOUTH_WEST_CONFIG.moduleName = "South West";
+            PRACTICE_SOUTH_WEST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
+
+            PRACTICE_SOUTH_WEST_CONFIG.encoderInverted = false;
+            PRACTICE_SOUTH_WEST_CONFIG.encoderOffset = 0.895165;
         }
 
         public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -137,6 +161,18 @@ public class Constants {
             SOUTH_EAST_CONFIG.encoderOffset = -0.05523;
         }
 
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_SOUTH_EAST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_SOUTH_EAST_CONFIG.moduleName = "South East";
+            PRACTICE_SOUTH_EAST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
+
+            PRACTICE_SOUTH_EAST_CONFIG.encoderInverted = false;
+            PRACTICE_SOUTH_EAST_CONFIG.encoderOffset = -0.089557;
+        }
+
         public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
                 new DiffSwerveModule.ModuleConfiguration();
 
@@ -149,6 +185,17 @@ public class Constants {
             NORTH_EAST_CONFIG.encoderOffset = -0.0575;
         }
 
+        public static final DiffSwerveModule.ModuleConfiguration PRACTICE_NORTH_EAST_CONFIG =
+                new DiffSwerveModule.ModuleConfiguration();
+
+        static {
+            PRACTICE_NORTH_EAST_CONFIG.moduleName = "North East";
+            PRACTICE_NORTH_EAST_CONFIG.canBus = CAN_BUS;
+            PRACTICE_NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
+
+            PRACTICE_NORTH_EAST_CONFIG.encoderInverted = false;
+            PRACTICE_NORTH_EAST_CONFIG.encoderOffset = -0.139070;
+        }
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final double ROTATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
         public static final long DISABLE_TIME = 500; // ms
@@ -205,10 +252,18 @@ public class Constants {
         public static final double AUTO_LEVEL_KP = 4.5; //PID controller for leveling
         public static final double AUTO_LEVEL_KI = 0.0;
         public static final double AUTO_LEVEL_KD = 1.0;
+
+        public static final double PF_AUTO_LEVEL_KP = 4.0; //PID controller for leveling specifically at practice field
+        public static final double PF_AUTO_LEVEL_KI = 0.0;
+        public static final double PF_AUTO_LEVEL_KD = 0.5;
         
-        public static final double QUICK_LEVEL_KP = 3.0; //PID controller for leveling
+        public static final double QUICK_LEVEL_KP = 3.0; //PID controller for leveling specifically at real fields
         public static final double QUICK_LEVEL_KI = 0.0;
         public static final double QUICK_LEVEL_KD = 0.5;
+
+        public static final double PF_QUICK_LEVEL_KP = 4.0; //PID controller for leveling specifically at practice field
+        public static final double PF_QUICK_LEVEL_KI = 0.0;
+        public static final double PF_QUICK_LEVEL_KD = 0.5;
     }
 
 

@@ -4,7 +4,7 @@ import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.commands.Auto.DriveUntilLevel.LevelingState;
 import org.frc5687.chargedup.subsystems.DriveTrain;
-
+import org.frc5687.chargedup.util.FieldConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -19,7 +19,11 @@ public class QuickLevel extends OutliersCommand {
 
     public QuickLevel(DriveTrain drivetrain, boolean inComm) {
         _drivetrain = drivetrain;
+        if (FieldConstants.isRealField){
         _pitchController = new PIDController(Constants.DriveTrain.QUICK_LEVEL_KP, Constants.DriveTrain.QUICK_LEVEL_KI, Constants.DriveTrain.QUICK_LEVEL_KD);
+        } else {
+        _pitchController = new PIDController(Constants.DriveTrain.PF_QUICK_LEVEL_KP, Constants.DriveTrain.PF_QUICK_LEVEL_KI, Constants.DriveTrain.PF_AUTO_LEVEL_KD);
+        }
         _finished = false;
         _state = LevelingState.INITIAL;
         _inComm = inComm;

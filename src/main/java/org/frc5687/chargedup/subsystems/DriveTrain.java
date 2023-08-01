@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.RobotMap;
 import org.frc5687.chargedup.util.*;
+import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.swerve.SwerveSetpoint;
@@ -82,6 +83,8 @@ public class DriveTrain extends OutliersSubsystem {
     // Vision Processors
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
+    private IdentityMode _identityMode;
+  //  private final PhotonProcessor _photonProcessor;
 
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
@@ -94,7 +97,7 @@ public class DriveTrain extends OutliersSubsystem {
             OutliersContainer container,
             VisionProcessor processor,
             PhotonProcessor photonProcessor,
-            AHRS imu) {
+            AHRS imu, IdentityMode identityMode) {
         super(container);
 
         _visionProcessor = processor;
@@ -103,6 +106,7 @@ public class DriveTrain extends OutliersSubsystem {
         // configure our system IO and pigeon;
         _imu = imu;
         _systemIO = new SystemIO();
+        _identityMode = identityMode;
 
         // This should set the Pigeon to 0.
         // set update frequency to 200hz
@@ -115,6 +119,8 @@ public class DriveTrain extends OutliersSubsystem {
 
         // set up the modules
         _modules = new DiffSwerveModule[4];
+
+        if(_identityMode == IdentityMode.competition){
         _modules[NORTH_WEST_IDX] =
                 new DiffSwerveModule(
                         NORTH_WEST_CONFIG,
@@ -139,6 +145,33 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
                         RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
                         RobotMap.DIO.ENCODER_NE);
+        } else {
+        _modules[NORTH_WEST_IDX] =
+                new DiffSwerveModule(
+                        PRACTICE_NORTH_WEST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_WEST_OUTER,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_WEST_INNER,
+                        RobotMap.PRACTICEDIO.ENCODER_NW);
+        _modules[SOUTH_WEST_IDX] =
+                new DiffSwerveModule(
+                        PRACTICE_SOUTH_WEST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_WEST_OUTER,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_WEST_INNER,
+                        RobotMap.PRACTICEDIO.ENCODER_SW);
+        _modules[SOUTH_EAST_IDX] =
+                new DiffSwerveModule(
+                        PRACTICE_SOUTH_EAST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_INNER,
+                        RobotMap.CAN.PRACTICETALONFX.SOUTH_EAST_OUTER,
+                        RobotMap.PRACTICEDIO.ENCODER_SE);
+        _modules[NORTH_EAST_IDX] =
+                new DiffSwerveModule(
+                        PRACTICE_NORTH_EAST_CONFIG,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_INNER,
+                        RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_OUTER,
+                        RobotMap.PRACTICEDIO.ENCODER_NE);
+            
+        }
 
         // This should set the Pigeon to 0.
         // _imu.getYaw().setUpdateFrequency(200);
@@ -434,6 +467,10 @@ public class DriveTrain extends OutliersSubsystem {
     }
     public double getPitch() {
         return _systemIO.pitch;
+    }
+
+    public IdentityMode getIdentityMode(){
+        return _identityMode;
     }
 
   

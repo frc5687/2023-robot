@@ -22,6 +22,7 @@ import org.frc5687.chargedup.subsystems.*;
 import org.frc5687.chargedup.util.CustomController;
 import org.frc5687.chargedup.util.Nodes;
 import org.frc5687.chargedup.util.OutliersProxy;
+import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.oi.AxisButton;
 import org.frc5687.lib.oi.Gamepad;
 import org.frc5687.lib.sensors.ProximitySensor;
@@ -71,7 +72,22 @@ public class OI extends OutliersProxy {
             Arm arm,
             Elevator elevator,
             CubeShooter cubeShooter,
-            Lights lights) {
+            Lights lights, IdentityMode identityMode) {
+
+        _povButtonLeft.whileTrue(new DriveWithSpeeds(drivetrain, 0, 1));
+        _povButtonRight.whileTrue(new DriveWithSpeeds(drivetrain, 0, -1));
+        _povButtonUp.whileTrue(new DriveWithSpeeds(drivetrain, 1, 0));
+        _povButtonDown.whileTrue(new DriveWithSpeeds(drivetrain, -1, 0));
+
+        _driverGamepad
+                .getYButton()
+                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+//        _driverGamepad
+//                .getYButton()
+//                .onTrue(new CharacterizeModule(drivetrain));
+        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+
+        if (identityMode == IdentityMode.competition){ // Enables all other commands
         _customController
                 .getChangeModeButton()
                 .toggleOnTrue(Commands.runOnce(endEffector::setConeState));
@@ -88,17 +104,10 @@ public class OI extends OutliersProxy {
                 .getIntakeButton()
                 .onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
-        _operatorJoystick.button(2).onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
-        _operatorJoystick.button(4).onTrue(new SemiAutoPlaceMiddle(arm, endEffector, elevator, this));
-        _operatorJoystick.button(5).onTrue(new SemiAutoPlaceHigh(arm, endEffector, elevator, this));
+            _customController.getIntakeButton().onTrue(new SemiAutoPickup(arm, endEffector, elevator, this));
 
         // _povButtonLeft.onTrue(new Tap(drivetrain, false));
         // _povButtonRight.onTrue(new Tap(drivetrain, true));
-
-        _povButtonLeft.whileTrue(new DriveWithSpeeds(drivetrain, 0, 1));
-        _povButtonRight.whileTrue(new DriveWithSpeeds(drivetrain, 0, -1));
-        _povButtonUp.whileTrue(new DriveWithSpeeds(drivetrain, 1, 0));
-        _povButtonDown.whileTrue(new DriveWithSpeeds(drivetrain, -1, 0));
 
 
         //        _driverGamepad.getXButton().onTrue(new
@@ -111,23 +120,17 @@ public class OI extends OutliersProxy {
                                 .unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter, false, this));
 
-        _driverGamepad
-                .getYButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-//        _driverGamepad
-//                .getYButton()
-//                .onTrue(new CharacterizeModule(drivetrain));
-        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
         _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 9; col++) {
-                _customController
-                        .getButton(row, col)
-                        .onTrue(
-                                new SetRobotGoal(
-                                        drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 9; col++) {
+                    _customController
+                            .getButton(row, col)
+                            .onTrue(
+                                    new SetRobotGoal(
+                                            drivetrain, endEffector, Nodes.Node.values()[col], Nodes.Level.values()[row]));
+                }
             }
-        }
+        
         _operatorJoystick
                 .button(1)
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
@@ -136,6 +139,7 @@ public class OI extends OutliersProxy {
                 .onTrue(new SemiAutoPlace(arm, endEffector, elevator, cubeShooter, drivetrain, this));
     
     }
+}
 
    
     public boolean autoAim() {

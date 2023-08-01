@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.commands.OutliersCommand;
 import org.frc5687.chargedup.subsystems.DriveTrain;
+import org.frc5687.chargedup.util.FieldConstants;
 
 public class DriveUntilLevel extends OutliersCommand {
 
@@ -16,7 +17,11 @@ public class DriveUntilLevel extends OutliersCommand {
 
     public DriveUntilLevel(DriveTrain driveTrain) {
         _drivetrain = driveTrain;
+        if (FieldConstants.isRealField){ // If we are on the real field, use constants measured from Greater Boston
         _pitchController = new PIDController(Constants.DriveTrain.AUTO_LEVEL_KP, Constants.DriveTrain.AUTO_LEVEL_KI, Constants.DriveTrain.AUTO_LEVEL_KD); // kp = 3.0 ki = 0.0 kd  = 0.5
+        } else { // Otherwise use constants measured from the practice field
+        _pitchController = new PIDController(Constants.DriveTrain.PF_AUTO_LEVEL_KP, Constants.DriveTrain.PF_AUTO_LEVEL_KI, Constants.DriveTrain.PF_AUTO_LEVEL_KD); // kp = 3.0, ki = 0.0, kd = 0.5
+        }
         _finished = false;
         _state = LevelingState.INITIAL;
         _timeout = System.currentTimeMillis();

@@ -11,6 +11,7 @@ import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.DriveTrain.Mode;
 import org.frc5687.chargedup.subsystems.EndEffector;
 import org.frc5687.chargedup.util.Helpers;
+import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
 import org.frc5687.lib.math.Vector2d;
@@ -45,7 +46,7 @@ public class Drive extends OutliersCommand {
         }
         addRequirements(_driveTrain);
     }
-
+    
     @Override
     public void initialize() {
         _driveTrain.startModules();
@@ -82,6 +83,7 @@ public class Drive extends OutliersCommand {
         double controllerPower = _driveTrain.getRotationCorrection();
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
+        // if (_driveTrain.getIdentityMode() == IdentityMode.competition){
         if (_oi.autoAim()) {
             _driveTrain.setMode(Mode.VISION);
             _driveTrain.setKinematicLimits(Constants.DriveTrain.VISION_KINEMATIC_LIMITS);
@@ -89,7 +91,7 @@ public class Drive extends OutliersCommand {
             vy = vec.y() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
             rot = rot * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxSteeringVelocity;
             TrackedObjectInfo closestGameElement;
-            if (_endEffector.getConeMode()) {
+            if (_endEffector != null && _endEffector.getConeMode()) {
                 closestGameElement = _driveTrain.getClosestCone();
             } else {
                 closestGameElement = _driveTrain.getClosestCube();
@@ -140,7 +142,6 @@ public class Drive extends OutliersCommand {
                             vx, vy, rot + controllerPower, _driveTrain.getHeading()));
         }
     }
-
     @Override
     public boolean isFinished() {
         return super.isFinished();
@@ -150,4 +151,13 @@ public class Drive extends OutliersCommand {
     public void end(boolean interrupted) {
         super.end(interrupted);
     }
+
+    // public Drive(DriveTrain driveTrain, OI oi){
+    //     _driveTrain = driveTrain;
+    //     _oi = oi;
+    //     _endEffector = null;
+    //     _yCordinateElementController = new PIDController(2.5, 0, 0.3);
+    // }
+
+    
 }
