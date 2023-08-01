@@ -2,6 +2,7 @@
 package org.frc5687.chargedup;
 
 
+
 public class RobotMap {
 
     /**
@@ -86,5 +87,12 @@ public class RobotMap {
         public static final int ENCODER_CUBESHOOTER_WRIST = 9;
         public static final int ARM_ENCODER_A = 19;
         public static final int ARM_ENCODER_B = 20;
+        
+    }
+    public static class RRv1DIO{
+        public static final int ENCODER_NE = 0; // takes up 3 slots ABS, A, B channels (ie 1 and 2 are also used).
+        public static final int ENCODER_NW = 4; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SE = 7; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SW = 10; // takes up 3 slots ABS, A, B channels.
     }
 }

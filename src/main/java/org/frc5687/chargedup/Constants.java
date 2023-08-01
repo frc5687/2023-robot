@@ -24,6 +24,8 @@ public class Constants {
     public static final double DATA_PERIOD = 0.02; // 20 ms
     public static final double EPSILON = 1e-9;
 
+    public static final boolean RRv1_SWERVE_TESTING = true;
+
     /**
      * Coordinate System
      *
