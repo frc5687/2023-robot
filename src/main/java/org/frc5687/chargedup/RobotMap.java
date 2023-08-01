@@ -102,9 +102,9 @@ public class RobotMap {
     }
     public static class RRv1DIO{
         public static final int ENCODER_NE = 0; // takes up 3 slots ABS, A, B channels (ie 1 and 2 are also used).
-        public static final int ENCODER_NW = 4; // takes up 3 slots ABS, A, B channels.
-        public static final int ENCODER_SE = 7; // takes up 3 slots ABS, A, B channels.
-        public static final int ENCODER_SW = 10; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_NW = 3; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SE = 6; // takes up 3 slots ABS, A, B channels.
+        public static final int ENCODER_SW = 9; // takes up 3 slots ABS, A, B channels.
     }
 
     public static class PRACTICEDIO {

@@ -88,13 +88,13 @@ public class RobotContainer extends OutliersContainer {
         }
         // configure pigeon
         // _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
-        _imu = new AHRS(SPI.Port.kMXP, (byte) 200);
+        _imu = new AHRS(SPI.Port.kMXP, (byte) 150);
         // var pigeonConfig = new Pigeon2Configuration();
         // _imu.getConfigurator().apply(pigeonConfig);
 
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, _identityMode);
 
-        if (_identityMode == IdentityMode.competition){
+        if (_identityMode == IdentityMode.competition && !Constants.RRv1_SWERVE_TESTING){
             _elevator = new Elevator(this);
             _arm = new Arm(this);
             _endEffector = new EndEffector(this);

@@ -120,7 +120,7 @@ public class DriveTrain extends OutliersSubsystem {
         // set up the modules
         _modules = new DiffSwerveModule[4];
 
-        if(_identityMode == IdentityMode.competition){
+        if(_identityMode == IdentityMode.competition && !Constants.RRv1_SWERVE_TESTING){
         _modules[NORTH_WEST_IDX] =
                 new DiffSwerveModule(
                         NORTH_WEST_CONFIG,
@@ -145,7 +145,7 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
                         RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
                         RobotMap.DIO.ENCODER_NE);
-        } else {
+        } if(_identityMode == IdentityMode.practice || Constants.RRv1_SWERVE_TESTING) {
         _modules[NORTH_WEST_IDX] =
                 new DiffSwerveModule(
                         PRACTICE_NORTH_WEST_CONFIG,
