@@ -87,7 +87,7 @@ public class OI extends OutliersProxy {
 //                .onTrue(new CharacterizeModule(drivetrain));
         _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
 
-        if (identityMode == IdentityMode.competition || !Constants.RRv1_SWERVE_TESTING){ // Enables all other commands
+        if (identityMode == IdentityMode.competition && !Constants.RRv1_SWERVE_TESTING){ // Enables all other commands
         _customController
                 .getChangeModeButton()
                 .toggleOnTrue(Commands.runOnce(endEffector::setConeState));

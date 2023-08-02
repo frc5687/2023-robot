@@ -88,7 +88,7 @@ public class RobotContainer extends OutliersContainer {
         }
         // configure pigeon
         // _imu = new Pigeon2(RobotMap.CAN.PIGEON.PIGEON, "CANivore");
-        _imu = new AHRS(SPI.Port.kMXP, (byte) 150);
+        _imu = new AHRS(SPI.Port.kMXP, (byte) 100);
         // var pigeonConfig = new Pigeon2Configuration();
         // _imu.getConfigurator().apply(pigeonConfig);
 
@@ -112,7 +112,7 @@ public class RobotContainer extends OutliersContainer {
 
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights, _identityMode);
             error("YOUR IDENTITY MODE IS COMPETITION");
-        } else if (_identityMode == IdentityMode.practice){ 
+        } else if (_identityMode == IdentityMode.practice || Constants.RRv1_SWERVE_TESTING){ 
             setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
             _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights, _identityMode);
             error("YOUR IDENTITY MODE IS PRACTICE");
