@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
+import org.frc5687.chargedup.subsystems.DiffSwerveModule;
 import org.frc5687.chargedup.subsystems.DriveTrain;
 import org.frc5687.chargedup.subsystems.DriveTrain.Mode;
 import org.frc5687.chargedup.subsystems.EndEffector;
@@ -14,6 +15,7 @@ import org.frc5687.chargedup.util.Helpers;
 import org.frc5687.chargedup.util.OutliersContainer.IdentityMode;
 import org.frc5687.lib.control.SwerveHeadingController;
 import org.frc5687.lib.control.SwerveHeadingController.HeadingState;
+import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.math.Vector2d;
 import org.frc5687.lib.vision.TrackedObjectInfo;
 
@@ -26,6 +28,11 @@ public class Drive extends OutliersCommand {
     private final OI _oi;
     private boolean _lockHeading;
     private int segmentationArray[] = new int[((int) 360 / 5)];
+
+    private DiffSwerveModule _desiredModule;
+    private OutliersTalon _dmLeftFalcon;
+    private OutliersTalon _dmRightFalcon;
+
 
     public Drive(DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         _lockHeading = false;
@@ -50,6 +57,11 @@ public class Drive extends OutliersCommand {
     @Override
     public void initialize() {
         _driveTrain.startModules();
+        if (_driveTrain.getIdentityMode() == IdentityMode.singlemoduletest){
+            _desiredModule = _driveTrain.getDesiredModule();
+            _dmLeftFalcon = _desiredModule.getLeftFalcon();
+            _dmRightFalcon = _desiredModule.getRightFalcon();
+        }
         //        _headingController.setGoal(_driveTrain.getHeading().getRadians());
         //        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
@@ -69,21 +81,22 @@ public class Drive extends OutliersCommand {
         double vy;
         double rot = _oi.getRotationX();
         rot = Math.signum(rot) * rot * rot;
+
         //  driveX and driveY are swapped due to coordinate system that WPILib uses
-        if (rot == 0 && _driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
-            if (!_lockHeading) {
-                _driveTrain.temporaryDisabledHeadingController();
-            }
-            _lockHeading = true;
-        } else if (_driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
-            _driveTrain.disableHeadingController();
-            _lockHeading = false;
-        }
+        // if (rot == 0 && _driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
+        //     if (!_lockHeading) {
+        //         _driveTrain.temporaryDisabledHeadingController();
+        //     }
+        //     _lockHeading = true;
+        // } else if (_driveTrain.getHeadingControllerState() != HeadingState.SNAP) {
+        //     _driveTrain.disableHeadingController();
+        //     _lockHeading = false;
+        // }
 
         double controllerPower = _driveTrain.getRotationCorrection();
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
-        // if (_driveTrain.getIdentityMode() == IdentityMode.competition){
+        if (_driveTrain.getIdentityMode() != IdentityMode.singlemoduletest){
         if (_oi.autoAim()) {
             _driveTrain.setMode(Mode.VISION);
             _driveTrain.setKinematicLimits(Constants.DriveTrain.VISION_KINEMATIC_LIMITS);
@@ -141,7 +154,29 @@ public class Drive extends OutliersCommand {
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx, vy, rot + controllerPower, _driveTrain.getHeading()));
         }
+    } else {
+        if (_oi.getLeftFalconForwards()){
+            _dmLeftFalcon.set(0.25);
+        } else if (_oi.getLeftFalconBackwards()){
+            _dmLeftFalcon.set(-0.25);
+        } else if (_oi.getRightFalconForwards()){
+            _dmRightFalcon.set(0.25);
+        } else if (_oi.getRightFalconBackwards()){
+            _dmRightFalcon.set(-0.25);
+        } else {
+            _driveTrain.setMode(Mode.NORMAL);
+            _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
+            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
+            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
+            rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
+            _driveTrain.setVelocity(
+                    ChassisSpeeds.fromFieldRelativeSpeeds(
+                            vx, vy, rot + controllerPower, _driveTrain.getHeading()));
+        }
+
     }
+    }
+
     @Override
     public boolean isFinished() {
         return super.isFinished();

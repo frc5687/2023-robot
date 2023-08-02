@@ -26,6 +26,13 @@ public class Constants {
 
     public static final boolean RRv1_SWERVE_TESTING = true;
 
+    public static final int NW_MODULE = 0;
+    public static final int SW_MODULE = 1;
+    public static final int SE_MODULE = 2;
+    public static final int NE_MODULE = 3;
+
+    public static final int DESIRED_MODULE = NW_MODULE;
+
     /**
      * Coordinate System
      *

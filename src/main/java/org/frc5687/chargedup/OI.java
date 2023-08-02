@@ -203,6 +203,21 @@ public class OI extends OutliersProxy {
         return speed;
     }
 
+    public boolean getLeftFalconForwards(){
+        return _driverLeftTrigger.getAsBoolean();
+    }
+
+    public boolean getLeftFalconBackwards(){
+        return _driverGamepad.getLeftBumper().getAsBoolean();
+    }
+
+    public boolean getRightFalconForwards(){
+        return _driverRightTrigger.getAsBoolean();
+    }
+
+    public boolean getRightFalconBackwards(){
+        return _driverGamepad.getRightBumper().getAsBoolean();
+    }
     public double getArmY() {
         // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
         // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);

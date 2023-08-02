@@ -35,7 +35,7 @@ import org.frc5687.lib.math.LinearSystems;
  * <p>Wrapper class for a differential swerve module using LQR as the controller for azimuth angle
  * and wheel velocity of the module.
  */
-public class DiffSwerveModule {
+public class DiffSwerveModule{
     private final OutliersTalon _rightFalcon;
     private final OutliersTalon _leftFalcon;
     private final DutyCycleEncoder _boreEncoder;
@@ -354,6 +354,14 @@ public class DiffSwerveModule {
         return Units.rotationsPerMinuteToRadiansPerSecond(
                         getLeftFalconRPM() / GEAR_RATIO_STEER + getRightFalconRPM() / GEAR_RATIO_STEER)
                 / 2.0;
+    }
+
+    public OutliersTalon getRightFalcon(){
+        return _rightFalcon;
+    }
+
+    public OutliersTalon getLeftFalcon(){
+        return _leftFalcon;
     }
 
     public double getRightFalconRPM() {

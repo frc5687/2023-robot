@@ -72,7 +72,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final AHRS _imu;
     private double _yawOffset;
 
-
+    // private final DiffSwerveModule _singleDiffSwerveModule;
 
     // Setpoint generator for swerve.
     private final SwerveSetpointGenerator _swerveSetpointGenerator;
@@ -84,6 +84,7 @@ public class DriveTrain extends OutliersSubsystem {
     private final VisionProcessor _visionProcessor;
     private final PhotonProcessor _photonProcessor;
     private IdentityMode _identityMode;
+    private String _name;
   //  private final PhotonProcessor _photonProcessor;
 
     private final Field2d _field;
@@ -97,7 +98,7 @@ public class DriveTrain extends OutliersSubsystem {
             OutliersContainer container,
             VisionProcessor processor,
             PhotonProcessor photonProcessor,
-            AHRS imu, IdentityMode identityMode) {
+            AHRS imu, IdentityMode identityMode, String name) {
         super(container);
 
         _visionProcessor = processor;
@@ -107,6 +108,7 @@ public class DriveTrain extends OutliersSubsystem {
         _imu = imu;
         _systemIO = new SystemIO();
         _identityMode = identityMode;
+        _name = name;
 
         // This should set the Pigeon to 0.
         // set update frequency to 200hz
@@ -120,7 +122,7 @@ public class DriveTrain extends OutliersSubsystem {
         // set up the modules
         _modules = new DiffSwerveModule[4];
 
-        if(_identityMode == IdentityMode.competition && !Constants.RRv1_SWERVE_TESTING){
+        if(_name == "null"){
         _modules[NORTH_WEST_IDX] =
                 new DiffSwerveModule(
                         NORTH_WEST_CONFIG,
@@ -145,7 +147,7 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
                         RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
                         RobotMap.DIO.ENCODER_NE);
-        } if(_identityMode == IdentityMode.practice || Constants.RRv1_SWERVE_TESTING) {
+        } if(_name == "minibot" || Constants.RRv1_SWERVE_TESTING) {
         _modules[NORTH_WEST_IDX] =
                 new DiffSwerveModule(
                         PRACTICE_NORTH_WEST_CONFIG,
@@ -171,6 +173,10 @@ public class DriveTrain extends OutliersSubsystem {
                         RobotMap.CAN.PRACTICETALONFX.NORTH_EAST_OUTER,
                         RobotMap.PRACTICEDIO.ENCODER_NE);
             
+        }
+
+        if (_identityMode == IdentityMode.singlemoduletest){
+
         }
 
         // This should set the Pigeon to 0.
@@ -398,6 +404,10 @@ public class DriveTrain extends OutliersSubsystem {
         for (int module = 0; module < _modules.length; module++) {
             _systemIO.setpoint.moduleStates[module] = new SwerveModuleState(0.0, moduleAngle);
         }
+    }
+
+    public DiffSwerveModule getDesiredModule(){
+        return _modules[Constants.DESIRED_MODULE];
     }
 
     public void setControlState(ControlState state) {

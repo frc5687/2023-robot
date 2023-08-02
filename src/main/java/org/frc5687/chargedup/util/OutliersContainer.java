@@ -88,7 +88,8 @@ public abstract class OutliersContainer implements ILoggingSource {
     public enum IdentityMode {
         competition(0),
         practice(1),
-        programming(2);
+        programming(2),
+        singlemoduletest(3);
 
         private int _value;
 

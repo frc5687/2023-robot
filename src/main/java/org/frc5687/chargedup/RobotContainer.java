@@ -59,11 +59,13 @@ public class RobotContainer extends OutliersContainer {
     private PhotonProcessor _photonProcessor;
     private Trajectories _trajectories;
     private IdentityMode _identityMode;
+    private String _name;
 
-    public RobotContainer(Robot robot, IdentityMode identityMode) {
+    public RobotContainer(Robot robot, IdentityMode identityMode, String name) {
         super(identityMode);
         _identityMode = identityMode;
         _robot = robot;
+        _name = name;
     }
 
     public void init() {
@@ -92,7 +94,7 @@ public class RobotContainer extends OutliersContainer {
         // var pigeonConfig = new Pigeon2Configuration();
         // _imu.getConfigurator().apply(pigeonConfig);
 
-        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, _identityMode);
+        _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu, _identityMode, _name);
 
         if (_identityMode == IdentityMode.competition && !Constants.RRv1_SWERVE_TESTING){
             _elevator = new Elevator(this);

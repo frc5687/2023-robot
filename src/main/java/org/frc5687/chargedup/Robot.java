@@ -24,7 +24,7 @@ import org.frc5687.lib.logging.RioLogger;
 public class Robot extends OutliersRobot {
 
     public static OutliersContainer.IdentityMode _identityMode =
-            OutliersContainer.IdentityMode.competition;
+            OutliersContainer.IdentityMode.singlemoduletest;
     private RioLogger.LogLevel _dsLogLevel = RioLogger.LogLevel.warn;
     private RioLogger.LogLevel _fileLogLevel = RioLogger.LogLevel.warn;
 
@@ -48,15 +48,14 @@ public class Robot extends OutliersRobot {
      */
     @Override
     public void robotInit() {
-        loadConfigFromUSB();
+        // loadConfigFromUSB();
         RioLogger.getInstance().init(_fileLogLevel, _dsLogLevel);
         LiveWindow.disableAllTelemetry();
         DriverStation.silenceJoystickConnectionWarning(true);
 
         metric("Identity", _identityMode.toString());
         info("Robot " + _name + " running in " + _identityMode.toString() + " mode");
-
-        _robotContainer = new RobotContainer(this, _identityMode);
+        _robotContainer = new RobotContainer(this, _identityMode, _name);
         _timer = new Timer();
         _robotContainer.init();
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
