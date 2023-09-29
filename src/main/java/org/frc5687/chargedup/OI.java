@@ -81,8 +81,8 @@ public class OI extends OutliersProxy {
         _operatorJoystick.button(6).onTrue(Commands.runOnce(endEffector::setConeState));
         _operatorJoystick.button(7).onTrue(Commands.runOnce(endEffector::setCubeState));
 
-        _operatorJoystick.button(8).and(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
-        _operatorJoystick.button(10).and(_operatorJoystick.button(11)).onTrue(new EjectStow(endEffector, elevator, arm));
+        _operatorJoystick.button(8).or(_operatorJoystick.button(9)).onTrue(new ZeroSuperStructure(elevator, arm, endEffector));
+        _operatorJoystick.button(10).or(_operatorJoystick.button(11)).onTrue(new EjectStow(endEffector, elevator, arm));
 
         _customController
                 .getIntakeButton()
