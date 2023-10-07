@@ -103,7 +103,7 @@ public class Drive extends OutliersCommand {
                 metric("Closest Game Element", closestGameElement.toString());
                 coneDist = closestGameElement.getDistance();
                 targetInTolerance =
-                        (closestGameElement.getZ() > Units.inchesToMeters(37)
+                        (closestGameElement.getZ() > Units.inchesToMeters(30)
                                 && closestGameElement.getZ() < Units.inchesToMeters(65));
                 if (targetInTolerance) {
                     power = -_yCordinateElementController.calculate(closestGameElement.getY());

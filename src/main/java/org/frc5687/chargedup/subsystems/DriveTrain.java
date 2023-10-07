@@ -22,8 +22,6 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -31,7 +29,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,7 +44,7 @@ import org.frc5687.lib.vision.TrackedObjectInfo;
 import org.frc5687.lib.vision.VisionProcessor;
 import org.photonvision.EstimatedRobotPose;
 
-import javax.swing.text.StyleContext;
+
 
 public class DriveTrain extends OutliersSubsystem {
     // Order we define swerve modules in kinematics
@@ -741,5 +738,13 @@ public class DriveTrain extends OutliersSubsystem {
     public boolean isCubeDetected() {
         TrackedObjectInfo obj = getClosestCube();
         return obj != null;
+    }
+    public boolean isObjectInTolerance(TrackedObjectInfo closestGameElement){
+        if (closestGameElement == null){
+            return false;
+        } else {
+        return (closestGameElement.getZ() > Units.inchesToMeters(30)
+                     && closestGameElement.getZ() < Units.inchesToMeters(65));
+        }
     }
 }
