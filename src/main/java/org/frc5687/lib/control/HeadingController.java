@@ -2,7 +2,7 @@ package org.frc5687.lib.control;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import org.frc5687.chargedup.Constants;
+import org.frc5687.swerve.Constants;
 
 public class HeadingController {
     public enum HeadingControllerState {
@@ -87,3 +87,5 @@ public class HeadingController {
         return _PIDController.calculate(currentAngle);
     }
 }
+
+

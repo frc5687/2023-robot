@@ -3,8 +3,8 @@ package org.frc5687.lib.math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import org.frc5687.chargedup.Constants;
-import org.frc5687.chargedup.util.Helpers;
+import org.frc5687.swerve.Constants;
+import org.frc5687.swerve.util.Helpers;
 
 public class Vector2d {
     protected static final Vector2d IDENTITY = new Vector2d();
@@ -140,3 +140,4 @@ public class Vector2d {
                 && Helpers.epsilonEquals(_y, other._y, Constants.EPSILON);
     }
 }
+

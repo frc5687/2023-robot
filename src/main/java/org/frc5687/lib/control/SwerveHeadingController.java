@@ -5,7 +5,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import org.frc5687.chargedup.Constants;
+import org.frc5687.swerve.Constants;
 
 // use 1323's Swerve heading controller
 public class SwerveHeadingController {
@@ -124,3 +124,4 @@ public class SwerveHeadingController {
         }
     }
 }
+

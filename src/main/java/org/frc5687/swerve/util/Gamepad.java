@@ -1,8 +1,7 @@
-/* Team 5687 (C)2020-2022 */
-package org.frc5687.lib.oi;
+/* (C)2020-2021 */
+package org.frc5687.swerve.util;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /** Copied by Caleb on 1/13/2017. */
 
@@ -13,18 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * buttons depends on the code in the driver station.
  */
 public class Gamepad extends Joystick {
-
-    private final JoystickButton _a;
-    private final JoystickButton _b;
-    private final JoystickButton _x;
-    private final JoystickButton _y;
-    private final JoystickButton _leftBumper;
-    private final JoystickButton _rightBumper;
-    private final JoystickButton _back;
-    private final JoystickButton _start;
-    private final JoystickButton _leftStick;
-    private final JoystickButton _rightStick;
-
     /** Enumeration for the various analog axes */
     public static enum Axes {
         LEFT_X(0),
@@ -78,19 +65,6 @@ public class Gamepad extends Joystick {
      */
     public Gamepad(int port) {
         super(port);
-        _a = new JoystickButton(this, Buttons.A.getNumber());
-        _b = new JoystickButton(this, Buttons.B.getNumber());
-        _x = new JoystickButton(this, Buttons.X.getNumber());
-        _y = new JoystickButton(this, Buttons.Y.getNumber());
-
-        _leftBumper = new JoystickButton(this, Buttons.LEFT_BUMPER.getNumber());
-        _rightBumper = new JoystickButton(this, Buttons.RIGHT_BUMPER.getNumber());
-
-        _back = new JoystickButton(this, Buttons.BACK.getNumber());
-        _start = new JoystickButton(this, Buttons.START.getNumber());
-
-        _leftStick = new JoystickButton(this, Buttons.LEFT_STICK.getNumber());
-        _rightStick = new JoystickButton(this, Buttons.RIGHT_STICK.getNumber());
     }
 
     /**
@@ -112,45 +86,4 @@ public class Gamepad extends Joystick {
     public boolean getRawButton(Buttons button) {
         return super.getRawButton(button.getNumber());
     }
-
-    public JoystickButton getAButton() {
-        return _a;
-    }
-
-    public JoystickButton getBButton() {
-        return _b;
-    }
-
-    public JoystickButton getXButton() {
-        return _x;
-    }
-
-    public JoystickButton getYButton() {
-        return _y;
-    }
-
-    public JoystickButton getLeftBumper() {
-        return _leftBumper;
-    }
-
-    public JoystickButton getRightBumper() {
-        return _rightBumper;
-    }
-
-    public JoystickButton getBackButton() {
-        return _back;
-    }
-
-    public JoystickButton getStartButton() {
-        return _start;
-    }
-
-    public JoystickButton getLeftStickButton() {
-        return _leftStick;
-    }
-
-    public JoystickButton getRightStickButton() {
-        return _rightStick;
-    }
 }
-
