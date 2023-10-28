@@ -153,4 +153,3 @@ public class Gamepad extends Joystick {
         return _rightStick;
     }
 }
-
