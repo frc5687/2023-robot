@@ -1,31 +1,38 @@
 /* Team 5687 (C)2022 */
 package org.frc5687.lib.drivers;
 
-import com.ctre.phoenixpro.configs.CurrentLimitsConfigs;
-import com.ctre.phoenixpro.configs.FeedbackConfigs;
-import com.ctre.phoenixpro.configs.MotionMagicConfigs;
-import com.ctre.phoenixpro.configs.MotorOutputConfigs;
-import com.ctre.phoenixpro.configs.Slot0Configs;
-import com.ctre.phoenixpro.configs.TalonFXConfiguration;
-import com.ctre.phoenixpro.configs.TalonFXConfigurator;
-import com.ctre.phoenixpro.configs.TorqueCurrentConfigs;
-import com.ctre.phoenixpro.configs.VoltageConfigs;
-import com.ctre.phoenixpro.controls.*;
-import com.ctre.phoenixpro.hardware.TalonFX;
-import com.ctre.phoenixpro.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenixpro.signals.InvertedValue;
-import com.ctre.phoenixpro.signals.NeutralModeValue;
+import com.ctre.phoenix6.configs.ClosedLoopGeneralConfigs;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.configs.TorqueCurrentConfigs;
+import com.ctre.phoenix6.configs.VoltageConfigs;
+import com.ctre.phoenix6.controls.*;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 /**
- * TalonFX wrapper class that uses 254's LazyTalonFX that reduces CAN bus / CPU overhead by skipping
- * duplicate set commands. (By default the Talon flushes the Tx buffer on every set call).
+ * TalonFX wrapper class that uses 254's LazyTalonFX that reduces CAN bus / CPU
+ * overhead by skipping
+ * duplicate set commands. (By default the Talon flushes the Tx buffer on every
+ * set call).
  */
 public class OutliersTalon extends TalonFX {
     // private final String _name;
     private final TalonFXConfigurator _configurator;
     private TalonFXConfiguration _configuration = new TalonFXConfiguration();
 
+    private ClosedLoopGeneralConfigs _closedLoopGenConfig = new ClosedLoopGeneralConfigs();
+
     private Slot0Configs _slot0Configs = new Slot0Configs();
+    private Slot1Configs _slot1Configs = new Slot1Configs();
     private MotorOutputConfigs _motorConfigs = new MotorOutputConfigs();
     private TorqueCurrentConfigs _torqueCurrentConfigs = new TorqueCurrentConfigs();
     private final VoltageConfigs _voltageConfigs = new VoltageConfigs();
@@ -37,6 +44,9 @@ public class OutliersTalon extends TalonFX {
     private final TorqueCurrentFOC _torqueCurrentFOC = new TorqueCurrentFOC(0.0);
     private final VoltageOut _voltageOut = new VoltageOut(0.0);
     private final MotionMagicVoltage _motionMagicVoltage = new MotionMagicVoltage(0.0);
+    private final PositionVoltage _positionVoltage = new PositionVoltage(0.0);
+    private final PositionDutyCycle _positionDutyCycle = new PositionDutyCycle(0.0);
+
     private final VelocityVoltage _velocityVoltage = new VelocityVoltage(0.0, true, 0, 0, false);
 
     public OutliersTalon(int port, String canBus, String name) {
@@ -62,6 +72,18 @@ public class OutliersTalon extends TalonFX {
     public void setMotionMagic(double position) {
         if (_motionMagicVoltage.Position != position) {
             this.setControl(_motionMagicVoltage.withPosition(position).withSlot(0));
+        }
+    }
+
+    public void setPositionVoltage(double position) {
+        if (_positionVoltage.Position != position) {
+            this.setControl(_positionVoltage.withPosition(position).withSlot(0));
+        }
+    }
+
+    public void setPositionDutyCycle(double position) {
+        if (_positionDutyCycle.Position != position) {
+            this.setControl(_positionDutyCycle.withPosition(position).withSlot(0));
         }
     }
 
@@ -98,6 +120,7 @@ public class OutliersTalon extends TalonFX {
         _voltageConfigs.PeakReverseVoltage = -config.MAX_VOLTAGE;
         _voltageConfigs.SupplyVoltageTimeConstant = config.VOLTAGE_TIME_CONSTANT;
 
+        _feedbackConfigs.FeedbackRemoteSensorID = config.SENSOR_ID;
         _feedbackConfigs.FeedbackSensorSource = config.FEEDBACK_SENSOR;
         _feedbackConfigs.SensorToMechanismRatio = config.SENSOR_TO_MECHANISM_RATIO;
 
@@ -113,17 +136,30 @@ public class OutliersTalon extends TalonFX {
         _configurator.apply(_feedbackConfigs, config.TIME_OUT);
     }
 
+    public void configureFeedback(FeedbackConfigs config) {
+        _configurator.apply(config, 100);
+        System.out.println("FEEDBACK CONFIGURED!!");
+    }
+
     public void configureClosedLoop(ClosedLoopConfiguration config) {
         _slot0Configs.kV = config.kF;
         _slot0Configs.kP = config.kP;
         _slot0Configs.kI = config.kI;
-        _slot0Configs.kD = config.kD;
+        _slot0Configs.kD = config.kD; // Defaults to config 0
+        _slot1Configs.kV = config.kF1;
+        _slot1Configs.kP = config.kP1;
+        _slot1Configs.kI = config.kI1;
+        _slot1Configs.kD = config.kD1;
 
         _motionMagicConfigs.MotionMagicCruiseVelocity = config.CRUISE_VELOCITY;
         _motionMagicConfigs.MotionMagicAcceleration = config.ACCELERATION;
         _motionMagicConfigs.MotionMagicJerk = config.JERK;
 
+        _closedLoopGenConfig.ContinuousWrap = config.IS_CONTINUOUS;
+
+        _configurator.apply(_closedLoopGenConfig);
         _configurator.apply(_slot0Configs, config.TIME_OUT);
+        _configurator.apply(_slot1Configs, config.TIME_OUT);
         _configurator.apply(_motionMagicConfigs);
     }
 
@@ -175,6 +211,13 @@ public class OutliersTalon extends TalonFX {
         public int CRUISE_VELOCITY = 0; // RPS
         public int ACCELERATION = 0; // RPS / Second
         public int JERK = 0; // RPS / Second / Second
+
+        public double kP1 = 0.0;
+        public double kI1 = 0.0;
+        public double kD1 = 0.0;
+        public double kF1 = 0.0;
+
+        public boolean IS_CONTINUOUS = false;
     }
 
     public static class Configuration {
@@ -199,6 +242,7 @@ public class OutliersTalon extends TalonFX {
         public boolean ENABLE_SUPPLY_CURRENT_LIMIT = false;
 
         // feedback
+        public int SENSOR_ID = 5;
         public FeedbackSensorSourceValue FEEDBACK_SENSOR = FeedbackSensorSourceValue.RotorSensor;
         public double SENSOR_TO_MECHANISM_RATIO = 1.0;
     }

@@ -3,8 +3,9 @@ package org.frc5687.chargedup;
 
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
 import com.ctre.phoenix.led.TwinkleOffAnimation.TwinkleOffPercent;
-import com.ctre.phoenixpro.signals.InvertedValue;
-import com.ctre.phoenixpro.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,7 +13,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import java.util.Arrays;
 import java.util.List;
-import org.frc5687.chargedup.subsystems.DiffSwerveModule;
+import org.frc5687.chargedup.subsystems.SwerveModule.ModuleConfiguration;
 import org.frc5687.lib.drivers.OutliersTalon;
 import org.frc5687.lib.swerve.SwerveSetpointGenerator.KinematicLimits;
 
@@ -51,17 +52,29 @@ public class Constants {
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
         public static final double MAX_MPS = 4.2; // Max speed of robot (m/s)
+        public static final double MAX_LOW_GEAR_MPS = 3.5;
+        public static final double MAX_HIGH_GEAR_MPS = 6.85;
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
 
-        public static final KinematicLimits KINEMATIC_LIMITS = new KinematicLimits();
+        public static final KinematicLimits HIGH_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
-            KINEMATIC_LIMITS.maxDriveVelocity = 5.3; // m/s
-            KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
-            KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
+            HIGH_KINEMATIC_LIMITS.maxDriveVelocity = MAX_HIGH_GEAR_MPS; // m/s
+            HIGH_KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            HIGH_KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
         }
+        public static final KinematicLimits LOW_KINEMATIC_LIMITS = new KinematicLimits();
+
+        static {
+            LOW_KINEMATIC_LIMITS.maxDriveVelocity = MAX_LOW_GEAR_MPS; // m/s
+            LOW_KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            LOW_KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
+        }
+
+        public static final KinematicLimits KINEMATIC_LIMITS = LOW_KINEMATIC_LIMITS;
+
         public static final KinematicLimits DRIVE_POSE_KINEMATIC_LIMITS = new KinematicLimits();
         static {
             DRIVE_POSE_KINEMATIC_LIMITS.maxDriveVelocity = 2.5; // m/s
@@ -99,8 +112,8 @@ public class Constants {
             POV_KINEMATIC_LIMITS.maxSteeringVelocity = 10; // rad/s
         }
 
-        public static final DiffSwerveModule.ModuleConfiguration NORTH_WEST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
+        public static final ModuleConfiguration NORTH_WEST_CONFIG =
+                new ModuleConfiguration();
 
         static {
             NORTH_WEST_CONFIG.moduleName = "North West";
@@ -108,11 +121,11 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.07617;
+            NORTH_WEST_CONFIG.encoderOffset = -0.010010;
         }
 
-        public static final DiffSwerveModule.ModuleConfiguration SOUTH_WEST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
+        public static final ModuleConfiguration SOUTH_WEST_CONFIG =
+                new ModuleConfiguration();
 
         static {
             SOUTH_WEST_CONFIG.moduleName = "South West";
@@ -120,11 +133,11 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = -0.1624;
+            SOUTH_WEST_CONFIG.encoderOffset = 0.122314;
         }
 
-        public static final DiffSwerveModule.ModuleConfiguration SOUTH_EAST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
+        public static final ModuleConfiguration SOUTH_EAST_CONFIG =
+                new ModuleConfiguration();
 
         static {
             SOUTH_EAST_CONFIG.moduleName = "South East";
@@ -132,11 +145,11 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.05523;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.105225;
         }
 
-        public static final DiffSwerveModule.ModuleConfiguration NORTH_EAST_CONFIG =
-                new DiffSwerveModule.ModuleConfiguration();
+        public static final ModuleConfiguration NORTH_EAST_CONFIG =
+                new ModuleConfiguration();
 
         static {
             NORTH_EAST_CONFIG.moduleName = "North East";
@@ -144,7 +157,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.0575;
+            NORTH_EAST_CONFIG.encoderOffset = 0.009766;
         }
 
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
@@ -160,7 +173,7 @@ public class Constants {
         // PID controller settings
         public static final double MAINTAIN_kP = 4.0;
         public static final double MAINTAIN_kI = 0.0;
-        public static final double MAINTAIN_kD = 0.1;
+        public static final double MAINTAIN_kD = 4.0;
 
         public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
@@ -209,71 +222,105 @@ public class Constants {
         public static final double QUICK_LEVEL_KD = 0.5;
     }
 
+    public static class SwerveModule{
 
-    public static class DifferentialSwerveModule {
-        public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
-        // this is the motor config for the diff swerve motors
-        static {
-            CONFIG.TIME_OUT = 0.1;
+        // Size of the robot chassis in meters
+     public static final double WIDTH = 0.4445; // meters
+     public static final double LENGTH = 0.4445; // meters
+     // Distance of swerve modules from center of robot
+     public static final double SWERVE_NS_POS = LENGTH / 2.0;
+     public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-            CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-            CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+     public static final double MAX_MPS = 4.2; // Max speed of robot (m/s)
+     public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
+     public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
+     public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
 
-            CONFIG.MAX_VOLTAGE = 12.0;
+     public static final String CAN_BUS = "CANivore";
+     public static final int NUM_MODULES = 4;
 
-            CONFIG.MAX_STATOR_CURRENT = 120;
-            CONFIG.MAX_CURRENT = 120;
-            CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
-            CONFIG.CURRENT_DEADBAND = 0.1; // amps
-//                        CONFIG.USE_FOC = true;
-        }
+     public static final double kDt = 0.005;
+     public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
+     public static final OutliersTalon.Configuration STEER_CONFIG = new OutliersTalon.Configuration();
 
-        public static final OutliersTalon.ClosedLoopConfiguration CLOSED_LOOP_CONFIGURATION =
-                new OutliersTalon.ClosedLoopConfiguration();
+     public static final double WHEEL_RADIUS = 0.04445;
+     public static final double GEAR_RATIO_DRIVE_HIGH = 4.9;
+     public static final double GEAR_RATIO_DRIVE_LOW = 9.6;
+     public static final double GEAR_RATIO_STEER = 22.3;
+     // public static final double MAX_SPEED = 0;
 
-        //         update rate of our modules 5ms.
-        public static final double kDt = 0.005;
-        //        public static final double kDt = 0.01;
-        public static final double FALCON_FREE_SPEED =
-                Units.rotationsPerMinuteToRadiansPerSecond(6080); // was 6380 foc is different speed
-        public static final double GEAR_RATIO_WHEEL = 6.46875 / 1.2;
-        public static final double GEAR_RATIO_STEER = 9.2 / 1.2;
+     public static final double kP = 5.0;
+     public static final double kI = 0.0;
+     public static final double kD = 0.0;
 
-        public static final double FRICTION_STEER = 0.00;
-        public static final double FRICTION_WHEEL = 0.00;
-        public static final double WHEEL_RADIUS = 0.0457; // Meters with compression.
-        public static final double TICKS_TO_ROTATIONS = 2048.0;
-        public static final double VOLTAGE = 12.0;
+     // this is the motor config for the swerve motors
+     static {
+         CONFIG.TIME_OUT = 0.1;
 
-        // Create Parameters for DiffSwerve State Space
-        public static final double INERTIA_STEER = 0.001;
-        public static final double INERTIA_WHEEL = 0.001;
-        // A weight for how aggressive each state should be ie. 0.08 radians will try to control the
-        // angle more aggressively than the wheel angular velocity.
+         CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+         CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
 
-        public static final double Q_AZIMUTH = 0.06; // radians
-        public static final double Q_AZIMUTH_ANG_VELOCITY = 2.0; // radians per sec
-        public static final double Q_WHEEL_ANG_VELOCITY = 0.8; // radians per sec
+         CONFIG.MAX_VOLTAGE = 12.0;
 
-        public static final double CONTROL_EFFORT = 4.0;
-        // This is for Kalman filter which isn't used for azimuth angle due to angle wrapping.
-        // Model noise are assuming that our model isn't as accurate as our sensors.
-        public static final double MODEL_AZIMUTH_ANGLE_NOISE = 0.1; // radians
-        public static final double MODEL_AZIMUTH_ANG_VELOCITY_NOISE = 1.0; // radians per sec
-        public static final double MODEL_WHEEL_ANG_VELOCITY_NOISE = 1.0; // radians per sec
-        // Noise from sensors. Falcon With Gearbox causes us to have more uncertainty, so we
-        // increase the noise.
-        public static final double SENSOR_AZIMUTH_ANGLE_NOISE = 0.01; // radians
-        public static final double SENSOR_AZIMUTH_ANG_VELOCITY_NOISE = 0.1; // radians per sec
-        public static final double SENSOR_WHEEL_ANG_VELOCITY_NOISE = 0.1; // radians per sec
-        public static final double MAX_MODULE_SPEED_MPS =
-                (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * WHEEL_RADIUS;
-        public static final double MAX_ANGULAR_VELOCITY = FALCON_FREE_SPEED / GEAR_RATIO_STEER;
-        public static final double MAX_ANGULAR_ACCELERATION = MAX_ANGULAR_VELOCITY * 5;
+         CONFIG.MAX_STATOR_CURRENT = 120;
+         CONFIG.MAX_CURRENT = 120;
+         CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+         CONFIG.CURRENT_DEADBAND = 0.1; 
+     }
 
-        public static final double MAX_MODULE_ACCELERATION = (FALCON_FREE_SPEED / GEAR_RATIO_WHEEL) * 4;
-        public static final double MAX_MODULE_JERK = MAX_MODULE_ACCELERATION * 2;
-    }
+     static {
+         STEER_CONFIG.TIME_OUT = 0.1;
+
+         STEER_CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
+         STEER_CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+
+         STEER_CONFIG.MAX_VOLTAGE = 12.0;
+
+         STEER_CONFIG.MAX_STATOR_CURRENT = 120;
+         STEER_CONFIG.MAX_CURRENT = 120;
+         STEER_CONFIG.ENABLE_STATOR_CURRENT_LIMIT = true;
+         STEER_CONFIG.CURRENT_DEADBAND = 0.1; 
+     }
+
+     public static final OutliersTalon.ClosedLoopConfiguration DRIVE_CONTROLLER_CONFIG =
+             new OutliersTalon.ClosedLoopConfiguration();
+
+     static {
+         DRIVE_CONTROLLER_CONFIG.SLOT = 0;
+
+         // use these PID values when shifted down
+         DRIVE_CONTROLLER_CONFIG.kP = 11.0;//11.0 //23.0
+         DRIVE_CONTROLLER_CONFIG.kI = 0.0;
+         DRIVE_CONTROLLER_CONFIG.kD = 0.02;
+         DRIVE_CONTROLLER_CONFIG.kF = 0.0;
+         // use these PID values when shifted up
+         DRIVE_CONTROLLER_CONFIG.kP1 = 11.0;
+         DRIVE_CONTROLLER_CONFIG.kI1 = 0;
+         DRIVE_CONTROLLER_CONFIG.kD1 = 0.02;
+         DRIVE_CONTROLLER_CONFIG.kF1 = 0.0;
+
+         DRIVE_CONTROLLER_CONFIG.CRUISE_VELOCITY = 1000;
+         DRIVE_CONTROLLER_CONFIG.ACCELERATION = 500;
+         DRIVE_CONTROLLER_CONFIG.JERK = 1000;
+     }
+     public static final OutliersTalon.ClosedLoopConfiguration STEER_CONTROLLER_CONFIG =
+             new OutliersTalon.ClosedLoopConfiguration();
+
+     static {
+         STEER_CONTROLLER_CONFIG.SLOT = 0;
+         STEER_CONTROLLER_CONFIG.kP = 70; //70
+         STEER_CONTROLLER_CONFIG.kI = 0;
+         STEER_CONTROLLER_CONFIG.kD = 0.7; //0.7
+         STEER_CONTROLLER_CONFIG.kF = 0.0;
+
+         STEER_CONTROLLER_CONFIG.CRUISE_VELOCITY = 1000;
+         STEER_CONTROLLER_CONFIG.ACCELERATION = 4000;
+         STEER_CONTROLLER_CONFIG.JERK = 10000;
+
+         STEER_CONTROLLER_CONFIG.IS_CONTINUOUS = true;
+     }
+     
+ }
 
     public static class Elevator {
         public static final String CAN_BUS = "CANivore";

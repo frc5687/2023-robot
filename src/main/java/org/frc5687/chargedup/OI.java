@@ -117,8 +117,8 @@ public class OI extends OutliersProxy {
 //        _driverGamepad
 //                .getYButton()
 //                .onTrue(new CharacterizeModule(drivetrain));
-        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
+        // _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        // _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 _customController
@@ -141,6 +141,14 @@ public class OI extends OutliersProxy {
     public boolean autoAim() {
         return _driverGamepad.getXButton().getAsBoolean();
         // return false;
+    }
+
+    public boolean shiftUp(){
+        return _driverGamepad.getAButton().getAsBoolean();
+    }
+
+    public boolean shiftDown(){
+        return _driverGamepad.getBButton().getAsBoolean();
     }
 
     public boolean releaseRoller() {

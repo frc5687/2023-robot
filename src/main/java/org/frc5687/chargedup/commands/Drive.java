@@ -24,7 +24,7 @@ public class Drive extends OutliersCommand {
     private final PIDController _yCordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
-    private int segmentationArray[] = new int[((int) 360 / 5)];
+    private int segmentationArray[] = new int[360 / 5];
 
     public Drive(DriveTrain driveTrain, EndEffector endEffector, OI oi) {
         _lockHeading = false;
@@ -48,9 +48,9 @@ public class Drive extends OutliersCommand {
 
     @Override
     public void initialize() {
-        _driveTrain.startModules();
+        // _driveTrain.startModules();
         //        _headingController.setGoal(_driveTrain.getHeading().getRadians());
-        //        _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
+               _driveTrain.setControlState(DriveTrain.ControlState.MANUAL);
     }
 
     @Override
@@ -60,6 +60,22 @@ public class Drive extends OutliersCommand {
             _driveTrain.setHeadingControllerState(SwerveHeadingController.HeadingState.OFF);
             _lockHeading = false;
         }
+        // if (_oi.shiftOverride()){
+        //     if (isOverride){
+        //         isOverride = false;
+        //     } else if(! isOverride){
+        //         isOverride = true;
+        //     }
+        // }
+        if (_oi.shiftUp()){
+            _driveTrain.shiftUpModules();
+        }
+        if (_oi.shiftDown()){
+            _driveTrain.shiftDownModules();
+        }
+        // if (! isOverride){
+        //     _driveTrain.autoShifter();
+        // }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
                 Helpers.axisToSegmentedUnitCircleRadians(

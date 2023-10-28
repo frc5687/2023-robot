@@ -3,8 +3,8 @@ package org.frc5687.chargedup.subsystems;
 
 import static org.frc5687.chargedup.Constants.DriveTrain.*;
 
-import com.ctre.phoenixpro.BaseStatusSignalValue;
-import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
@@ -22,7 +22,10 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.constraint.SwerveDriveKinematicsConstraint;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,12 +56,13 @@ public class DriveTrain extends OutliersSubsystem {
     private static final int SOUTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
     private static final int NORTH_EAST_IDX = 3;
-    private final DiffSwerveModule[] _modules;
+    private final DoubleSolenoid _shift;
+    private final SwerveModule[] _modules;
     private final SwerveDriveKinematics _kinematics;
     private final SwerveDriveOdometry _odometry;
     private final SwerveDrivePoseEstimator _poseEstimator;
     // module sensor readings we would like to read all at once over CAN
-    private final BaseStatusSignalValue[] _moduleSignals;
+    private final BaseStatusSignal[] _moduleSignals;
     // controllers [Heading, Pose, Trajectory]
     private ControlState _controlState;
     private final SwerveHeadingController _headingController;
@@ -69,11 +73,11 @@ public class DriveTrain extends OutliersSubsystem {
     private final Pigeon2 _imu;
     private double _yawOffset;
 
-
+    private boolean _isLowGear;
 
     // Setpoint generator for swerve.
     private final SwerveSetpointGenerator _swerveSetpointGenerator;
-    private KinematicLimits _kinematicLimits = KINEMATIC_LIMITS;
+    private KinematicLimits _kinematicLimits = LOW_KINEMATIC_LIMITS;
 
     private final SystemIO _systemIO;
 
@@ -84,6 +88,9 @@ public class DriveTrain extends OutliersSubsystem {
     private final Field2d _field;
     private Mode _mode = Mode.NORMAL;
     private Pose2d _hoverGoal;
+
+    private boolean _shiftLockout = false;
+    private long _shiftTime = 0;
 
     private Pose2d _wantedRestPose;
     private boolean _wantsToSetPose = false;
@@ -97,6 +104,9 @@ public class DriveTrain extends OutliersSubsystem {
 
         _visionProcessor = processor;
         _photonProcessor = photonProcessor;
+
+        _shift = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+                RobotMap.PCM.SHIFTER_HIGH, RobotMap.PCM.SHIFTER_LOW);
 
         // configure our system IO and pigeon;
         _imu = imu;
@@ -112,31 +122,27 @@ public class DriveTrain extends OutliersSubsystem {
         _controlState = ControlState.NEUTRAL;
 
         // set up the modules
-        _modules = new DiffSwerveModule[4];
-        _modules[NORTH_WEST_IDX] =
-                new DiffSwerveModule(
-                        NORTH_WEST_CONFIG,
-                        RobotMap.CAN.TALONFX.NORTH_WEST_OUTER,
-                        RobotMap.CAN.TALONFX.NORTH_WEST_INNER,
-                        RobotMap.DIO.ENCODER_NW);
-        _modules[SOUTH_WEST_IDX] =
-                new DiffSwerveModule(
-                        SOUTH_WEST_CONFIG,
-                        RobotMap.CAN.TALONFX.SOUTH_WEST_OUTER,
-                        RobotMap.CAN.TALONFX.SOUTH_WEST_INNER,
-                        RobotMap.DIO.ENCODER_SW);
-        _modules[SOUTH_EAST_IDX] =
-                new DiffSwerveModule(
-                        SOUTH_EAST_CONFIG,
-                        RobotMap.CAN.TALONFX.SOUTH_EAST_INNER,
-                        RobotMap.CAN.TALONFX.SOUTH_EAST_OUTER,
-                        RobotMap.DIO.ENCODER_SE);
-        _modules[NORTH_EAST_IDX] =
-                new DiffSwerveModule(
-                        NORTH_EAST_CONFIG,
-                        RobotMap.CAN.TALONFX.NORTH_EAST_INNER,
-                        RobotMap.CAN.TALONFX.NORTH_EAST_OUTER,
-                        RobotMap.DIO.ENCODER_NE);
+        _modules = new SwerveModule[4];
+        _modules[NORTH_WEST_IDX] = new SwerveModule(
+                Constants.DriveTrain.NORTH_WEST_CONFIG,
+                RobotMap.CAN.TALONFX.NORTH_WEST_ROTATION,
+                RobotMap.CAN.TALONFX.NORTH_WEST_TRANSLATION,
+                RobotMap.CAN.CANCODER.ENCODER_NW);
+        _modules[SOUTH_WEST_IDX] = new SwerveModule(
+                Constants.DriveTrain.SOUTH_WEST_CONFIG,
+                RobotMap.CAN.TALONFX.SOUTH_WEST_ROTATION,
+                RobotMap.CAN.TALONFX.SOUTH_WEST_TRANSLATION,
+                RobotMap.CAN.CANCODER.ENCODER_SW);
+        _modules[SOUTH_EAST_IDX] = new SwerveModule(
+                Constants.DriveTrain.SOUTH_EAST_CONFIG,
+                RobotMap.CAN.TALONFX.SOUTH_EAST_ROTATION,
+                RobotMap.CAN.TALONFX.SOUTH_EAST_TRANSLATION,
+                RobotMap.CAN.CANCODER.ENCODER_SE);
+        _modules[NORTH_EAST_IDX] = new SwerveModule(
+                Constants.DriveTrain.NORTH_EAST_CONFIG,
+                RobotMap.CAN.TALONFX.NORTH_EAST_ROTATION,
+                RobotMap.CAN.TALONFX.NORTH_EAST_TRANSLATION,
+                RobotMap.CAN.CANCODER.ENCODER_NE);
 
         // This should set the Pigeon to 0.
         _imu.getYaw().setUpdateFrequency(200);
@@ -145,7 +151,8 @@ public class DriveTrain extends OutliersSubsystem {
         readIMU();
 
         _controlState = ControlState.MANUAL;
-
+        
+        _isLowGear = true;
         _kinematics =
                 new SwerveDriveKinematics(
                         _modules[NORTH_WEST_IDX].getModuleLocation(),
@@ -206,7 +213,7 @@ public class DriveTrain extends OutliersSubsystem {
                         new ProfiledPIDController(
                                 MAINTAIN_kP,
                                 MAINTAIN_kI,
-                                MAINTAIN_kP,
+                                MAINTAIN_kD,
                                 new TrapezoidProfile.Constraints(
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_VEL,
                                         Constants.DriveTrain.PROFILE_CONSTRAINT_ACCEL)));
@@ -218,7 +225,7 @@ public class DriveTrain extends OutliersSubsystem {
         );
 
         // module CAN bus sensor outputs (position, velocity of each motor) all of them are called once per loop at the start.
-        _moduleSignals = new BaseStatusSignalValue[NUM_MODULES * 4];
+        _moduleSignals = new BaseStatusSignal[NUM_MODULES * 4];
         for (int i = 0; i < NUM_MODULES; ++i) {
             var signals = _modules[i].getSignals();
             _moduleSignals[(i * 4)] = signals[0];
@@ -266,17 +273,18 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     // DriveTrain periodic functions, these run constantly even if there is no command scheduled or the robot is disabled.
-    public void modulePeriodic() {
-        // use for modules as controller is running at 200Hz.
-        BaseStatusSignalValue.waitForAll(0.0, _moduleSignals);
-        for (DiffSwerveModule diffSwerveModule : _modules) {
-            diffSwerveModule.controlPeriodic();
-        }
-    }
+    // public void modulePeriodic() {
+    //     // use for modules as controller is running at 200Hz.
+    //     BaseStatusSignal.waitForAll(0.0, _moduleSignals);
+    //     for (SwerveModule SwerveModule : _modules) {
+    //         SwerveModule.controlPeriodic();
+    //     }
+    // }
 
     @Override
     public void periodic() {
         super.periodic();
+        BaseStatusSignal.waitForAll(0.0, _moduleSignals);
         readIMU();
         readModules();
         updateDesiredStates();
@@ -329,16 +337,16 @@ public class DriveTrain extends OutliersSubsystem {
     public void plotTrajectory(Trajectory t, String name) {
         _field.getObject(name).setTrajectory(t);
     }
-    public void startModules() {
-        for (DiffSwerveModule diffSwerveModule : _modules) {
-            diffSwerveModule.start();
-        }
-    }
+    // public void startModules() {
+    //     for (SwerveModule SwerveModule : _modules) {
+    //         SwerveModule.start();
+    //     }
+    // }
 
     public void readModules() {
         for (int module = 0; module < _modules.length; module++) {
             _systemIO.measuredStates[module] = _modules[module].getState();
-            _systemIO.measuredPositions[module] = _modules[module].getModulePosition();
+            _systemIO.measuredPositions[module] = _modules[module].getPosition(true);
         }
     }
     public void resetModuleEncoders() {
@@ -351,6 +359,20 @@ public class DriveTrain extends OutliersSubsystem {
         for (int module = 0; module < _modules.length; module++) {
             _modules[module].setIdealState(states[module]);
         }
+    }
+
+    public void shiftUpModules() {
+        _shift.set(Value.kReverse); // FIXME
+        _isLowGear = false;
+    }
+
+    public void shiftDownModules() {
+        _shift.set(Value.kForward); // FIXME
+        _isLowGear = true;
+    }
+
+    public boolean isLowGear() {
+        return _isLowGear;
     }
 
     public void setSetpointFromMeasuredModules() {
@@ -405,6 +427,15 @@ public class DriveTrain extends OutliersSubsystem {
                         //                        _systemIO.desiredChassisSpeeds,
                         updatedChassisSpeeds,
                         Constants.UPDATE_PERIOD);
+    }
+
+    //CTRE's driving code
+    public void driveFieldCentric(ChassisSpeeds speeds) {
+        var roboCentric = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, getHeading());
+        var swerveStates = _kinematics.toSwerveModuleStates(roboCentric);
+        for (int i = 0; i < _modules.length; ++i) {
+            _modules[i].setIdealState(swerveStates[i]);
+        }
     }
 
     public void setVelocity(ChassisSpeeds chassisSpeeds) {
@@ -513,7 +544,7 @@ public class DriveTrain extends OutliersSubsystem {
         error("Reset robot position: " + position.toString());
         _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition();
     }
-
+    
     public void wantsToResetPose(Pose2d pose) {
         _wantedRestPose = pose;
         _wantsToSetPose = true;
@@ -534,17 +565,6 @@ public class DriveTrain extends OutliersSubsystem {
     public boolean isTopSpeed() {
         return Math.abs(_modules[0].getWheelVelocity()) >= (Constants.DriveTrain.MAX_MPS - 0.2);
     }
-    public void characterizeModules(int module) {
-        _modules[module].characterizeModule();
-    }
-    public void setModulesToCharacterization() {
-        for (var module : _modules) {
-            module.setCharacterizationState();
-        }
-    }
-    public DiffSwerveModule.CharacterizeModule getCharacterizationState(int module) {
-        return _modules[module].getCharacterizationState();
-    }
 
     @Override
     public void updateDashboard() {
@@ -557,6 +577,22 @@ public class DriveTrain extends OutliersSubsystem {
         metric("Pitch Angle", getPitch());
         metric("Estimated X", _systemIO.estimatedPose.getX());
         metric("Estimated Y", _systemIO.estimatedPose.getY());
+        metric("NW Angle", _modules[0].getCanCoderAngle().getRadians());
+        metric("SW Angle", _modules[1].getCanCoderAngle().getRadians());
+        metric("SE Angle", _modules[2].getCanCoderAngle().getRadians());
+        metric("NE Angle", _modules[3].getCanCoderAngle().getRadians());
+        metric("NW AngleRot", _modules[0].getCanCoderAngle().getRotations());
+        metric("SW AngleRot", _modules[1].getCanCoderAngle().getRotations());
+        metric("SE AngleRot", _modules[2].getCanCoderAngle().getRotations());
+        metric("NE AngleRot", _modules[3].getCanCoderAngle().getRotations());
+        metric("NW Angle Wanted", _systemIO.setpoint.moduleStates[0].angle.getRadians());
+        metric("SW Angle Wanted", _systemIO.setpoint.moduleStates[1].angle.getRadians());
+        metric("SE Angle Wanted", _systemIO.setpoint.moduleStates[2].angle.getRadians());
+        metric("NE Angle Wanted", _systemIO.setpoint.moduleStates[3].angle.getRadians());
+        metric("NW Velocity", _modules[0].getWheelVelocity());
+        metric("SW Velocity", _modules[1].getWheelVelocity());
+        metric("SE Velocity", _modules[2].getWheelVelocity());
+        metric("NE Velocity", _modules[3].getWheelVelocity());
         metric(
                 "Distance to goal node",
                 _systemIO.estimatedPose
@@ -620,6 +656,39 @@ public class DriveTrain extends OutliersSubsystem {
         _hoverGoal = pose;
     }
 
+    public ChassisSpeeds getMeasuredChassisSpeeds() {
+        return _kinematics.toChassisSpeeds(_systemIO.measuredStates);
+    }
+
+    public void autoShifter() {
+        double speed = Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond,
+                getMeasuredChassisSpeeds().vyMetersPerSecond);
+        double direction = Math.atan2(getMeasuredChassisSpeeds().vyMetersPerSecond,
+                getMeasuredChassisSpeeds().vxMetersPerSecond);
+
+        double LockoutTime = 1000;
+        if (speed < Constants.DriveTrain.MAX_LOW_GEAR_MPS) {
+            if (_shiftLockout = false) {
+                _shiftTime = System.currentTimeMillis();
+                _shiftLockout = true;
+            }
+            if (_shiftTime + LockoutTime > System.currentTimeMillis()) {
+                shiftUpModules();
+                _shiftLockout = false;
+            }
+        }
+        if (speed > Constants.DriveTrain.MAX_HIGH_GEAR_MPS) {
+            if (_shiftLockout = false) {
+                _shiftTime = System.currentTimeMillis();
+                _shiftLockout = true;
+            }
+            if (_shiftTime + LockoutTime > System.currentTimeMillis()) {
+                shiftDownModules();
+                _shiftLockout = false;
+            }
+        }
+
+    }
 
    /* Vision Stuff */
     @Override

@@ -2,8 +2,8 @@
 /* Team 5687 (C)2021-2022 */
 package org.frc5687.chargedup;
 
-import com.ctre.phoenixpro.configs.Pigeon2Configuration;
-import com.ctre.phoenixpro.hardware.Pigeon2;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.PathConstraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -81,8 +81,8 @@ public class RobotContainer extends OutliersContainer {
         _endEffector.setCubeState();
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
-        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
-        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+        // setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+        // setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
         setDefaultCommand(_cubeShooter, new IdleWrist(_cubeShooter, _driveTrain, _endEffector));
@@ -90,8 +90,6 @@ public class RobotContainer extends OutliersContainer {
         _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
 
         _visionProcessor.start();
-        _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.00);
-        _driveTrain.startModules();
         startPeriodic();
         //        _driveTrain.plotTrajectory(TrajectoryGenerator.generateTrajectory(
         //                Constants.Auto.TrajectoryPoints.Node8.RED_NODE_EIGHT_TRAJECTORY_ONE,
@@ -249,12 +247,6 @@ public class RobotContainer extends OutliersContainer {
             default:
                 error("big uh oh");
                 return new WaitCommand(15);
-        }
-    }
-
-    public void controllerPeriodic() {
-        if (_driveTrain != null) {
-            _driveTrain.modulePeriodic();
         }
     }
 }
