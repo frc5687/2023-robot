@@ -53,18 +53,15 @@ public class RobotMap {
      * There should be an entry here for each PWM port, preferrably in numerical order. Note that for
      * PWM only one device can connect to each port, so the numbers should be unique.
      */
-    public static class PWM {
-        public static final int SHIFTER_HIGH = 0; // FIXME
-        public static final int SHIFTER_LOW = 0; // FIXME
-    }
+    public static class PWM {}
 
     /**
      * There should be an entry here for each PCM port, preferrably in numerical order. Note that for
      * PCM only one device can connect to each port, so the numbers should be unique.
      */
     public static class PCM {
-        public static final int SHIFTER_HIGH = 0; // FIXME
-        public static final int SHIFTER_LOW = 15; // FIXME
+        public static final int SHIFTER_HIGH = 0; // these values may be flip-flopped
+        public static final int SHIFTER_LOW = 15;
     }
 
     /**

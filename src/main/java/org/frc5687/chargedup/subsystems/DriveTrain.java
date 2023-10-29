@@ -362,12 +362,12 @@ public class DriveTrain extends OutliersSubsystem {
     }
 
     public void shiftUpModules() {
-        _shift.set(Value.kReverse); // FIXME
+        _shift.set(Value.kForward);
         _isLowGear = false;
     }
 
     public void shiftDownModules() {
-        _shift.set(Value.kForward); // FIXME
+        _shift.set(Value.kReverse);
         _isLowGear = true;
     }
 
