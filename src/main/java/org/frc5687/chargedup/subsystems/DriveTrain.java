@@ -663,27 +663,28 @@ public class DriveTrain extends OutliersSubsystem {
     public void autoShifter() {
         double speed = Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond,
                 getMeasuredChassisSpeeds().vyMetersPerSecond);
-        double direction = Math.atan2(getMeasuredChassisSpeeds().vyMetersPerSecond,
-                getMeasuredChassisSpeeds().vxMetersPerSecond);
+        metric("Drivetrain Speed", speed);
 
         double LockoutTime = 1000;
-        if (speed < Constants.DriveTrain.MAX_LOW_GEAR_MPS) {
-            if (_shiftLockout = false) {
-                _shiftTime = System.currentTimeMillis();
+        if (speed > Constants.DriveTrain.SHIFT_UP_SPEED_MPS) {
+            if (!_shiftLockout) {
                 _shiftLockout = true;
-            }
-            if (_shiftTime + LockoutTime > System.currentTimeMillis()) {
+                error("Shifting up");
+                _shiftTime = System.currentTimeMillis();
                 shiftUpModules();
+            }
+            if (_shiftTime + LockoutTime < System.currentTimeMillis()) {
                 _shiftLockout = false;
             }
         }
-        if (speed > Constants.DriveTrain.MAX_HIGH_GEAR_MPS) {
-            if (_shiftLockout = false) {
+        
+        if (speed < Constants.DriveTrain.SHIFT_DOWN_SPEED_MPS) {
+            if (!_shiftLockout) {
                 _shiftTime = System.currentTimeMillis();
                 _shiftLockout = true;
-            }
-            if (_shiftTime + LockoutTime > System.currentTimeMillis()) {
                 shiftDownModules();
+            }
+            if (_shiftTime + LockoutTime < System.currentTimeMillis()) {
                 _shiftLockout = false;
             }
         }

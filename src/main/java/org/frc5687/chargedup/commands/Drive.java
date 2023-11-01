@@ -24,6 +24,7 @@ public class Drive extends OutliersCommand {
     private final PIDController _yCordinateElementController;
     private final OI _oi;
     private boolean _lockHeading;
+    private boolean _isOverride = false;
     private int segmentationArray[] = new int[360 / 5];
 
     public Drive(DriveTrain driveTrain, EndEffector endEffector, OI oi) {
@@ -61,10 +62,10 @@ public class Drive extends OutliersCommand {
             _lockHeading = false;
         }
         // if (_oi.shiftOverride()){
-        //     if (isOverride){
-        //         isOverride = false;
-        //     } else if(! isOverride){
-        //         isOverride = true;
+        //     if (_isOverride){
+        //         _isOverride = false;
+        //     } else if(!_isOverride){
+        //         _isOverride = true;
         //     }
         // }
         if (_oi.shiftUp()){
@@ -73,8 +74,8 @@ public class Drive extends OutliersCommand {
         if (_oi.shiftDown()){
             _driveTrain.shiftDownModules();
         }
-        // if (! isOverride){
-        //     _driveTrain.autoShifter();
+        // if (!_isOverride){
+        _driveTrain.autoShifter();
         // }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =

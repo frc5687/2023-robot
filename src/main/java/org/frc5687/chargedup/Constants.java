@@ -58,18 +58,21 @@ public class Constants {
         public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
 
+        public static final double SHIFT_UP_SPEED_MPS = 2.3; // Speed to start shift y
+        public static final double SHIFT_DOWN_SPEED_MPS = 1.75; // Speed to start shift y
+
         public static final KinematicLimits HIGH_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
             HIGH_KINEMATIC_LIMITS.maxDriveVelocity = MAX_HIGH_GEAR_MPS; // m/s
-            HIGH_KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            HIGH_KINEMATIC_LIMITS.maxDriveAcceleration = 15; // m/s^2
             HIGH_KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
         }
         public static final KinematicLimits LOW_KINEMATIC_LIMITS = new KinematicLimits();
 
         static {
             LOW_KINEMATIC_LIMITS.maxDriveVelocity = MAX_LOW_GEAR_MPS; // m/s
-            LOW_KINEMATIC_LIMITS.maxDriveAcceleration = 25; // m/s^2
+            LOW_KINEMATIC_LIMITS.maxDriveAcceleration = 20; // m/s^2
             LOW_KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
         }
 
@@ -121,7 +124,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = -0.010010;
+            NORTH_WEST_CONFIG.encoderOffset = 0.184082;
         }
 
         public static final ModuleConfiguration SOUTH_WEST_CONFIG =
@@ -133,7 +136,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = 0.122314;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.251709;
         }
 
         public static final ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -145,7 +148,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = -0.105225;
+            SOUTH_EAST_CONFIG.encoderOffset = 0.189941;
         }
 
         public static final ModuleConfiguration NORTH_EAST_CONFIG =
@@ -157,7 +160,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = 0.009766;
+            NORTH_EAST_CONFIG.encoderOffset = -0.234375;
         }
 
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
@@ -171,9 +174,9 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 4.0;
+        public static final double MAINTAIN_kP = 3.5;
         public static final double MAINTAIN_kI = 0.0;
-        public static final double MAINTAIN_kD = 4.0;
+        public static final double MAINTAIN_kD = 0.3;
 
         public static final double SNAP_kP = 4.0;
         public static final double SNAP_kI = 0.0;
@@ -246,8 +249,9 @@ public class Constants {
      public static final double WHEEL_RADIUS = 0.04445;
      public static final double GEAR_RATIO_DRIVE_HIGH = 4.9;
      public static final double GEAR_RATIO_DRIVE_LOW = 9.6;
-     public static final double GEAR_RATIO_STEER = 22.3;
-     // public static final double MAX_SPEED = 0;
+     public static final double GEAR_RATIO_STEER = (52 / 14) * (96 / 16);
+     // public static\[]
+      final double MAX_SPEED = 0;
 
      public static final double kP = 5.0;
      public static final double kI = 0.0;
@@ -258,7 +262,7 @@ public class Constants {
          CONFIG.TIME_OUT = 0.1;
 
          CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-         CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
+         CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
 
          CONFIG.MAX_VOLTAGE = 12.0;
 

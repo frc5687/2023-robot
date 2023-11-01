@@ -150,6 +150,10 @@ public class OI extends OutliersProxy {
     public boolean shiftDown(){
         return _driverGamepad.getBButton().getAsBoolean();
     }
+    
+    public boolean shiftOverride() {
+        return _driverGamepad.getBackButton().getAsBoolean();
+    }
 
     public boolean releaseRoller() {
         return _driverGamepad.getRightBumper().getAsBoolean();
@@ -208,7 +212,7 @@ public class OI extends OutliersProxy {
     }
 
     public double getArmY() {
-        // double speed = -getSpeedFromAxis(_operatorGamepad, Gamepad.Axes.LEFT_Y.getNumber());
+        // double speed = -getSpeedFromAxis(_driverGamepad, Gamepad.Axes.RIGHT_Y.getNumber());
         // speed = applyDeadband(speed, Constants.DriveTrain.ROTATION_DEADBAND);
         // return speed / 5; // for testing
         return 0;

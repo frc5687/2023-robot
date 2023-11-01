@@ -110,6 +110,7 @@ public class Arm extends OutliersSubsystem {
     public void updateDashboard() {
         metric("Angle", getArmAngleRadians());
         metric("Absolute Angle", getAbsoluteArmEncoderAngle());
+        metric("Bore Encoder Angle", getRelativeEncoderAngle());
 //        metric("Reference", _controlLoop.getNextR().get(0, 0));
     }
 }

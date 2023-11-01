@@ -10,6 +10,7 @@ import org.frc5687.chargedup.Constants;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 // import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -88,7 +89,8 @@ public class SwerveModule {
 
         FeedbackConfigs feedback = new FeedbackConfigs();
         feedback.FeedbackRemoteSensorID = encoderPort;
-        feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        // feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
         feedback.RotorToSensorRatio = Constants.SwerveModule.GEAR_RATIO_STEER;
         _steeringMotor.configureFeedback(feedback);
 
