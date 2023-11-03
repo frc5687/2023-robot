@@ -136,6 +136,8 @@ public class Drive extends OutliersCommand {
                             _driveTrain.getHeading()));
         } else if (_oi.getSlowMode()) {
             _driveTrain.setMode(Mode.SLOW);
+            _driveTrain.shiftDownModules();
+            _driveTrain.setShiftLockout(true);
             _driveTrain.setKinematicLimits(Constants.DriveTrain.SLOW_KINEMATIC_LIMITS);
             vx = vec.x() * Constants.DriveTrain.SLOW_KINEMATIC_LIMITS.maxDriveVelocity;
             vy = vec.y() * Constants.DriveTrain.SLOW_KINEMATIC_LIMITS.maxDriveVelocity;
@@ -149,6 +151,7 @@ public class Drive extends OutliersCommand {
         } else {
             _driveTrain.setMode(Mode.NORMAL);
             _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
+            // _driveTrain.setShiftLockout(false);
             vx = vec.x() * Constants.DriveTrain.MAX_MPS;
             vy = vec.y() * Constants.DriveTrain.MAX_MPS;
             rot = rot * Constants.DriveTrain.MAX_ANG_VEL;

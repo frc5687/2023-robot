@@ -660,6 +660,10 @@ public class DriveTrain extends OutliersSubsystem {
         return _kinematics.toChassisSpeeds(_systemIO.measuredStates);
     }
 
+    public void setShiftLockout(boolean lock){
+        _shiftLockout = lock;
+    }
+
     public void autoShifter() {
         double speed = Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond,
                 getMeasuredChassisSpeeds().vyMetersPerSecond);

@@ -81,8 +81,8 @@ public class RobotContainer extends OutliersContainer {
         _endEffector.setCubeState();
 
         setDefaultCommand(_driveTrain, new Drive(_driveTrain, _endEffector, _oi));
-        // setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
-        // setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
+        setDefaultCommand(_elevator, new ManualExtendElevator(_elevator, _oi));
+        setDefaultCommand(_arm, new ManualDriveArm(_arm, _oi));
         setDefaultCommand(_endEffector, new IdleGripper(_endEffector, _oi));
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
         setDefaultCommand(_cubeShooter, new IdleWrist(_cubeShooter, _driveTrain, _endEffector));

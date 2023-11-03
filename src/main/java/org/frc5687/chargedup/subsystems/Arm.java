@@ -19,6 +19,8 @@ public class Arm extends OutliersSubsystem {
     private double _relativeEncoderOffset;
     private boolean _hasZeroed;
 
+    private int killmepls = 0;
+
     public Arm(OutliersContainer container) {
         super(container);
         _talon = new OutliersTalon(RobotMap.CAN.TALONFX.ARM, Constants.Arm.CAN_BUS, "arm");
@@ -30,16 +32,18 @@ public class Arm extends OutliersSubsystem {
 
         _absAngleEncoder = new DutyCycleEncoder(RobotMap.DIO.ARM_ENCODER);
         _absAngleEncoder.setDistancePerRotation(Math.PI); // 2:1 from output to encoder
-        _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
+        // _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
         setEncoderRadians(getAbsoluteArmEncoderAngle());
         _hasZeroed = false;
     }
 
     public void periodic() {
-        if (!_hasZeroed) {
+        if (!_hasZeroed && _absAngleEncoder.getDistance() > 1) {
+            // error("abs encoder" + _absAngleEncoder.getDistance());
             _relativeEncoderOffset = getAbsoluteArmEncoderAngle();
             setEncoderRadians(getAbsoluteArmEncoderAngle());
-            _hasZeroed = true;
+            // error("zeroed arm!");                                        
+                _hasZeroed = true;
         }
 
         if (Math.abs(getRelativeEncoderAngle() - getArmAngleRadians()) > Units.degreesToRadians(2.5)) {
@@ -71,6 +75,7 @@ public class Arm extends OutliersSubsystem {
 
     public double getAbsoluteArmEncoderAngle() {
         return _absAngleEncoder.getDistance();
+        // return _absAngleEncoder.getAbsolutePosition();
     }
 
     public void zeroEncoder() {
@@ -111,6 +116,8 @@ public class Arm extends OutliersSubsystem {
         metric("Angle", getArmAngleRadians());
         metric("Absolute Angle", getAbsoluteArmEncoderAngle());
         metric("Bore Encoder Angle", getRelativeEncoderAngle());
+        metric("Raw Bore Encoder Angle", _boreQuadEncoder.getDistance());
+        metric("Offset", _relativeEncoderOffset);
 //        metric("Reference", _controlLoop.getNextR().get(0, 0));
     }
 }

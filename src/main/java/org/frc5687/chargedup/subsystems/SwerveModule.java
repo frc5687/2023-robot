@@ -250,7 +250,7 @@ public class SwerveModule {
     }
 
     public double getDistance() {
-        return _drivePositionRotations.getValue() * (Math.PI * 2.0);
+        return _drivePositionRotations.getValue() * (Math.PI * 2.0) / (_isLowGear ? Constants.SwerveModule.GEAR_RATIO_DRIVE_LOW : Constants.SwerveModule.GEAR_RATIO_DRIVE_HIGH);
     }
 
     public void resetEncoders() {
@@ -268,6 +268,8 @@ public class SwerveModule {
         SmartDashboard.putBoolean("/isLowGear", _isLowGear);
         SmartDashboard.putNumber("/driveSupplyCurrent", _driveMotor.getSupplyCurrent().getValue());
         SmartDashboard.putNumber("/steerSupplyCurrent", _steeringMotor.getSupplyCurrent().getValue());
+        SmartDashboard.putNumber("/drivePosition", _drivePositionRotations.getValue());
+        SmartDashboard.putNumber("/distance", getDistance());
     }
 
     public static class ModuleConfiguration {
