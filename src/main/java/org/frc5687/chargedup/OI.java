@@ -111,14 +111,9 @@ public class OI extends OutliersProxy {
                                 .unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter, false, this));
 
-        _driverGamepad
-                .getYButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
-//        _driverGamepad
-//                .getYButton()
-//                .onTrue(new CharacterizeModule(drivetrain));
-        // _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
-        // _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
+        _driverGamepad.getYButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        _driverGamepad.getAButton().onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(180))));
+        _driverGamepad.getBButton().whileTrue(new HoverToPose(drivetrain, cubeShooter, lights));
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 _customController
@@ -139,16 +134,20 @@ public class OI extends OutliersProxy {
 
    
     public boolean autoAim() {
-        return _driverGamepad.getXButton().getAsBoolean();
+        return _driverGamepad.getXButton().getAsBoolean(); //vision no worky rn
         // return false;
     }
 
     public boolean shiftUp(){
-        return _driverGamepad.getAButton().getAsBoolean();
+        // return _driverGamepad.getAButton().getAsBoolean();
+        // return _driverGamepad.getBButton().getAsBoolean();
+        return false;
     }
 
     public boolean shiftDown(){
-        return _driverGamepad.getBButton().getAsBoolean();
+        // return _driverGamepad.getBButton().getAsBoolean();
+        // return _driverGamepad.getXButton().getAsBoolean(); //changed as vision no worky rn
+        return false;
     }
     
     public boolean shiftOverride() {

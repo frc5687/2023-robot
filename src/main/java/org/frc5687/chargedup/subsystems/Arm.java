@@ -46,9 +46,9 @@ public class Arm extends OutliersSubsystem {
                 _hasZeroed = true;
         }
 
-        if (Math.abs(getRelativeEncoderAngle() - getArmAngleRadians()) > Units.degreesToRadians(2.5)) {
+        if (Math.abs(getAbsoluteArmEncoderAngle() - getArmAngleRadians()) > Units.degreesToRadians(2.5)) {
             error(" Arm encoder difference is larger than 2.5 degrees, skip has occurred! Setting Falcon encoder to Bore Encoder angle.");
-            setEncoderRadians(getRelativeEncoderAngle());
+            setEncoderRadians(getAbsoluteArmEncoderAngle());
         }
     }
 

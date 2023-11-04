@@ -51,7 +51,6 @@ import org.photonvision.EstimatedRobotPose;
 
 public class DriveTrain extends OutliersSubsystem {
     // Order we define swerve modules in kinematics
-    public static final Transform2d offset = new Transform2d(new Translation2d(-0.0, 0), new Rotation2d());
     private static final int NORTH_WEST_IDX = 0;
     private static final int SOUTH_WEST_IDX = 1;
     private static final int SOUTH_EAST_IDX = 2;
@@ -94,6 +93,8 @@ public class DriveTrain extends OutliersSubsystem {
 
     private Pose2d _wantedRestPose;
     private boolean _wantsToSetPose = false;
+
+    private boolean _hasShiftInit = false;
 
     public DriveTrain(
             OutliersContainer container,
@@ -280,10 +281,13 @@ public class DriveTrain extends OutliersSubsystem {
     //         SwerveModule.controlPeriodic();
     //     }
     // }
-
     @Override
     public void periodic() {
         super.periodic();
+        if (!_hasShiftInit){
+            shiftDownModules();
+            _hasShiftInit = true;
+        }
         BaseStatusSignal.waitForAll(0.0, _moduleSignals);
         readIMU();
         readModules();
@@ -364,10 +368,18 @@ public class DriveTrain extends OutliersSubsystem {
     public void shiftUpModules() {
         _shift.set(Value.kForward);
         _isLowGear = false;
+        setKinematicLimits(HIGH_KINEMATIC_LIMITS);
+        for(int i = 0; i < _modules.length; i ++){
+            _modules[i].setLowGear(false);
+        }
     }
 
     public void shiftDownModules() {
         _shift.set(Value.kReverse);
+        setKinematicLimits(LOW_KINEMATIC_LIMITS);
+        for (int i = 0; i < _modules.length; i++){
+            _modules[i].setLowGear(true);
+        }
         _isLowGear = true;
     }
 
@@ -669,7 +681,7 @@ public class DriveTrain extends OutliersSubsystem {
                 getMeasuredChassisSpeeds().vyMetersPerSecond);
         metric("Drivetrain Speed", speed);
 
-        double LockoutTime = 1000;
+        double LockoutTime = 500;
         if (speed > Constants.DriveTrain.SHIFT_UP_SPEED_MPS) {
             if (!_shiftLockout) {
                 _shiftLockout = true;
@@ -722,7 +734,7 @@ public class DriveTrain extends OutliersSubsystem {
                 _poseEstimator.addVisionMeasurement(cameraPose.estimatedPose.toPose2d(), cameraPose.timestampSeconds);
             });
 
-            _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition().transformBy(offset);
+            _systemIO.estimatedPose = _poseEstimator.getEstimatedPosition();
         }
         _field.setRobotPose(_systemIO.estimatedPose);
     }

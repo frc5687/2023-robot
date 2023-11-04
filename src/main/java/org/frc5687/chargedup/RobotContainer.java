@@ -149,15 +149,15 @@ public class RobotContainer extends OutliersContainer {
                     case TwoCube:
                         return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case ThreeCone:
-                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCone(_elevator, _endEffector, _arm);
                     case FourCone:
-                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCone(_elevator, _endEffector, _arm);
                     case FiveCube:
                         return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
                     case SixCone:
-                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCone(_elevator, _endEffector, _arm);
                     case SevenCone:
-                        return new AutoPlaceAndStowHighCube(_elevator, _endEffector, _arm);
+                        return new AutoPlaceAndStowHighCone(_elevator, _endEffector, _arm);
                     case EightCube:
                         return new OneCubeAuto(_driveTrain, _arm, _elevator, _endEffector);
                     case NineCone:

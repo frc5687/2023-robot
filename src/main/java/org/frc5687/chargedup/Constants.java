@@ -51,7 +51,7 @@ public class Constants {
         public static final double SWERVE_NS_POS = LENGTH / 2.0;
         public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-        public static final double MAX_MPS = 4.2; // Max speed of robot (m/s)
+        public static final double MAX_MPS = 6.0; // Max speed of robot (m/s)
         public static final double MAX_LOW_GEAR_MPS = 3.5;
         public static final double MAX_HIGH_GEAR_MPS = 6.85;
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
@@ -174,7 +174,7 @@ public class Constants {
         public static final double POLE_THRESHOLD = Units.degreesToRadians(5.0);
 
         // PID controller settings
-        public static final double MAINTAIN_kP = 3.5;
+        public static final double MAINTAIN_kP = 4.5;
         public static final double MAINTAIN_kI = 0.0;
         public static final double MAINTAIN_kD = 0.3;
 
@@ -234,7 +234,7 @@ public class Constants {
      public static final double SWERVE_NS_POS = LENGTH / 2.0;
      public static final double SWERVE_WE_POS = WIDTH / 2.0;
 
-     public static final double MAX_MPS = 4.2; // Max speed of robot (m/s)
+     public static final double MAX_MPS = 6.0; // Max speed of robot (m/s)
      public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
      public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
      public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
@@ -250,7 +250,7 @@ public class Constants {
      public static final double GEAR_RATIO_DRIVE_HIGH = 4.9;
      public static final double GEAR_RATIO_DRIVE_LOW = 9.6;
      public static final double GEAR_RATIO_STEER = (52 / 14) * (96 / 16);
-     // public static\[]
+     // public static
       final double MAX_SPEED = 0;
 
      public static final double kP = 5.0;
@@ -262,7 +262,7 @@ public class Constants {
          CONFIG.TIME_OUT = 0.1;
 
          CONFIG.NEUTRAL_MODE = NeutralModeValue.Brake;
-         CONFIG.INVERTED = InvertedValue.Clockwise_Positive;
+         CONFIG.INVERTED = InvertedValue.CounterClockwise_Positive;
 
          CONFIG.MAX_VOLTAGE = 12.0;
 

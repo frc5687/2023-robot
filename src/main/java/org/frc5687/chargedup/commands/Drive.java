@@ -5,6 +5,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.frc5687.chargedup.Constants;
 import org.frc5687.chargedup.OI;
 import org.frc5687.chargedup.subsystems.DriveTrain;
@@ -150,7 +152,7 @@ public class Drive extends OutliersCommand {
                             vx, vy, rot + controllerPower, _driveTrain.getHeading()));
         } else {
             _driveTrain.setMode(Mode.NORMAL);
-            _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
+            // _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
             // _driveTrain.setShiftLockout(false);
             vx = vec.x() * Constants.DriveTrain.MAX_MPS;
             vy = vec.y() * Constants.DriveTrain.MAX_MPS;
@@ -158,6 +160,9 @@ public class Drive extends OutliersCommand {
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx, vy, rot + controllerPower, _driveTrain.getHeading()));
+            SmartDashboard.putNumber("/vx", vx);
+            SmartDashboard.putNumber("/vy", vy);
+
         }
     }
 

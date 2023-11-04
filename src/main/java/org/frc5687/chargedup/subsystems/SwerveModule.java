@@ -135,7 +135,10 @@ public class SwerveModule {
                 _steeringVelocityRotationsPerSec);
 
         /* And push them into a SwerveModuleState object to return */
-        _internalState.distanceMeters = drive_rot / _rotPerMet;
+        _internalState.distanceMeters = drive_rot / (_rotPerMet * (
+            _isLowGear ? Constants.SwerveModule.GEAR_RATIO_DRIVE_LOW
+        : Constants.SwerveModule.GEAR_RATIO_DRIVE_HIGH));
+        // _internalState.distanceMeters = getWheelDistance();
         /* Angle is already in terms of steer rotations */
         _internalState.angle = Rotation2d.fromRotations(angle_rot);
 
@@ -176,10 +179,10 @@ public class SwerveModule {
                         : Constants.SwerveModule.GEAR_RATIO_DRIVE_HIGH)
                 * _rotPerMet;
         double position = state.angle.getRotations();
-        _driveMotor.setControl(_velocityTorqueCurrentFOC.withVelocity(-speed)); // jitters
+        _driveMotor.setControl(_velocityTorqueCurrentFOC.withVelocity(speed)); // jitters
         // _driveMotor.setPercentOutput(0.5); // works without jitter
         _steeringMotor.setPositionVoltage(position);
-        SmartDashboard.putNumber("/wantedSpeed", -speed);
+        SmartDashboard.putNumber("/wantedSpeed", speed);
         SmartDashboard.putNumber("/actualSpeed", _driveMotor.getVelocity().getValue());
         SmartDashboard.putNumber("/wantedPosition", position);
         SmartDashboard.putNumber("/stateSpeedMPS", state.speedMetersPerSecond);
@@ -218,6 +221,10 @@ public class SwerveModule {
         }
     }
 
+    public void setLowGear(boolean isLowGear){
+        _isLowGear = isLowGear;
+    }
+
     public double getDriveRPM() {
         return OutliersTalon.rotationsPerSecToRPM(_driveVelocityRotationsPerSec.getValue(), 1.0);
     }
@@ -250,6 +257,7 @@ public class SwerveModule {
     }
 
     public double getDistance() {
+        // _drivePositionRotations.refresh();
         return _drivePositionRotations.getValue() * (Math.PI * 2.0) / (_isLowGear ? Constants.SwerveModule.GEAR_RATIO_DRIVE_LOW : Constants.SwerveModule.GEAR_RATIO_DRIVE_HIGH);
     }
 
