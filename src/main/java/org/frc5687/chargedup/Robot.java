@@ -2,6 +2,7 @@
 package org.frc5687.chargedup;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -60,7 +61,7 @@ public class Robot extends OutliersRobot {
         // Periodically flushes metrics (might be good to configure enable/disable via USB config
         // file)
         _time = _timer.get();
-        //        new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
+               new Notifier(MetricTracker::flushAll).startPeriodic(Constants.METRIC_FLUSH_PERIOD);
     }
 
     /**

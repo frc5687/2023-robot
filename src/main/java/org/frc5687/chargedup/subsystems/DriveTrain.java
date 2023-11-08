@@ -153,7 +153,7 @@ public class DriveTrain extends OutliersSubsystem {
 
         _controlState = ControlState.MANUAL;
         
-        _isLowGear = true;
+        _isLowGear = false;
         _kinematics =
                 new SwerveDriveKinematics(
                         _modules[NORTH_WEST_IDX].getModuleLocation(),
@@ -243,6 +243,7 @@ public class DriveTrain extends OutliersSubsystem {
 
         readModules();
         setSetpointFromMeasuredModules();
+        logMetrics("Drivetrain Speed", "NW Current", "NE Current", "SW Current", "SE Current");
     }
 
     /**
@@ -264,7 +265,6 @@ public class DriveTrain extends OutliersSubsystem {
                     new SwerveModulePosition(),
                     new SwerveModulePosition()
                 };
-
         Rotation2d heading = new Rotation2d(0.0);
         double pitch = 0.0;
 
@@ -284,10 +284,10 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void periodic() {
         super.periodic();
-        if (!_hasShiftInit){
-            shiftDownModules();
-            _hasShiftInit = true;
-        }
+        // if (!_hasShiftInit){
+        //     shiftDownModules();
+        //     _hasShiftInit = true;
+        // }
         BaseStatusSignal.waitForAll(0.0, _moduleSignals);
         readIMU();
         readModules();
@@ -605,11 +605,17 @@ public class DriveTrain extends OutliersSubsystem {
         metric("SW Velocity", _modules[1].getWheelVelocity());
         metric("SE Velocity", _modules[2].getWheelVelocity());
         metric("NE Velocity", _modules[3].getWheelVelocity());
+        metric("NW Current", _modules[0].getDriveMotorCurrent());
+        metric("SW Current", _modules[1].getDriveMotorCurrent());
+        metric("SE Current", _modules[2].getDriveMotorCurrent());
+        metric("NE Current", _modules[3].getDriveMotorCurrent());
         metric(
                 "Distance to goal node",
                 _systemIO.estimatedPose
                         .getTranslation()
                         .getDistance(_hoverGoal.getTranslation()));
+        metric("Drivetrain Speed", getSpeed());
+        metric("Is Low Gear", isLowGear());
         SmartDashboard.putData(_field);
         moduleMetrics();
     }
@@ -676,10 +682,12 @@ public class DriveTrain extends OutliersSubsystem {
         _shiftLockout = lock;
     }
 
+    public double getSpeed(){
+        return Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond, getMeasuredChassisSpeeds().vyMetersPerSecond);
+    }
+
     public void autoShifter() {
-        double speed = Math.hypot(getMeasuredChassisSpeeds().vxMetersPerSecond,
-                getMeasuredChassisSpeeds().vyMetersPerSecond);
-        metric("Drivetrain Speed", speed);
+        double speed = getSpeed();
 
         double LockoutTime = 500;
         if (speed > Constants.DriveTrain.SHIFT_UP_SPEED_MPS) {

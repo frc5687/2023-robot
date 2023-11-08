@@ -72,7 +72,7 @@ public class SwerveModule {
         _steeringMotor.configure(Constants.SwerveModule.STEER_CONFIG);
         _driveMotor.configureClosedLoop(Constants.SwerveModule.DRIVE_CONTROLLER_CONFIG);
         _steeringMotor.configureClosedLoop(Constants.SwerveModule.STEER_CONTROLLER_CONFIG);
-        _isLowGear = true;
+        _isLowGear = false;
 
         _velocityTorqueCurrentFOC = new VelocityTorqueCurrentFOC(0.0, 0.0, 0, true);
         // _positionVoltage = new PositionVoltage(0.0);
@@ -196,6 +196,10 @@ public class SwerveModule {
         return _driveMotor.getSupplyVoltage().getValue();
     }
 
+    public double getDriveMotorCurrent(){
+        return _driveMotor.getSupplyCurrent().getValue();
+    }
+
     public double getSteeringMotorVoltage() {
         return _steeringMotor.getSupplyVoltage().getValue();
     }
@@ -274,7 +278,7 @@ public class SwerveModule {
         SmartDashboard.putNumber("/driveVoltage", _driveMotor.getSupplyVoltage().getValue());
         SmartDashboard.putNumber("/steerVoltage", _steeringMotor.getSupplyVoltage().getValue());
         SmartDashboard.putBoolean("/isLowGear", _isLowGear);
-        SmartDashboard.putNumber("/driveSupplyCurrent", _driveMotor.getSupplyCurrent().getValue());
+        SmartDashboard.putNumber("/driveSupplyCurrent", getDriveMotorCurrent());
         SmartDashboard.putNumber("/steerSupplyCurrent", _steeringMotor.getSupplyCurrent().getValue());
         SmartDashboard.putNumber("/drivePosition", _drivePositionRotations.getValue());
         SmartDashboard.putNumber("/distance", getDistance());
