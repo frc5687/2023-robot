@@ -37,6 +37,7 @@ public class RobotContainer extends OutliersContainer {
     private EndEffector _endEffector;
     private CubeShooter _cubeShooter;
     private Arm _arm;
+    private NewArm _newArm;
     private Elevator _elevator;
     private PhotonProcessor _photonProcessor;
     private Trajectories _trajectories;
@@ -74,6 +75,7 @@ public class RobotContainer extends OutliersContainer {
         _driveTrain = new DriveTrain(this, _visionProcessor, _photonProcessor, _imu);
         _elevator = new Elevator(this);
         _arm = new Arm(this);
+        _newArm = new NewArm(this);
         _cubeShooter = new CubeShooter(this);
         _endEffector = new EndEffector(this);
         _lights = new Lights(this, _driveTrain, _endEffector, _oi);
@@ -87,7 +89,7 @@ public class RobotContainer extends OutliersContainer {
         setDefaultCommand(_lights, new DriveLights(_endEffector, _lights, _driveTrain, _oi));
         setDefaultCommand(_cubeShooter, new IdleWrist(_cubeShooter, _driveTrain, _endEffector));
 
-        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _elevator, _cubeShooter, _lights);
+        _oi.initializeButtons(_driveTrain, _endEffector, _arm, _newArm, _elevator, _cubeShooter, _lights);
 
         _visionProcessor.start();
         _robot.addPeriodic(this::controllerPeriodic, 0.005, 0.00);

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import org.frc5687.chargedup.commands.*;
+import org.frc5687.chargedup.commands.Arm.SetArmAngle;
 import org.frc5687.chargedup.commands.Auto.HoverToPose;
 import org.frc5687.chargedup.commands.CubeShooter.AutoIntake;
 import org.frc5687.chargedup.commands.CubeShooter.AutoShoot;
@@ -69,6 +70,7 @@ public class OI extends OutliersProxy {
             DriveTrain drivetrain,
             EndEffector endEffector,
             Arm arm,
+            NewArm newArm,
             Elevator elevator,
             CubeShooter cubeShooter,
             Lights lights) {
@@ -111,9 +113,8 @@ public class OI extends OutliersProxy {
                                 .unless(() -> !cubeShooter.isCubeDetected()));
         _driverLeftTrigger.whileTrue(new AutoIntake(cubeShooter, false, this));
 
-        _driverGamepad
-                .getYButton()
-                .onTrue(new SnapTo(drivetrain, new Rotation2d(Units.degreesToRadians(0))));
+        _driverGamepad.getYButton().onTrue(new SetArmAngle(newArm, Constants.Arm.VERTICAL_ARM_ANGLE));
+                
 //        _driverGamepad
 //                .getYButton()
 //                .onTrue(new CharacterizeModule(drivetrain));
