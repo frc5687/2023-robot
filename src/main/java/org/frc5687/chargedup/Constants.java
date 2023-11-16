@@ -124,7 +124,7 @@ public class Constants {
             NORTH_WEST_CONFIG.position = new Translation2d(SWERVE_NS_POS, SWERVE_WE_POS); // +,+
 
             NORTH_WEST_CONFIG.encoderInverted = false;
-            NORTH_WEST_CONFIG.encoderOffset = 0.184082;
+            NORTH_WEST_CONFIG.encoderOffset = -0.391846;
         }
 
         public static final ModuleConfiguration SOUTH_WEST_CONFIG =
@@ -136,7 +136,7 @@ public class Constants {
             SOUTH_WEST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, SWERVE_WE_POS); // -,+
 
             SOUTH_WEST_CONFIG.encoderInverted = false;
-            SOUTH_WEST_CONFIG.encoderOffset = -0.251709;
+            SOUTH_WEST_CONFIG.encoderOffset = -0.091553;
         }
 
         public static final ModuleConfiguration SOUTH_EAST_CONFIG =
@@ -148,7 +148,7 @@ public class Constants {
             SOUTH_EAST_CONFIG.position = new Translation2d(-SWERVE_NS_POS, -SWERVE_WE_POS); // -,-
 
             SOUTH_EAST_CONFIG.encoderInverted = false;
-            SOUTH_EAST_CONFIG.encoderOffset = 0.189941;
+            SOUTH_EAST_CONFIG.encoderOffset = -0.281250;
         }
 
         public static final ModuleConfiguration NORTH_EAST_CONFIG =
@@ -160,7 +160,7 @@ public class Constants {
             NORTH_EAST_CONFIG.position = new Translation2d(SWERVE_NS_POS, -SWERVE_WE_POS); // +,-
 
             NORTH_EAST_CONFIG.encoderInverted = false;
-            NORTH_EAST_CONFIG.encoderOffset = -0.234375;
+            NORTH_EAST_CONFIG.encoderOffset = -0.170166;
         }
 
         public static final double TRANSLATION_DEADBAND = 0.05; // Avoid unintentional joystick movement
@@ -246,7 +246,7 @@ public class Constants {
      public static final OutliersTalon.Configuration CONFIG = new OutliersTalon.Configuration();
      public static final OutliersTalon.Configuration STEER_CONFIG = new OutliersTalon.Configuration();
 
-     public static final double WHEEL_RADIUS = 0.04445;
+     public static final double WHEEL_RADIUS = 0.0508;
      public static final double GEAR_RATIO_DRIVE_HIGH = 4.9;
      public static final double GEAR_RATIO_DRIVE_LOW = 9.6;
      public static final double GEAR_RATIO_STEER = (52 / 14) * (96 / 16);

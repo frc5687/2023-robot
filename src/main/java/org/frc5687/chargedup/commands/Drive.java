@@ -76,9 +76,9 @@ public class Drive extends OutliersCommand {
         if (_oi.shiftDown()){
             _driveTrain.shiftDownModules();
         }
-        // if (!_isOverride){
-        // _driveTrain.autoShifter();
-        // }
+        if (!_isOverride){
+        _driveTrain.autoShifter();
+        }
         //  driveX and driveY are swapped due to coordinate system that WPILib uses.
         Vector2d vec =
                 Helpers.axisToSegmentedUnitCircleRadians(

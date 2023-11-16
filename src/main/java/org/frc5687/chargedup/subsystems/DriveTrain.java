@@ -153,7 +153,7 @@ public class DriveTrain extends OutliersSubsystem {
 
         _controlState = ControlState.MANUAL;
         
-        _isLowGear = false;
+        _isLowGear = true;
         _kinematics =
                 new SwerveDriveKinematics(
                         _modules[NORTH_WEST_IDX].getModuleLocation(),
@@ -284,10 +284,10 @@ public class DriveTrain extends OutliersSubsystem {
     @Override
     public void periodic() {
         super.periodic();
-        // if (!_hasShiftInit){
-        //     shiftDownModules();
-        //     _hasShiftInit = true;
-        // }
+        if (!_hasShiftInit){
+            shiftDownModules();
+            _hasShiftInit = true;
+        }
         BaseStatusSignal.waitForAll(0.0, _moduleSignals);
         readIMU();
         readModules();
