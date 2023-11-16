@@ -244,6 +244,8 @@ public class RobotContainer extends OutliersContainer {
                     _oi, 
                     _autoFirstNode, 
                     _trajectories); 
+            case NoAuto:
+                return new WaitCommand(15);
             default:
                 error("big uh oh");
                 return new WaitCommand(15);

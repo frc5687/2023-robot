@@ -24,7 +24,8 @@ public class AutoChooser extends OutliersProxy {
         SmartDashboard.putData("First Node", _firstNodeChooser);
 
         _autoTypeChooser = new SendableChooser<>();
-        _autoTypeChooser.setDefaultOption("Drive For Time", AutoType.DriveForTime);
+        _autoTypeChooser.setDefaultOption("Select An Auto!", AutoType.NoAuto);
+        _autoTypeChooser.addOption("Drive For Time", AutoType.DriveForTime);
         _autoTypeChooser.addOption("DriveToLevel", AutoType.DrivetoLevel);
         _autoTypeChooser.addOption("One And A Half Level", AutoType.OneAndAHalfLevel);
         _autoTypeChooser.addOption("Two Piece", AutoType.TwoPiece);
@@ -105,7 +106,8 @@ public class AutoChooser extends OutliersProxy {
         ThreeCubeLevel(6),
         ThreeCubeNoLevel(7),
         OneAndAHalfLevel(8),
-        ThreePiece(9);
+        ThreePiece(9),
+        NoAuto(10);
 
         private int _value;
 
