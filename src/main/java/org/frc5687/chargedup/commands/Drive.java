@@ -27,6 +27,7 @@ public class Drive extends OutliersCommand {
     private final OI _oi;
     private boolean _lockHeading;
     private boolean _isOverride = false;
+    private boolean _toNormal = false;
     private int segmentationArray[] = new int[360 / 5];
 
     public Drive(DriveTrain driveTrain, EndEffector endEffector, OI oi) {
@@ -102,6 +103,7 @@ public class Drive extends OutliersCommand {
         //        metric("Element Angle", elementAngle);
         metric("Rot+Controller", (rot + controllerPower));
         if (_oi.autoAim()) {
+            _toNormal = false;
             _driveTrain.setMode(Mode.VISION);
             _driveTrain.setKinematicLimits(Constants.DriveTrain.VISION_KINEMATIC_LIMITS);
             vx = vec.x() * Constants.DriveTrain.VISION_KINEMATIC_LIMITS.maxDriveVelocity;
@@ -137,6 +139,7 @@ public class Drive extends OutliersCommand {
                             _driveTrain.getRotationCorrection(),
                             _driveTrain.getHeading()));
         } else if (_oi.getSlowMode()) {
+            _toNormal = false;
             _driveTrain.setMode(Mode.SLOW);
             // _driveTrain.shiftDownModules();
             // _driveTrain.setShiftLockout(true);
@@ -151,12 +154,16 @@ public class Drive extends OutliersCommand {
                     ChassisSpeeds.fromFieldRelativeSpeeds(
                             vx, vy, rot + controllerPower, _driveTrain.getHeading()));
         } else {
+            if (!_toNormal){
+                _driveTrain.setKinematicLimits(Constants.DriveTrain.LOW_KINEMATIC_LIMITS);
+                _toNormal = true;
+            }
             _driveTrain.setMode(Mode.NORMAL);
             // _driveTrain.setKinematicLimits(Constants.DriveTrain.KINEMATIC_LIMITS);
-            _driveTrain.setKinematicLimits(Constants.DriveTrain.HIGH_KINEMATIC_LIMITS);
+            // _driveTrain.setKinematicLimits(Constants.DriveTrain.HIGH_KINEMATIC_LIMITS);
             // _driveTrain.setShiftLockout(false);
-            vx = vec.x() * Constants.DriveTrain.MAX_MPS;
-            vy = vec.y() * Constants.DriveTrain.MAX_MPS;
+            vx = vec.x() * (_driveTrain.isLowGear() ? Constants.DriveTrain.MAX_LOW_GEAR_MPS : Constants.DriveTrain.MAX_HIGH_GEAR_MPS);
+            vy = vec.y() * (_driveTrain.isLowGear() ? Constants.DriveTrain.MAX_LOW_GEAR_MPS : Constants.DriveTrain.MAX_HIGH_GEAR_MPS);
             rot = rot * Constants.DriveTrain.MAX_ANG_VEL;
             _driveTrain.setVelocity(
                     ChassisSpeeds.fromFieldRelativeSpeeds(

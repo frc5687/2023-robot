@@ -678,6 +678,14 @@ public class DriveTrain extends OutliersSubsystem {
         return _kinematics.toChassisSpeeds(_systemIO.measuredStates);
     }
 
+    public ChassisSpeeds getDesiredChassisSpeeds(){
+        return _systemIO.desiredChassisSpeeds;
+    }
+
+    public double getDesiredSpeed(){
+        return Math.hypot(getDesiredChassisSpeeds().vxMetersPerSecond, getDesiredChassisSpeeds().vyMetersPerSecond);
+    }
+
     public void setShiftLockout(boolean lock){
         _shiftLockout = lock;
     }
@@ -690,7 +698,7 @@ public class DriveTrain extends OutliersSubsystem {
         double speed = getSpeed();
 
         double LockoutTime = 500;
-        if (speed > Constants.DriveTrain.SHIFT_UP_SPEED_MPS) {
+        if (speed > Constants.DriveTrain.SHIFT_UP_SPEED_MPS && getDesiredSpeed() > SHIFT_UP_SPEED_MPS ) {
             if (!_shiftLockout) {
                 _shiftLockout = true;
                 error("Shifting up");
