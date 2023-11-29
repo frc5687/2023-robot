@@ -59,6 +59,8 @@ public class SwerveModule {
     private double _gearRatio;
     private double _metPerRot;
 
+    private double _wantedSpeed;
+
     public SwerveModule(
             SwerveModule.ModuleConfiguration config,
             int steeringMotorID,
@@ -174,15 +176,14 @@ public class SwerveModule {
         // SwerveModuleState optimized = SwerveModuleState.optimize(state,
         // _internalState.angle);
 
-        double speed = state.speedMetersPerSecond
+        double _wantedSpeed = state.speedMetersPerSecond
                 * (_isLowGear ? Constants.SwerveModule.GEAR_RATIO_DRIVE_LOW
                         : Constants.SwerveModule.GEAR_RATIO_DRIVE_HIGH)
                 * _rotPerMet;
         double position = state.angle.getRotations();
-        _driveMotor.setControl(_velocityTorqueCurrentFOC.withVelocity(speed)); // jitters
+        _driveMotor.setControl(_velocityTorqueCurrentFOC.withVelocity(_wantedSpeed)); // jitters
         // _driveMotor.setPercentOutput(0.5); // works without jitter
         _steeringMotor.setPositionVoltage(position);
-        SmartDashboard.putNumber("/wantedSpeed", speed);
         SmartDashboard.putNumber("/actualSpeed", _driveMotor.getVelocity().getValue());
         SmartDashboard.putNumber("/wantedPosition", position);
         SmartDashboard.putNumber("/stateSpeedMPS", state.speedMetersPerSecond);
@@ -241,6 +242,10 @@ public class SwerveModule {
         return getWheelAngularVelocity() * Constants.SwerveModule.WHEEL_RADIUS; // Meters per sec.
     }
 
+    public double getWantedSpeed(){
+        return _wantedSpeed;
+    }
+
     public double getWheelAngularVelocity() {
         return Units.rotationsPerMinuteToRadiansPerSecond(getDriveRPM() /
                 (_isLowGear ? Constants.SwerveModule.GEAR_RATIO_DRIVE_LOW
@@ -273,6 +278,7 @@ public class SwerveModule {
     public void updateDashboard() {
         SmartDashboard.putNumber("/moduleAngle", getEncoderAngleDouble());
         SmartDashboard.putNumber("/driveRPM", getDriveRPM());
+        SmartDashboard.putNumber("/wantedSpeed", _wantedSpeed);
         SmartDashboard.putNumber("/wheelVelocity", getWheelVelocity());
         SmartDashboard.putNumber("/wheelAngularVelocity", getWheelAngularVelocity());
         SmartDashboard.putNumber("/driveVoltage", _driveMotor.getSupplyVoltage().getValue());

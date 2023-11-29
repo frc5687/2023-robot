@@ -605,6 +605,10 @@ public class DriveTrain extends OutliersSubsystem {
         metric("SW Velocity", _modules[1].getWheelVelocity());
         metric("SE Velocity", _modules[2].getWheelVelocity());
         metric("NE Velocity", _modules[3].getWheelVelocity());
+        metric("NW Velocity Wanted", _modules[0].getWantedSpeed());
+        metric("SW Velocity Wanted", _modules[1].getWantedSpeed());
+        metric("SE Velocity Wanted", _modules[2].getWantedSpeed());
+        metric("NE Velocity Wanted", _modules[3].getWantedSpeed());
         metric("NW Current", _modules[0].getDriveMotorCurrent());
         metric("SW Current", _modules[1].getDriveMotorCurrent());
         metric("SE Current", _modules[2].getDriveMotorCurrent());
