@@ -60,6 +60,7 @@ public class SwerveModule {
     private double _metPerRot;
 
     private double _wantedSpeed;
+    private double _stateMPS;
 
     public SwerveModule(
             SwerveModule.ModuleConfiguration config,
@@ -175,18 +176,16 @@ public class SwerveModule {
     public void setModuleState(SwerveModuleState state) {
         // SwerveModuleState optimized = SwerveModuleState.optimize(state,
         // _internalState.angle);
-
-        double _wantedSpeed = state.speedMetersPerSecond
+        _stateMPS = state.speedMetersPerSecond;
+        _wantedSpeed = state.speedMetersPerSecond
                 * (_isLowGear ? Constants.SwerveModule.GEAR_RATIO_DRIVE_LOW
                         : Constants.SwerveModule.GEAR_RATIO_DRIVE_HIGH)
                 * _rotPerMet;
         double position = state.angle.getRotations();
-        _driveMotor.setControl(_velocityTorqueCurrentFOC.withVelocity(_wantedSpeed)); // jitters
-        // _driveMotor.setPercentOutput(0.5); // works without jitter
+        _driveMotor.setControl(_velocityTorqueCurrentFOC.withVelocity(_wantedSpeed));
         _steeringMotor.setPositionVoltage(position);
         SmartDashboard.putNumber("/actualSpeed", _driveMotor.getVelocity().getValue());
         SmartDashboard.putNumber("/wantedPosition", position);
-        SmartDashboard.putNumber("/stateSpeedMPS", state.speedMetersPerSecond);
     }
 
     public SwerveModuleState getState() {
@@ -244,6 +243,10 @@ public class SwerveModule {
 
     public double getWantedSpeed(){
         return _wantedSpeed;
+    }
+
+    public double getStateMPS(){
+        return _stateMPS;
     }
 
     public double getWheelAngularVelocity() {

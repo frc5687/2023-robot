@@ -53,7 +53,7 @@ public class Constants {
 
         public static final double MAX_MPS = 6.0; // Max speed of robot (m/s)
         public static final double MAX_LOW_GEAR_MPS = 3.5;
-        public static final double MAX_HIGH_GEAR_MPS = 6.85;
+        public static final double MAX_HIGH_GEAR_MPS = 6.5; //6.85
         public static final double SLOW_MPS = 2.0; // Slow speed of robot (m/s)
         public static final double MAX_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
         public static final double SLOW_ANG_VEL = Math.PI; // Max rotation rate of robot (rads/s)
@@ -65,7 +65,7 @@ public class Constants {
 
         static {
             HIGH_KINEMATIC_LIMITS.maxDriveVelocity = MAX_HIGH_GEAR_MPS; // m/s
-            HIGH_KINEMATIC_LIMITS.maxDriveAcceleration = 15; // m/s^2
+            HIGH_KINEMATIC_LIMITS.maxDriveAcceleration = 30; // m/s^2
             HIGH_KINEMATIC_LIMITS.maxSteeringVelocity = 25; // rad/s
         }
         public static final KinematicLimits LOW_KINEMATIC_LIMITS = new KinematicLimits();
@@ -301,10 +301,11 @@ public class Constants {
          DRIVE_CONTROLLER_CONFIG.kP1 = 11.0;
          DRIVE_CONTROLLER_CONFIG.kI1 = 0;
          DRIVE_CONTROLLER_CONFIG.kD1 = 0.02;
+         
          DRIVE_CONTROLLER_CONFIG.kF1 = 0.0;
 
          DRIVE_CONTROLLER_CONFIG.CRUISE_VELOCITY = 1000;
-         DRIVE_CONTROLLER_CONFIG.ACCELERATION = 500;
+         DRIVE_CONTROLLER_CONFIG.ACCELERATION = 525;
          DRIVE_CONTROLLER_CONFIG.JERK = 1000;
      }
      public static final OutliersTalon.ClosedLoopConfiguration STEER_CONTROLLER_CONFIG =

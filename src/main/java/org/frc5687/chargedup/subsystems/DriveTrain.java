@@ -243,7 +243,10 @@ public class DriveTrain extends OutliersSubsystem {
 
         readModules();
         setSetpointFromMeasuredModules();
-        logMetrics("Drivetrain Speed", "NW Current", "NE Current", "SW Current", "SE Current");
+        logMetrics("Drivetrain Speed", 
+        "NW Current", "NE Current", "SW Current", "SE Current"/*,
+        "NW Velocity Wanted", "NE Velocity Wanted", "SW Velocity Wanted", "SE Velocity Wanted",
+        "NW Velocity", "NE Velocity", "SW Velocity", "SE Velocity"*/);
     }
 
     /**
@@ -609,6 +612,14 @@ public class DriveTrain extends OutliersSubsystem {
         metric("SW Velocity Wanted", _modules[1].getWantedSpeed());
         metric("SE Velocity Wanted", _modules[2].getWantedSpeed());
         metric("NE Velocity Wanted", _modules[3].getWantedSpeed());
+        metric("NW Drive Velocity", _modules[0].getDriveRPM()/60);
+        metric("SW Drive Velocity", _modules[1].getDriveRPM()/60);
+        metric("NE Drive Velocity", _modules[2].getDriveRPM()/60);
+        metric("SE Drive Velocity", _modules[3].getDriveRPM()/60);
+        metric("NW State Velocity", _modules[0].getStateMPS());
+        metric("SW State Velocity", _modules[1].getStateMPS());
+        metric("NE State Velocity", _modules[2].getStateMPS());
+        metric("SE State Velocity", _modules[3].getStateMPS());
         metric("NW Current", _modules[0].getDriveMotorCurrent());
         metric("SW Current", _modules[1].getDriveMotorCurrent());
         metric("SE Current", _modules[2].getDriveMotorCurrent());
